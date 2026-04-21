@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
 <style>
 :root {
   --bg: #f0faf4;
@@ -960,7 +961,7 @@ let compareChart = null;
 let feedChart = null;
 let unreadCount = 4;
 
-const API_BASE = 'https://aqua-ai-bjg6.onrender.com';
+const API_BASE = 'https://aqua-ai-bjg6.onrender.com/api';
 
 // ─── Tab switching ───
 function switchTab(tab) {

@@ -5,6 +5,10 @@ from datetime import datetime, timedelta
 import random
 import math
 import httpx
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI(title="AQUA·AI Backend API", version="1.0.0")
 
@@ -15,7 +19,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-GOOGLE_API_KEY = "AIzaSyDbBJz7iz1cYNXqQk8uOwAonP1D9tzxAKc"
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 def sine_wave(base, amp, t, period=24):
     return round(base + amp * math.sin(2 * math.pi * t / period), 2)

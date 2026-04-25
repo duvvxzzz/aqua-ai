@@ -671,7 +671,6 @@ body::after {
       </div>
     </div>
     <div class="header-actions">
-      <div class="icon-btn" onclick="switchTab('chat')"><i class="ph ph-chat-circle-dots"></i></div>
       <div class="icon-btn" onclick="switchTab('notifications')">
         <i class="ph ph-bell"></i><div class="badge" id="notif-badge"></div>
       </div>
@@ -685,9 +684,6 @@ body::after {
   </button>
   <button class="nav-tab" onclick="switchTab('device')" id="tab-device">
     <i class="ph ph-broadcast ti"></i><span>Devices</span>
-  </button>
-  <button class="nav-tab" onclick="switchTab('notifications')" id="tab-notifications">
-    <i class="ph ph-bell ti"></i><span>Alerts</span>
   </button>
   <button class="nav-tab" onclick="switchTab('chat')" id="tab-chat">
     <i class="ph ph-chat-circle-dots ti"></i><span>AI Chat</span>
@@ -1017,10 +1013,15 @@ function switchTab(tab) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('page-' + tab).classList.add('active');
-  document.getElementById('tab-' + tab).classList.add('active');
-  if (tab === 'device' && !chartsInitialized) { initCharts(); chartsInitialized = true; }
-}
+  
+  const tabBtn = document.getElementById('tab-' + tab);
+  if (tabBtn) tabBtn.classList.add('active');
 
+  if (tab === 'device' && !chartsInitialized) { 
+    initCharts(); 
+    chartsInitialized = true; 
+  }
+}
 function selectMetricCard(el, metric) {
   document.querySelectorAll('.gauge-card, .stat-card').forEach(c => c.classList.remove('active'));
   el.classList.add('active');

@@ -11,26 +11,25 @@
 :root {
   --bg: transparent;
   --bg2: rgba(230, 245, 236, 0.4);
-  /* TĂNG ĐỘ ĐẶC CHO CÁC THẺ CARD ĐỂ RÕ NÉT HƠN (Từ 0.55 lên 1.0) */
-  --surface: rgba(255, 255, 255, 1.0); 
-  --surface2: rgba(255, 255, 255, 1.0); 
-  --border: rgba(200, 230, 212, 0.8);
+  --surface: rgba(255, 255, 255, 0.95); 
+  --surface2: rgba(255, 255, 255, 0.90); 
+  --border: rgba(200, 230, 212, 0.9);
   --border2: #a8d8bc;
-  --accent: #137b39;
-  --accent-light: #189747;
-  --accent-pale: rgba(220, 252, 231, 1.0);
+  --accent: #16a34a;
+  --accent-light: #22c55e;
+  --accent-pale: rgba(220, 252, 231, 0.7);
   --accent2: #0891b2;
-  --accent2-pale: rgba(224, 242, 254, 1.0);
-  --warn: #f6982d;
-  --warn-pale: rgba(254, 243, 199, 1.0);
-  --danger: #d42d2d;
-  --danger-pale: rgba(254, 226, 226, 1.0);
-  --text: #135a2f;
-  --text2: #166534;
-  --text3: #366a4a;
-  --text4: #238c4d;
-  --shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --accent2-pale: rgba(224, 242, 254, 0.7);
+  --warn: #d97706;
+  --warn-pale: rgba(254, 243, 199, 0.7);
+  --danger: #dc2626;
+  --danger-pale: rgba(254, 226, 226, 0.7);
+  --text: #064e3b; 
+  --text2: #14532d;
+  --text3: #166534;
+  --text4: #4b7c5e;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.06);
   --radius: 14px;
   --radius-sm: 8px;
 }
@@ -67,9 +66,9 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(240, 250, 244, 0.4);
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
+  background: rgba(240, 250, 244, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 0;
 }
 
@@ -85,49 +84,21 @@ body {
 }
 
 /* ── HEADER ── */
-.header {
-  padding: 16px 16px 10px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  border-bottom: 1.5px solid var(--border);
-}
+.header { padding: 16px 16px 10px; position: sticky; top: 0; z-index: 100; border-bottom: 1.5px solid var(--border); }
 .header-row { display: flex; align-items: center; justify-content: space-between; }
 .logo { display: flex; align-items: center; gap: 8px; }
-.logo-icon {
-  width: 34px; height: 34px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-light));
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; color: #fff; box-shadow: 0 2px 8px rgba(22,163,74,0.3);
-}
+.logo-icon { width: 34px; height: 34px; background: linear-gradient(135deg, var(--accent), var(--accent-light)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; box-shadow: 0 2px 8px rgba(22,163,74,0.3); }
 .logo-text { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; color: var(--accent); letter-spacing: 1px; }
 .logo-sub { font-size: 9px; color: var(--text4); font-family: 'JetBrains Mono', monospace; margin-top: 1px; }
 .header-actions { display: flex; gap: 6px; }
-.icon-btn {
-  width: 34px; height: 34px;
-  background: var(--accent-pale);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 18px; color: var(--accent); position: relative; transition: all 0.15s;
-}
+.icon-btn { width: 34px; height: 34px; background: var(--accent-pale); border: 1.5px solid var(--border); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; color: var(--accent); position: relative; transition: all 0.15s; }
 .icon-btn:hover { background: var(--border); }
-.badge {
-  position: absolute; top: 3px; right: 3px; width: 7px; height: 7px;
-  background: var(--danger); border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.5);
-}
+.badge { position: absolute; top: 3px; right: 3px; width: 7px; height: 7px; background: var(--danger); border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.5); }
 
 /* ── NAV ── */
 .nav { display: flex; border-bottom: 1.5px solid var(--border); overflow-x: auto; scrollbar-width: none; }
 .nav::-webkit-scrollbar { display: none; }
-.nav-tab {
-  flex: 1; min-width: 70px; padding: 8px 4px 7px;
-  display: flex; flex-direction: column; align-items: center; gap: 2px;
-  cursor: pointer; border: none; background: transparent;
-  color: var(--text4); font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 500;
-  transition: all 0.15s; border-bottom: 2px solid transparent; white-space: nowrap;
-}
+.nav-tab { flex: 1; min-width: 70px; padding: 8px 4px 7px; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; border: none; background: transparent; color: var(--text4); font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 500; transition: all 0.15s; border-bottom: 2px solid transparent; white-space: nowrap; }
 .nav-tab .ti { font-size: 24px; margin-bottom: 2px; }
 .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--accent-pale); }
 
@@ -137,23 +108,11 @@ body {
 @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
 .section { padding: 12px 14px 0; }
-.section-title {
-  font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--text3);
-  text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; margin-top: 2px;
-  display: flex; align-items: center; gap: 6px; font-weight: 600;
-}
+.section-title { font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--text3); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; margin-top: 2px; display: flex; align-items: center; gap: 6px; font-weight: 600; }
 .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
 /* ── CARDS ── */
-.card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 13px; margin-bottom: 10px; box-shadow: var(--shadow);
-  transition: border-color 0.15s, box-shadow 0.15s;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
+.card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 13px; margin-bottom: 10px; box-shadow: var(--shadow); transition: border-color 0.15s, box-shadow 0.15s; }
 .card:hover { border-color: var(--accent-light); box-shadow: var(--shadow-lg); }
 
 /* Inline Icon Utility */
@@ -161,32 +120,14 @@ body {
 
 /* ── WEATHER ── */
 .search-bar { display: flex; gap: 7px; margin-bottom: 10px; margin-top: 12px; }
-.search-input {
-  flex: 1; background: var(--surface2); border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm); padding: 9px 12px; color: var(--text);
-  font-family: 'Inter', sans-serif; font-size: 12px; outline: none; transition: border-color 0.15s;
-}
+.search-input { flex: 1; background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 9px 12px; color: var(--text); font-family: 'Inter', sans-serif; font-size: 12px; outline: none; transition: border-color 0.15s; }
 .search-input:focus { border-color: var(--accent); }
 .search-input::placeholder { color: var(--text4); }
-.search-btn {
-  background: var(--accent); border: none; border-radius: var(--radius-sm);
-  padding: 9px 14px; color: #fff; font-weight: 600; cursor: pointer;
-  font-size: 12px; font-family: 'Inter', sans-serif; transition: opacity 0.15s;
-}
-.search-btn:hover { opacity: 1.0; }
+.search-btn { background: var(--accent); border: none; border-radius: var(--radius-sm); padding: 9px 14px; color: #fff; font-weight: 600; cursor: pointer; font-size: 12px; font-family: 'Inter', sans-serif; transition: opacity 0.15s; }
+.search-btn:hover { opacity: 0.85; }
 
-.weather-card {
-  background: linear-gradient(135deg, rgba(240,250,244,1.0) 0%, rgba(232,245,233,1.0) 40%, rgba(224,242,254,1.0) 100%);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px; margin-bottom: 10px; position: relative; overflow: hidden;
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-}
-.weather-card::before {
-  content: ''; position: absolute; top: -30px; right: -30px;
-  width: 120px; height: 120px; background: radial-gradient(circle, rgba(34,197,94,0.15) 0%, transparent 70%);
-  border-radius: 50%;
-}
+.weather-card { background: linear-gradient(135deg, rgba(240,250,244,0.9) 0%, rgba(232,245,233,0.9) 40%, rgba(224,242,254,0.9) 100%); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 10px; position: relative; overflow: hidden; }
+.weather-card::before { content: ''; position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(34,197,94,0.15) 0%, transparent 70%); border-radius: 50%; }
 .weather-loc { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text3); margin-bottom: 10px; font-weight: 500; }
 .weather-main { display: flex; align-items: flex-end; justify-content: space-between; }
 .weather-temp { font-family: 'JetBrains Mono', monospace; font-size: 52px; font-weight: 500; color: var(--text); line-height: 1; }
@@ -194,18 +135,14 @@ body {
 .weather-icon-big { font-size: 48px; color: var(--accent2); }
 .weather-desc { font-size: 12px; color: var(--text3); margin-top: 8px; font-weight: 500; display: flex; align-items: center; gap: 4px;}
 .weather-badges { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
-.weather-badge {
-  display: flex; align-items: center; gap: 4px; padding: 4px 8px;
-  background: rgba(255,255,255,0.8); border: 1px solid var(--border);
-  border-radius: 20px; font-size: 10px; font-weight: 500; color: var(--text2);
-}
+.weather-badge { display: flex; align-items: center; gap: 4px; padding: 4px 8px; background: rgba(255,255,255,0.9); border: 1px solid var(--border); border-radius: 20px; font-size: 10px; font-weight: 500; color: var(--text2); }
 
 .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-.stat-card {
-  background: var(--surface2); border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm); padding: 11px; transition: border-color 0.15s;
-}
+.stat-card { background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 11px; transition: all 0.15s; cursor: pointer; }
 .stat-card:hover { border-color: var(--accent); }
+/* Hiệu ứng khi chọn thẻ để xem biểu đồ */
+.stat-card.active, .gauge-card.active { border-color: var(--accent); background: var(--accent-pale) !important; box-shadow: 0 0 0 1px var(--accent); }
+
 .stat-label { font-size: 10px; color: var(--text4); font-family: 'JetBrains Mono', monospace; margin-bottom: 4px; display: flex; align-items: center; }
 .stat-val { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 500; color: var(--text); }
 .stat-unit { font-size: 11px; color: var(--text3); font-weight: 400; }
@@ -215,11 +152,7 @@ body {
 
 .forecast-row { display: flex; gap: 7px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; margin-bottom: 10px; }
 .forecast-row::-webkit-scrollbar { display: none; }
-.forecast-item {
-  flex-shrink: 0; background: var(--surface2); border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm); padding: 10px 8px; text-align: center;
-  min-width: 62px; transition: border-color 0.15s;
-}
+.forecast-item { flex-shrink: 0; background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 10px 8px; text-align: center; min-width: 62px; transition: border-color 0.15s; }
 .forecast-item:hover { border-color: var(--accent); }
 .forecast-day { font-size: 10px; color: var(--text4); margin-bottom: 4px; font-weight: 500; }
 .forecast-icon { font-size: 24px; margin-bottom: 4px; color: var(--accent2); }
@@ -233,11 +166,7 @@ body {
 .score-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .score-num { font-family: 'JetBrains Mono', monospace; font-size: 19px; font-weight: 500; }
 .score-lbl { font-size: 8px; color: var(--text4); font-family: 'JetBrains Mono', monospace; }
-
-.risk-badge {
-  display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px;
-  border-radius: 6px; font-size: 10px; font-weight: 600; font-family: 'JetBrains Mono', monospace;
-}
+.risk-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
 .risk-badge.medium { background: var(--warn-pale); color: var(--warn); border: 1px solid rgba(217,119,6,0.3); }
 .risk-badge.low { background: var(--accent-pale); color: var(--accent); border: 1px solid var(--border); }
 .risk-badge.high { background: var(--danger-pale); color: var(--danger); border: 1px solid rgba(220,38,38,0.3); }
@@ -245,14 +174,11 @@ body {
 /* ── DEVICE ── */
 .pond-selector { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; margin-bottom: 10px; }
 .pond-selector::-webkit-scrollbar { display: none; }
-.pond-chip {
-  flex-shrink: 0; padding: 6px 12px; background: var(--surface2); border: 1.5px solid var(--border);
-  border-radius: 20px; font-size: 11px; cursor: pointer; transition: all 0.15s; white-space: nowrap; font-weight: 500;
-}
+.pond-chip { flex-shrink: 0; padding: 6px 12px; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 20px; font-size: 11px; cursor: pointer; transition: all 0.15s; white-space: nowrap; font-weight: 500; }
 .pond-chip.active { background: var(--accent-pale); border-color: var(--accent); color: var(--accent); }
 
 .gauge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-.gauge-card { background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 11px; transition: all 0.15s; }
+.gauge-card { background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 11px; transition: all 0.15s; cursor: pointer; }
 .gauge-card:hover { border-color: var(--accent); }
 .gauge-label { font-size: 10px; color: var(--text4); font-family: 'JetBrains Mono', monospace; margin-bottom: 4px; }
 .gauge-val { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 500; }
@@ -261,12 +187,8 @@ body {
 .gauge-bar-fill { height: 4px; border-radius: 2px; transition: width 0.8s ease; }
 .gauge-hint { font-size: 9px; color: var(--text4); margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
 
-.device-online-bar {
-  display: flex; align-items: center; gap: 8px; padding: 9px 12px;
-  background: var(--accent-pale); border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-  margin-bottom: 10px; margin-top: 12px;
-}
-.online-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 2px var(--accent); animation: pulse 2s infinite; }
+.device-online-bar { display: flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--accent-pale); border: 1.5px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 10px; margin-top: 12px; }
+.online-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent); animation: pulse 2s infinite; }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.3)} }
 .online-text { font-size: 11px; color: var(--text2); font-weight: 500; flex: 1; }
 
@@ -282,20 +204,11 @@ body {
 .feed-amount { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; color: var(--accent); }
 .feed-total { display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--border); margin-top: 2px; }
 
-/* ── CHART ── */
-.chart-controls { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
-.ctrl-chip {
-  padding: 5px 10px; background: var(--surface2); border: 1.5px solid var(--border);
-  border-radius: 20px; font-size: 11px; cursor: pointer; transition: all 0.15s; font-weight: 500;
-}
-.ctrl-chip.active { background: var(--accent-pale); border-color: var(--accent); color: var(--accent); }
-.chart-wrap {
-  background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius);
-  padding: 12px; margin-bottom: 10px; position: relative;
-}
+/* ── CHARTS WRAPPER ── */
+.chart-wrap { background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 12px; margin-bottom: 14px; position: relative; }
 .chart-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .chart-title { font-size: 12px; font-weight: 600; color: var(--text); }
-.chart-subtitle { font-size: 10px; color: var(--text4); font-family: 'JetBrains Mono', monospace; }
+.chart-subtitle { font-size: 10px; color: var(--text4); font-family: 'JetBrains Mono', monospace; text-transform: uppercase;}
 .chart-stat-row { display: flex; gap: 12px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
 .chart-stat { flex: 1; text-align: center; }
 .chart-stat-val { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; color: var(--text); }
@@ -305,22 +218,16 @@ body {
 .notif-header { display: flex; align-items: center; justify-content: space-between; margin: 12px 0 10px; }
 .notif-count { font-size: 13px; font-weight: 600; color: var(--text); }
 .mark-read { font-size: 11px; color: var(--accent); cursor: pointer; font-weight: 600; }
-.notif-item {
-  background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius);
-  padding: 11px; margin-bottom: 8px; display: flex; gap: 10px; cursor: pointer;
-  position: relative; overflow: hidden; transition: border-color 0.15s, box-shadow 0.03s;
-}
+.notif-item { border-radius: var(--radius); padding: 11px; margin-bottom: 8px; display: flex; gap: 10px; cursor: pointer; position: relative; overflow: hidden; transition: border-color 0.15s, box-shadow 0.15s; }
 .notif-item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 2px 0 0 2px; }
 .notif-item.danger::before { background: var(--danger); }
 .notif-item.warn::before { background: var(--warn); }
 .notif-item.info::before { background: var(--accent2); }
 .notif-item.ok::before { background: var(--accent); }
-/* Tăng độ đặc lên 0.95 để nền thẻ nhìn như giấy thật, không bị bóng */
-.notif-item.danger { border-color: rgba(220,38,38,0.6); background: rgba(254,226,226,0.95); box-shadow: none; }
-.notif-item.warn { border-color: rgba(217,119,6,0.6); background: rgba(254,243,199,0.95); box-shadow: none; }
-.notif-item.info { border-color: rgba(8,145,178,0.6); background: rgba(224,242,254,0.95); box-shadow: none; }
-.notif-item.ok { border-color: rgba(22,163,74,0.4); background: rgba(220,252,231,0.95); box-shadow: none; }
-.notif-item:hover { box-shadow: var(--shadow-lg); border-color: var(--border2); }
+.notif-item.danger { border-color: rgba(220,38,38,0.6); background: rgba(254,226,226,0.95); border: 1.5px solid; }
+.notif-item.warn { border-color: rgba(217,119,6,0.6); background: rgba(254,243,199,0.95); border: 1.5px solid; }
+.notif-item.info { border-color: rgba(8,145,178,0.6); background: rgba(224,242,254,0.95); border: 1.5px solid; }
+.notif-item.ok { border-color: rgba(22,163,74,0.4); background: rgba(220,252,231,0.95); border: 1.5px solid; }
 .notif-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
 .notif-item.danger .notif-icon { background: var(--danger-pale); color: var(--danger); }
 .notif-item.warn .notif-icon { background: var(--warn-pale); color: var(--warn); }
@@ -329,7 +236,7 @@ body {
 .notif-body { flex: 1; min-width: 0; }
 .notif-title { font-size: 12px; font-weight: 600; margin-bottom: 3px; color: var(--text); }
 .notif-msg { font-size: 11px; color: var(--text3); line-height: 1.55; }
-.notif-actions-box { margin-top: 8px; padding: 8px; background: rgba(255,255,255,0.9); border-radius: 8px; font-size: 11px; line-height: 1.7; border: 1px solid var(--border); box-shadow: none; }
+.notif-actions-box { margin-top: 8px; padding: 8px; background: rgba(255,255,255,0.9); border-radius: 8px; font-size: 11px; line-height: 1.7; border: 1px solid var(--border); }
 .notif-time { font-size: 10px; color: var(--text4); font-family: 'JetBrains Mono', monospace; margin-top: 5px; }
 .unread-dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; position: absolute; top: 12px; right: 12px; box-shadow: 0 0 4px var(--accent); }
 
@@ -341,7 +248,7 @@ body {
 .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
 .chat-bubble { max-width: 85%; padding: 10px 13px; border-radius: 14px; font-size: 13px; line-height: 1.6; animation: bubbleIn 0.2s ease; }
-@keyframes bubbleIn { from { opacity:0; transform:scale(1.06); } to { opacity:1; transform:scale(1); } }
+@keyframes bubbleIn { from { opacity:0; transform:scale(0.96); } to { opacity:1; transform:scale(1); } }
 .chat-bubble.user { background: var(--accent); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
 .chat-bubble.ai { background: var(--surface2); border: 1.5px solid var(--border); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; }
 .ai-name { font-size: 10px; color: var(--text4); margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; font-weight: 500; display: flex; align-items: center; gap: 4px; }
@@ -356,7 +263,7 @@ body {
 .chat-input:focus { border-color: var(--accent); }
 .chat-input::placeholder { color: var(--text4); }
 .chat-send { width: 38px; height: 38px; background: var(--accent); border: none; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: opacity 0.15s; font-size: 18px; color: white; }
-.chat-send:hover { opacity: 1.0; }
+.chat-send:hover { opacity: 0.85; }
 .chat-quick { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-bottom: 8px; }
 .chat-quick::-webkit-scrollbar { display: none; }
 .quick-chip { padding: 5px 10px; background: var(--accent-pale); border: 1.5px solid var(--border); border-radius: 20px; font-size: 11px; cursor: pointer; white-space: nowrap; color: var(--accent); font-weight: 500; transition: all 0.15s; flex-shrink: 0; display: flex; align-items: center; gap: 4px;}
@@ -391,7 +298,7 @@ body {
       </div>
     </div>
     <div class="header-actions">
-      <div class="icon-btn" onclick="switchTab('chat')"><i class="ph ph-chat-circle"></i></div>
+      <div class="icon-btn" onclick="switchTab('chat')"><i class="ph ph-chat-circle-dots"></i></div>
       <div class="icon-btn" onclick="switchTab('notifications')">
         <i class="ph ph-bell"></i><div class="badge" id="notif-badge"></div>
       </div>
@@ -406,14 +313,11 @@ body {
   <button class="nav-tab" onclick="switchTab('device')" id="tab-device">
     <i class="ph ph-broadcast ti"></i><span>Devices</span>
   </button>
-  <button class="nav-tab" onclick="switchTab('charts')" id="tab-charts">
-    <i class="ph ph-chart-line-up ti"></i><span>Charts</span>
-  </button>
   <button class="nav-tab" onclick="switchTab('notifications')" id="tab-notifications">
     <i class="ph ph-bell ti"></i><span>Alerts</span>
   </button>
   <button class="nav-tab" onclick="switchTab('chat')" id="tab-chat">
-<i class="ph ph-chat-circle-dots ti"></i><span>AI Assistant</span>
+    <i class="ph ph-chat-circle-dots ti"></i><span>AI Chat</span>
   </button>
 </nav>
 
@@ -496,34 +400,34 @@ body {
       <div class="online-text">All devices operating normally</div>
       <span style="font-size:10px;color:var(--text4);font-family:'JetBrains Mono', monospace">06:32</span>
     </div>
-    <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/device/sensor-data · /status</div>
+    <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/device/sensor-data · /history</div>
     <div class="pond-selector" id="pond-selector">
       <div class="pond-chip active" onclick="selectPond(this,'pond1')">Pond #1 – Black Tiger Shrimp</div>
       <div class="pond-chip" onclick="selectPond(this,'pond2')">Pond #2 – Pangasius</div>
       <div class="pond-chip" onclick="selectPond(this,'pond3')">Pond #3 – Whiteleg Shrimp</div>
     </div>
 
-    <div class="section-title"><i class="ph-bold ph-activity"></i> Real-time Water Quality</div>
+    <div class="section-title"><i class="ph-bold ph-activity"></i> Real-time Water Quality (Click to view trend)</div>
     <div class="gauge-grid" id="gauge-grid">
-      <div class="gauge-card">
+      <div class="gauge-card active" onclick="selectMetricCard(this,'salinity')">
         <div class="gauge-label"><i class="ph ph-drop-half ph-inline"></i> Salinity</div>
         <div class="gauge-val" id="g-salinity" style="color:var(--warn)">18.5<span class="gauge-unit"> ppt</span></div>
         <div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-salinity" style="width:74%;background:var(--warn)"></div></div>
         <div class="gauge-hint">Safe: 10–20 ppt</div>
       </div>
-      <div class="gauge-card">
+      <div class="gauge-card" onclick="selectMetricCard(this,'do')">
         <div class="gauge-label"><i class="ph ph-wind ph-inline"></i> Oxygen (DO)</div>
         <div class="gauge-val" id="g-do" style="color:var(--accent)">6.8<span class="gauge-unit"> mg/L</span></div>
         <div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-do" style="width:85%;background:var(--accent)"></div></div>
         <div class="gauge-hint">Safe: ≥5 mg/L</div>
       </div>
-      <div class="gauge-card">
+      <div class="gauge-card" onclick="selectMetricCard(this,'ph')">
         <div class="gauge-label"><i class="ph ph-flask ph-inline"></i> Water pH</div>
         <div class="gauge-val" id="g-ph" style="color:var(--accent)">7.8</div>
         <div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-ph" style="width:78%;background:var(--accent)"></div></div>
         <div class="gauge-hint">Optimal: 7.5–8.5</div>
       </div>
-      <div class="gauge-card">
+      <div class="gauge-card" onclick="selectMetricCard(this,'temperature')">
         <div class="gauge-label"><i class="ph ph-thermometer ph-inline"></i> Temperature</div>
         <div class="gauge-val" id="g-temp" style="color:#d97706">29.4<span class="gauge-unit">°C</span></div>
         <div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-temp" style="width:65%;background:#d97706"></div></div>
@@ -531,17 +435,53 @@ body {
       </div>
     </div>
 
-    <div class="section-title"><i class="ph-bold ph-test-tube"></i> Chemical Stats</div>
-    <div class="stat-grid">
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-microscope ph-inline"></i> Ammonia (NH₃)</div><div class="stat-val" id="g-nh3" style="font-size:16px;color:var(--accent)">0.02<span class="stat-unit"> mg/L</span></div><div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Safe &lt;0.1</div></div>
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-test-tube ph-inline"></i> Nitrite (NO₂)</div><div class="stat-val" id="g-no2" style="font-size:16px;color:var(--accent)">0.05<span class="stat-unit"> mg/L</span></div><div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Safe &lt;0.5</div></div>
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-hexagon ph-inline"></i> Alkalinity</div><div class="stat-val" id="g-alk" style="font-size:16px">120<span class="stat-unit"> mg/L</span></div><div class="stat-trend">→ Good 80–160</div></div>
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-waves ph-inline"></i> Turbidity</div><div class="stat-val" id="g-turb" style="font-size:16px">35<span class="stat-unit"> NTU</span></div><div class="stat-trend">→ Normal</div></div>
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-virus ph-inline"></i> H₂S</div><div class="stat-val" id="g-h2s" style="font-size:16px;color:var(--accent)">0.001<span class="stat-unit"> mg/L</span></div><div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Very Safe</div></div>
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-battery-full ph-inline"></i> Battery</div><div class="stat-val" id="g-bat" style="font-size:16px;color:var(--accent)">87<span class="stat-unit">%</span></div><div class="stat-trend">→ ~3 days left</div></div>
+    <div class="chart-wrap" id="device-main-chart">
+      <div class="chart-title-row">
+        <div>
+          <div class="chart-title" id="chart-title">Salinity History</div>
+          <div class="chart-subtitle">Last 48 hours</div>
+        </div>
+        <div id="chart-loading" style="display:none"><div class="spinner"></div></div>
+      </div>
+      <canvas id="main-chart" height="160"></canvas>
+      <div class="chart-stat-row" id="chart-stats">
+        <div class="chart-stat"><div class="chart-stat-val" id="cs-min">—</div><div class="chart-stat-lbl">Lowest</div></div>
+        <div class="chart-stat"><div class="chart-stat-val" id="cs-avg">—</div><div class="chart-stat-lbl">Average</div></div>
+        <div class="chart-stat"><div class="chart-stat-val" id="cs-max">—</div><div class="chart-stat-lbl">Highest</div></div>
+        <div class="chart-stat"><div class="chart-stat-val" id="cs-unit">—</div><div class="chart-stat-lbl">Unit</div></div>
+      </div>
     </div>
 
-    <div class="section-title"><i class="ph-bold ph-clock"></i> Feeding Log</div>
+    <div class="section-title"><i class="ph-bold ph-test-tube"></i> Chemical Stats</div>
+    <div class="stat-grid">
+      <div class="stat-card" onclick="selectMetricCard(this,'ammonia')">
+        <div class="stat-label"><i class="ph ph-microscope ph-inline"></i> Ammonia (NH₃)</div>
+        <div class="stat-val" id="g-nh3" style="font-size:16px;color:var(--accent)">0.02<span class="stat-unit"> mg/L</span></div>
+        <div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Safe &lt;0.1</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label"><i class="ph ph-test-tube ph-inline"></i> Nitrite (NO₂)</div>
+        <div class="stat-val" id="g-no2" style="font-size:16px;color:var(--accent)">0.05<span class="stat-unit"> mg/L</span></div>
+        <div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Safe &lt;0.5</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label"><i class="ph ph-hexagon ph-inline"></i> Alkalinity</div>
+        <div class="stat-val" id="g-alk" style="font-size:16px">120<span class="stat-unit"> mg/L</span></div>
+        <div class="stat-trend">→ Good 80–160</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label"><i class="ph ph-virus ph-inline"></i> H₂S</div>
+        <div class="stat-val" id="g-h2s" style="font-size:16px;color:var(--accent)">0.001<span class="stat-unit"> mg/L</span></div>
+        <div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Very Safe</div>
+      </div>
+    </div>
+
+    <div class="section-title"><i class="ph-bold ph-radar"></i> Compare 3 Ponds Overview</div>
+    <div class="chart-wrap">
+      <canvas id="compare-chart" height="180"></canvas>
+    </div>
+
+    <div class="section-title"><i class="ph-bold ph-clock"></i> Feeding Log & Trends</div>
     <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/device/feeding-log</div>
     <div class="card">
       <div class="feed-log" id="feed-log">
@@ -561,73 +501,15 @@ body {
           </div>
           <div class="feed-amount">50g</div>
         </div>
-        <div class="feed-item">
-          <div class="feed-icon"><i class="ph ph-shrimp"></i></div>
-          <div class="feed-info">
-            <div class="feed-name">Grobest Shrimp Feed #2 <span class="feed-type auto">AUTO</span></div>
-            <div class="feed-time">14:30</div>
-          </div>
-          <div class="feed-amount">250g</div>
-        </div>
       </div>
       <div class="feed-total">
         <span style="font-size:12px;color:var(--text3)">Total Today</span>
-        <span style="font-family:'JetBrains Mono', monospace;font-size:13px;font-weight:500;color:var(--accent)" id="feed-total-text">550g / 600g</span>
+        <span style="font-family:'JetBrains Mono', monospace;font-size:13px;font-weight:500;color:var(--accent)" id="feed-total-text">300g / 600g</span>
       </div>
     </div>
-  </div>
-</div>
-
-<div class="page" id="page-charts">
-  <div class="section">
-    <div style="margin-top:12px">
-      <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/device/history</div>
-    </div>
-
-    <div class="section-title"><i class="ph-bold ph-sliders"></i> Select Pond & Metric</div>
-    <div class="pond-selector">
-      <div class="pond-chip active" onclick="selectChartPond(this,'pond1')">Pond #1</div>
-      <div class="pond-chip" onclick="selectChartPond(this,'pond2')">Pond #2</div>
-      <div class="pond-chip" onclick="selectChartPond(this,'pond3')">Pond #3</div>
-    </div>
-    <div class="chart-controls" id="metric-controls">
-      <div class="ctrl-chip active" onclick="selectMetric(this,'salinity')"><i class="ph ph-drop-half ph-inline"></i> Salinity</div>
-      <div class="ctrl-chip" onclick="selectMetric(this,'do')"><i class="ph ph-wind ph-inline"></i> Oxygen</div>
-      <div class="ctrl-chip" onclick="selectMetric(this,'ph')"><i class="ph ph-flask ph-inline"></i> pH</div>
-      <div class="ctrl-chip" onclick="selectMetric(this,'temperature')"><i class="ph ph-thermometer ph-inline"></i> Temp</div>
-      <div class="ctrl-chip" onclick="selectMetric(this,'ammonia')"><i class="ph ph-microscope ph-inline"></i> NH₃</div>
-    </div>
-
+    
     <div class="chart-wrap">
-      <div class="chart-title-row">
-        <div>
-          <div class="chart-title" id="chart-title">Salinity – Pond #1</div>
-          <div class="chart-subtitle">Last 48 hours</div>
-        </div>
-        <div id="chart-loading" style="display:none"><div class="spinner"></div></div>
-      </div>
-      <canvas id="main-chart" height="160"></canvas>
-      <div class="chart-stat-row" id="chart-stats">
-        <div class="chart-stat"><div class="chart-stat-val" id="cs-min">—</div><div class="chart-stat-lbl">Lowest</div></div>
-        <div class="chart-stat"><div class="chart-stat-val" id="cs-avg">—</div><div class="chart-stat-lbl">Average</div></div>
-        <div class="chart-stat"><div class="chart-stat-val" id="cs-max">—</div><div class="chart-stat-lbl">Highest</div></div>
-        <div class="chart-stat"><div class="chart-stat-val" id="cs-unit">—</div><div class="chart-stat-lbl">Unit</div></div>
-      </div>
-    </div>
-
-    <div class="section-title"><i class="ph-bold ph-radar"></i> Compare 3 Ponds Today</div>
-    <div class="chart-wrap">
-      <div class="chart-title-row">
-        <div>
-          <div class="chart-title">Parameter Overview</div>
-          <div class="chart-subtitle">Current Status</div>
-        </div>
-      </div>
-      <canvas id="compare-chart" height="180"></canvas>
-    </div>
-
-    <div class="section-title"><i class="ph-bold ph-chart-bar"></i> 7-Day Feeding History</div>
-    <div class="chart-wrap">
+      <div class="chart-subtitle" style="margin-bottom:10px">7-Day Feeding Volume</div>
       <canvas id="feed-chart" height="120"></canvas>
     </div>
   </div>
@@ -705,7 +587,8 @@ body {
   <div class="chat-page">
     <div class="chat-messages" id="chat-messages">
       <div>
-<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI Assistant</div>        <div class="chat-bubble ai">
+        <div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI Assistant</div>
+        <div class="chat-bubble ai">
           Hello! I am AQUA·AI, your smart aquaculture assistant. <i class="ph ph-waves ph-inline"></i><br><br>
           I can help you with:<br>
           • Water quality analysis<br>
@@ -742,13 +625,13 @@ body {
 </div><script>
 // ─── State ───
 let currentPond = 'pond1';
-let currentChartPond = 'pond1';
 let currentMetric = 'salinity';
 let chatHistory = [];
 let mainChart = null;
 let compareChart = null;
 let feedChart = null;
 let unreadCount = 4;
+let chartsInitialized = false;
 
 const API_BASE = 'https://aqua-ai-bjg6.onrender.com/api';
 
@@ -758,7 +641,26 @@ function switchTab(tab) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('page-' + tab).classList.add('active');
   document.getElementById('tab-' + tab).classList.add('active');
-  if (tab === 'charts') initCharts();
+  if (tab === 'device' && !chartsInitialized) {
+    initCharts();
+    chartsInitialized = true;
+  }
+}
+
+// ─── Metric Card Selection (NEW) ───
+function selectMetricCard(el, metric) {
+  // Remove highlight from all cards
+  document.querySelectorAll('.gauge-card, .stat-card').forEach(c => c.classList.remove('active'));
+  // Add highlight to clicked card
+  el.classList.add('active');
+  
+  currentMetric = metric;
+  loadChartData();
+
+  // Smooth scroll to the chart section
+  setTimeout(() => {
+    document.getElementById('device-main-chart').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 50);
 }
 
 // ─── Weather ───
@@ -771,7 +673,6 @@ async function searchLocation() {
     const d = await r.json();
     updateWeatherUI(d);
   } catch {
-    // fallback to mock
     const temps = [27,28,29,30,31,32,33];
     const icons = ['<i class="ph-fill ph-cloud-rain"></i>','<i class="ph-fill ph-cloud-lightning"></i>','<i class="ph-fill ph-cloud-sun"></i>','<i class="ph-fill ph-sun"></i>'];
     const descs = ['Cloudy, high humidity','Clear sky','Light rain breeze'];
@@ -785,7 +686,6 @@ async function searchLocation() {
 
 function updateWeatherUI(d) {
   document.getElementById('w-temp').innerHTML = d.temperature + '<sup>°C</sup>';
-  // Fallback map if API returns plain text icon
   const iconMap = {'🌦':'<i class="ph-fill ph-cloud-rain"></i>', '⛅':'<i class="ph-fill ph-cloud-sun"></i>', '☀️':'<i class="ph-fill ph-sun"></i>', '🌧':'<i class="ph-fill ph-cloud-rain"></i>', '⛈':'<i class="ph-fill ph-cloud-lightning"></i>'};
   document.getElementById('w-icon').innerHTML = iconMap[d.icon] || '<i class="ph-fill ph-cloud-sun"></i>';
   document.getElementById('w-desc').innerHTML = '<i class="ph-fill ph-cloud-sun"></i> ' + d.description;
@@ -814,6 +714,7 @@ function selectPond(el, pondId) {
   el.classList.add('active');
   currentPond = pondId;
   loadSensorData(pondId);
+  loadChartData(); // Update chart for new pond
 }
 
 async function loadSensorData(pond) {
@@ -821,9 +722,7 @@ async function loadSensorData(pond) {
     const r = await fetch(`${API_BASE}/device/sensor-data?pond=${pond}`);
     const d = await r.json();
     updateSensors(d);
-  } catch {
-    // keep existing UI
-  }
+  } catch { }
 }
 
 function updateSensors(d) {
@@ -849,24 +748,9 @@ function updateSensors(d) {
   document.getElementById('g-alk').innerHTML = `${d.alkalinity}<span class="stat-unit"> mg/L</span>`;
   document.getElementById('g-turb').innerHTML = `${d.turbidity}<span class="stat-unit"> NTU</span>`;
   document.getElementById('g-h2s').innerHTML = `${d.h2s}<span class="stat-unit"> mg/L</span>`;
-  document.getElementById('g-bat').innerHTML = `${d.battery}<span class="stat-unit">%</span>`;
 }
 
 // ─── Charts ───
-function selectChartPond(el, pond) {
-  document.querySelectorAll('#page-charts .pond-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  currentChartPond = pond;
-  loadChartData();
-}
-
-function selectMetric(el, metric) {
-  document.querySelectorAll('#metric-controls .ctrl-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  currentMetric = metric;
-  loadChartData();
-}
-
 const metricNames = { salinity:'Salinity', do:'Oxygen (DO)', ph:'pH', temperature:'Temperature', ammonia:'Ammonia (NH₃)' };
 const pondNames = { pond1:'Pond #1', pond2:'Pond #2', pond3:'Pond #3' };
 
@@ -878,26 +762,20 @@ function initCharts() {
 
 async function loadChartData() {
   document.getElementById('chart-loading').style.display = 'flex';
-  document.getElementById('chart-title').textContent = `${metricNames[currentMetric]} – ${pondNames[currentChartPond]}`;
+  document.getElementById('chart-title').textContent = `${metricNames[currentMetric]} History`;
 
   let data, unit, safeMin, safeMax;
   try {
-    const r = await fetch(`${API_BASE}/device/history?pond=${currentChartPond}&metric=${currentMetric}&hours=48`);
+    const r = await fetch(`${API_BASE}/device/history?pond=${currentPond}&metric=${currentMetric}&hours=48`);
     const d = await r.json();
-    data = d.data;
-    unit = d.unit;
-    safeMin = d.safe_min;
-    safeMax = d.safe_max;
+    data = d.data; unit = d.unit; safeMin = d.safe_min; safeMax = d.safe_max;
   } catch {
-    // Generate mock data
     const configs = { salinity:[16,3], do:[6.5,1], ph:[7.8,0.25], temperature:[29,2], ammonia:[0.03,0.01] };
     const units = { salinity:'ppt', do:'mg/L', ph:'', temperature:'°C', ammonia:'mg/L' };
     const safeMins = { salinity:10, do:5, ph:7.5, temperature:26, ammonia:0 };
     const safeMaxes = { salinity:20, do:10, ph:8.5, temperature:32, ammonia:0.1 };
     const [base, amp] = configs[currentMetric] || [10,2];
-    unit = units[currentMetric] || '';
-    safeMin = safeMins[currentMetric];
-    safeMax = safeMaxes[currentMetric];
+    unit = units[currentMetric] || ''; safeMin = safeMins[currentMetric]; safeMax = safeMaxes[currentMetric];
     data = Array.from({length:48}, (_,i) => {
       const t = new Date(Date.now() - (47-i)*3600000);
       return { time: t.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}), value: +(base + amp*Math.sin(2*Math.PI*i/24) + (Math.random()-0.5)*0.4).toFixed(2) };
@@ -911,50 +789,22 @@ async function loadChartData() {
   document.getElementById('cs-max').textContent = mx.toFixed(2);
   document.getElementById('cs-unit').textContent = unit || '—';
 
-  // Sample every 3 points for display
   const sample = data.filter((_,i) => i % 3 === 0);
   const labels = sample.map(d => d.time);
   const values = sample.map(d => d.value);
 
   const accentColor = '#16a34a';
   const accentLight = 'rgba(22,163,74,0.12)';
-
-  const plugins = [];
-  const safeZone = safeMin != null ? [{
-    type:'line', yMin:safeMin, yMax:safeMax, borderColor:'rgba(22,163,74,0.2)', borderWidth:0,
-    backgroundColor:'rgba(22,163,74,0.05)'
-  }] : [];
+  const safeZone = safeMin != null ? [{ type:'line', yMin:safeMin, yMax:safeMax, borderColor:'rgba(22,163,74,0.2)', borderWidth:0, backgroundColor:'rgba(22,163,74,0.05)' }] : [];
 
   if (mainChart) mainChart.destroy();
   mainChart = new Chart(document.getElementById('main-chart'), {
     type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        data: values,
-        borderColor: accentColor,
-        backgroundColor: accentLight,
-        borderWidth: 2,
-        pointRadius: 0,
-        pointHoverRadius: 4,
-        fill: true,
-        tension: 0.4,
-      }]
-    },
+    data: { labels, datasets: [{ data: values, borderColor: accentColor, backgroundColor: accentLight, borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, fill: true, tension: 0.4 }] },
     options: {
-      responsive: true,
-      interaction: { mode:'index', intersect:false },
-      plugins: {
-        legend: { display: false },
-        annotation: { annotations: safeZone },
-        tooltip: {
-          callbacks: { label: ctx => `${ctx.parsed.y.toFixed(2)} ${unit}` }
-        }
-      },
-      scales: {
-        x: { ticks:{ font:{size:9}, color:'#86b89a', maxTicksLimit:8 }, grid:{ color:'rgba(200,230,212,0.3)' } },
-        y: { ticks:{ font:{size:9}, color:'#86b89a' }, grid:{ color:'rgba(200,230,212,0.3)' } }
-      }
+      responsive: true, interaction: { mode:'index', intersect:false },
+      plugins: { legend: { display: false }, annotation: { annotations: safeZone }, tooltip: { callbacks: { label: ctx => `${ctx.parsed.y.toFixed(2)} ${unit}` } } },
+      scales: { x: { ticks:{ font:{size:9}, color:'#86b89a', maxTicksLimit:8 }, grid:{ color:'rgba(200,230,212,0.3)' } }, y: { ticks:{ font:{size:9}, color:'#86b89a' }, grid:{ color:'rgba(200,230,212,0.3)' } } }
     }
   });
   document.getElementById('chart-loading').style.display = 'none';
@@ -971,11 +821,7 @@ function buildCompareChart() {
         { label:'Pond #3', data:[80, 90, 75, 60, 70], borderColor:'#d97706', backgroundColor:'rgba(217,119,6,0.1)', borderWidth:2, pointBackgroundColor:'#d97706' },
       ]
     },
-    options: {
-      responsive:true,
-      plugins:{ legend:{ labels:{ font:{size:10}, color:'#4b7c5e' } } },
-      scales:{ r:{ ticks:{ font:{size:9}, color:'#86b89a', backdropColor:'transparent' }, grid:{ color:'rgba(200,230,212,0.4)' }, pointLabels:{ font:{size:10}, color:'#166534' } } }
-    }
+    options: { responsive:true, plugins:{ legend:{ labels:{ font:{size:10}, color:'#4b7c5e' } } }, scales:{ r:{ ticks:{ font:{size:9}, color:'#86b89a', backdropColor:'transparent' }, grid:{ color:'rgba(200,230,212,0.4)' }, pointLabels:{ font:{size:10}, color:'#166534' } } } }
   });
 }
 
@@ -983,22 +829,8 @@ function buildFeedChart() {
   const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   feedChart = new Chart(document.getElementById('feed-chart'), {
     type:'bar',
-    data:{
-      labels:days,
-      datasets:[
-        { label:'Pond #1', data:[550,580,500,620,590,540,560], backgroundColor:'rgba(22,163,74,0.7)', borderRadius:4 },
-        { label:'Pond #2', data:[800,820,780,850,810,790,830], backgroundColor:'rgba(8,145,178,0.7)', borderRadius:4 },
-        { label:'Pond #3', data:[400,420,380,450,410,390,430], backgroundColor:'rgba(217,119,6,0.7)', borderRadius:4 },
-      ]
-    },
-    options:{
-      responsive:true,
-      plugins:{ legend:{ labels:{ font:{size:10}, color:'#4b7c5e' } } },
-      scales:{
-        x:{ ticks:{ font:{size:10}, color:'#86b89a' }, grid:{ display:false } },
-        y:{ ticks:{ font:{size:10}, color:'#86b89a' }, grid:{ color:'rgba(200,230,212,0.3)' } }
-      }
-    }
+    data: { labels:days, datasets:[ { label:'Pond #1', data:[550,580,500,620,590,540,560], backgroundColor:'rgba(22,163,74,0.7)', borderRadius:4 }, { label:'Pond #2', data:[800,820,780,850,810,790,830], backgroundColor:'rgba(8,145,178,0.7)', borderRadius:4 }, { label:'Pond #3', data:[400,420,380,450,410,390,430], backgroundColor:'rgba(217,119,6,0.7)', borderRadius:4 } ] },
+    options:{ responsive:true, plugins:{ legend:{ labels:{ font:{size:10}, color:'#4b7c5e' } } }, scales:{ x:{ ticks:{ font:{size:10}, color:'#86b89a' }, grid:{ display:false } }, y:{ ticks:{ font:{size:10}, color:'#86b89a' }, grid:{ color:'rgba(200,230,212,0.3)' } } } }
   });
 }
 
@@ -1007,12 +839,7 @@ function readNotif(el) {
   const dot = el.querySelector('.unread-dot');
   if (dot) { dot.remove(); unreadCount = Math.max(0, unreadCount-1); updateNotifCount(); }
 }
-
-function markAllRead() {
-  document.querySelectorAll('.unread-dot').forEach(d => d.remove());
-  unreadCount = 0; updateNotifCount();
-}
-
+function markAllRead() { document.querySelectorAll('.unread-dot').forEach(d => d.remove()); unreadCount = 0; updateNotifCount(); }
 function updateNotifCount() {
   const el = document.getElementById('notif-unread-count');
   el.textContent = unreadCount > 0 ? `${unreadCount} unread alerts` : 'No new alerts';
@@ -1020,18 +847,14 @@ function updateNotifCount() {
 }
 
 // ─── Chat AI ───
-let chatPond = 'pond1';
-
 function selectChatPond(el, pond) {
   document.querySelectorAll('#chat-pond-select .chat-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  chatPond = pond;
+  el.classList.add('active'); chatPond = pond;
 }
 
 function sendQuick(el) {
   const txt = el.textContent.trim();
-  document.getElementById('chat-input').value = txt;
-  sendMessage();
+  document.getElementById('chat-input').value = txt; sendMessage();
 }
 
 async function sendMessage() {
@@ -1039,66 +862,39 @@ async function sendMessage() {
   const msg = input.value.trim();
   if (!msg) return;
   input.value = ''; input.style.height = 'auto';
-
   appendBubble('user', msg);
 
   const typingId = 'typing-' + Date.now();
   const msgs = document.getElementById('chat-messages');
   const typingDiv = document.createElement('div');
   typingDiv.id = typingId;
-typingDiv.innerHTML = `<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI</div><div class="chat-bubble ai"><div class="typing"><span></span><span></span><span></span></div></div>`;  msgs.appendChild(typingDiv);
-  msgs.scrollTop = msgs.scrollHeight;
+  typingDiv.innerHTML = `<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI</div><div class="chat-bubble ai"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  msgs.appendChild(typingDiv); msgs.scrollTop = msgs.scrollHeight;
 
   try {
-    const response = await fetch(`${API_BASE}/chat`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: msg,
-        pond: chatPond,
-        history: chatHistory
-      })
-    });
+    const response = await fetch(`${API_BASE}/chat`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg, pond: chatPond, history: chatHistory }) });
     const data = await response.json();
     const reply = data.reply || 'Sorry, an error occurred.';
-    
     document.getElementById(typingId).remove();
     appendBubble('ai', reply);
-    chatHistory.push({ role: 'user', content: msg });
-    chatHistory.push({ role: 'assistant', content: reply });
+    chatHistory.push({ role: 'user', content: msg }); chatHistory.push({ role: 'assistant', content: reply });
   } catch (e) {
-    document.getElementById(typingId).remove();
-    appendBubble('ai', '⚠️ Cannot connect to AI server.');
+    document.getElementById(typingId).remove(); appendBubble('ai', '⚠️ Cannot connect to AI server.');
   }
 }
 
 function appendBubble(role, text) {
   const msgs = document.getElementById('chat-messages');
   const div = document.createElement('div');
-  if (role === 'ai') {
-    div.innerHTML = `<div class="ai-name"><i class="ph-fill ph-robot"></i> AQUA·AI</div><div class="chat-bubble ai">${text.replace(/\n/g,'<br>')}</div>`;
-  } else {
-    div.style.display = 'flex';
-    div.style.justifyContent = 'flex-end';
-    div.innerHTML = `<div class="chat-bubble user">${text.replace(/\n/g,'<br>')}</div>`;
-  }
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
+  if (role === 'ai') { div.innerHTML = `<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI</div><div class="chat-bubble ai">${text.replace(/\n/g,'<br>')}</div>`; } 
+  else { div.style.display = 'flex'; div.style.justifyContent = 'flex-end'; div.innerHTML = `<div class="chat-bubble user">${text.replace(/\n/g,'<br>')}</div>`; }
+  msgs.appendChild(div); msgs.scrollTop = msgs.scrollHeight;
 }
 
 // ─── Init ───
 document.getElementById('w-updated').textContent = 'Updated: ' + new Date().toLocaleTimeString('en-US');
-
-setInterval(() => {
-  document.getElementById('w-updated').textContent = 'Updated: ' + new Date().toLocaleTimeString('en-US');
-}, 30000);
-
-// Auto-refresh sensor every 60s
-setInterval(() => {
-  if (document.getElementById('page-device').classList.contains('active')) {
-    loadSensorData(currentPond);
-  }
-}, 60000);
+setInterval(() => { document.getElementById('w-updated').textContent = 'Updated: ' + new Date().toLocaleTimeString('en-US'); }, 30000);
+setInterval(() => { if (document.getElementById('page-device').classList.contains('active')) { loadSensorData(currentPond); } }, 60000);
 </script>
 </body>
 </html>

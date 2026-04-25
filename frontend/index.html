@@ -705,8 +705,7 @@ body {
   <div class="chat-page">
     <div class="chat-messages" id="chat-messages">
       <div>
-        <div class="ai-name"><i class="ph-fill ph-robot"></i> AQUA·AI Assistant</div>
-        <div class="chat-bubble ai">
+<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI Assistant</div>        <div class="chat-bubble ai">
           Hello! I am AQUA·AI, your smart aquaculture assistant. <i class="ph ph-waves ph-inline"></i><br><br>
           I can help you with:<br>
           • Water quality analysis<br>
@@ -1047,8 +1046,7 @@ async function sendMessage() {
   const msgs = document.getElementById('chat-messages');
   const typingDiv = document.createElement('div');
   typingDiv.id = typingId;
-  typingDiv.innerHTML = `<div class="ai-name"><i class="ph-fill ph-robot"></i> AQUA·AI</div><div class="chat-bubble ai"><div class="typing"><span></span><span></span><span></span></div></div>`;
-  msgs.appendChild(typingDiv);
+typingDiv.innerHTML = `<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI</div><div class="chat-bubble ai"><div class="typing"><span></span><span></span><span></span></div></div>`;  msgs.appendChild(typingDiv);
   msgs.scrollTop = msgs.scrollHeight;
 
   try {

@@ -238,27 +238,37 @@ body::after {
 }
 .search-btn:hover { background: var(--ultramarine-dark); }
 
-.weather-card {
-  background: linear-gradient(140deg, #E1F0FF 0%, #DCFFF0 100%);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px; margin-bottom: 10px;
-  position: relative; overflow: hidden;
+/* --- Thiết kế Weather mới --- */
+.weather-hero {
+  background: linear-gradient(180deg, #3389FF 0%, #7CB9FF 100%); /* Mặc định màu xanh mát */
+  border-radius: 24px;
+  padding: 30px 20px;
+  margin-bottom: 16px;
+  color: white;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(51, 137, 255, 0.2);
 }
-.weather-card::before {
-  content: ''; position: absolute;
-  top: -40px; right: -40px;
-  width: 160px; height: 160px;
-  background: radial-gradient(circle, rgba(45,105,255,0.12) 0%, transparent 70%);
-  border-radius: 50%;
+
+.w-main-icon { font-size: 80px; margin-bottom: 10px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1)); }
+.w-big-temp { font-family: 'Syne', sans-serif; font-size: 64px; font-weight: 800; line-height: 1; }
+.w-big-temp sup { font-size: 24px; top: -0.5em; }
+.w-feels-like { font-size: 14px; opacity: 0.9; margin-top: 4px; margin-bottom: 20px; }
+
+.w-grid-minimal {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+  padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);
 }
-.weather-card::after {
-  content: ''; position: absolute;
-  bottom: -20px; left: -20px;
-  width: 100px; height: 100px;
-  background: radial-gradient(circle, rgba(75,170,125,0.12) 0%, transparent 70%);
-  border-radius: 50%;
+.w-item-min { text-align: left; }
+.w-item-min label { font-size: 10px; display: block; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+.w-item-min span { font-size: 15px; font-weight: 700; }
+
+.w-tip-card {
+  background: var(--surface); border-radius: 18px; padding: 12px 16px;
+  display: flex; align-items: center; gap: 12px; margin-bottom: 20px; border: 1.5px solid var(--border);
 }
+.w-tip-icon { background: #E1F0FF; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #2D69FF; }
 .weather-loc {
   display: flex; align-items: center; gap: 5px;
   font-size: 11px; color: var(--text3);
@@ -694,29 +704,37 @@ body::after {
 <div class="page active" id="page-weather">
   <div class="section">
     <div class="search-bar">
-      <input class="search-input" placeholder="Search location (e.g., Ca Mau)..." id="location-search"
-        onkeydown="if(event.key==='Enter')searchLocation()">
-      <button class="search-btn" onclick="searchLocation()">Search</button>
+      <input class="search-input" placeholder="Search location..." id="location-search">
+      <button class="search-btn" onclick="searchLocation()"><i class="ph ph-magnifying-glass"></i></button>
     </div>
-    <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/weather · /api/weather-risk</div>
-    <div id="weather-main">
-      <div class="weather-card">
-        <div class="weather-loc"><i class="ph-fill ph-map-pin"></i> <span id="loc-name">Hanoi, Vietnam</span></div>
-        <div class="weather-main">
-          <div>
-            <div class="weather-temp" id="w-temp">31<sup>°C</sup></div>
-            <div class="weather-desc" id="w-desc"><i class="ph-fill ph-cloud-sun"></i> Cloudy, high humidity</div>
-          </div>
-          <div class="weather-icon-big" id="w-icon"><i class="ph-fill ph-cloud-rain"></i></div>
-        </div>
-        <div class="weather-badges" id="w-badges">
-          <div class="weather-badge"><i class="ph-fill ph-drop"></i> 84%</div>
-          <div class="weather-badge"><i class="ph-fill ph-wind"></i> 18 km/h SE</div>
-          <div class="weather-badge"><i class="ph-fill ph-cloud-rain"></i> 12mm</div>
-          <div class="weather-badge"><i class="ph-fill ph-eye"></i> 8km</div>
-        </div>
+
+    <div class="weather-hero" id="weather-hero-bg">
+      <div style="font-size: 12px; font-weight: 600; margin-bottom: 10px;" id="w-date-today">26 May, Thursday</div>
+      <div class="w-main-icon" id="w-icon-large"><i class="ph-fill ph-cloud-rain"></i></div>
+      <div class="w-big-temp" id="w-temp-large">22<sup>°C</sup></div>
+      <div class="w-feels-like" id="w-feels-val">feels like 18°C</div>
+      
+      <div class="w-grid-minimal">
+        <div class="w-item-min"><label>Humidity</label><span id="w-humi-val">80%</span></div>
+        <div class="w-item-min"><label>UV Index</label><span id="w-uv-val">4/10</span></div>
+        <div class="w-item-min"><label>Rain</label><span id="w-rain-val">12mm</span></div>
+        <div class="w-item-min"><label>Wind</label><span id="w-wind-val">25 km/h</span></div>
       </div>
     </div>
+
+    <div class="w-tip-card">
+      <div class="w-tip-icon">✨</div>
+      <div>
+        <div style="font-size: 13px; font-weight: 700; color: var(--text)">Take care!</div>
+        <div style="font-size: 11px; color: var(--text4)">Rapidly changing weather today.</div>
+      </div>
+    </div>
+
+    <div class="section-title">Forecast</div>
+    <div class="forecast-row" id="forecast-row">
+      </div>
+  </div>
+</div>
     <div class="last-update" id="w-updated">Updated: --:--:--</div>
 
     <div class="section-title"><i class="ph-bold ph-list-magnifying-glass"></i> Detailed Stats</div>

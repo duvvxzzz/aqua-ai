@@ -1,1246 +1,2629 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/@phosphor-icons/web"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
-<style>
-:root {
-  /* ── New Palette ── */
-  --alice:     #E1F0FF;
-  --ultramarine: #2D69FF;
-  --ultramarine-dark: #1a50e0;
-  --ultramarine-pale: rgba(45, 105, 255, 0.10);
-  --ultramarine-pale2: rgba(45, 105, 255, 0.06);
-  --mint:      #DCFFF0;
-  --mint-dark: #b8f0d8;
-  --green:     #4BAA7D;
-  --green-dark: #38865f;
-  --green-pale: rgba(75, 170, 125, 0.12);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQUA·AI – Giám sát Nuôi trồng Thủy sản</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/fontsource-inter@5.0.15/index.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --alice-blue: #E1F0FF;
+            --ultramarine: #2D69FF;
+            --ultramarine-dark: #1B55E0;
+            --ultramarine-light: #5A8AFF;
+            --frosted-mint: #DCFFF0;
+            --green-field: #4BAA7D;
+            --green-dark: #3A8F65;
+            --green-light: #6FC49C;
+            --bg-main: #F4F9FE;
+            --bg-card: #FFFFFF;
+            --text-primary: #1A2332;
+            --text-secondary: #5A6B7F;
+            --text-muted: #8E9DB0;
+            --border-color: #E2ECF6;
+            --danger: #EF4444;
+            --danger-bg: #FEE2E2;
+            --warning: #F59E0B;
+            --warning-bg: #FEF3C7;
+            --success: #22C55E;
+            --success-bg: #DCFCE7;
+            --sidebar-width: 260px;
+            --header-height: 70px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-  /* ── Semantic mapping ── */
-  --bg:        #E1F0FF;
-  --bg2:       #d4e9ff;
-  --surface:   #ffffff;
-  --surface2:  #f4faff;
-  --surface3:  #DCFFF0;
-  --border:    rgba(45, 105, 255, 0.14);
-  --border2:   rgba(45, 105, 255, 0.28);
-  --accent:    #2D69FF;
-  --accent-light: #5a8dff;
-  --accent-pale: rgba(45,105,255,0.08);
-  --accent2:   #4BAA7D;
-  --accent2-pale: rgba(75,170,125,0.10);
-  --warn:      #e09c00;
-  --warn-pale: rgba(254, 243, 199, 0.85);
-  --danger:    #e53e3e;
-  --danger-pale: rgba(254, 226, 226, 0.85);
-  --text:      #0d1f4a;
-  --text2:     #1a3266;
-  --text3:     #2d5096;
-  --text4:     #6a85b8;
-  --shadow:    0 2px 10px rgba(45,105,255,0.07);
-  --shadow-lg: 0 6px 24px rgba(45,105,255,0.12);
-  --radius:    14px;
-  --radius-sm: 9px;
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
 
-body {
-  background: linear-gradient(145deg, #c8deff 0%, #E1F0FF 40%, #d2f5e8 100%);
-  color: var(--text);
-  font-family: 'DM Sans', -apple-system, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-/* ── Decorative BG blobs ── */
-body::before, body::after {
-  content: '';
-  position: fixed;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-}
-body::before {
-  width: 500px; height: 500px;
-  top: -120px; right: -100px;
-  background: radial-gradient(circle, rgba(45,105,255,0.15) 0%, transparent 70%);
-}
-body::after {
-  width: 400px; height: 400px;
-  bottom: -80px; left: -80px;
-  background: radial-gradient(circle, rgba(75,170,125,0.18) 0%, transparent 70%);
-}
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0; top: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+        }
 
-.app {
-  width: 100%;
-  max-width: 430px;
-  height: 100vh;
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 60px rgba(45,105,255,0.12), 0 0 0 1px rgba(45,105,255,0.08);
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-}
+        .sidebar-brand {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
 
-/* Subtle mesh overlay inside app */
-.app::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 80% 10%, rgba(45,105,255,0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 10% 90%, rgba(75,170,125,0.06) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-.app > * { position: relative; z-index: 1; }
+        .sidebar-brand img {
+            width: 42px; height: 42px;
+            border-radius: 10px;
+        }
 
-/* ── HEADER ── */
-.header {
-  padding: 16px 16px 10px;
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(255,255,255,0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1.5px solid var(--border);
-}
-.header-row { display: flex; align-items: center; justify-content: space-between; }
-.logo { display: flex; align-items: center; gap: 10px; }
-.logo-icon {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, var(--ultramarine), var(--accent-light));
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; color: #fff;
-  box-shadow: 0 3px 12px rgba(45,105,255,0.35);
-}
-.logo-text {
-  font-family: 'Syne', sans-serif;
-  font-size: 16px; font-weight: 800;
-  color: var(--ultramarine);
-  letter-spacing: 1.5px;
-}
-.logo-sub { font-size: 9px; color: var(--text4); font-family: 'JetBrains Mono', monospace; margin-top: 1px; }
-.header-actions { display: flex; gap: 6px; }
-.icon-btn {
-  width: 34px; height: 34px;
-  background: var(--accent-pale);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 18px; color: var(--accent);
-  position: relative; transition: all 0.15s;
-}
-.icon-btn:hover { background: var(--border); }
-.badge {
-  position: absolute; top: 3px; right: 3px;
-  width: 7px; height: 7px;
-  background: var(--danger); border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,0.6);
-}
+        .sidebar-brand h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--ultramarine);
+            letter-spacing: -0.5px;
+        }
 
-/* ── NAV ── */
-.nav {
-  display: flex;
-  border-bottom: 1.5px solid var(--border);
-  background: rgba(255,255,255,0.80);
-  backdrop-filter: blur(12px);
-  overflow-x: auto; scrollbar-width: none;
-}
-.nav::-webkit-scrollbar { display: none; }
-.nav-tab {
-  flex: 1; min-width: 70px;
-  padding: 8px 4px 7px;
-  display: flex; flex-direction: column;
-  align-items: center; gap: 2px;
-  cursor: pointer; border: none;
-  background: transparent;
-  color: var(--text4);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 10px; font-weight: 500;
-  transition: all 0.18s;
-  border-bottom: 2px solid transparent;
-}
-.nav-tab .ti { font-size: 22px; margin-bottom: 2px; }
-.nav-tab.active {
-  color: var(--ultramarine);
-  border-bottom-color: var(--ultramarine);
-  background: var(--ultramarine-pale2);
-}
+        .sidebar-brand span {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
 
-/* ── PAGES ── */
-.page { display: none; flex: 1; overflow-y: auto; padding-bottom: 32px; }
-.page.active { display: block; animation: fadeUp 0.22s ease; }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+        }
 
-.section { padding: 12px 14px 0; }
-.section-title {
-  font-size: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-bottom: 8px; margin-top: 2px;
-  display: flex; align-items: center; gap: 6px;
-  font-weight: 600;
-}
-.section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .nav-section {
+            margin-bottom: 24px;
+        }
 
-/* ── CARDS ── */
-.card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 13px; margin-bottom: 10px;
-  box-shadow: var(--shadow);
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-.card:hover { border-color: var(--accent-light); box-shadow: var(--shadow-lg); }
+        .nav-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-muted);
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
 
-.ph-inline { vertical-align: text-bottom; font-size: 1.1em; margin-right: 4px; }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 2px;
+        }
 
-/* ── WEATHER ── */
-.search-bar { display: flex; gap: 7px; margin-bottom: 10px; margin-top: 12px; }
-.search-input {
-  flex: 1;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 9px 12px;
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px; outline: none;
-  transition: border-color 0.15s;
-}
-.search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-pale); }
-.search-input::placeholder { color: var(--text4); }
-.search-btn {
-  background: var(--ultramarine);
-  border: none; border-radius: var(--radius-sm);
-  padding: 9px 16px; color: #fff;
-  font-weight: 600; cursor: pointer;
-  font-size: 12px; font-family: 'DM Sans', sans-serif;
-  transition: all 0.15s;
-  box-shadow: 0 3px 10px rgba(45,105,255,0.3);
-}
-.search-btn:hover { background: var(--ultramarine-dark); }
+        .nav-item:hover {
+            background: var(--alice-blue);
+            color: var(--ultramarine);
+        }
 
-.weather-card {
-  background: linear-gradient(140deg, #E1F0FF 0%, #DCFFF0 100%);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px; margin-bottom: 10px;
-  position: relative; overflow: hidden;
-}
-.weather-card::before {
-  content: ''; position: absolute;
-  top: -40px; right: -40px;
-  width: 160px; height: 160px;
-  background: radial-gradient(circle, rgba(45,105,255,0.12) 0%, transparent 70%);
-  border-radius: 50%;
-}
-.weather-card::after {
-  content: ''; position: absolute;
-  bottom: -20px; left: -20px;
-  width: 100px; height: 100px;
-  background: radial-gradient(circle, rgba(75,170,125,0.12) 0%, transparent 70%);
-  border-radius: 50%;
-}
-.weather-loc {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 11px; color: var(--text3);
-  margin-bottom: 12px; font-weight: 600;
-}
-.weather-main { display: flex; align-items: flex-end; justify-content: space-between; }
-.weather-temp {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 54px; font-weight: 500;
-  color: var(--text); line-height: 1;
-}
-.weather-temp sup { font-size: 18px; color: var(--text3); }
-.weather-icon-big { font-size: 50px; color: var(--ultramarine); }
-.weather-desc {
-  font-size: 12px; color: var(--text3);
-  margin-top: 10px; font-weight: 500;
-  display: flex; align-items: center; gap: 4px;
-}
-.weather-badges { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
-.weather-badge {
-  display: flex; align-items: center; gap: 4px;
-  padding: 5px 10px;
-  background: rgba(255,255,255,0.85);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  font-size: 10px; font-weight: 500;
-  color: var(--text2);
-  box-shadow: 0 1px 4px rgba(45,105,255,0.06);
-}
+        .nav-item.active {
+            background: var(--ultramarine);
+            color: white;
+            box-shadow: 0 2px 8px rgba(45, 105, 255, 0.3);
+        }
 
-.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-.stat-card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 11px; transition: all 0.15s; cursor: pointer;
-}
-.stat-card:hover { border-color: var(--accent); box-shadow: var(--shadow); }
-.stat-card.active, .gauge-card.active {
-  border-color: var(--ultramarine);
-  background: var(--ultramarine-pale2);
-  box-shadow: 0 0 0 2px var(--accent-pale);
-}
-.stat-label {
-  font-size: 10px; color: var(--text4);
-  font-family: 'JetBrains Mono', monospace;
-  margin-bottom: 4px; display: flex; align-items: center;
-}
-.stat-val {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 20px; font-weight: 500; color: var(--text);
-}
-.stat-unit { font-size: 11px; color: var(--text3); font-weight: 400; }
-.stat-trend { font-size: 10px; margin-top: 3px; color: var(--text4); }
-.trend-up { color: var(--danger); }
-.trend-down { color: var(--green); }
+        .nav-item i {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
 
-.forecast-row {
-  display: flex; gap: 7px; overflow-x: auto;
-  scrollbar-width: none; padding-bottom: 2px; margin-bottom: 10px;
-}
-.forecast-row::-webkit-scrollbar { display: none; }
-.forecast-item {
-  flex-shrink: 0;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 10px 10px; text-align: center; min-width: 66px;
-  transition: all 0.15s;
-}
-.forecast-item:hover { border-color: var(--accent); box-shadow: var(--shadow); }
-.forecast-day { font-size: 10px; color: var(--text4); margin-bottom: 4px; font-weight: 600; }
-.forecast-icon { font-size: 24px; margin-bottom: 4px; color: var(--ultramarine); }
-.forecast-temp {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px; font-weight: 500; color: var(--text);
-}
-.forecast-rain { font-size: 9px; color: var(--accent2); margin-top: 2px; font-weight: 600; }
+        .nav-item .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 10px;
+        }
 
-/* Risk score */
-.risk-card { display: flex; gap: 14px; align-items: center; }
-.score-ring { position: relative; width: 78px; height: 78px; flex-shrink: 0; }
-.score-ring svg { transform: rotate(-90deg); }
-.score-inner {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-}
-.score-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 20px; font-weight: 700;
-}
-.score-lbl { font-size: 8px; color: var(--text4); font-family: 'JetBrains Mono', monospace; }
-.risk-badge {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 3px 9px; border-radius: 6px;
-  font-size: 10px; font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
-}
-.risk-badge.medium { background: var(--warn-pale); color: var(--warn); border: 1px solid rgba(224,156,0,0.3); }
-.risk-badge.low { background: var(--accent2-pale); color: var(--green-dark); border: 1px solid rgba(75,170,125,0.3); }
-.risk-badge.high { background: var(--danger-pale); color: var(--danger); border: 1px solid rgba(229,62,62,0.3); }
+        .nav-item.active .badge {
+            background: rgba(255,255,255,0.3);
+        }
 
-/* ── DEVICE ── */
-.pond-selector {
-  display: flex; gap: 6px; overflow-x: auto;
-  scrollbar-width: none; padding-bottom: 2px; margin-bottom: 10px;
-}
-.pond-selector::-webkit-scrollbar { display: none; }
-.pond-chip {
-  flex-shrink: 0; padding: 6px 13px;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: 20px; font-size: 11px;
-  cursor: pointer; transition: all 0.15s;
-  white-space: nowrap; font-weight: 500; color: var(--text3);
-}
-.pond-chip.active {
-  background: var(--ultramarine);
-  border-color: var(--ultramarine);
-  color: #fff;
-  box-shadow: 0 3px 10px rgba(45,105,255,0.3);
-}
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border-color);
+        }
 
-.gauge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-.gauge-card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 12px; transition: all 0.15s; cursor: pointer;
-}
-.gauge-card:hover { border-color: var(--accent); box-shadow: var(--shadow); }
-.gauge-label {
-  font-size: 10px; color: var(--text4);
-  font-family: 'JetBrains Mono', monospace; margin-bottom: 4px;
-}
-.gauge-val { font-family: 'JetBrains Mono', monospace; font-size: 19px; font-weight: 600; }
-.gauge-unit { font-size: 10px; color: var(--text3); font-weight: 400; }
-.gauge-bar-bg { height: 4px; background: var(--alice); border-radius: 2px; margin-top: 7px; }
-.gauge-bar-fill { height: 4px; border-radius: 2px; transition: width 0.8s ease; }
-.gauge-hint { font-size: 9px; color: var(--text4); margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+        .sidebar-footer .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.device-online-bar {
-  display: flex; align-items: center; gap: 8px;
-  padding: 9px 12px;
-  background: linear-gradient(90deg, rgba(75,170,125,0.1) 0%, rgba(220,255,240,0.6) 100%);
-  border: 1.5px solid rgba(75,170,125,0.25);
-  border-radius: var(--radius-sm);
-  margin-bottom: 10px; margin-top: 12px;
-}
-.online-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 8px var(--green);
-  animation: pulse 2s infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.3)} }
-.online-text { font-size: 11px; color: var(--green-dark); font-weight: 600; flex: 1; }
+        .sidebar-footer .avatar {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--ultramarine), var(--green-field));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+        }
 
-.feed-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 0; border-bottom: 1px solid var(--border);
-}
-.feed-item:last-child { border-bottom: none; }
-.feed-icon {
-  width: 32px; height: 32px;
-  background: var(--ultramarine-pale);
-  border: 1.5px solid var(--border);
-  border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 17px; color: var(--ultramarine); flex-shrink: 0;
-}
-.feed-info { flex: 1; }
-.feed-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 1px; }
-.feed-time { font-size: 10px; color: var(--text4); font-family: 'JetBrains Mono', monospace; }
-.feed-type {
-  display: inline-block; padding: 1px 6px;
-  border-radius: 4px; font-size: 9px; font-weight: 700; margin-left: 4px;
-}
-.feed-type.auto { background: var(--ultramarine-pale); color: var(--ultramarine); }
-.feed-type.manual { background: var(--accent2-pale); color: var(--green-dark); }
-.feed-amount {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px; font-weight: 600; color: var(--ultramarine);
-}
-.feed-total {
-  display: flex; justify-content: space-between;
-  padding-top: 10px; border-top: 1px solid var(--border); margin-top: 2px;
-}
+        .sidebar-footer .user-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
 
-/* ── CHART WRAPPER ── */
-.chart-wrap {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 13px; margin-bottom: 14px; position: relative;
-}
-.chart-title-row {
-  display: flex; align-items: center;
-  justify-content: space-between; margin-bottom: 10px;
-}
-.chart-title { font-size: 12px; font-weight: 700; color: var(--text); }
-.chart-subtitle {
-  font-size: 10px; color: var(--text4);
-  font-family: 'JetBrains Mono', monospace; text-transform: uppercase;
-}
-.chart-stat-row {
-  display: flex; gap: 12px; margin-top: 10px;
-  padding-top: 10px; border-top: 1px solid var(--border);
-}
-.chart-stat { flex: 1; text-align: center; }
-.chart-stat-val {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 14px; font-weight: 600; color: var(--text);
-}
-.chart-stat-lbl { font-size: 10px; color: var(--text4); margin-top: 2px; }
+        .sidebar-footer .user-role {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
 
-/* ── NOTIFICATIONS ── */
-.notif-header {
-  display: flex; align-items: center;
-  justify-content: space-between; margin: 12px 0 10px;
-}
-.notif-count { font-size: 13px; font-weight: 700; color: var(--text); }
-.mark-read { font-size: 11px; color: var(--ultramarine); cursor: pointer; font-weight: 600; }
-.notif-item {
-  border-radius: var(--radius); padding: 12px;
-  margin-bottom: 8px; display: flex; gap: 10px;
-  cursor: pointer; position: relative; overflow: hidden;
-  transition: box-shadow 0.15s;
-}
-.notif-item::before {
-  content: ''; position: absolute;
-  left: 0; top: 0; bottom: 0; width: 3px; border-radius: 2px 0 0 2px;
-}
-.notif-item.danger::before { background: var(--danger); }
-.notif-item.warn::before { background: var(--warn); }
-.notif-item.info::before { background: var(--ultramarine); }
-.notif-item.ok::before { background: var(--green); }
-.notif-item.danger { border: 1.5px solid rgba(229,62,62,0.4); background: var(--danger-pale); }
-.notif-item.warn { border: 1.5px solid rgba(224,156,0,0.4); background: var(--warn-pale); }
-.notif-item.info { border: 1.5px solid rgba(45,105,255,0.25); background: rgba(225,240,255,0.9); }
-.notif-item.ok { border: 1.5px solid rgba(75,170,125,0.25); background: rgba(220,255,240,0.9); }
-.notif-icon {
-  width: 36px; height: 36px; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; flex-shrink: 0;
-}
-.notif-item.danger .notif-icon { background: rgba(229,62,62,0.12); color: var(--danger); }
-.notif-item.warn .notif-icon { background: rgba(224,156,0,0.12); color: var(--warn); }
-.notif-item.info .notif-icon { background: var(--ultramarine-pale); color: var(--ultramarine); }
-.notif-item.ok .notif-icon { background: var(--accent2-pale); color: var(--green); }
-.notif-body { flex: 1; min-width: 0; }
-.notif-title { font-size: 12px; font-weight: 700; margin-bottom: 3px; color: var(--text); }
-.notif-msg { font-size: 11px; color: var(--text3); line-height: 1.6; }
-.notif-actions-box {
-  margin-top: 8px; padding: 8px;
-  background: rgba(255,255,255,0.85); border-radius: 8px;
-  font-size: 11px; line-height: 1.7;
-  border: 1px solid var(--border);
-}
-.notif-time {
-  font-size: 10px; color: var(--text4);
-  font-family: 'JetBrains Mono', monospace; margin-top: 5px;
-}
-.unread-dot {
-  width: 7px; height: 7px; background: var(--ultramarine);
-  border-radius: 50%; position: absolute; top: 12px; right: 12px;
-  box-shadow: 0 0 5px rgba(45,105,255,0.5);
-}
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
 
-/* ── CHAT ── */
-.chat-page { display: flex; flex-direction: column; height: calc(100vh - 108px); }
-.chat-messages {
-  flex: 1; overflow-y: auto; padding: 14px;
-  display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth;
-}
-.chat-messages::-webkit-scrollbar { width: 4px; }
-.chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            height: var(--header-height);
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            z-index: 50;
+        }
 
-.chat-bubble {
-  max-width: 85%; padding: 10px 14px;
-  border-radius: 14px; font-size: 13px; line-height: 1.65;
-  animation: bubbleIn 0.2s ease;
-}
-@keyframes bubbleIn { from { opacity:0; transform:scale(0.96); } to { opacity:1; transform:scale(1); } }
-.chat-bubble.user {
-  background: linear-gradient(135deg, var(--ultramarine), var(--accent-light));
-  color: #fff; align-self: flex-end;
-  border-bottom-right-radius: 4px;
-  box-shadow: 0 3px 14px rgba(45,105,255,0.3);
-}
-.chat-bubble.ai {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  color: var(--text);
-  align-self: flex-start;
-  border-bottom-left-radius: 4px;
-  box-shadow: var(--shadow);
-}
-.ai-name {
-  font-size: 10px; color: var(--text4); margin-bottom: 4px;
-  font-family: 'JetBrains Mono', monospace; font-weight: 500;
-  display: flex; align-items: center; gap: 4px;
-}
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
 
-.chat-input-area {
-  padding: 10px 14px 14px;
-  border-top: 1.5px solid var(--border);
-  background: rgba(255,255,255,0.90);
-  backdrop-filter: blur(12px);
-}
-.chat-pond-select { display: flex; gap: 5px; margin-bottom: 8px; overflow-x: auto; scrollbar-width: none; }
-.chat-pond-select::-webkit-scrollbar { display: none; }
-.chat-chip {
-  padding: 4px 11px;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: 20px; font-size: 10px;
-  cursor: pointer; white-space: nowrap; transition: all 0.15s; font-weight: 500;
-}
-.chat-chip.active {
-  background: var(--ultramarine);
-  border-color: var(--ultramarine); color: #fff;
-}
-.chat-row { display: flex; gap: 8px; }
-.chat-input {
-  flex: 1;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: 10px; padding: 9px 12px;
-  color: var(--text); font-family: 'DM Sans', sans-serif;
-  font-size: 13px; outline: none; transition: all 0.15s;
-  resize: none; max-height: 90px; min-height: 38px;
-}
-.chat-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-pale); }
-.chat-input::placeholder { color: var(--text4); }
-.chat-send {
-  width: 38px; height: 38px;
-  background: linear-gradient(135deg, var(--ultramarine), var(--accent-light));
-  border: none; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; flex-shrink: 0; font-size: 18px; color: white;
-  box-shadow: 0 3px 12px rgba(45,105,255,0.35);
-  transition: all 0.15s;
-}
-.chat-send:hover { opacity: 0.88; transform: translateY(-1px); }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
 
-.chat-quick { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-bottom: 8px; }
-.chat-quick::-webkit-scrollbar { display: none; }
-.quick-chip {
-  padding: 5px 11px;
-  background: rgba(45,105,255,0.07);
-  border: 1.5px solid rgba(45,105,255,0.18);
-  border-radius: 20px; font-size: 11px;
-  cursor: pointer; white-space: nowrap; color: var(--ultramarine);
-  font-weight: 500; transition: all 0.15s; flex-shrink: 0;
-  display: flex; align-items: center; gap: 4px;
-}
-.quick-chip:hover {
-  background: var(--ultramarine); color: #fff;
-  border-color: var(--ultramarine);
-  box-shadow: 0 3px 10px rgba(45,105,255,0.3);
-}
+        .page-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
 
-.typing { display: flex; gap: 4px; align-items: center; padding: 10px 13px; }
-.typing span {
-  width: 6px; height: 6px; background: var(--text4);
-  border-radius: 50%; animation: typing 1.2s infinite;
-}
-.typing span:nth-child(2) { animation-delay: 0.2s; }
-.typing span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes typing { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-.api-tag {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 2px 8px;
-  background: rgba(45,105,255,0.07);
-  border: 1px solid rgba(45,105,255,0.18);
-  border-radius: 4px;
-  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ultramarine);
-  margin-bottom: 8px;
-}
-.last-update {
-  font-size: 10px; color: var(--text4);
-  font-family: 'JetBrains Mono', monospace;
-  text-align: right; margin-bottom: 6px;
-}
-.spinner {
-  display: inline-block; width: 14px; height: 14px;
-  border: 2px solid var(--border); border-top-color: var(--ultramarine);
-  border-radius: 50%; animation: spin 0.6s linear infinite;
-}
-@keyframes spin { to{transform:rotate(360deg)} }
+        .header-btn {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 18px;
+            color: var(--text-secondary);
+            position: relative;
+        }
 
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-</style>
+        .header-btn:hover {
+            border-color: var(--ultramarine);
+            color: var(--ultramarine);
+        }
+
+        .header-btn .notif-dot {
+            position: absolute;
+            top: 8px; right: 8px;
+            width: 8px; height: 8px;
+            background: var(--danger);
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .location-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            background: var(--alice-blue);
+            border: 1px solid transparent;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ultramarine);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .location-selector:hover {
+            border-color: var(--ultramarine);
+        }
+
+        /* Page Content */
+        .page-content {
+            padding: 24px 32px;
+        }
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Grid Layouts */
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+        /* Stat Cards */
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+        }
+
+        .stat-card.blue::before { background: var(--ultramarine); }
+        .stat-card.green::before { background: var(--green-field); }
+        .stat-card.warning::before { background: var(--warning); }
+        .stat-card.danger::before { background: var(--danger); }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-card .stat-icon {
+            width: 44px; height: 44px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card.blue .stat-icon { background: var(--alice-blue); color: var(--ultramarine); }
+        .stat-card.green .stat-icon { background: var(--frosted-mint); color: var(--green-field); }
+        .stat-card.warning .stat-icon { background: var(--warning-bg); color: var(--warning); }
+        .stat-card.danger .stat-icon { background: var(--danger-bg); color: var(--danger); }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .stat-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-top: 8px;
+        }
+
+        .stat-change.up { background: var(--success-bg); color: var(--success); }
+        .stat-change.down { background: var(--danger-bg); color: var(--danger); }
+
+        /* Sensor Grid */
+        .sensor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .sensor-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .sensor-item:hover {
+            border-color: var(--ultramarine);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sensor-item.danger {
+            border-color: var(--danger);
+            background: var(--danger-bg);
+        }
+
+        .sensor-item.warning {
+            border-color: var(--warning);
+            background: var(--warning-bg);
+        }
+
+        .sensor-item .sensor-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .sensor-item .sensor-name {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sensor-item .sensor-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 4px 0;
+        }
+
+        .sensor-item .sensor-unit {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .sensor-item .sensor-range {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Progress Ring */
+        .progress-ring-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .progress-ring-label {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* Chart Canvas */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 280px;
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Weather Widget */
+        .weather-main {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 20px;
+        }
+
+        .weather-icon-large {
+            font-size: 64px;
+            line-height: 1;
+        }
+
+        .weather-temp {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .weather-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            padding: 0 20px 20px;
+        }
+
+        .weather-detail-item {
+            text-align: center;
+            padding: 12px;
+            background: var(--bg-main);
+            border-radius: var(--radius-sm);
+        }
+
+        .weather-detail-item .wd-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .weather-detail-item .wd-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .forecast-list {
+            display: flex;
+            gap: 12px;
+            padding: 16px 20px;
+            overflow-x: auto;
+        }
+
+        .forecast-item {
+            flex-shrink: 0;
+            text-align: center;
+            padding: 12px 16px;
+            background: var(--bg-main);
+            border-radius: var(--radius-md);
+            min-width: 80px;
+        }
+
+        .forecast-item .fi-day {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .forecast-item .fi-icon {
+            font-size: 24px;
+            margin: 8px 0;
+        }
+
+        .forecast-item .fi-temp {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .forecast-item .fi-rain {
+            font-size: 10px;
+            color: var(--ultramarine);
+            margin-top: 4px;
+        }
+
+        /* Alerts */
+        .alert-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            border: 1px solid;
+            transition: var(--transition);
+        }
+
+        .alert-card.danger {
+            background: var(--danger-bg);
+            border-color: #FECACA;
+        }
+
+        .alert-card.warning {
+            background: var(--warning-bg);
+            border-color: #FDE68A;
+        }
+
+        .alert-card.info {
+            background: var(--alice-blue);
+            border-color: #BFDBFE;
+        }
+
+        .alert-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .alert-content { flex: 1; }
+
+        .alert-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .alert-message {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .alert-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .alert-action {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.7);
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .alert-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--ultramarine);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--ultramarine-dark);
+            box-shadow: 0 2px 8px rgba(45,105,255,0.3);
+        }
+
+        .btn-secondary {
+            background: var(--bg-main);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--ultramarine);
+            color: var(--ultramarine);
+        }
+
+        .btn-green {
+            background: var(--green-field);
+            color: white;
+        }
+
+        .btn-green:hover {
+            background: var(--green-dark);
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+        }
+
+        .btn-icon {
+            width: 36px; height: 36px;
+            padding: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-main);
+            padding: 4px;
+            border-radius: var(--radius-sm);
+            width: fit-content;
+        }
+
+        .tab {
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            background: transparent;
+            font-family: inherit;
+        }
+
+        .tab.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab:hover:not(.active) {
+            color: var(--text-primary);
+        }
+
+        /* Pond Selector */
+        .pond-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .pond-card {
+            flex: 1;
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            border: 2px solid var(--border-color);
+            background: var(--bg-card);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .pond-card:hover {
+            border-color: var(--ultramarine-light);
+        }
+
+        .pond-card.active {
+            border-color: var(--ultramarine);
+            background: var(--alice-blue);
+        }
+
+        .pond-card .pond-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .pond-card .pond-info {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .pond-card .pond-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .pond-card .pond-status.online {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        /* Chat */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - var(--header-height) - 80px);
+            max-height: 700px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chat-msg {
+            display: flex;
+            gap: 12px;
+            max-width: 80%;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .chat-msg.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .chat-avatar {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .chat-msg.ai .chat-avatar {
+            background: linear-gradient(135deg, var(--ultramarine), var(--green-field));
+            color: white;
+        }
+
+        .chat-msg.user .chat-avatar {
+            background: var(--bg-main);
+            color: var(--text-secondary);
+        }
+
+        .chat-bubble {
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .chat-msg.ai .chat-bubble {
+            background: var(--bg-main);
+            color: var(--text-primary);
+            border-top-left-radius: 4px;
+        }
+
+        .chat-msg.user .chat-bubble {
+            background: var(--ultramarine);
+            color: white;
+            border-top-right-radius: 4px;
+        }
+
+        .chat-input-container {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: var(--bg-card);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: var(--transition);
+            background: var(--bg-main);
+        }
+
+        .chat-input:focus {
+            border-color: var(--ultramarine);
+            box-shadow: 0 0 0 3px rgba(45,105,255,0.1);
+        }
+
+        .chat-send {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: var(--ultramarine);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .chat-send:hover {
+            background: var(--ultramarine-dark);
+            transform: scale(1.05);
+        }
+
+        /* Table */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 12px 16px;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        tr:hover td {
+            background: var(--bg-main);
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-success { background: var(--success-bg); color: var(--success); }
+        .badge-warning { background: var(--warning-bg); color: var(--warning); }
+        .badge-danger { background: var(--danger-bg); color: var(--danger); }
+        .badge-info { background: var(--alice-blue); color: var(--ultramarine); }
+
+        /* Risk Meter */
+        .risk-meter {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+        }
+
+        .risk-score-circle {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .risk-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .risk-info p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Harvest Card */
+        .harvest-card {
+            background: linear-gradient(135deg, var(--green-field), #3A8F65);
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .harvest-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -20%;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .harvest-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        .harvest-card .harvest-value {
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .harvest-card .harvest-detail {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px; height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-main) 25%, #e8edf2 50%, var(--bg-main) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: var(--radius-sm);
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Mobile Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 99;
+        }
+
+        /* Recommendation Cards */
+        .rec-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+
+        .rec-card:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .rec-priority {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .rec-priority.high { background: var(--danger-bg); color: var(--danger); }
+        .rec-priority.medium { background: var(--warning-bg); color: var(--warning); }
+        .rec-priority.low { background: var(--success-bg); color: var(--success); }
+
+        .rec-content { flex: 1; }
+
+        .rec-content .rec-action {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .rec-content .rec-deadline {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+            .grid-3 { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .sidebar-overlay.open {
+                display: block;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .page-content {
+                padding: 16px;
+            }
+            .grid-4, .grid-3, .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .pond-selector {
+                flex-direction: column;
+            }
+            .weather-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .sensor-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .chat-msg {
+                max-width: 90%;
+            }
+        }
+
+        /* Disease Risk */
+        .risk-conditions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .risk-cond {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .risk-cond.risky {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        .risk-cond.safe {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+        }
+
+        .typing-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            animation: typingBounce 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-6px); }
+        }
+
+        /* Mini sparkline */
+        .sparkline {
+            height: 40px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .mb-20 { margin-bottom: 20px; }
+        .mt-20 { margin-top: 20px; }
+        .gap-20 { gap: 20px; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-8 { gap: 8px; }
+        .gap-12 { gap: 12px; }
+        .gap-16 { gap: 16px; }
+
+        .text-center { text-align: center; }
+
+        .divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 16px 0;
+        }
+
+        /* Toast Notification */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid var(--ultramarine);
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 4.7s;
+            font-size: 13px;
+            font-weight: 500;
+            min-width: 280px;
+        }
+
+        .toast.danger { border-left-color: var(--danger); }
+        .toast.warning { border-left-color: var(--warning); }
+        .toast.success { border-left-color: var(--success); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateX(100%); }
+        }
+
+        /* Device Status */
+        .device-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 16px;
+            background: var(--bg-main);
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+        }
+
+        .device-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .device-dot.online { background: var(--success); box-shadow: 0 0 6px var(--success); }
+        .device-dot.offline { background: var(--danger); box-shadow: 0 0 6px var(--danger); }
+
+        .device-info { flex: 1; }
+
+        .device-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .device-detail {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .device-battery {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--green-field);
+        }
+
+        .battery-bar {
+            width: 50px;
+            height: 6px;
+            background: var(--border-color);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .battery-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: var(--green-field);
+            transition: width 0.5s ease;
+        }
+
+        .battery-fill.low { background: var(--warning); }
+        .battery-fill.critical { background: var(--danger); }
+    </style>
 </head>
 <body>
-<div class="app">
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-<div class="header">
-  <div class="header-row">
-    <div class="logo">
-      <div class="logo-icon"><i class="ph-fill ph-fish"></i></div>
-      <div>
-        <div class="logo-text">AQUA·AI</div>
-        <div class="logo-sub">SMART AQUACULTURE · v1.0</div>
-      </div>
-    </div>
-    <div class="header-actions">
-      <div class="icon-btn" onclick="switchTab('notifications')">
-        <i class="ph ph-bell"></i><div class="badge" id="notif-badge"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<nav class="nav">
-  <button class="nav-tab active" onclick="switchTab('weather')" id="tab-weather">
-    <i class="ph ph-cloud-sun ti"></i><span>Weather</span>
-  </button>
-  <button class="nav-tab" onclick="switchTab('device')" id="tab-device">
-    <i class="ph ph-broadcast ti"></i><span>Devices</span>
-  </button>
-  <button class="nav-tab" onclick="switchTab('chat')" id="tab-chat">
-    <i class="ph ph-chat-circle-dots ti"></i><span>AI Chat</span>
-  </button>
-</nav>
-
-<!-- ── WEATHER ── -->
-<div class="page active" id="page-weather">
-  <div class="section">
-    <div class="search-bar">
-      <input class="search-input" placeholder="Search location (e.g., Ca Mau)..." id="location-search"
-        onkeydown="if(event.key==='Enter')searchLocation()">
-      <button class="search-btn" onclick="searchLocation()">Search</button>
-    </div>
-    <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/weather · /api/weather-risk</div>
-    <div id="weather-main">
-      <div class="weather-card">
-        <div class="weather-loc"><i class="ph-fill ph-map-pin"></i> <span id="loc-name">Hanoi, Vietnam</span></div>
-        <div class="weather-main">
-          <div>
-            <div class="weather-temp" id="w-temp">31<sup>°C</sup></div>
-            <div class="weather-desc" id="w-desc"><i class="ph-fill ph-cloud-sun"></i> Cloudy, high humidity</div>
-          </div>
-          <div class="weather-icon-big" id="w-icon"><i class="ph-fill ph-cloud-rain"></i></div>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <img src="https://image.qwenlm.ai/public_source/93aa03f9-ab52-459d-a2bf-9626f22e888f/12fa68209-f105-4fa5-95c9-d1ae661bee80.png" alt="AQUA·AI">
+            <div>
+                <h1>AQUA·AI</h1>
+                <span>Smart Aquaculture</span>
+            </div>
         </div>
-        <div class="weather-badges" id="w-badges">
-          <div class="weather-badge"><i class="ph-fill ph-drop"></i> 84%</div>
-          <div class="weather-badge"><i class="ph-fill ph-wind"></i> 18 km/h SE</div>
-          <div class="weather-badge"><i class="ph-fill ph-cloud-rain"></i> 12mm</div>
-          <div class="weather-badge"><i class="ph-fill ph-eye"></i> 8km</div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Tổng quan</div>
+                <a class="nav-item active" data-page="dashboard" onclick="switchPage('dashboard')">
+                    <i class="ri-dashboard-3-line"></i> Dashboard
+                </a>
+                <a class="nav-item" data-page="sensors" onclick="switchPage('sensors')">
+                    <i class="ri-sensor-line"></i> Cảm biến
+                </a>
+                <a class="nav-item" data-page="weather" onclick="switchPage('weather')">
+                    <i class="ri-sun-cloudy-line"></i> Thời tiết
+                </a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">Giám sát</div>
+                <a class="nav-item" data-page="ponds" onclick="switchPage('ponds')">
+                    <i class="ri-water-flash-line"></i> Quản lý ao
+                </a>
+                <a class="nav-item" data-page="alerts" onclick="switchPage('alerts')">
+                    <i class="ri-alarm-warning-line"></i> Cảnh báo
+                    <span class="badge">2</span>
+                </a>
+                <a class="nav-item" data-page="feeding" onclick="switchPage('feeding')">
+                    <i class="ri-restaurant-2-line"></i> Cho ăn
+                </a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">AI & Phân tích</div>
+                <a class="nav-item" data-page="chat" onclick="switchPage('chat')">
+                    <i class="ri-robot-2-line"></i> Trợ lý AI
+                </a>
+                <a class="nav-item" data-page="analytics" onclick="switchPage('analytics')">
+                    <i class="ri-line-chart-line"></i> Phân tích
+                </a>
+                <a class="nav-item" data-page="devices" onclick="switchPage('devices')">
+                    <i class="ri-cpu-line"></i> Thiết bị
+                </a>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="avatar">NT</div>
+                <div>
+                    <div class="user-name">Nguyễn Văn Tám</div>
+                    <div class="user-role">Quản lý trang trại</div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="last-update" id="w-updated">Updated: --:--:--</div>
+    </aside>
 
-    <div class="section-title"><i class="ph-bold ph-list-magnifying-glass"></i> Detailed Stats</div>
-    <div class="stat-grid" id="stat-grid">
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-drop ph-inline"></i> Humidity</div><div class="stat-val">84<span class="stat-unit">%</span></div><div class="stat-trend trend-up">↑ High</div></div>
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-waves ph-inline"></i> Tide</div><div class="stat-val">1.4<span class="stat-unit"> m</span></div><div class="stat-trend">↑ Peak 15:00</div></div>
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-lightning ph-inline"></i> UV Index</div><div class="stat-val">7<span class="stat-unit">/10</span></div><div class="stat-trend trend-up">⚠ High</div></div>
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-wind ph-inline"></i> Pressure</div><div class="stat-val">1008<span class="stat-unit"> hPa</span></div><div class="stat-trend trend-down">↓ Dropping</div></div>
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-cloud ph-inline"></i> Cloud Cover</div><div class="stat-val">72<span class="stat-unit">%</span></div><div class="stat-trend">→ Stable</div></div>
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-plant ph-inline"></i> Dew Point</div><div class="stat-val">26<span class="stat-unit">°C</span></div><div class="stat-trend">→ Humid</div></div>
-    </div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    <i class="ri-menu-line"></i>
+                </button>
+                <h2 class="page-title" id="pageTitle">Dashboard</h2>
+            </div>
+            <div class="header-right">
+                <div class="location-selector" onclick="cycleLocation()">
+                    <i class="ri-map-pin-2-fill"></i>
+                    <span id="currentLocation">Cà Mau</span>
+                    <i class="ri-arrow-down-s-line"></i>
+                </div>
+                <button class="header-btn" onclick="refreshAll()">
+                    <i class="ri-refresh-line"></i>
+                </button>
+                <button class="header-btn" onclick="switchPage('alerts')">
+                    <i class="ri-notification-3-line"></i>
+                    <span class="notif-dot"></span>
+                </button>
+            </div>
+        </header>
 
-    <div class="section-title"><i class="ph-bold ph-calendar-blank"></i> 5-Day Forecast</div>
-    <div class="forecast-row" id="forecast-row">
-      <div class="forecast-item"><div class="forecast-day">Today</div><div class="forecast-icon"><i class="ph-fill ph-cloud-rain"></i></div><div class="forecast-temp">31°</div><div class="forecast-rain">60%</div></div>
-      <div class="forecast-item"><div class="forecast-day">Wed</div><div class="forecast-icon"><i class="ph-fill ph-cloud-lightning"></i></div><div class="forecast-temp" style="color:var(--danger)">29°</div><div class="forecast-rain">85%</div></div>
-      <div class="forecast-item"><div class="forecast-day">Thu</div><div class="forecast-icon"><i class="ph-fill ph-cloud-rain"></i></div><div class="forecast-temp">28°</div><div class="forecast-rain">70%</div></div>
-      <div class="forecast-item"><div class="forecast-day">Fri</div><div class="forecast-icon"><i class="ph-fill ph-cloud-sun"></i></div><div class="forecast-temp">32°</div><div class="forecast-rain">30%</div></div>
-      <div class="forecast-item"><div class="forecast-day">Sat</div><div class="forecast-icon"><i class="ph-fill ph-sun"></i></div><div class="forecast-temp">34°</div><div class="forecast-rain">10%</div></div>
-    </div>
+        <!-- Page: Dashboard -->
+        <div class="page-content">
+            <div class="page active" id="page-dashboard">
+                <!-- Stat Cards -->
+                <div class="grid-4 mb-20 animate-in" id="statCards">
+                    <div class="stat-card blue">
+                        <div class="stat-icon"><i class="ri-water-flash-line"></i></div>
+                        <div class="stat-value" id="statSalinity">-- ppt</div>
+                        <div class="stat-label">Độ mặn trung bình</div>
+                        <div class="stat-change up"><i class="ri-arrow-up-s-fill"></i> Bình thường</div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-icon"><i class="ri-windy-line"></i></div>
+                        <div class="stat-value" id="statDO">-- mg/L</div>
+                        <div class="stat-label">DO (Oxy hòa tan)</div>
+                        <div class="stat-change up"><i class="ri-arrow-up-s-fill"></i> Tốt</div>
+                    </div>
+                    <div class="stat-card warning">
+                        <div class="stat-icon"><i class="ri-flask-line"></i></div>
+                        <div class="stat-value" id="statPH">--</div>
+                        <div class="stat-label">pH nước</div>
+                        <div class="stat-change up"><i class="ri-arrow-up-s-fill"></i> Ổn định</div>
+                    </div>
+                    <div class="stat-card danger">
+                        <div class="stat-icon"><i class="ri-temp-hot-line"></i></div>
+                        <div class="stat-value" id="statTemp">-- °C</div>
+                        <div class="stat-label">Nhiệt độ</div>
+                        <div class="stat-change down"><i class="ri-arrow-down-s-fill"></i> Cao</div>
+                    </div>
+                </div>
 
-    <div class="section-title"><i class="ph-bold ph-shield-warning"></i> Pond Risk Assessment</div>
-    <div class="card">
-      <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/weather-risk</div>
-      <div class="risk-card">
-        <div class="score-ring">
-          <svg width="78" height="78" viewBox="0 0 78 78">
-            <circle cx="39" cy="39" r="30" fill="none" stroke="var(--alice)" stroke-width="8"/>
-            <circle id="risk-arc" cx="39" cy="39" r="30" fill="none" stroke="var(--warn)" stroke-width="8"
-              stroke-dasharray="188" stroke-dashoffset="56" stroke-linecap="round" style="transition:stroke-dashoffset 0.8s ease"/>
-          </svg>
-          <div class="score-inner">
-            <div class="score-num" id="risk-num" style="color:var(--warn)">68</div>
-            <div class="score-lbl">RISK</div>
-          </div>
+                <!-- Weather + Risk -->
+                <div class="grid-2 mb-20">
+                    <div class="card animate-in" id="weatherCard">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Thời tiết hôm nay</div>
+                                <div class="card-subtitle" id="weatherDate"></div>
+                            </div>
+                            <span class="badge badge-info" id="weatherBadge">Cập nhật</span>
+                        </div>
+                        <div class="weather-main">
+                            <div class="weather-icon-large" id="weatherIcon">🌦</div>
+                            <div>
+                                <div class="weather-temp" id="weatherTemp">--°C</div>
+                                <div class="weather-desc" id="weatherDesc">Đang tải...</div>
+                            </div>
+                        </div>
+                        <div class="weather-details" id="weatherDetails">
+                            <div class="weather-detail-item">
+                                <div class="wd-value" id="wdHumidity">--%</div>
+                                <div class="wd-label">Độ ẩm</div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <div class="wd-value" id="wdWind">-- km/h</div>
+                                <div class="wd-label">Gió</div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <div class="wd-value" id="wdRain">-- mm</div>
+                                <div class="wd-label">Lượng mưa</div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <div class="wd-value" id="wdUV">--</div>
+                                <div class="wd-label">Chỉ số UV</div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <div class="wd-value" id="wdTide">-- m</div>
+                                <div class="wd-label">Thủy triều</div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <div class="wd-value" id="wdPressure">-- hPa</div>
+                                <div class="wd-label">Áp suất</div>
+                            </div>
+                        </div>
+                        <div class="forecast-list" id="forecastList"></div>
+                    </div>
+
+                    <div class="card animate-in">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Đánh giá rủi ro thời tiết</div>
+                                <div class="card-subtitle">Dự báo nguy cơ ảnh hưởng đến ao nuôi</div>
+                            </div>
+                            <span class="badge" id="riskLevelBadge">--</span>
+                        </div>
+                        <div class="risk-meter">
+                            <div class="risk-score-circle" id="riskScoreCircle" style="background: var(--text-muted);">
+                                <span id="riskScoreValue">--</span>
+                            </div>
+                            <div class="risk-info">
+                                <h3 id="riskLevel">Đang đánh giá...</h3>
+                                <p id="riskMessage">Đang phân tích dữ liệu thời tiết</p>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div id="riskActions" style="padding: 0 20px 20px;"></div>
+                    </div>
+                </div>
+
+                <!-- Sensor Overview -->
+                <div class="card mb-20 animate-in">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Cảm biến thời gian thực</div>
+                            <div class="card-subtitle">Ao: <span id="sensorPondName">Đang tải...</span></div>
+                        </div>
+                        <div class="tabs" id="sensorTabs">
+                            <button class="tab active" onclick="switchPond('pond1', this)">Ao #1</button>
+                            <button class="tab" onclick="switchPond('pond2', this)">Ao #2</button>
+                            <button class="tab" onclick="switchPond('pond3', this)">Ao #3</button>
+                        </div>
+                    </div>
+                    <div class="sensor-grid" id="sensorGrid"></div>
+                </div>
+
+                <!-- Recommendations + Harvest -->
+                <div class="grid-2 mb-20">
+                    <div class="card animate-in">
+                        <div class="card-header">
+                            <div class="card-title">Đề xuất hành động</div>
+                        </div>
+                        <div id="recommendations"></div>
+                    </div>
+                    <div class="card animate-in">
+                        <div class="card-header">
+                            <div class="card-title">Tối ưu thu hoạch</div>
+                        </div>
+                        <div id="harvestCard"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page: Sensors -->
+            <div class="page" id="page-sensors">
+                <div class="pond-selector" id="sensorPondSelector">
+                    <div class="pond-card active" onclick="selectPond('pond1', this)">
+                        <div class="pond-name">🦐 Ao #1 – Tôm sú</div>
+                        <div class="pond-info">5,000 m² • Mật độ: 80 con/m²</div>
+                        <div class="pond-status online"><i class="ri-circle-fill"></i> Online</div>
+                    </div>
+                    <div class="pond-card" onclick="selectPond('pond2', this)">
+                        <div class="pond-name">🐟 Ao #2 – Cá tra</div>
+                        <div class="pond-info">8,000 m² • Mật độ: 50 con/m²</div>
+                        <div class="pond-status online"><i class="ri-circle-fill"></i> Online</div>
+                    </div>
+                    <div class="pond-card" onclick="selectPond('pond3', this)">
+                        <div class="pond-name">🦐 Ao #3 – Tôm thẻ</div>
+                        <div class="pond-info">4,000 m² • Mật độ: 120 con/m²</div>
+                        <div class="pond-status online"><i class="ri-circle-fill"></i> Online</div>
+                    </div>
+                </div>
+                <div class="sensor-grid mb-20" id="sensorDetailGrid"></div>
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Biểu đồ lịch sử</div>
+                            <div class="card-subtitle">Theo dõi xu hướng 48 giờ</div>
+                        </div>
+                        <div class="tabs">
+                            <button class="tab active" onclick="switchMetric('salinity', this)">Độ mặn</button>
+                            <button class="tab" onclick="switchMetric('do', this)">DO</button>
+                            <button class="tab" onclick="switchMetric('ph', this)">pH</button>
+                            <button class="tab" onclick="switchMetric('temperature', this)">Nhiệt độ</button>
+                            <button class="tab" onclick="switchMetric('ammonia', this)">NH3</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="historyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page: Weather -->
+            <div class="page" id="page-weather">
+                <div class="grid-2 mb-20">
+                    <div class="card" id="weatherPageCard">
+                        <div class="card-header">
+                            <div class="card-title">Thời tiết chi tiết</div>
+                            <div class="card-subtitle" id="weatherPageDate"></div>
+                        </div>
+                        <div class="weather-main">
+                            <div class="weather-icon-large" id="weatherPageIcon">🌦</div>
+                            <div>
+                                <div class="weather-temp" id="weatherPageTemp">--°C</div>
+                                <div class="weather-desc" id="weatherPageDesc">--</div>
+                                <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Cảm giác như <strong id="weatherFeelsLike">--°C</strong></div>
+                            </div>
+                        </div>
+                        <div class="weather-details" id="weatherPageDetails"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Dự báo 5 ngày</div>
+                        </div>
+                        <div class="forecast-list" id="weatherPageForecast" style="flex-direction: column; padding: 0 20px 20px;"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Rủi ro thời tiết</div>
+                    </div>
+                    <div class="risk-meter" id="weatherRiskMeter"></div>
+                </div>
+            </div>
+
+            <!-- Page: Ponds -->
+            <div class="page" id="page-ponds">
+                <div class="section-title">Quản lý ao nuôi</div>
+                <div class="section-subtitle">Tổng quan tất cả ao trong trang trại</div>
+                <div class="grid-3 mb-20" id="pondsGrid"></div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Danh sách ao</div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="pondsTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên ao</th>
+                                    <th>Loài</th>
+                                    <th>Diện tích</th>
+                                    <th>Mật độ</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pondsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page: Alerts -->
+            <div class="page" id="page-alerts">
+                <div class="section-title">Cảnh báo hệ thống</div>
+                <div class="section-subtitle">Các cảnh báo và thông báo quan trọng</div>
+                <div id="alertsList"></div>
+                <div class="card mt-20">
+                    <div class="card-header">
+                        <div class="card-title">Nguy cơ bệnh</div>
+                    </div>
+                    <div id="diseaseRisk"></div>
+                </div>
+            </div>
+
+            <!-- Page: Feeding -->
+            <div class="page" id="page-feeding">
+                <div class="section-title">Nhật ký cho ăn</div>
+                <div class="section-subtitle">Theo dõi lịch sử cho ăn của từng ao</div>
+                <div class="pond-selector" id="feedingPondSelector">
+                    <div class="pond-card active" onclick="selectFeedingPond('pond1', this)">
+                        <div class="pond-name">🦐 Ao #1 – Tôm sú</div>
+                    </div>
+                    <div class="pond-card" onclick="selectFeedingPond('pond2', this)">
+                        <div class="pond-name">🐟 Ao #2 – Cá tra</div>
+                    </div>
+                    <div class="pond-card" onclick="selectFeedingPond('pond3', this)">
+                        <div class="pond-name">🦐 Ao #3 – Tôm thẻ</div>
+                    </div>
+                </div>
+                <div class="card mb-20">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Tổng quan hôm nay</div>
+                            <div class="card-subtitle" id="feedingDate"></div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 24px; font-weight: 700; color: var(--ultramarine);" id="feedingTotal">-- g</div>
+                            <div style="font-size: 12px; color: var(--text-muted);">Mục tiêu: <span id="feedingTarget">-- g</span></div>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-main); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 12px; color: var(--text-muted);">Tiến độ</span>
+                            <span style="font-size: 12px; font-weight: 600;" id="feedingProgress">--%</span>
+                        </div>
+                        <div style="height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden;">
+                            <div style="height: 100%; background: linear-gradient(90deg, var(--ultramarine), var(--green-field)); border-radius: 4px; transition: width 0.5s ease;" id="feedingProgressBar"></div>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Giờ</th>
+                                <th>Loại</th>
+                                <th>Thức ăn</th>
+                                <th>Số lượng (g)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feedingTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Page: Chat -->
+            <div class="page" id="page-chat">
+                <div class="card" style="padding: 0;">
+                    <div style="padding: 16px 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--ultramarine), var(--green-field)); display: flex; align-items: center; justify-content: center;">
+                            <i class="ri-robot-2-line" style="color: white; font-size: 18px;"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: 14px; font-weight: 600;">AQUA·AI Trợ lý</div>
+                            <div style="font-size: 11px; color: var(--success);">● Đang trực tuyến</div>
+                        </div>
+                        <div style="margin-left: auto; font-size: 12px; color: var(--text-muted);">Ao: <span id="chatPondName">Ao #1 – Tôm sú</span></div>
+                    </div>
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="chat-msg ai">
+                                <div class="chat-avatar"><i class="ri-robot-2-line"></i></div>
+                                <div class="chat-bubble">
+                                    Xin chào! Tôi là <strong>AQUA·AI</strong> – trợ lý thông minh chuyên về nuôi trồng thủy sản. 🦐🐟<br><br>
+                                    Tôi có thể giúp bạn:<br>
+                                    • Phân tích dữ liệu cảm biến ao nuôi<br>
+                                    • Tư vấn xử lý vấn đề sức khỏe tôm cá<br>
+                                    • Đề xuất phương án cho ăn và chăm sóc<br>
+                                    • Cảnh báo rủi ro và biện pháp phòng ngừa<br><br>
+                                    Bạn cần tôi hỗ trợ gì hôm nay? 😊
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input-container">
+                            <input type="text" class="chat-input" id="chatInput" placeholder="Nhập câu hỏi của bạn..." onkeydown="if(event.key==='Enter')sendMessage()">
+                            <button class="chat-send" onclick="sendMessage()" id="chatSendBtn">
+                                <i class="ri-send-plane-fill"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page: Analytics -->
+            <div class="page" id="page-analytics">
+                <div class="section-title">Phân tích & Báo cáo</div>
+                <div class="section-subtitle">Dữ liệu chi tiết và xu hướng</div>
+                <div class="grid-2 mb-20">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Xu hướng độ mặn</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="salinityChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Xu hướng DO</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="doChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Xu hướng pH</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="phChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Xu hướng nhiệt độ</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="tempChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page: Devices -->
+            <div class="page" id="page-devices">
+                <div class="section-title">Quản lý thiết bị</div>
+                <div class="section-subtitle">Trạng thái cảm biến và thiết bị IoT</div>
+                <div class="grid-3 mb-20" id="deviceStatusCards"></div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Danh sách thiết bị</div>
+                        <span class="badge badge-success" id="deviceOnlineCount">3/3 Online</span>
+                    </div>
+                    <div id="deviceList"></div>
+                </div>
+            </div>
         </div>
-        <div style="flex:1">
-          <div style="font-size:12px;font-weight:700;margin-bottom:5px" id="risk-title">Medium Risk</div>
-          <div style="font-size:11px;color:var(--text3);line-height:1.6" id="risk-msg">⚠️ Approaching storm may cause salinity shock. Recommend reducing feed by 30%.</div>
-          <div style="margin-top:8px"><span class="risk-badge medium" id="risk-badge"><i class="ph-fill ph-warning"></i> MEDIUM</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+    </main>
 
-<!-- ── DEVICE ── -->
-<div class="page" id="page-device">
-  <div class="section">
-    <div class="device-online-bar">
-      <div class="online-dot"></div>
-      <div class="online-text">All devices operating normally</div>
-      <span style="font-size:10px;color:var(--green-dark);font-family:'JetBrains Mono',monospace;font-weight:600">06:32</span>
-    </div>
-    <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/device/sensor-data · /history</div>
-    <div class="pond-selector" id="pond-selector">
-      <div class="pond-chip active" onclick="selectPond(this,'pond1')">Pond #1 – Black Tiger Shrimp</div>
-      <div class="pond-chip" onclick="selectPond(this,'pond2')">Pond #2 – Pangasius</div>
-      <div class="pond-chip" onclick="selectPond(this,'pond3')">Pond #3 – Whiteleg Shrimp</div>
-    </div>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
 
-    <div class="section-title"><i class="ph-bold ph-activity"></i> Real-time Water Quality</div>
-    <div class="gauge-grid" id="gauge-grid">
-      <div class="gauge-card active" onclick="selectMetricCard(this,'salinity')">
-        <div class="gauge-label"><i class="ph ph-drop-half ph-inline"></i> Salinity</div>
-        <div class="gauge-val" id="g-salinity" style="color:var(--warn)">18.5<span class="gauge-unit"> ppt</span></div>
-        <div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-salinity" style="width:74%;background:var(--warn)"></div></div>
-        <div class="gauge-hint">Safe: 10–20 ppt</div>
-      </div>
-      <div class="gauge-card" onclick="selectMetricCard(this,'do')">
-        <div class="gauge-label"><i class="ph ph-wind ph-inline"></i> Oxygen (DO)</div>
-        <div class="gauge-val" id="g-do" style="color:var(--green)">6.8<span class="gauge-unit"> mg/L</span></div>
-        <div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-do" style="width:85%;background:var(--green)"></div></div>
-        <div class="gauge-hint">Safe: ≥5 mg/L</div>
-      </div>
-      <div class="gauge-card" onclick="selectMetricCard(this,'ph')">
-        <div class="gauge-label"><i class="ph ph-flask ph-inline"></i> Water pH</div>
-        <div class="gauge-val" id="g-ph" style="color:var(--green)">7.8</div>
-        <div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-ph" style="width:78%;background:var(--green)"></div></div>
-        <div class="gauge-hint">Optimal: 7.5–8.5</div>
-      </div>
-      <div class="gauge-card" onclick="selectMetricCard(this,'temperature')">
-        <div class="gauge-label"><i class="ph ph-thermometer ph-inline"></i> Temperature</div>
-        <div class="gauge-val" id="g-temp" style="color:var(--warn)">29.4<span class="gauge-unit">°C</span></div>
-        <div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-temp" style="width:65%;background:var(--warn)"></div></div>
-        <div class="gauge-hint">Optimal: 26–32°C</div>
-      </div>
-    </div>
+    <script>
+        // ============ CONFIG ============
+        const API_BASE = '';
+        let currentPond = 'pond1';
+        let currentMetric = 'salinity';
+        let currentLocation = 'Cà Mau';
+        const locations = ['Cà Mau', 'Bạc Liêu', 'Kiên Giang', 'Sóc Trăng', 'Trà Vinh'];
+        let chatHistory = [];
+        let refreshInterval = null;
 
-    <div class="chart-wrap" id="device-main-chart">
-      <div class="chart-title-row">
-        <div>
-          <div class="chart-title" id="chart-title">Salinity History</div>
-          <div class="chart-subtitle">Last 48 hours</div>
-        </div>
-        <div id="chart-loading" style="display:none"><div class="spinner"></div></div>
-      </div>
-      <canvas id="main-chart" height="160"></canvas>
-      <div class="chart-stat-row" id="chart-stats">
-        <div class="chart-stat"><div class="chart-stat-val" id="cs-min">—</div><div class="chart-stat-lbl">Lowest</div></div>
-        <div class="chart-stat"><div class="chart-stat-val" id="cs-avg">—</div><div class="chart-stat-lbl">Average</div></div>
-        <div class="chart-stat"><div class="chart-stat-val" id="cs-max">—</div><div class="chart-stat-lbl">Highest</div></div>
-        <div class="chart-stat"><div class="chart-stat-val" id="cs-unit">—</div><div class="chart-stat-lbl">Unit</div></div>
-      </div>
-    </div>
+        // ============ API HELPERS ============
+        async function apiCall(endpoint, params = {}) {
+            try {
+                const url = new URL(`${API_BASE}${endpoint}`, window.location.origin);
+                Object.entries(params).forEach(([key, val]) => url.searchParams.set(key, val));
+                const resp = await fetch(url.toString());
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                return await resp.json();
+            } catch (err) {
+                console.error(`API Error (${endpoint}):`, err);
+                return null;
+            }
+        }
 
-    <div class="section-title"><i class="ph-bold ph-test-tube"></i> Chemical Stats</div>
-    <div class="stat-grid">
-      <div class="stat-card" onclick="selectMetricCard(this,'ammonia')">
-        <div class="stat-label"><i class="ph ph-microscope ph-inline"></i> Ammonia (NH₃)</div>
-        <div class="stat-val" id="g-nh3" style="font-size:16px;color:var(--green)">0.02<span class="stat-unit"> mg/L</span></div>
-        <div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Safe &lt;0.1</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label"><i class="ph ph-test-tube ph-inline"></i> Nitrite (NO₂)</div>
-        <div class="stat-val" id="g-no2" style="font-size:16px;color:var(--green)">0.05<span class="stat-unit"> mg/L</span></div>
-        <div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Safe &lt;0.5</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label"><i class="ph ph-hexagon ph-inline"></i> Alkalinity</div>
-        <div class="stat-val" id="g-alk" style="font-size:16px;color:var(--ultramarine)">120<span class="stat-unit"> mg/L</span></div>
-        <div class="stat-trend">→ Good 80–160</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label"><i class="ph ph-virus ph-inline"></i> H₂S</div>
-        <div class="stat-val" id="g-h2s" style="font-size:16px;color:var(--green)">0.001<span class="stat-unit"> mg/L</span></div>
-        <div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Very Safe</div>
-      </div>
-    </div>
+        // ============ PAGE NAVIGATION ============
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
-    <div class="section-title"><i class="ph-bold ph-radar"></i> Compare 3 Ponds Overview</div>
-    <div class="chart-wrap">
-      <canvas id="compare-chart" height="180"></canvas>
-    </div>
+            const page = document.getElementById(`page-${pageId}`);
+            if (page) page.classList.add('active');
 
-    <div class="section-title"><i class="ph-bold ph-clock"></i> Feeding Log & Trends</div>
-    <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/device/feeding-log</div>
-    <div class="card">
-      <div class="feed-log" id="feed-log">
-        <div class="feed-item">
-          <div class="feed-icon"><i class="ph ph-shrimp"></i></div>
-          <div class="feed-info">
-            <div class="feed-name">Grobest Shrimp Feed #2 <span class="feed-type auto">AUTO</span></div>
-            <div class="feed-time">06:30</div>
-          </div>
-          <div class="feed-amount">250g</div>
-        </div>
-        <div class="feed-item">
-          <div class="feed-icon"><i class="ph ph-leaf"></i></div>
-          <div class="feed-info">
-            <div class="feed-name">Probiotic Supplement <span class="feed-type manual">MANUAL</span></div>
-            <div class="feed-time">10:00</div>
-          </div>
-          <div class="feed-amount">50g</div>
-        </div>
-      </div>
-      <div class="feed-total">
-        <span style="font-size:12px;color:var(--text3)">Total Today</span>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--ultramarine)" id="feed-total-text">300g / 600g</span>
-      </div>
-    </div>
+            const navItem = document.querySelector(`.nav-item[data-page="${pageId}"]`);
+            if (navItem) navItem.classList.add('active');
 
-    <div class="chart-wrap">
-      <div class="chart-subtitle" style="margin-bottom:10px">7-Day Feeding Volume</div>
-      <canvas id="feed-chart" height="120"></canvas>
-    </div>
-  </div>
-</div>
+            const titles = {
+                dashboard: 'Dashboard',
+                sensors: 'Cảm biến',
+                weather: 'Thời tiết',
+                ponds: 'Quản lý ao',
+                alerts: 'Cảnh báo',
+                feeding: 'Cho ăn',
+                chat: 'Trợ lý AI',
+                analytics: 'Phân tích',
+                devices: 'Thiết bị'
+            };
+            document.getElementById('pageTitle').textContent = titles[pageId] || 'Dashboard';
 
-<!-- ── NOTIFICATIONS ── -->
-<div class="page" id="page-notifications">
-  <div class="section">
-    <div class="notif-header">
-      <div class="notif-count" id="notif-unread-count">4 unread alerts</div>
-      <div class="mark-read" onclick="markAllRead()">Mark all read</div>
-    </div>
-    <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> /api/shock-alert · /api/disease-risk</div>
+            // Close sidebar on mobile
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+                document.getElementById('sidebarOverlay').classList.remove('open');
+            }
 
-    <div class="notif-item danger" onclick="readNotif(this)">
-      <div class="unread-dot"></div>
-      <div class="notif-icon"><i class="ph-fill ph-waves"></i></div>
-      <div class="notif-body">
-        <div class="notif-title"><i class="ph-fill ph-warning"></i> Salinity Shock Alert – Pond #1</div>
-        <div class="notif-msg">Salinity forecast to rise to 24 ppt by 14:00 tomorrow due to storm. Action required before 18:00 today.</div>
-        <div class="notif-actions-box">
-          <strong style="color:var(--danger)"><i class="ph-bold ph-target"></i> Recommended Actions:</strong><br>
-          1. Reduce pond density by 20–30%<br>
-          2. Prepare freshwater for dilution<br>
-          3. Stop evening feeding schedule
-        </div>
-        <div class="notif-time">2 hours ago · /shock-alert · Confidence: 87%</div>
-      </div>
-    </div>
+            // Load page data
+            loadPageData(pageId);
+        }
 
-    <div class="notif-item warn" onclick="readNotif(this)">
-      <div class="unread-dot"></div>
-      <div class="notif-icon"><i class="ph-fill ph-hurricane"></i></div>
-      <div class="notif-body">
-        <div class="notif-title"><i class="ph-fill ph-warning"></i> Storm Warning – Next 36h</div>
-        <div class="notif-msg">Tropical depression forecasted to hit Ca Mau. Wind gusts level 7-8, coastal waves 2-3m.</div>
-        <div class="notif-time">3 hours ago · National Weather Service</div>
-      </div>
-    </div>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('open');
+        }
 
-    <div class="notif-item warn" onclick="readNotif(this)">
-      <div class="unread-dot"></div>
-      <div class="notif-icon"><i class="ph-fill ph-bug"></i></div>
-      <div class="notif-body">
-        <div class="notif-title"><i class="ph-fill ph-warning"></i> Disease Risk – Medium</div>
-        <div class="notif-msg">Current temp & pH are favorable for Vibrio bacteria. Outbreak probability: 42% in next 72h.</div>
-        <div class="notif-actions-box">
-          <strong style="color:var(--warn)"><i class="ph-bold ph-target"></i> Recommendation:</strong> Add probiotics, inspect shrimp every 6 hours.
-        </div>
-        <div class="notif-time">5 hours ago · /disease-risk</div>
-      </div>
-    </div>
+        function cycleLocation() {
+            const idx = locations.indexOf(currentLocation);
+            currentLocation = locations[(idx + 1) % locations.length];
+            document.getElementById('currentLocation').textContent = currentLocation;
+            loadWeather();
+            showToast(`Đã chuyển sang ${currentLocation}`, 'success');
+        }
 
-    <div class="notif-item info" onclick="readNotif(this)">
-      <div class="unread-dot"></div>
-      <div class="notif-icon"><i class="ph-fill ph-chart-bar"></i></div>
-      <div class="notif-body">
-        <div class="notif-title"><i class="ph-fill ph-lightbulb"></i> Harvest Optimization – Pond #3</div>
-        <div class="notif-msg">Pond #3 has reached 82% of target size. Market prices are trending up. Recommended to harvest in 5-7 days.</div>
-        <div class="notif-time">Yesterday 08:15 · /harvest-optimization</div>
-      </div>
-    </div>
+        function switchPond(pondId, el) {
+            currentPond = pondId;
+            document.querySelectorAll('#sensorTabs .tab').forEach(t => t.classList.remove('active'));
+            if (el) el.classList.add('active');
+            loadSensorData();
+        }
 
-    <div class="notif-item ok">
-      <div class="notif-icon"><i class="ph-fill ph-check-circle"></i></div>
-      <div class="notif-body">
-        <div class="notif-title">Feeding Equipment Online</div>
-        <div class="notif-msg">06:30 feeding schedule executed successfully. 250g distributed.</div>
-        <div class="notif-time">Today 06:31 · Device #AQ-001</div>
-      </div>
-    </div>
-  </div>
-</div>
+        function selectPond(pondId, el) {
+            currentPond = pondId;
+            document.querySelectorAll('#sensorPondSelector .pond-card').forEach(c => c.classList.remove('active'));
+            if (el) el.classList.add('active');
+            loadSensorData();
+        }
 
-<!-- ── CHAT ── -->
-<div class="page" id="page-chat">
-  <div class="chat-page">
-    <div class="chat-messages" id="chat-messages">
-      <div>
-        <div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI Assistant</div>
-        <div class="chat-bubble ai">
-          Hello! I am AQUA·AI, your smart aquaculture assistant. <i class="ph ph-waves ph-inline"></i><br><br>
-          I can help you with:<br>
-          • Water quality analysis<br>
-          • Weather & disease alerts<br>
-          • Feeding & harvest planning<br>
-          • Technical farming advice<br><br>
-          Ask me anything! <i class="ph ph-fish ph-inline"></i>
-        </div>
-      </div>
-    </div>
-    <div class="chat-input-area">
-      <div class="chat-quick">
-        <div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-chart-bar ph-inline"></i> Analyze Pond #1</div>
-        <div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-warning ph-inline"></i> Today's Alerts</div>
-        <div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-shrimp ph-inline"></i> Feeding Schedule</div>
-        <div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-flask ph-inline"></i> Optimal pH?</div>
-        <div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-pill ph-inline"></i> Prevent Vibrio</div>
-      </div>
-      <div class="chat-pond-select" id="chat-pond-select">
-        <div class="chat-chip active" onclick="selectChatPond(this,'pond1')">Pond #1 – Black Tiger</div>
-        <div class="chat-chip" onclick="selectChatPond(this,'pond2')">Pond #2 – Pangasius</div>
-        <div class="chat-chip" onclick="selectChatPond(this,'pond3')">Pond #3 – Whiteleg</div>
-      </div>
-      <div class="chat-row">
-        <textarea class="chat-input" id="chat-input" placeholder="Ask AQUA·AI..." rows="1"
-          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"
-          oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-        <button class="chat-send" onclick="sendMessage()"><i class="ph-bold ph-paper-plane-right"></i></button>
-      </div>
-    </div>
-  </div>
-</div>
+        function selectFeedingPond(pondId, el) {
+            document.querySelectorAll('#feedingPondSelector .pond-card').forEach(c => c.classList.remove('active'));
+            if (el) el.classList.add('active');
+            loadFeedingLog(pondId);
+        }
 
-</div>
-<script>
-let currentPond = 'pond1';
-let currentMetric = 'salinity';
-let chatHistory = [];
-let mainChart = null;
-let compareChart = null;
-let feedChart = null;
-let unreadCount = 4;
-let chartsInitialized = false;
-let chatPond = 'pond1';
+        function switchMetric(metric, el) {
+            currentMetric = metric;
+            document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+            if (el) el.classList.add('active');
+            loadHistoryData();
+        }
 
-const API_BASE = 'https://aqua-ai-bjg6.onrender.com/api';
+        // ============ LOAD PAGE DATA ============
+        function loadPageData(pageId) {
+            switch (pageId) {
+                case 'dashboard': loadDashboard(); break;
+                case 'sensors': loadSensorPage(); break;
+                case 'weather': loadWeatherPage(); break;
+                case 'ponds': loadPonds(); break;
+                case 'alerts': loadAlerts(); break;
+                case 'feeding': loadFeedingLog('pond1'); break;
+                case 'analytics': loadAnalytics(); break;
+                case 'devices': loadDevices(); break;
+            }
+        }
 
-function switchTab(tab) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + tab).classList.add('active');
-  
-  const tabBtn = document.getElementById('tab-' + tab);
-  if (tabBtn) tabBtn.classList.add('active');
+        // ============ DASHBOARD ============
+        async function loadDashboard() {
+            // Load sensor data for stat cards
+            const sensorData = await apiCall('/api/device/sensor-data', { pond: currentPond });
+            if (sensorData) {
+                document.getElementById('statSalinity').textContent = sensorData.salinity + ' ppt';
+                document.getElementById('statDO').textContent = sensorData.do + ' mg/L';
+                document.getElementById('statPH').textContent = sensorData.ph;
+                document.getElementById('statTemp').textContent = sensorData.temperature + '°C';
+                document.getElementById('sensorPondName').textContent = sensorData.pond_name;
+            }
 
-  if (tab === 'device' && !chartsInitialized) { 
-    initCharts(); 
-    chartsInitialized = true; 
-  }
-}
-function selectMetricCard(el, metric) {
-  document.querySelectorAll('.gauge-card, .stat-card').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  currentMetric = metric;
-  loadChartData();
-  setTimeout(() => { document.getElementById('device-main-chart').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 50);
-}
+            // Load weather
+            loadWeather();
 
-async function searchLocation() {
-  const val = document.getElementById('location-search').value.trim();
-  if (!val) return;
-  document.getElementById('loc-name').textContent = val + ', Vietnam';
-  try {
-    const r = await fetch(`${API_BASE}/weather?location=${encodeURIComponent(val)}`);
-    const d = await r.json();
-    updateWeatherUI(d);
-  } catch {
-    const temps = [27,28,29,30,31,32,33];
-    const icons = ['<i class="ph-fill ph-cloud-rain"></i>','<i class="ph-fill ph-cloud-lightning"></i>','<i class="ph-fill ph-cloud-sun"></i>','<i class="ph-fill ph-sun"></i>'];
-    const descs = ['Cloudy, high humidity','Clear sky','Light rain breeze'];
-    document.getElementById('w-temp').innerHTML = temps[Math.floor(Math.random()*temps.length)] + '<sup>°C</sup>';
-    document.getElementById('w-icon').innerHTML = icons[Math.floor(Math.random()*icons.length)];
-    document.getElementById('w-desc').innerHTML = '<i class="ph-fill ph-cloud-sun"></i> ' + descs[Math.floor(Math.random()*descs.length)];
-  }
-  document.getElementById('w-updated').textContent = 'Updated: ' + new Date().toLocaleTimeString('en-US');
-  document.getElementById('location-search').value = '';
-}
+            // Load risk
+            loadWeatherRisk();
 
-function updateWeatherUI(d) {
-  document.getElementById('w-temp').innerHTML = d.temperature + '<sup>°C</sup>';
-  const iconMap = {'🌦':'<i class="ph-fill ph-cloud-rain"></i>','⛅':'<i class="ph-fill ph-cloud-sun"></i>','☀️':'<i class="ph-fill ph-sun"></i>','🌧':'<i class="ph-fill ph-cloud-rain"></i>','⛈':'<i class="ph-fill ph-cloud-lightning"></i>'};
-  document.getElementById('w-icon').innerHTML = iconMap[d.icon] || '<i class="ph-fill ph-cloud-sun"></i>';
-  document.getElementById('w-desc').innerHTML = '<i class="ph-fill ph-cloud-sun"></i> ' + d.description;
-  document.getElementById('w-badges').innerHTML = `
-    <div class="weather-badge"><i class="ph-fill ph-drop"></i> ${d.humidity}%</div>
-    <div class="weather-badge"><i class="ph-fill ph-wind"></i> ${d.wind_speed} km/h ${d.wind_dir}</div>
-    <div class="weather-badge"><i class="ph-fill ph-cloud-rain"></i> ${d.rainfall_today}mm</div>
-    <div class="weather-badge"><i class="ph-fill ph-eye"></i> ${d.visibility}km</div>
-  `;
-  if (d.forecast) {
-    const fr = document.getElementById('forecast-row');
-    fr.innerHTML = d.forecast.map(f => `
-      <div class="forecast-item">
-        <div class="forecast-day">${f.day}</div>
-        <div class="forecast-icon">${iconMap[f.icon]||'<i class="ph-fill ph-cloud-sun"></i>'}</div>
-        <div class="forecast-temp">${f.temp}°</div>
-        <div class="forecast-rain">${f.rain_prob}%</div>
-      </div>
-    `).join('');
-  }
-}
+            // Load recommendations
+            loadRecommendations();
 
-function selectPond(el, pondId) {
-  document.querySelectorAll('#pond-selector .pond-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  currentPond = pondId;
-  loadSensorData(pondId);
-  loadChartData();
-}
+            // Load harvest
+            loadHarvest();
 
-async function loadSensorData(pond) {
-  try {
-    const r = await fetch(`${API_BASE}/device/sensor-data?pond=${pond}`);
-    const d = await r.json();
-    updateSensors(d);
-  } catch {}
-}
+            // Load alerts summary
+            loadAlertSummary();
+        }
 
-function updateSensors(d) {
-  const salinityColor = (d.salinity >= 10 && d.salinity <= 20) ? 'var(--green)' : 'var(--warn)';
-  document.getElementById('g-salinity').innerHTML = `${d.salinity}<span class="gauge-unit"> ppt</span>`;
-  document.getElementById('g-salinity').style.color = salinityColor;
-  document.getElementById('gb-salinity').style.width = Math.min(100,(d.salinity/25)*100) + '%';
-  document.getElementById('gb-salinity').style.background = salinityColor;
-  document.getElementById('g-do').innerHTML = `${d.do}<span class="gauge-unit"> mg/L</span>`;
-  document.getElementById('gb-do').style.width = Math.min(100,(d.do/10)*100) + '%';
-  document.getElementById('g-ph').textContent = d.ph;
-  document.getElementById('gb-ph').style.width = ((d.ph-6)/4)*100 + '%';
-  document.getElementById('g-temp').innerHTML = `${d.temperature}<span class="gauge-unit">°C</span>`;
-  document.getElementById('gb-temp').style.width = ((d.temperature-20)/20)*100 + '%';
-  document.getElementById('g-nh3').innerHTML = `${d.ammonia}<span class="stat-unit"> mg/L</span>`;
-  document.getElementById('g-no2').innerHTML = `${d.nitrite}<span class="stat-unit"> mg/L</span>`;
-  document.getElementById('g-alk').innerHTML = `${d.alkalinity}<span class="stat-unit"> mg/L</span>`;
-  document.getElementById('g-h2s').innerHTML = `${d.h2s}<span class="stat-unit"> mg/L</span>`;
-}
+        async function loadWeather() {
+            const data = await apiCall('/api/weather', { location: currentLocation });
+            if (!data) return;
 
-const metricNames = { salinity:'Salinity', do:'Oxygen (DO)', ph:'pH', temperature:'Temperature', ammonia:'Ammonia (NH₃)' };
+            document.getElementById('weatherDate').textContent = new Date().toLocaleDateString('vi-VN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('weatherIcon').textContent = data.icon;
+            document.getElementById('weatherTemp').textContent = data.temperature + '°C';
+            document.getElementById('weatherDesc').textContent = data.description;
+            document.getElementById('wdHumidity').textContent = data.humidity + '%';
+            document.getElementById('wdWind').textContent = data.wind_speed + ' km/h';
+            document.getElementById('wdRain').textContent = data.rainfall_today + ' mm';
+            document.getElementById('wdUV').textContent = data.uv_index;
+            document.getElementById('wdTide').textContent = data.tide_height + ' m';
+            document.getElementById('wdPressure').textContent = data.pressure + ' hPa';
 
-function initCharts() {
-  if (!compareChart) buildCompareChart();
-  if (!feedChart) buildFeedChart();
-  loadChartData();
-}
+            // Forecast
+            const forecastEl = document.getElementById('forecastList');
+            forecastEl.innerHTML = data.forecast.map(f => `
+                <div class="forecast-item">
+                    <div class="fi-day">${f.day}</div>
+                    <div class="fi-icon">${f.icon}</div>
+                    <div class="fi-temp">${f.temp}°C</div>
+                    <div class="fi-rain">🌧 ${f.rain_prob}%</div>
+                </div>
+            `).join('');
 
-async function loadChartData() {
-  document.getElementById('chart-loading').style.display = 'flex';
-  document.getElementById('chart-title').textContent = `${metricNames[currentMetric]||currentMetric} History`;
-  let data, unit, safeMin, safeMax;
-  try {
-    const r = await fetch(`${API_BASE}/device/history?pond=${currentPond}&metric=${currentMetric}&hours=48`);
-    const d = await r.json();
-    data = d.data; unit = d.unit; safeMin = d.safe_min; safeMax = d.safe_max;
-  } catch {
-    const configs = { salinity:[16,3], do:[6.5,1], ph:[7.8,0.25], temperature:[29,2], ammonia:[0.03,0.01] };
-    const units = { salinity:'ppt', do:'mg/L', ph:'', temperature:'°C', ammonia:'mg/L' };
-    const safeMins = { salinity:10, do:5, ph:7.5, temperature:26, ammonia:0 };
-    const safeMaxes = { salinity:20, do:10, ph:8.5, temperature:32, ammonia:0.1 };
-    const [base, amp] = configs[currentMetric]||[10,2];
-    unit = units[currentMetric]||''; safeMin = safeMins[currentMetric]; safeMax = safeMaxes[currentMetric];
-    data = Array.from({length:48},(_,i) => {
-      const t = new Date(Date.now()-(47-i)*3600000);
-      return { time: t.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}), value: +(base+amp*Math.sin(2*Math.PI*i/24)+(Math.random()-0.5)*0.4).toFixed(2) };
-    });
-  }
-  const vals = data.map(d => d.value);
-  const mn = Math.min(...vals), mx = Math.max(...vals), avg = vals.reduce((a,b)=>a+b,0)/vals.length;
-  document.getElementById('cs-min').textContent = mn.toFixed(2);
-  document.getElementById('cs-avg').textContent = avg.toFixed(2);
-  document.getElementById('cs-max').textContent = mx.toFixed(2);
-  document.getElementById('cs-unit').textContent = unit||'—';
-  const sample = data.filter((_,i)=>i%3===0);
-  if (mainChart) mainChart.destroy();
-  mainChart = new Chart(document.getElementById('main-chart'), {
-    type:'line',
-    data: { labels: sample.map(d=>d.time), datasets:[{ data: sample.map(d=>d.value), borderColor:'#2D69FF', backgroundColor:'rgba(45,105,255,0.08)', borderWidth:2, pointRadius:0, pointHoverRadius:4, fill:true, tension:0.4 }] },
-    options: {
-      responsive:true, interaction:{mode:'index',intersect:false},
-      plugins:{ legend:{display:false}, annotation:{ annotations: safeMin!=null?[{type:'line',yMin:safeMin,yMax:safeMax,borderColor:'rgba(75,170,125,0.2)',borderWidth:0,backgroundColor:'rgba(75,170,125,0.05)'}]:[] }, tooltip:{callbacks:{label:ctx=>`${ctx.parsed.y.toFixed(2)} ${unit}`}} },
-      scales:{ x:{ticks:{font:{size:9},color:'#6a85b8',maxTicksLimit:8},grid:{color:'rgba(45,105,255,0.06)'}}, y:{ticks:{font:{size:9},color:'#6a85b8'},grid:{color:'rgba(45,105,255,0.06)'}} }
-    }
-  });
-  document.getElementById('chart-loading').style.display = 'none';
-}
+            // Update page weather too
+            document.getElementById('weatherPageIcon').textContent = data.icon;
+            document.getElementById('weatherPageTemp').textContent = data.temperature + '°C';
+            document.getElementById('weatherPageDesc').textContent = data.description;
+            document.getElementById('weatherPageDate').textContent = data.location;
+            document.getElementById('weatherFeelsLike').textContent = data.feels_like + '°C';
+        }
 
-function buildCompareChart() {
-  compareChart = new Chart(document.getElementById('compare-chart'),{
-    type:'radar',
-    data:{
-      labels:['Salinity','DO','pH','Temp','Alk'],
-      datasets:[
-        {label:'Pond #1',data:[75,85,78,65,75],borderColor:'#2D69FF',backgroundColor:'rgba(45,105,255,0.08)',borderWidth:2,pointBackgroundColor:'#2D69FF'},
-        {label:'Pond #2',data:[60,70,82,70,80],borderColor:'#4BAA7D',backgroundColor:'rgba(75,170,125,0.08)',borderWidth:2,pointBackgroundColor:'#4BAA7D'},
-        {label:'Pond #3',data:[80,90,75,60,70],borderColor:'#e09c00',backgroundColor:'rgba(224,156,0,0.08)',borderWidth:2,pointBackgroundColor:'#e09c00'},
-      ]
-    },
-    options:{responsive:true,plugins:{legend:{labels:{font:{size:10},color:'#2d5096'}}},scales:{r:{ticks:{font:{size:9},color:'#6a85b8',backdropColor:'transparent'},grid:{color:'rgba(45,105,255,0.1)'},pointLabels:{font:{size:10},color:'#1a3266'}}}}
-  });
-}
+        async function loadWeatherRisk() {
+            const data = await apiCall('/api/weather-risk', { location: currentLocation });
+            if (!data) return;
 
-function buildFeedChart() {
-  feedChart = new Chart(document.getElementById('feed-chart'),{
-    type:'bar',
-    data:{
-      labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-      datasets:[
-        {label:'Pond #1',data:[550,580,500,620,590,540,560],backgroundColor:'rgba(45,105,255,0.75)',borderRadius:4},
-        {label:'Pond #2',data:[800,820,780,850,810,790,830],backgroundColor:'rgba(75,170,125,0.75)',borderRadius:4},
-        {label:'Pond #3',data:[400,420,380,450,410,390,430],backgroundColor:'rgba(224,156,0,0.75)',borderRadius:4}
-      ]
-    },
-    options:{responsive:true,plugins:{legend:{labels:{font:{size:10},color:'#2d5096'}}},scales:{x:{ticks:{font:{size:10},color:'#6a85b8'},grid:{display:false}},y:{ticks:{font:{size:10},color:'#6a85b8'},grid:{color:'rgba(45,105,255,0.06)'}}}}
-  });
-}
+            const circle = document.getElementById('riskScoreCircle');
+            circle.style.background = data.color;
+            document.getElementById('riskScoreValue').textContent = data.risk_score;
 
-function readNotif(el) {
-  const dot = el.querySelector('.unread-dot');
-  if (dot){dot.remove();unreadCount=Math.max(0,unreadCount-1);updateNotifCount();}
-}
-function markAllRead() { document.querySelectorAll('.unread-dot').forEach(d=>d.remove()); unreadCount=0; updateNotifCount(); }
-function updateNotifCount() {
-  document.getElementById('notif-unread-count').textContent = unreadCount>0?`${unreadCount} unread alerts`:'No new alerts';
-  if (unreadCount===0) document.getElementById('notif-badge').style.display='none';
-}
+            const levelColors = { 'Thấp': 'var(--success)', 'Trung bình': 'var(--warning)', 'Cao': 'var(--danger)' };
+            const badgeColors = { 'Thấp': 'badge-success', 'Trung bình': 'badge-warning', 'Cao': 'badge-danger' };
+            const badge = document.getElementById('riskLevelBadge');
+            badge.textContent = data.level;
+            badge.className = `badge ${badgeColors[data.level] || 'badge-info'}`;
 
-function selectChatPond(el, pond) {
-  document.querySelectorAll('#chat-pond-select .chat-chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active'); chatPond=pond;
-}
+            document.getElementById('riskLevel').textContent = `Rủi ro ${data.level}`;
+            document.getElementById('riskMessage').textContent = data.message;
 
-function sendQuick(el) {
-  const txt = el.textContent.trim();
-  document.getElementById('chat-input').value=txt; sendMessage();
-}
+            document.getElementById('riskActions').innerHTML = data.actions.map(a =>
+                `<div style="display: flex; align-items: center; gap: 8px; padding: 8px 0; font-size: 13px; color: var(--text-secondary);">
+                    <i class="ri-check-line" style="color: var(--green-field);"></i> ${a}
+                </div>`
+            ).join('');
 
-async function sendMessage() {
-  const input = document.getElementById('chat-input');
-  const msg = input.value.trim();
-  if (!msg) return;
-  input.value=''; input.style.height='auto';
-  appendBubble('user',msg);
-  const typingId='typing-'+Date.now();
-  const msgs = document.getElementById('chat-messages');
-  const typingDiv = document.createElement('div');
-  typingDiv.id=typingId;
-  typingDiv.innerHTML=`<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI</div><div class="chat-bubble ai"><div class="typing"><span></span><span></span><span></span></div></div>`;
-  msgs.appendChild(typingDiv); msgs.scrollTop=msgs.scrollHeight;
-  try {
-    const response = await fetch(`${API_BASE}/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,pond:chatPond,history:chatHistory})});
-    const data = await response.json();
-    const reply = data.reply||'Sorry, an error occurred.';
-    document.getElementById(typingId).remove();
-    appendBubble('ai',reply);
-    chatHistory.push({role:'user',content:msg}); chatHistory.push({role:'assistant',content:reply});
-  } catch {
-    document.getElementById(typingId).remove(); appendBubble('ai','⚠️ Cannot connect to AI server.');
-  }
-}
+            // Update weather page risk
+            const meterEl = document.getElementById('weatherRiskMeter');
+            if (meterEl) {
+                meterEl.innerHTML = `
+                    <div class="risk-score-circle" style="background: ${data.color}; font-size: 28px;">${data.risk_score}</div>
+                    <div class="risk-info">
+                        <h3>Rủi ro ${data.level}</h3>
+                        <p>${data.message}</p>
+                        <div style="margin-top: 12px;">
+                            ${data.actions.map(a => `<div style="display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 13px; color: var(--text-secondary);">
+                                <i class="ri-check-line" style="color: var(--green-field);"></i> ${a}
+                            </div>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+        }
 
-function appendBubble(role,text) {
-  const msgs=document.getElementById('chat-messages');
-  const div=document.createElement('div');
-  if(role==='ai'){div.innerHTML=`<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI</div><div class="chat-bubble ai">${text.replace(/\n/g,'<br>')}</div>`;}
-  else{div.style.display='flex';div.style.justifyContent='flex-end';div.innerHTML=`<div class="chat-bubble user">${text.replace(/\n/g,'<br>')}</div>`;}
-  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
-}
+        async function loadSensorData() {
+            const data = await apiCall('/api/device/sensor-data', { pond: currentPond });
+            if (!data) return;
 
-document.getElementById('w-updated').textContent='Updated: '+new Date().toLocaleTimeString('en-US');
-setInterval(()=>{document.getElementById('w-updated').textContent='Updated: '+new Date().toLocaleTimeString('en-US');},30000);
-setInterval(()=>{if(document.getElementById('page-device').classList.contains('active')){loadSensorData(currentPond);}},60000);
-</script>
+            const sensors = [
+                { name: 'Độ mặn', value: data.salinity, unit: 'ppt', icon: '💧', range: '10-20 ppt', safe: data.salinity >= 10 && data.salinity <= 20 },
+                { name: 'DO', value: data.do, unit: 'mg/L', icon: '🌬️', range: '5-10 mg/L', safe: data.do >= 5 && data.do <= 10 },
+                { name: 'pH', value: data.ph, unit: '', icon: '️', range: '7.5-8.5', safe: data.ph >= 7.5 && data.ph <= 8.5 },
+                { name: 'Nhiệt độ', value: data.temperature, unit: '°C', icon: '🌡️', range: '26-32 °C', safe: data.temperature >= 26 && data.temperature <= 32 },
+                { name: 'NH3', value: data.ammonia, unit: 'mg/L', icon: '️', range: '< 0.1 mg/L', safe: data.ammonia < 0.1 },
+                { name: 'NO2', value: data.nitrite, unit: 'mg/L', icon: '🔬', range: '< 0.1 mg/L', safe: data.nitrite < 0.1 },
+                { name: 'Kiềm', value: data.alkalinity, unit: 'mg/L', icon: '', range: '100-140', safe: true },
+                { name: 'Đục', value: data.turbidity, unit: 'NTU', icon: '👁️', range: '25-55 NTU', safe: true },
+                { name: 'H2S', value: data.h2s, unit: 'mg/L', icon: '️', range: '< 0.003', safe: data.h2s < 0.003 },
+            ];
+
+            const gridEl = document.getElementById('sensorGrid');
+            const detailGridEl = document.getElementById('sensorDetailGrid');
+
+            const html = sensors.map(s => {
+                const cls = !s.safe ? (s.name === 'NH3' || s.name === 'H2S' ? 'danger' : 'warning') : '';
+                return `<div class="sensor-item ${cls}">
+                    <div class="sensor-icon">${s.icon}</div>
+                    <div class="sensor-name">${s.name}</div>
+                    <div class="sensor-value">${s.value}</div>
+                    <div class="sensor-unit">${s.unit}</div>
+                    <div class="sensor-range">${s.range}</div>
+                </div>`;
+            }).join('');
+
+            if (gridEl) gridEl.innerHTML = html;
+            if (detailGridEl) detailGridEl.innerHTML = html;
+        }
+
+        async function loadRecommendations() {
+            const data = await apiCall('/api/action-recommendation', { pond: currentPond });
+            if (!data) return;
+
+            const el = document.getElementById('recommendations');
+            const priorityIcons = { high: 'ri-error-warning-fill', medium: 'ri-information-fill', low: 'ri-checkbox-circle-fill' };
+
+            el.innerHTML = data.recommendations.map(r => `
+                <div class="rec-card">
+                    <div class="rec-priority ${r.priority}">
+                        <i class="${priorityIcons[r.priority]}"></i>
+                    </div>
+                    <div class="rec-content">
+                        <div class="rec-action">${r.action}</div>
+                        <div class="rec-deadline"><i class="ri-time-line"></i> ${r.deadline}</div>
+                    </div>
+                    <span class="badge ${r.priority === 'high' ? 'badge-danger' : r.priority === 'medium' ? 'badge-warning' : 'badge-success'}">${r.priority === 'high' ? 'Cao' : r.priority === 'medium' ? 'TB' : 'Thấp'}</span>
+                </div>
+            `).join('');
+        }
+
+        async function loadHarvest() {
+            const data = await apiCall('/api/harvest-optimization', { pond: currentPond });
+            if (!data) return;
+
+            const el = document.getElementById('harvestCard');
+            el.innerHTML = `
+                <div class="harvest-card">
+                    <h3>🎯 Tăng trưởng</h3>
+                    <div class="harvest-value">${data.growth_percent}%</div>
+                    <div class="harvest-detail">Còn ${data.days_to_target} ngày đạt kích thước thương phẩm</div>
+                    <div style="margin-top: 16px; display: flex; gap: 24px;">
+                        <div>
+                            <div style="font-size: 11px; opacity: 0.7;">Sản lượng ước tính</div>
+                            <div style="font-size: 20px; font-weight: 700;">${data.estimated_yield} kg</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 11px; opacity: 0.7;">Lợi nhuận ước tính</div>
+                            <div style="font-size: 20px; font-weight: 700;">${(data.profit_estimate / 1000000).toFixed(1)}M ₫</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.2);">
+                        <div style="font-size: 12px; opacity: 0.8;"> Cửa sổ thu hoạch: <strong>${data.recommended_window}</strong></div>
+                        <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;"> Giá thị trường: <strong>${data.market_price_trend === 'up' ? 'Tăng ↗' : 'Giảm '}</strong></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function loadAlertSummary() {
+            const data = await apiCall('/api/shock-alert', { pond: currentPond });
+            if (!data) return;
+
+            const el = document.getElementById('alertsList');
+            if (!el) return;
+
+            el.innerHTML = data.alerts.map(a => `
+                <div class="alert-card ${a.severity}">
+                    <div class="alert-icon">${a.severity === 'danger' ? '🚨' : '⚠️'}</div>
+                    <div class="alert-content">
+                        <div class="alert-title">${a.title}</div>
+                        <div class="alert-message">${a.message}</div>
+                        <div class="alert-actions">
+                            ${a.actions.map(act => `<span class="alert-action">${act}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="alert-meta">${a.time}</div>
+                </div>
+            `).join('');
+        }
+
+        async function loadAlerts() {
+            loadAlertSummary();
+            loadDiseaseRisk();
+        }
+
+        async function loadDiseaseRisk() {
+            const data = await apiCall('/api/disease-risk', { pond: currentPond });
+            if (!data) return;
+
+            const el = document.getElementById('diseaseRisk');
+            el.innerHTML = `
+                <div class="grid-2" style="margin-bottom: 16px;">
+                    <div>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Xác suất Vibrio</div>
+                        <div style="font-size: 28px; font-weight: 700; color: ${data.risk_level === 'high' ? 'var(--danger)' : 'var(--warning)'};">${data.vibrio_probability}%</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Mức độ rủi ro</div>
+                        <span class="badge ${data.risk_level === 'high' ? 'badge-danger' : 'badge-warning'}">${data.risk_level === 'high' ? 'Cao' : 'Trung bình'}</span>
+                    </div>
+                </div>
+                <div class="risk-conditions" style="margin-bottom: 16px;">
+                    <div class="risk-cond ${data.conditions.temperature_risk ? 'risky' : 'safe'}">
+                        <i class="ri-temp-hot-line"></i> Nhiệt độ: ${data.conditions.temperature_risk ? 'Rủi ro' : 'An toàn'}
+                    </div>
+                    <div class="risk-cond ${data.conditions.ph_risk ? 'risky' : 'safe'}">
+                        <i class="ri-flask-line"></i> pH: ${data.conditions.ph_risk ? 'Rủi ro' : 'An toàn'}
+                    </div>
+                    <div class="risk-cond ${data.conditions.do_risk ? 'risky' : 'safe'}">
+                        <i class="ri-windy-line"></i> DO: ${data.conditions.do_risk ? 'Rủi ro' : 'An toàn'}
+                    </div>
+                </div>
+                <div style="padding: 12px 16px; background: var(--alice-blue); border-radius: var(--radius-sm); font-size: 13px; color: var(--ultramarine);">
+                     <strong>Khuyến nghị:</strong> ${data.recommendation}
+                </div>
+                <div style="margin-top: 12px; font-size: 12px; color: var(--text-muted);">
+                    <i class="ri-time-line"></i> Kiểm tra tiếp theo: ${data.next_check}
+                </div>
+            `;
+        }
+
+        async function loadWeatherPage() {
+            loadWeather();
+            loadWeatherRisk();
+        }
+
+        async function loadSensorPage() {
+            loadSensorData();
+            loadHistoryData();
+        }
+
+        async function loadHistoryData() {
+            const data = await apiCall('/api/device/history', {
+                pond: currentPond,
+                metric: currentMetric,
+                hours: 48
+            });
+            if (!data) return;
+
+            const canvas = document.getElementById('historyChart');
+            if (!canvas) return;
+
+            drawChart(canvas, data.data, currentMetric, data.unit, data.safe_min, data.safe_max);
+        }
+
+        async function loadAnalytics() {
+            const metrics = ['salinity', 'do', 'ph', 'temperature'];
+            const canvasIds = ['salinityChart', 'doChart', 'phChart', 'tempChart'];
+
+            for (let i = 0; i < metrics.length; i++) {
+                const data = await apiCall('/api/device/history', {
+                    pond: currentPond,
+                    metric: metrics[i],
+                    hours: 48
+                });
+                if (data) {
+                    const canvas = document.getElementById(canvasIds[i]);
+                    if (canvas) {
+                        drawChart(canvas, data.data, metrics[i], data.unit, data.safe_min, data.safe_max);
+                    }
+                }
+            }
+        }
+
+        async function loadPonds() {
+            const data = await apiCall('/api/ponds');
+            if (!data) return;
+
+            const gridEl = document.getElementById('pondsGrid');
+            const tbodyEl = document.getElementById('pondsTableBody');
+
+            const speciesIcons = { 'Tôm sú': '', 'Cá tra': '🐟', 'Tôm thẻ': '🦐' };
+
+            gridEl.innerHTML = data.ponds.map(p => `
+                <div class="card" style="cursor: pointer;" onclick="switchPond('${p.id}'); switchPage('sensors');">
+                    <div style="font-size: 32px; margin-bottom: 12px;">${speciesIcons[p.species] || '🐠'}</div>
+                    <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">${p.name}</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">${p.species}</div>
+                    <div style="display: flex; gap: 16px; margin-top: 12px;">
+                        <div>
+                            <div style="font-size: 11px; color: var(--text-muted);">Diện tích</div>
+                            <div style="font-size: 14px; font-weight: 600;">${p.area.toLocaleString()} m²</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 11px; color: var(--text-muted);">Mật độ</div>
+                            <div style="font-size: 14px; font-weight: 600;">${p.density} con/m²</div>
+                        </div>
+                    </div>
+                    <div class="pond-status online" style="margin-top: 12px;"><i class="ri-circle-fill"></i> Online</div>
+                </div>
+            `).join('');
+
+            tbodyEl.innerHTML = data.ponds.map(p => `
+                <tr>
+                    <td><strong>${p.id}</strong></td>
+                    <td>${p.name}</td>
+                    <td>${speciesIcons[p.species] || '🐠'} ${p.species}</td>
+                    <td>${p.area.toLocaleString()} m²</td>
+                    <td>${p.density} con/m²</td>
+                    <td><span class="badge badge-success">Online</span></td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadFeedingLog(pondId = 'pond1') {
+            const data = await apiCall('/api/device/feeding-log', { pond: pondId });
+            if (!data) return;
+
+            document.getElementById('feedingDate').textContent = data.date;
+            document.getElementById('feedingTotal').textContent = data.total_today + ' g';
+            document.getElementById('feedingTarget').textContent = data.target + ' g';
+
+            const progress = Math.round((data.total_today / data.target) * 100);
+            document.getElementById('feedingProgress').textContent = progress + '%';
+            document.getElementById('feedingProgressBar').style.width = Math.min(progress, 100) + '%';
+
+            const typeIcons = { auto: '🤖', manual: '' };
+            const typeLabels = { auto: 'Tự động', manual: 'Thủ công' };
+
+            document.getElementById('feedingTableBody').innerHTML = data.logs.map(l => `
+                <tr>
+                    <td><strong>${l.time}</strong></td>
+                    <td><span class="badge badge-info">${typeLabels[l.type]} ${l.icon}</span></td>
+                    <td>${l.feed}</td>
+                    <td><strong>${l.amount} g</strong></td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadDevices() {
+            const data = await apiCall('/api/device/status');
+            if (!data) return;
+
+            document.getElementById('deviceOnlineCount').textContent = `${data.online}/${data.total} Online`;
+
+            const listEl = document.getElementById('deviceList');
+            listEl.innerHTML = data.devices.map(d => {
+                const batClass = d.battery > 60 ? '' : d.battery > 30 ? 'low' : 'critical';
+                return `
+                    <div class="device-item">
+                        <div class="device-dot ${d.status}"></div>
+                        <div class="device-info">
+                            <div class="device-name">${d.id} – Ao ${d.pond}</div>
+                            <div class="device-detail">Lần cuối: ${new Date(d.last_seen).toLocaleTimeString('vi-VN')}</div>
+                            <div class="battery-bar">
+                                <div class="battery-fill ${batClass}" style="width: ${d.battery}%"></div>
+                            </div>
+                        </div>
+                        <div class="device-battery">${d.battery}%</div>
+                    </div>
+                `;
+            }).join('');
+
+            // Cards
+            const cardsEl = document.getElementById('deviceStatusCards');
+            cardsEl.innerHTML = data.devices.map(d => `
+                <div class="card text-center">
+                    <div style="font-size: 28px; margin-bottom: 8px;">${d.status === 'online' ? '📡' : ''}</div>
+                    <div style="font-size: 14px; font-weight: 600;">${d.id}</div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">${d.pond}</div>
+                    <span class="badge ${d.status === 'online' ? 'badge-success' : 'badge-danger'}" style="margin-top: 8px;">${d.status === 'online' ? 'Online' : 'Offline'}</span>
+                    <div style="margin-top: 12px; font-size: 13px;"> ${d.battery}%</div>
+                </div>
+            `).join('');
+        }
+
+        // ============ CHART DRAWING ============
+        function drawChart(canvas, data, metric, unit, safeMin, safeMax) {
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentElement.getBoundingClientRect();
+
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            ctx.scale(dpr, dpr);
+
+            const w = rect.width;
+            const h = rect.height;
+            const padding = { top: 30, right: 20, bottom: 40, left: 50 };
+            const chartW = w - padding.left - padding.right;
+            const chartH = h - padding.top - padding.bottom;
+
+            // Clear
+            ctx.clearRect(0, 0, w, h);
+
+            // Parse data
+            const values = data.map(d => d.value);
+            const labels = data.map(d => d.time);
+            const minVal = Math.min(...values) - 1;
+            const maxVal = Math.max(...values) + 1;
+            const range = maxVal - minVal || 1;
+
+            // Grid lines
+            ctx.strokeStyle = '#E2ECF6';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 4; i++) {
+                const y = padding.top + (chartH / 4) * i;
+                ctx.beginPath();
+                ctx.moveTo(padding.left, y);
+                ctx.lineTo(w - padding.right, y);
+                ctx.stroke();
+
+                const val = maxVal - (range / 4) * i;
+                ctx.fillStyle = '#8E9DB0';
+                ctx.font = '11px Inter';
+                ctx.textAlign = 'right';
+                ctx.fillText(val.toFixed(1) + (unit ? ' ' + unit : ''), padding.left - 8, y + 4);
+            }
+
+            // Safe zone
+            if (safeMin !== undefined && safeMax !== undefined) {
+                const yMin = padding.top + chartH - ((safeMin - minVal) / range) * chartH;
+                const yMax = padding.top + chartH - ((safeMax - minVal) / range) * chartH;
+                ctx.fillStyle = 'rgba(34, 197, 94, 0.08)';
+                ctx.fillRect(padding.left, Math.min(yMin, yMax), chartW, Math.abs(yMax - yMin));
+
+                ctx.strokeStyle = 'rgba(34, 197, 94, 0.3)';
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(padding.left, yMax);
+                ctx.lineTo(w - padding.right, yMax);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(padding.left, yMin);
+                ctx.lineTo(w - padding.right, yMin);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                ctx.fillStyle = '#22C55E';
+                ctx.font = '10px Inter';
+                ctx.textAlign = 'left';
+                ctx.fillText(`An toàn: ${safeMin}-${safeMax}${unit ? ' ' + unit : ''}`, padding.left + 4, Math.max(yMax, yMin) - 4);
+            }
+
+            // Draw line
+            const colorMap = {
+                salinity: '#2D69FF',
+                do: '#4BAA7D',
+                ph: '#F59E0B',
+                temperature: '#EF4444',
+                ammonia: '#8B5CF6'
+            };
+            const lineColor = colorMap[metric] || '#2D69FF';
+
+            // Area fill
+            ctx.beginPath();
+            values.forEach((v, i) => {
+                const x = padding.left + (i / (values.length - 1)) * chartW;
+                const y = padding.top + chartH - ((v - minVal) / range) * chartH;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.lineTo(padding.left + chartW, padding.top + chartH);
+            ctx.lineTo(padding.left, padding.top + chartH);
+            ctx.closePath();
+            const gradient = ctx.createLinearGradient(0, padding.top, 0, padding.top + chartH);
+            gradient.addColorStop(0, lineColor + '30');
+            gradient.addColorStop(1, lineColor + '05');
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            // Line
+            ctx.beginPath();
+            ctx.strokeStyle = lineColor;
+            ctx.lineWidth = 2.5;
+            ctx.lineJoin = 'round';
+            values.forEach((v, i) => {
+                const x = padding.left + (i / (values.length - 1)) * chartW;
+                const y = padding.top + chartH - ((v - minVal) / range) * chartH;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+
+            // Last point dot
+            const lastX = padding.left + chartW;
+            const lastY = padding.top + chartH - ((values[values.length - 1] - minVal) / range) * chartH;
+            ctx.beginPath();
+            ctx.arc(lastX, lastY, 5, 0, Math.PI * 2);
+            ctx.fillStyle = lineColor;
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(lastX, lastY, 8, 0, Math.PI * 2);
+            ctx.fillStyle = lineColor + '30';
+            ctx.fill();
+
+            // X labels
+            ctx.fillStyle = '#8E9DB0';
+            ctx.font = '10px Inter';
+            ctx.textAlign = 'center';
+            const step = Math.ceil(values.length / 8);
+            for (let i = 0; i < values.length; i += step) {
+                const x = padding.left + (i / (values.length - 1)) * chartW;
+                ctx.fillText(labels[i], x, h - 10);
+            }
+
+            // Metric label
+            ctx.fillStyle = lineColor;
+            ctx.font = 'bold 12px Inter';
+            ctx.textAlign = 'left';
+            ctx.fillText(`${metric.toUpperCase()}`, padding.left, 18);
+        }
+
+        // ============ CHAT ============
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            input.value = '';
+
+            // Add user message
+            addChatMessage('user', message);
+            chatHistory.push({ role: 'user', content: message });
+
+            // Show typing
+            const typingEl = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'chat-msg ai';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="chat-avatar"><i class="ri-robot-2-line"></i></div>
+                <div class="chat-bubble">
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            typingDiv.style.animation = 'fadeInUp 0.3s ease';
+            typingEl.appendChild(typingDiv);
+            typingEl.scrollTop = typingEl.scrollHeight;
+
+            // Disable send button
+            document.getElementById('chatSendBtn').disabled = true;
+
+            try {
+                const resp = await fetch(`${API_BASE}/api/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: message,
+                        pond: currentPond,
+                        history: chatHistory.slice(-10)
+                    })
+                });
+                const data = await resp.json();
+
+                // Remove typing indicator
+                const typing = document.getElementById('typingIndicator');
+                if (typing) typing.remove();
+
+                addChatMessage('ai', data.reply || '⚠️ Có lỗi xảy ra khi xử lý yêu cầu.');
+                chatHistory.push({ role: 'assistant', content: data.reply });
+            } catch (err) {
+                const typing = document.getElementById('typingIndicator');
+                if (typing) typing.remove();
+                addChatMessage('ai', '⚠️ Không thể kết nối đến máy chủ. Vui lòng thử lại sau.');
+            }
+
+            document.getElementById('chatSendBtn').disabled = false;
+        }
+
+        function addChatMessage(role, text) {
+            const el = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = `chat-msg ${role}`;
+            div.style.animation = 'fadeInUp 0.3s ease';
+
+            if (role === 'ai') {
+                div.innerHTML = `
+                    <div class="chat-avatar"><i class="ri-robot-2-line"></i></div>
+                    <div class="chat-bubble">${formatChatMessage(text)}</div>
+                `;
+            } else {
+                div.innerHTML = `
+                    <div class="chat-avatar"><i class="ri-user-line"></i></div>
+                    <div class="chat-bubble">${escapeHtml(text)}</div>
+                `;
+            }
+
+            el.appendChild(div);
+            el.scrollTop = el.scrollHeight;
+        }
+
+        function formatChatMessage(text) {
+            // Basic markdown-like formatting
+            let formatted = escapeHtml(text);
+            formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            formatted = formatted.replace(/\n/g, '<br>');
+            return formatted;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ============ TOAST ============
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+
+            const icons = {
+                success: 'ri-check-line',
+                danger: 'ri-error-warning-line',
+                warning: 'ri-alert-line',
+                info: 'ri-information-line'
+            };
+
+            toast.innerHTML = `<i class="${icons[type] || icons.info}" style="font-size: 18px;"></i> ${message}`;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.remove(), 5000);
+        }
+
+        // ============ REFRESH ============
+        function refreshAll() {
+            loadDashboard();
+            showToast('Đã làm mới dữ liệu', 'success');
+        }
+
+        // ============ INIT ============
+        async function init() {
+            loadDashboard();
+
+            // Auto refresh every 30 seconds
+            refreshInterval = setInterval(() => {
+                const activePage = document.querySelector('.page.active');
+                if (activePage) {
+                    const pageId = activePage.id.replace('page-', '');
+                    if (pageId === 'dashboard' || pageId === 'sensors') {
+                        loadSensorData();
+                    }
+                }
+            }, 30000);
+
+            // Handle resize for charts
+            window.addEventListener('resize', () => {
+                const activePage = document.querySelector('.page.active');
+                if (activePage) {
+                    const pageId = activePage.id.replace('page-', '');
+                    if (pageId === 'sensors' || pageId === 'analytics') {
+                        loadPageData(pageId);
+                    }
+                }
+            });
+        }
+
+        // Start
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>
+

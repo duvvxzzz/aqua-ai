@@ -2,8 +2,10 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AQUA·AI – Giám sát Nuôi trồng Thủy sản</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>AQUA·AI</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/fontsource-inter@5.0.15/index.min.css" rel="stylesheet">
     <style>
@@ -28,19 +30,17 @@
             --warning-bg: #FEF3C7;
             --success: #22C55E;
             --success-bg: #DCFCE7;
-            --sidebar-width: 260px;
-            --header-height: 70px;
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 20px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
-            --shadow-lg: 0 10px 30px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-sm: 10px;
+            --radius-md: 14px;
+            --radius-lg: 18px;
+            --radius-xl: 22px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -48,384 +48,378 @@
             color: var(--text-primary);
             overflow-x: hidden;
             min-height: 100vh;
+            min-height: 100dvh;
+            padding-bottom: 80px;
         }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+        ::-webkit-scrollbar { width: 0; }
 
-        /* Sidebar */
-        .sidebar {
-            position: fixed;
-            left: 0; top: 0;
-            width: var(--sidebar-width);
-            height: 100vh;
+        /* Status Bar */
+        .status-bar {
+            height: env(safe-area-inset-top, 0px);
             background: var(--bg-card);
-            border-right: 1px solid var(--border-color);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            transition: var(--transition);
         }
 
-        .sidebar-brand {
-            padding: 20px 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .sidebar-brand img {
-            width: 42px; height: 42px;
-            border-radius: 10px;
-        }
-
-        .sidebar-brand h1 {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--ultramarine);
-            letter-spacing: -0.5px;
-        }
-
-        .sidebar-brand span {
-            font-size: 11px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .sidebar-nav {
-            flex: 1;
-            padding: 16px 12px;
-            overflow-y: auto;
-        }
-
-        .nav-section {
-            margin-bottom: 24px;
-        }
-
-        .nav-section-title {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: var(--text-muted);
-            padding: 0 12px;
-            margin-bottom: 8px;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            text-decoration: none;
-            margin-bottom: 2px;
-        }
-
-        .nav-item:hover {
-            background: var(--alice-blue);
-            color: var(--ultramarine);
-        }
-
-        .nav-item.active {
-            background: var(--ultramarine);
-            color: white;
-            box-shadow: 0 2px 8px rgba(45, 105, 255, 0.3);
-        }
-
-        .nav-item i {
-            font-size: 18px;
-            width: 20px;
-            text-align: center;
-        }
-
-        .nav-item .badge {
-            margin-left: auto;
-            background: var(--danger);
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 7px;
-            border-radius: 10px;
-        }
-
-        .nav-item.active .badge {
-            background: rgba(255,255,255,0.3);
-        }
-
-        .sidebar-footer {
-            padding: 16px 20px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .sidebar-footer .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sidebar-footer .avatar {
-            width: 36px; height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--ultramarine), var(--green-field));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .sidebar-footer .user-name {
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .sidebar-footer .user-role {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-left: var(--sidebar-width);
-            min-height: 100vh;
-        }
-
-        /* Header */
-        .header {
+        /* Top Header */
+        .top-header {
             position: sticky;
             top: 0;
-            height: var(--header-height);
-            background: rgba(255,255,255,0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 32px;
             z-index: 50;
-        }
-
-        .header-left {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
         }
 
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 22px;
-            color: var(--text-primary);
-            cursor: pointer;
-        }
-
-        .page-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .header-right {
+        .top-header .logo {
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .header-btn {
-            width: 40px; height: 40px;
+        .top-header .logo img {
+            width: 34px; height: 34px;
+            border-radius: 8px;
+        }
+
+        .top-header .logo-text {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--ultramarine);
+            letter-spacing: -0.3px;
+        }
+
+        .top-header .header-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-icon-btn {
+            width: 38px; height: 38px;
             border-radius: 50%;
-            border: 1px solid var(--border-color);
-            background: var(--bg-card);
+            border: none;
+            background: var(--bg-main);
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
             font-size: 18px;
             color: var(--text-secondary);
+            cursor: pointer;
             position: relative;
+            transition: var(--transition);
         }
 
-        .header-btn:hover {
-            border-color: var(--ultramarine);
+        .header-icon-btn:active {
+            transform: scale(0.92);
+            background: var(--alice-blue);
             color: var(--ultramarine);
         }
 
-        .header-btn .notif-dot {
+        .notif-dot {
             position: absolute;
-            top: 8px; right: 8px;
+            top: 6px; right: 6px;
             width: 8px; height: 8px;
             background: var(--danger);
             border-radius: 50%;
             border: 2px solid white;
         }
 
-        .location-selector {
+        /* Page Title Bar */
+        .page-title-bar {
+            padding: 16px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: space-between;
+        }
+
+        .page-title-bar h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .page-title-bar .subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Search Bar */
+        .search-container {
+            padding: 0 16px 16px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-color);
+            border-radius: 14px;
+            padding: 10px 14px;
+            transition: var(--transition);
+        }
+
+        .search-bar:focus-within {
+            border-color: var(--ultramarine);
+            box-shadow: 0 0 0 3px rgba(45,105,255,0.12);
+        }
+
+        .search-bar i {
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--text-primary);
+            background: transparent;
+        }
+
+        .search-bar input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-bar .clear-btn {
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .search-btn {
             padding: 8px 16px;
-            border-radius: 50px;
-            background: var(--alice-blue);
-            border: 1px solid transparent;
+            border-radius: 10px;
+            border: none;
+            background: var(--ultramarine);
+            color: white;
             font-size: 13px;
-            font-weight: 500;
-            color: var(--ultramarine);
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition);
+        }
+
+        .search-btn:active {
+            transform: scale(0.95);
+            background: var(--ultramarine-dark);
+        }
+
+        /* Search Suggestions Dropdown */
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0; right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 100;
+            display: none;
+            max-height: 240px;
+            overflow-y: auto;
+        }
+
+        .search-suggestions.show {
+            display: block;
+        }
+
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
             cursor: pointer;
             transition: var(--transition);
         }
 
-        .location-selector:hover {
+        .suggestion-item:active {
+            background: var(--alice-blue);
+        }
+
+        .suggestion-item i {
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        .suggestion-item .sg-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .suggestion-item .sg-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .search-wrapper {
+            position: relative;
+        }
+
+        /* Quick Location Tags */
+        .quick-locations {
+            display: flex;
+            gap: 8px;
+            padding: 0 16px 16px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .quick-locations::-webkit-scrollbar { display: none; }
+
+        .loc-tag {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: 50px;
+            border: 1.5px solid var(--border-color);
+            background: var(--bg-card);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .loc-tag:active {
             border-color: var(--ultramarine);
+            background: var(--alice-blue);
+            color: var(--ultramarine);
         }
 
-        /* Page Content */
-        .page-content {
-            padding: 24px 32px;
+        .loc-tag.active {
+            border-color: var(--ultramarine);
+            background: var(--ultramarine);
+            color: white;
         }
-
-        .page { display: none; }
-        .page.active { display: block; }
 
         /* Cards */
         .card {
             background: var(--bg-card);
             border-radius: var(--radius-lg);
             border: 1px solid var(--border-color);
-            padding: 20px;
-            transition: var(--transition);
-        }
-
-        .card:hover {
-            box-shadow: var(--shadow-md);
+            padding: 16px;
+            margin: 0 16px 12px;
         }
 
         .card-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .card-title {
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 700;
             color: var(--text-primary);
         }
 
         .card-subtitle {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
             margin-top: 2px;
         }
 
-        /* Grid Layouts */
-        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        /* Stat Cards Horizontal Scroll */
+        .stats-scroll {
+            display: flex;
+            gap: 10px;
+            padding: 0 16px 16px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+        }
 
-        /* Stat Cards */
-        .stat-card {
+        .stats-scroll::-webkit-scrollbar { display: none; }
+
+        .stat-mini-card {
+            flex: 0 0 auto;
+            width: calc(50% - 5px);
+            scroll-snap-align: start;
             background: var(--bg-card);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-md);
             border: 1px solid var(--border-color);
-            padding: 20px;
-            transition: var(--transition);
+            padding: 14px;
             position: relative;
             overflow: hidden;
         }
 
-        .stat-card::before {
+        .stat-mini-card::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0;
             height: 3px;
         }
 
-        .stat-card.blue::before { background: var(--ultramarine); }
-        .stat-card.green::before { background: var(--green-field); }
-        .stat-card.warning::before { background: var(--warning); }
-        .stat-card.danger::before { background: var(--danger); }
+        .stat-mini-card.blue::before { background: var(--ultramarine); }
+        .stat-mini-card.green::before { background: var(--green-field); }
+        .stat-mini-card.warning::before { background: var(--warning); }
+        .stat-mini-card.danger::before { background: var(--danger); }
 
-        .stat-card:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
-        }
-
-        .stat-card .stat-icon {
-            width: 44px; height: 44px;
-            border-radius: var(--radius-md);
+        .stat-mini-card .smc-icon {
+            width: 36px; height: 36px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            margin-bottom: 12px;
+            font-size: 16px;
+            margin-bottom: 10px;
         }
 
-        .stat-card.blue .stat-icon { background: var(--alice-blue); color: var(--ultramarine); }
-        .stat-card.green .stat-icon { background: var(--frosted-mint); color: var(--green-field); }
-        .stat-card.warning .stat-icon { background: var(--warning-bg); color: var(--warning); }
-        .stat-card.danger .stat-icon { background: var(--danger-bg); color: var(--danger); }
+        .stat-mini-card.blue .smc-icon { background: var(--alice-blue); color: var(--ultramarine); }
+        .stat-mini-card.green .smc-icon { background: var(--frosted-mint); color: var(--green-field); }
+        .stat-mini-card.warning .smc-icon { background: var(--warning-bg); color: var(--warning); }
+        .stat-mini-card.danger .smc-icon { background: var(--danger-bg); color: var(--danger); }
 
-        .stat-value {
-            font-size: 24px;
+        .stat-mini-card .smc-value {
+            font-size: 20px;
             font-weight: 700;
             color: var(--text-primary);
             line-height: 1.2;
         }
 
-        .stat-label {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-
-        .stat-change {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
+        .stat-mini-card .smc-label {
             font-size: 11px;
-            font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 20px;
-            margin-top: 8px;
+            color: var(--text-muted);
+            margin-top: 3px;
         }
-
-        .stat-change.up { background: var(--success-bg); color: var(--success); }
-        .stat-change.down { background: var(--danger-bg); color: var(--danger); }
 
         /* Sensor Grid */
         .sensor-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 0 16px 16px;
         }
 
         .sensor-item {
             background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            border: 1.5px solid var(--border-color);
             border-radius: var(--radius-md);
-            padding: 16px;
+            padding: 14px 10px;
             text-align: center;
             transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .sensor-item:hover {
-            border-color: var(--ultramarine);
-            box-shadow: var(--shadow-sm);
         }
 
         .sensor-item.danger {
@@ -438,161 +432,253 @@
             background: var(--warning-bg);
         }
 
-        .sensor-item .sensor-icon {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        .sensor-item .sensor-name {
-            font-size: 11px;
-            color: var(--text-muted);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .sensor-item .sensor-value {
+        .sensor-item .si-icon {
             font-size: 22px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin: 4px 0;
+            margin-bottom: 6px;
         }
 
-        .sensor-item .sensor-unit {
-            font-size: 11px;
-            color: var(--text-secondary);
-        }
-
-        .sensor-item .sensor-range {
+        .sensor-item .si-name {
             font-size: 10px;
             color: var(--text-muted);
-            margin-top: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
-        /* Progress Ring */
-        .progress-ring-container {
-            position: relative;
-            display: inline-block;
-        }
-
-        .progress-ring-label {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
+        .sensor-item .si-value {
             font-size: 18px;
             font-weight: 700;
-        }
-
-        /* Chart Canvas */
-        .chart-container {
-            position: relative;
-            width: 100%;
-            height: 280px;
-        }
-
-        .chart-container canvas {
-            width: 100% !important;
-            height: 100% !important;
-        }
-
-        /* Weather Widget */
-        .weather-main {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            padding: 20px;
-        }
-
-        .weather-icon-large {
-            font-size: 64px;
-            line-height: 1;
-        }
-
-        .weather-temp {
-            font-size: 48px;
-            font-weight: 700;
             color: var(--text-primary);
+            margin: 3px 0;
         }
 
-        .weather-desc {
-            font-size: 16px;
+        .sensor-item .si-unit {
+            font-size: 10px;
             color: var(--text-secondary);
         }
 
-        .weather-details {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            padding: 0 20px 20px;
-        }
-
-        .weather-detail-item {
-            text-align: center;
-            padding: 12px;
-            background: var(--bg-main);
-            border-radius: var(--radius-sm);
-        }
-
-        .weather-detail-item .wd-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .weather-detail-item .wd-label {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-
-        .forecast-list {
+        /* Pond Tabs */
+        .pond-tabs {
             display: flex;
-            gap: 12px;
-            padding: 16px 20px;
+            gap: 8px;
+            padding: 0 16px 12px;
             overflow-x: auto;
         }
 
-        .forecast-item {
-            flex-shrink: 0;
-            text-align: center;
-            padding: 12px 16px;
-            background: var(--bg-main);
-            border-radius: var(--radius-md);
-            min-width: 80px;
+        .pond-tabs::-webkit-scrollbar { display: none; }
+
+        .pond-tab {
+            flex: 0 0 auto;
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: 1.5px solid var(--border-color);
+            background: var(--bg-card);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+            font-family: inherit;
         }
 
-        .forecast-item .fi-day {
+        .pond-tab:active { transform: scale(0.95); }
+
+        .pond-tab.active {
+            border-color: var(--ultramarine);
+            background: var(--ultramarine);
+            color: white;
+        }
+
+        /* Weather Widget */
+        .weather-widget {
+            background: linear-gradient(135deg, var(--ultramarine), var(--ultramarine-light));
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            margin: 0 16px 12px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .weather-widget::before {
+            content: '';
+            position: absolute;
+            top: -30%; right: -10%;
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .weather-widget::after {
+            content: '';
+            position: absolute;
+            bottom: -20%; left: -5%;
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .weather-widget .ww-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .weather-widget .ww-location {
+            font-size: 13px;
+            opacity: 0.85;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .weather-widget .ww-time {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .weather-widget .ww-main {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 16px;
+        }
+
+        .weather-widget .ww-icon {
+            font-size: 56px;
+            line-height: 1;
+        }
+
+        .weather-widget .ww-temp {
+            font-size: 44px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .weather-widget .ww-desc {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        .weather-widget .ww-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .weather-widget .ww-detail {
+            background: rgba(255,255,255,0.12);
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .weather-widget .ww-detail .wd-val {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .weather-widget .ww-detail .wd-label {
+            font-size: 10px;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        /* Forecast Horizontal */
+        .forecast-scroll {
+            display: flex;
+            gap: 10px;
+            padding: 0 16px 16px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .forecast-scroll::-webkit-scrollbar { display: none; }
+
+        .forecast-mini {
+            flex: 0 0 auto;
+            width: 72px;
+            text-align: center;
+            padding: 12px 8px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .forecast-mini .fm-day {
             font-size: 11px;
             color: var(--text-muted);
-            font-weight: 500;
+            font-weight: 600;
         }
 
-        .forecast-item .fi-icon {
+        .forecast-mini .fm-icon {
             font-size: 24px;
             margin: 8px 0;
         }
 
-        .forecast-item .fi-temp {
+        .forecast-mini .fm-temp {
             font-size: 14px;
             font-weight: 700;
         }
 
-        .forecast-item .fi-rain {
-            font-size: 10px;
+        .forecast-mini .fm-rain {
+            font-size: 9px;
             color: var(--ultramarine);
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
-        /* Alerts */
+        /* Risk Card */
+        .risk-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            margin: 0 16px 12px;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .risk-circle {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .risk-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .risk-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 3px;
+        }
+
+        /* Alert Cards */
         .alert-card {
             display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            padding: 16px 20px;
+            gap: 12px;
+            padding: 14px 16px;
             border-radius: var(--radius-md);
-            margin-bottom: 12px;
+            margin: 0 16px 10px;
             border: 1px solid;
-            transition: var(--transition);
         }
 
         .alert-card.danger {
@@ -610,495 +696,50 @@
             border-color: #BFDBFE;
         }
 
-        .alert-icon {
-            font-size: 24px;
+        .alert-card .ac-icon {
+            font-size: 22px;
             flex-shrink: 0;
+            margin-top: 2px;
         }
 
-        .alert-content { flex: 1; }
+        .alert-card .ac-content { flex: 1; }
 
-        .alert-title {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .alert-message {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-        }
-
-        .alert-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .alert-action {
-            font-size: 11px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.7);
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .alert-meta {
-            font-size: 11px;
-            color: var(--text-muted);
-            flex-shrink: 0;
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            border-radius: var(--radius-sm);
+        .alert-card .ac-title {
             font-size: 13px;
             font-weight: 600;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: inherit;
         }
 
-        .btn-primary {
-            background: var(--ultramarine);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--ultramarine-dark);
-            box-shadow: 0 2px 8px rgba(45,105,255,0.3);
-        }
-
-        .btn-secondary {
-            background: var(--bg-main);
-            color: var(--text-secondary);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--ultramarine);
-            color: var(--ultramarine);
-        }
-
-        .btn-green {
-            background: var(--green-field);
-            color: white;
-        }
-
-        .btn-green:hover {
-            background: var(--green-dark);
-        }
-
-        .btn-sm {
-            padding: 6px 14px;
+        .alert-card .ac-msg {
             font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 3px;
         }
 
-        .btn-icon {
-            width: 36px; height: 36px;
-            padding: 0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            gap: 4px;
-            background: var(--bg-main);
-            padding: 4px;
-            border-radius: var(--radius-sm);
-            width: fit-content;
-        }
-
-        .tab {
-            padding: 6px 16px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 500;
+        .alert-card .ac-time {
+            font-size: 10px;
             color: var(--text-muted);
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-            background: transparent;
-            font-family: inherit;
-        }
-
-        .tab.active {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .tab:hover:not(.active) {
-            color: var(--text-primary);
-        }
-
-        /* Pond Selector */
-        .pond-selector {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .pond-card {
-            flex: 1;
-            padding: 16px 20px;
-            border-radius: var(--radius-md);
-            border: 2px solid var(--border-color);
-            background: var(--bg-card);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .pond-card:hover {
-            border-color: var(--ultramarine-light);
-        }
-
-        .pond-card.active {
-            border-color: var(--ultramarine);
-            background: var(--alice-blue);
-        }
-
-        .pond-card .pond-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .pond-card .pond-info {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-
-        .pond-card .pond-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-top: 8px;
-            padding: 2px 8px;
-            border-radius: 20px;
-        }
-
-        .pond-card .pond-status.online {
-            background: var(--success-bg);
-            color: var(--success);
-        }
-
-        /* Chat */
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - var(--header-height) - 80px);
-            max-height: 700px;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .chat-msg {
-            display: flex;
-            gap: 12px;
-            max-width: 80%;
-            animation: fadeInUp 0.3s ease;
-        }
-
-        .chat-msg.user {
-            align-self: flex-end;
-            flex-direction: row-reverse;
-        }
-
-        .chat-avatar {
-            width: 36px; height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
             flex-shrink: 0;
         }
 
-        .chat-msg.ai .chat-avatar {
-            background: linear-gradient(135deg, var(--ultramarine), var(--green-field));
-            color: white;
-        }
-
-        .chat-msg.user .chat-avatar {
-            background: var(--bg-main);
-            color: var(--text-secondary);
-        }
-
-        .chat-bubble {
-            padding: 12px 16px;
-            border-radius: var(--radius-md);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .chat-msg.ai .chat-bubble {
-            background: var(--bg-main);
-            color: var(--text-primary);
-            border-top-left-radius: 4px;
-        }
-
-        .chat-msg.user .chat-bubble {
-            background: var(--ultramarine);
-            color: white;
-            border-top-right-radius: 4px;
-        }
-
-        .chat-input-container {
-            padding: 16px 20px;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            background: var(--bg-card);
-            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 12px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 50px;
-            font-size: 14px;
-            font-family: inherit;
-            outline: none;
-            transition: var(--transition);
-            background: var(--bg-main);
-        }
-
-        .chat-input:focus {
-            border-color: var(--ultramarine);
-            box-shadow: 0 0 0 3px rgba(45,105,255,0.1);
-        }
-
-        .chat-send {
-            width: 44px; height: 44px;
-            border-radius: 50%;
-            background: var(--ultramarine);
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            transition: var(--transition);
-        }
-
-        .chat-send:hover {
-            background: var(--ultramarine-dark);
-            transform: scale(1.05);
-        }
-
-        /* Table */
-        .table-wrapper {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            text-align: left;
-            padding: 12px 16px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-muted);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        td {
-            padding: 12px 16px;
-            font-size: 13px;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-secondary);
-        }
-
-        tr:hover td {
-            background: var(--bg-main);
-        }
-
-        /* Badge */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .badge-success { background: var(--success-bg); color: var(--success); }
-        .badge-warning { background: var(--warning-bg); color: var(--warning); }
-        .badge-danger { background: var(--danger-bg); color: var(--danger); }
-        .badge-info { background: var(--alice-blue); color: var(--ultramarine); }
-
-        /* Risk Meter */
-        .risk-meter {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 20px;
-        }
-
-        .risk-score-circle {
-            width: 80px; height: 80px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            font-weight: 700;
-            color: white;
-            flex-shrink: 0;
-        }
-
-        .risk-info h3 {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .risk-info p {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        /* Harvest Card */
-        .harvest-card {
-            background: linear-gradient(135deg, var(--green-field), #3A8F65);
-            color: white;
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .harvest-card::before {
-            content: '';
-            position: absolute;
-            top: -50%; right: -20%;
-            width: 200px; height: 200px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-        }
-
-        .harvest-card h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            opacity: 0.9;
-        }
-
-        .harvest-card .harvest-value {
-            font-size: 36px;
-            font-weight: 700;
-        }
-
-        .harvest-card .harvest-detail {
-            font-size: 13px;
-            opacity: 0.8;
-            margin-top: 4px;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .animate-in {
-            animation: fadeInUp 0.4s ease;
-        }
-
-        .loading-spinner {
-            display: inline-block;
-            width: 20px; height: 20px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Skeleton */
-        .skeleton {
-            background: linear-gradient(90deg, var(--bg-main) 25%, #e8edf2 50%, var(--bg-main) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: var(--radius-sm);
-        }
-
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        /* Mobile Overlay */
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.3);
-            z-index: 99;
-        }
-
-        /* Recommendation Cards */
+        /* Rec Cards */
         .rec-card {
             display: flex;
             align-items: center;
-            gap: 16px;
-            padding: 16px;
+            gap: 12px;
+            padding: 14px 16px;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            margin-bottom: 12px;
-            transition: var(--transition);
-        }
-
-        .rec-card:hover {
-            box-shadow: var(--shadow-sm);
+            margin: 0 16px 10px;
         }
 
         .rec-priority {
-            width: 40px; height: 40px;
+            width: 36px; height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             flex-shrink: 0;
         }
 
@@ -1108,194 +749,346 @@
 
         .rec-content { flex: 1; }
 
-        .rec-content .rec-action {
-            font-size: 14px;
+        .rec-content .rc-action {
+            font-size: 13px;
             font-weight: 500;
-            color: var(--text-primary);
         }
 
-        .rec-content .rec-deadline {
-            font-size: 12px;
+        .rec-content .rc-deadline {
+            font-size: 11px;
             color: var(--text-muted);
             margin-top: 2px;
         }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .grid-4 { grid-template-columns: repeat(2, 1fr); }
-            .grid-3 { grid-template-columns: repeat(2, 1fr); }
+        /* Harvest Card */
+        .harvest-card {
+            background: linear-gradient(135deg, var(--green-field), var(--green-dark));
+            color: white;
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            margin: 0 16px 12px;
+            position: relative;
+            overflow: hidden;
         }
 
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .sidebar-overlay.open {
-                display: block;
-            }
-            .main-content {
-                margin-left: 0;
-            }
-            .menu-toggle {
-                display: block;
-            }
-            .page-content {
-                padding: 16px;
-            }
-            .grid-4, .grid-3, .grid-2 {
-                grid-template-columns: 1fr;
-            }
-            .pond-selector {
-                flex-direction: column;
-            }
-            .weather-details {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .sensor-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .chat-msg {
-                max-width: 90%;
-            }
+        .harvest-card::before {
+            content: '';
+            position: absolute;
+            top: -40%; right: -15%;
+            width: 160px; height: 160px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
         }
 
-        /* Disease Risk */
-        .risk-conditions {
+        .harvest-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.9;
+            margin-bottom: 6px;
+            position: relative;
+        }
+
+        .harvest-card .hc-value {
+            font-size: 32px;
+            font-weight: 800;
+            position: relative;
+        }
+
+        .harvest-card .hc-detail {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 4px;
+            position: relative;
+        }
+
+        .harvest-card .hc-stats {
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 16px;
+            position: relative;
         }
 
-        .risk-cond {
+        .harvest-card .hc-stat-label {
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
+        .harvest-card .hc-stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        /* Chart */
+        .chart-container {
+            width: 100%;
+            height: 200px;
+            padding: 0 16px 16px;
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Pond Cards */
+        .pond-card-mobile {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            margin: 0 16px 10px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
-            border-radius: var(--radius-sm);
-            font-size: 13px;
-            font-weight: 500;
+            gap: 14px;
         }
 
-        .risk-cond.risky {
-            background: var(--danger-bg);
-            color: var(--danger);
+        .pond-card-mobile:active {
+            border-color: var(--ultramarine);
+            background: var(--alice-blue);
         }
 
-        .risk-cond.safe {
+        .pcm-icon {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: var(--alice-blue);
+        }
+
+        .pcm-info { flex: 1; }
+
+        .pcm-info .pcm-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .pcm-info .pcm-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .pcm-info .pcm-stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 6px;
+        }
+
+        .pcm-info .pcm-stat-val {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .pcm-info .pcm-stat-label {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .pcm-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
             background: var(--success-bg);
             color: var(--success);
         }
 
-        /* Typing indicator */
-        .typing-indicator {
+        /* Feeding */
+        .feeding-summary {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            margin: 0 16px 12px;
+        }
+
+        .feeding-bar {
+            height: 10px;
+            background: var(--border-color);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .feeding-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--ultramarine), var(--green-field));
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .feeding-table-row {
             display: flex;
-            gap: 4px;
+            align-items: center;
+            gap: 10px;
             padding: 12px 16px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            margin: 0 16px;
         }
 
-        .typing-dot {
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background: var(--text-muted);
-            animation: typingBounce 1.4s infinite;
+        .feeding-table-row:last-child {
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
         }
 
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes typingBounce {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-6px); }
+        .ftr-time {
+            font-size: 13px;
+            font-weight: 600;
+            width: 50px;
         }
 
-        /* Mini sparkline */
-        .sparkline {
-            height: 40px;
-            display: block;
+        .ftr-type {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            background: var(--alice-blue);
+            color: var(--ultramarine);
+            font-weight: 600;
+            white-space: nowrap;
         }
 
-        .section-title {
-            font-size: 18px;
+        .ftr-feed {
+            flex: 1;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .ftr-amount {
+            font-size: 13px;
             font-weight: 700;
-            margin-bottom: 16px;
             color: var(--text-primary);
         }
 
-        .section-subtitle {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-        }
-
-        .mb-20 { margin-bottom: 20px; }
-        .mt-20 { margin-top: 20px; }
-        .gap-20 { gap: 20px; }
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .gap-8 { gap: 8px; }
-        .gap-12 { gap: 12px; }
-        .gap-16 { gap: 16px; }
-
-        .text-center { text-align: center; }
-
-        .divider {
-            height: 1px;
-            background: var(--border-color);
-            margin: 16px 0;
-        }
-
-        /* Toast Notification */
-        .toast-container {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            z-index: 200;
+        /* Chat */
+        .chat-page {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            height: calc(100vh - 80px - env(safe-area-inset-top, 0px));
+            max-height: 100dvh;
         }
 
-        .toast {
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-msg {
+            display: flex;
+            gap: 8px;
+            max-width: 88%;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .chat-msg.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .chat-avatar-sm {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .chat-msg.ai .chat-avatar-sm {
+            background: linear-gradient(135deg, var(--ultramarine), var(--green-field));
+            color: white;
+        }
+
+        .chat-msg.user .chat-avatar-sm {
+            background: var(--bg-main);
+            color: var(--text-secondary);
+        }
+
+        .chat-bubble {
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        .chat-msg.ai .chat-bubble {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-top-left-radius: 4px;
+        }
+
+        .chat-msg.user .chat-bubble {
+            background: var(--ultramarine);
+            color: white;
+            border-top-right-radius: 4px;
+        }
+
+        .chat-input-bar {
+            padding: 10px 16px;
+            padding-bottom: max(10px, env(safe-area-inset-bottom));
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: var(--bg-card);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            transition: var(--transition);
+            background: var(--bg-main);
+        }
+
+        .chat-input:focus {
+            border-color: var(--ultramarine);
+            background: white;
+        }
+
+        .chat-send-btn {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: var(--ultramarine);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .chat-send-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* Devices */
+        .device-item-mobile {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 20px;
-            background: var(--bg-card);
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-lg);
-            border-left: 4px solid var(--ultramarine);
-            animation: slideIn 0.3s ease, fadeOut 0.3s ease 4.7s;
-            font-size: 13px;
-            font-weight: 500;
-            min-width: 280px;
-        }
-
-        .toast.danger { border-left-color: var(--danger); }
-        .toast.warning { border-left-color: var(--warning); }
-        .toast.success { border-left-color: var(--success); }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes fadeOut {
-            to { opacity: 0; transform: translateX(100%); }
-        }
-
-        /* Device Status */
-        .device-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
             padding: 14px 16px;
-            background: var(--bg-main);
-            border-radius: var(--radius-sm);
-            margin-bottom: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin: 0 16px 8px;
         }
 
         .device-dot {
@@ -1305,7 +1098,7 @@
         }
 
         .device-dot.online { background: var(--success); box-shadow: 0 0 6px var(--success); }
-        .device-dot.offline { background: var(--danger); box-shadow: 0 0 6px var(--danger); }
+        .device-dot.offline { background: var(--danger); }
 
         .device-info { flex: 1; }
 
@@ -1319,528 +1112,569 @@
             color: var(--text-muted);
         }
 
-        .device-battery {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--green-field);
-        }
-
-        .battery-bar {
-            width: 50px;
-            height: 6px;
+        .battery-bar-sm {
+            width: 40px;
+            height: 5px;
             background: var(--border-color);
             border-radius: 3px;
             overflow: hidden;
             margin-top: 4px;
         }
 
-        .battery-fill {
+        .battery-fill-sm {
             height: 100%;
             border-radius: 3px;
             background: var(--green-field);
             transition: width 0.5s ease;
         }
 
-        .battery-fill.low { background: var(--warning); }
-        .battery-fill.critical { background: var(--danger); }
+        .battery-fill-sm.low { background: var(--warning); }
+        .battery-fill-sm.critical { background: var(--danger); }
+
+        .battery-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--green-field);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0; right: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 6px 0;
+            padding-bottom: max(6px, env(safe-area-inset-bottom));
+            z-index: 100;
+        }
+
+        .nav-item-mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            padding: 4px 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            background: none;
+            font-family: inherit;
+            position: relative;
+        }
+
+        .nav-item-mobile:active {
+            transform: scale(0.9);
+        }
+
+        .nav-item-mobile i {
+            font-size: 22px;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .nav-item-mobile span {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .nav-item-mobile.active i {
+            color: var(--ultramarine);
+        }
+
+        .nav-item-mobile.active span {
+            color: var(--ultramarine);
+        }
+
+        .nav-item-mobile.active::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            width: 20px;
+            height: 3px;
+            background: var(--ultramarine);
+            border-radius: 2px;
+        }
+
+        /* Page transitions */
+        .page-mobile {
+            display: none;
+            animation: fadeInUp 0.25s ease;
+        }
+
+        .page-mobile.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Loading Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-main) 25%, #e8edf2 50%, var(--bg-main) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: var(--radius-sm);
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+        }
+
+        .typing-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            animation: typingBounce 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        /* Badge */
+        .badge-mobile {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .badge-success { background: var(--success-bg); color: var(--success); }
+        .badge-warning { background: var(--warning-bg); color: var(--warning); }
+        .badge-danger { background: var(--danger-bg); color: var(--danger); }
+        .badge-info { background: var(--alice-blue); color: var(--ultramarine); }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 60px;
+            left: 16px; right: 16px;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+
+        .toast-mobile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid var(--ultramarine);
+            animation: slideDown 0.3s ease, fadeOutMobile 0.3s ease 3.7s;
+            font-size: 12px;
+            font-weight: 500;
+            pointer-events: auto;
+        }
+
+        .toast-mobile.danger { border-left-color: var(--danger); }
+        .toast-mobile.warning { border-left-color: var(--warning); }
+        .toast-mobile.success { border-left-color: var(--success); }
+
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeOutMobile {
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+
+        /* Disease risk */
+        .risk-conditions-mobile {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .risk-cond-mobile {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .risk-cond-mobile.risky {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        .risk-cond-mobile.safe {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        /* Pull to refresh hint */
+        .pull-hint {
+            text-align: center;
+            padding: 8px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Section divider */
+        .section-label {
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Analytics tabs */
+        .metric-tabs {
+            display: flex;
+            gap: 6px;
+            padding: 0 16px 12px;
+            overflow-x: auto;
+        }
+
+        .metric-tabs::-webkit-scrollbar { display: none; }
+
+        .metric-tab {
+            flex: 0 0 auto;
+            padding: 6px 14px;
+            border-radius: 50px;
+            border: 1.5px solid var(--border-color);
+            background: var(--bg-card);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+            font-family: inherit;
+        }
+
+        .metric-tab.active {
+            border-color: var(--ultramarine);
+            background: var(--ultramarine);
+            color: white;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .empty-state .es-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state .es-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .empty-state .es-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
     </style>
 </head>
 <body>
-    <!-- Sidebar Overlay -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <div class="status-bar"></div>
 
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-brand">
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="logo">
             <img src="https://image.qwenlm.ai/public_source/93aa03f9-ab52-459d-a2bf-9626f22e888f/12fa68209-f105-4fa5-95c9-d1ae661bee80.png" alt="AQUA·AI">
+            <span class="logo-text">AQUA·AI</span>
+        </div>
+        <div class="header-right">
+            <button class="header-icon-btn" onclick="refreshAll()">
+                <i class="ri-refresh-line"></i>
+            </button>
+            <button class="header-icon-btn" onclick="switchTab('alerts')">
+                <i class="ri-notification-3-line"></i>
+                <span class="notif-dot"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Page: Dashboard -->
+    <div class="page-mobile active" id="page-dashboard">
+        <div class="page-title-bar">
             <div>
-                <h1>AQUA·AI</h1>
-                <span>Smart Aquaculture</span>
+                <h1>Xin chào 👋</h1>
+                <div class="subtitle">Giám sát ao nuôi thông minh</div>
             </div>
         </div>
-        <nav class="sidebar-nav">
-            <div class="nav-section">
-                <div class="nav-section-title">Tổng quan</div>
-                <a class="nav-item active" data-page="dashboard" onclick="switchPage('dashboard')">
-                    <i class="ri-dashboard-3-line"></i> Dashboard
-                </a>
-                <a class="nav-item" data-page="sensors" onclick="switchPage('sensors')">
-                    <i class="ri-sensor-line"></i> Cảm biến
-                </a>
-                <a class="nav-item" data-page="weather" onclick="switchPage('weather')">
-                    <i class="ri-sun-cloudy-line"></i> Thời tiết
-                </a>
+
+        <!-- Location Search -->
+        <div class="search-container">
+            <div class="search-wrapper">
+                <div class="search-bar" id="searchBar">
+                    <i class="ri-map-pin-2-line"></i>
+                    <input type="text" id="locationInput" placeholder="Tìm kiếm địa điểm..." oninput="onSearchInput()" onfocus="onSearchFocus()" onblur="onSearchBlur()">
+                    <button class="search-btn" onclick="searchLocation()">Tìm</button>
+                </div>
+                <div class="search-suggestions" id="searchSuggestions"></div>
             </div>
-            <div class="nav-section">
-                <div class="nav-section-title">Giám sát</div>
-                <a class="nav-item" data-page="ponds" onclick="switchPage('ponds')">
-                    <i class="ri-water-flash-line"></i> Quản lý ao
-                </a>
-                <a class="nav-item" data-page="alerts" onclick="switchPage('alerts')">
-                    <i class="ri-alarm-warning-line"></i> Cảnh báo
-                    <span class="badge">2</span>
-                </a>
-                <a class="nav-item" data-page="feeding" onclick="switchPage('feeding')">
-                    <i class="ri-restaurant-2-line"></i> Cho ăn
-                </a>
+        </div>
+
+        <!-- Quick Location Tags -->
+        <div class="quick-locations" id="quickLocations">
+            <div class="loc-tag active" onclick="selectLocation('Cà Mau', this)"> Cà Mau</div>
+            <div class="loc-tag" onclick="selectLocation('Bạc Liêu', this)">📍 Bạc Liêu</div>
+            <div class="loc-tag" onclick="selectLocation('Kiên Giang', this)">📍 Kiên Giang</div>
+            <div class="loc-tag" onclick="selectLocation('Sóc Trăng', this)"> Sóc Trăng</div>
+            <div class="loc-tag" onclick="selectLocation('Trà Vinh', this)">📍 Trà Vinh</div>
+        </div>
+
+        <div class="pull-hint">⬇ Kéo xuống để làm mới dữ liệu</div>
+
+        <!-- Weather Widget -->
+        <div class="weather-widget" id="weatherWidget">
+            <div class="ww-top">
+                <div class="ww-location"><i class="ri-map-pin-2-fill"></i> <span id="wwLocationName">Cà Mau</span></div>
+                <div class="ww-time" id="wwTime"></div>
             </div>
-            <div class="nav-section">
-                <div class="nav-section-title">AI & Phân tích</div>
-                <a class="nav-item" data-page="chat" onclick="switchPage('chat')">
-                    <i class="ri-robot-2-line"></i> Trợ lý AI
-                </a>
-                <a class="nav-item" data-page="analytics" onclick="switchPage('analytics')">
-                    <i class="ri-line-chart-line"></i> Phân tích
-                </a>
-                <a class="nav-item" data-page="devices" onclick="switchPage('devices')">
-                    <i class="ri-cpu-line"></i> Thiết bị
-                </a>
-            </div>
-        </nav>
-        <div class="sidebar-footer">
-            <div class="user-info">
-                <div class="avatar">NT</div>
+            <div class="ww-main">
+                <div class="ww-icon" id="wwIcon"></div>
                 <div>
-                    <div class="user-name">Nguyễn Văn Tám</div>
-                    <div class="user-role">Quản lý trang trại</div>
+                    <div class="ww-temp" id="wwTemp">--°C</div>
+                    <div class="ww-desc" id="wwDesc">Đang tải...</div>
                 </div>
+            </div>
+            <div class="ww-details" id="wwDetails">
+                <div class="ww-detail"><div class="wd-val" id="wdHumidity">--</div><div class="wd-label">Độ ẩm</div></div>
+                <div class="ww-detail"><div class="wd-val" id="wdWind">--</div><div class="wd-label">Gió</div></div>
+                <div class="ww-detail"><div class="wd-val" id="wdRain">--</div><div class="wd-label">Mưa</div></div>
             </div>
         </div>
-    </aside>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-left">
-                <button class="menu-toggle" onclick="toggleSidebar()">
-                    <i class="ri-menu-line"></i>
-                </button>
-                <h2 class="page-title" id="pageTitle">Dashboard</h2>
-            </div>
-            <div class="header-right">
-                <div class="location-selector" onclick="cycleLocation()">
-                    <i class="ri-map-pin-2-fill"></i>
-                    <span id="currentLocation">Cà Mau</span>
-                    <i class="ri-arrow-down-s-line"></i>
-                </div>
-                <button class="header-btn" onclick="refreshAll()">
-                    <i class="ri-refresh-line"></i>
-                </button>
-                <button class="header-btn" onclick="switchPage('alerts')">
-                    <i class="ri-notification-3-line"></i>
-                    <span class="notif-dot"></span>
-                </button>
-            </div>
-        </header>
+        <!-- Forecast -->
+        <div class="section-label">Dự báo 5 ngày</div>
+        <div class="forecast-scroll" id="forecastScroll"></div>
 
-        <!-- Page: Dashboard -->
-        <div class="page-content">
-            <div class="page active" id="page-dashboard">
-                <!-- Stat Cards -->
-                <div class="grid-4 mb-20 animate-in" id="statCards">
-                    <div class="stat-card blue">
-                        <div class="stat-icon"><i class="ri-water-flash-line"></i></div>
-                        <div class="stat-value" id="statSalinity">-- ppt</div>
-                        <div class="stat-label">Độ mặn trung bình</div>
-                        <div class="stat-change up"><i class="ri-arrow-up-s-fill"></i> Bình thường</div>
-                    </div>
-                    <div class="stat-card green">
-                        <div class="stat-icon"><i class="ri-windy-line"></i></div>
-                        <div class="stat-value" id="statDO">-- mg/L</div>
-                        <div class="stat-label">DO (Oxy hòa tan)</div>
-                        <div class="stat-change up"><i class="ri-arrow-up-s-fill"></i> Tốt</div>
-                    </div>
-                    <div class="stat-card warning">
-                        <div class="stat-icon"><i class="ri-flask-line"></i></div>
-                        <div class="stat-value" id="statPH">--</div>
-                        <div class="stat-label">pH nước</div>
-                        <div class="stat-change up"><i class="ri-arrow-up-s-fill"></i> Ổn định</div>
-                    </div>
-                    <div class="stat-card danger">
-                        <div class="stat-icon"><i class="ri-temp-hot-line"></i></div>
-                        <div class="stat-value" id="statTemp">-- °C</div>
-                        <div class="stat-label">Nhiệt độ</div>
-                        <div class="stat-change down"><i class="ri-arrow-down-s-fill"></i> Cao</div>
-                    </div>
-                </div>
-
-                <!-- Weather + Risk -->
-                <div class="grid-2 mb-20">
-                    <div class="card animate-in" id="weatherCard">
-                        <div class="card-header">
-                            <div>
-                                <div class="card-title">Thời tiết hôm nay</div>
-                                <div class="card-subtitle" id="weatherDate"></div>
-                            </div>
-                            <span class="badge badge-info" id="weatherBadge">Cập nhật</span>
-                        </div>
-                        <div class="weather-main">
-                            <div class="weather-icon-large" id="weatherIcon">🌦</div>
-                            <div>
-                                <div class="weather-temp" id="weatherTemp">--°C</div>
-                                <div class="weather-desc" id="weatherDesc">Đang tải...</div>
-                            </div>
-                        </div>
-                        <div class="weather-details" id="weatherDetails">
-                            <div class="weather-detail-item">
-                                <div class="wd-value" id="wdHumidity">--%</div>
-                                <div class="wd-label">Độ ẩm</div>
-                            </div>
-                            <div class="weather-detail-item">
-                                <div class="wd-value" id="wdWind">-- km/h</div>
-                                <div class="wd-label">Gió</div>
-                            </div>
-                            <div class="weather-detail-item">
-                                <div class="wd-value" id="wdRain">-- mm</div>
-                                <div class="wd-label">Lượng mưa</div>
-                            </div>
-                            <div class="weather-detail-item">
-                                <div class="wd-value" id="wdUV">--</div>
-                                <div class="wd-label">Chỉ số UV</div>
-                            </div>
-                            <div class="weather-detail-item">
-                                <div class="wd-value" id="wdTide">-- m</div>
-                                <div class="wd-label">Thủy triều</div>
-                            </div>
-                            <div class="weather-detail-item">
-                                <div class="wd-value" id="wdPressure">-- hPa</div>
-                                <div class="wd-label">Áp suất</div>
-                            </div>
-                        </div>
-                        <div class="forecast-list" id="forecastList"></div>
-                    </div>
-
-                    <div class="card animate-in">
-                        <div class="card-header">
-                            <div>
-                                <div class="card-title">Đánh giá rủi ro thời tiết</div>
-                                <div class="card-subtitle">Dự báo nguy cơ ảnh hưởng đến ao nuôi</div>
-                            </div>
-                            <span class="badge" id="riskLevelBadge">--</span>
-                        </div>
-                        <div class="risk-meter">
-                            <div class="risk-score-circle" id="riskScoreCircle" style="background: var(--text-muted);">
-                                <span id="riskScoreValue">--</span>
-                            </div>
-                            <div class="risk-info">
-                                <h3 id="riskLevel">Đang đánh giá...</h3>
-                                <p id="riskMessage">Đang phân tích dữ liệu thời tiết</p>
-                            </div>
-                        </div>
-                        <div class="divider"></div>
-                        <div id="riskActions" style="padding: 0 20px 20px;"></div>
-                    </div>
-                </div>
-
-                <!-- Sensor Overview -->
-                <div class="card mb-20 animate-in">
-                    <div class="card-header">
-                        <div>
-                            <div class="card-title">Cảm biến thời gian thực</div>
-                            <div class="card-subtitle">Ao: <span id="sensorPondName">Đang tải...</span></div>
-                        </div>
-                        <div class="tabs" id="sensorTabs">
-                            <button class="tab active" onclick="switchPond('pond1', this)">Ao #1</button>
-                            <button class="tab" onclick="switchPond('pond2', this)">Ao #2</button>
-                            <button class="tab" onclick="switchPond('pond3', this)">Ao #3</button>
-                        </div>
-                    </div>
-                    <div class="sensor-grid" id="sensorGrid"></div>
-                </div>
-
-                <!-- Recommendations + Harvest -->
-                <div class="grid-2 mb-20">
-                    <div class="card animate-in">
-                        <div class="card-header">
-                            <div class="card-title">Đề xuất hành động</div>
-                        </div>
-                        <div id="recommendations"></div>
-                    </div>
-                    <div class="card animate-in">
-                        <div class="card-header">
-                            <div class="card-title">Tối ưu thu hoạch</div>
-                        </div>
-                        <div id="harvestCard"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Page: Sensors -->
-            <div class="page" id="page-sensors">
-                <div class="pond-selector" id="sensorPondSelector">
-                    <div class="pond-card active" onclick="selectPond('pond1', this)">
-                        <div class="pond-name">🦐 Ao #1 – Tôm sú</div>
-                        <div class="pond-info">5,000 m² • Mật độ: 80 con/m²</div>
-                        <div class="pond-status online"><i class="ri-circle-fill"></i> Online</div>
-                    </div>
-                    <div class="pond-card" onclick="selectPond('pond2', this)">
-                        <div class="pond-name">🐟 Ao #2 – Cá tra</div>
-                        <div class="pond-info">8,000 m² • Mật độ: 50 con/m²</div>
-                        <div class="pond-status online"><i class="ri-circle-fill"></i> Online</div>
-                    </div>
-                    <div class="pond-card" onclick="selectPond('pond3', this)">
-                        <div class="pond-name">🦐 Ao #3 – Tôm thẻ</div>
-                        <div class="pond-info">4,000 m² • Mật độ: 120 con/m²</div>
-                        <div class="pond-status online"><i class="ri-circle-fill"></i> Online</div>
-                    </div>
-                </div>
-                <div class="sensor-grid mb-20" id="sensorDetailGrid"></div>
-                <div class="card">
-                    <div class="card-header">
-                        <div>
-                            <div class="card-title">Biểu đồ lịch sử</div>
-                            <div class="card-subtitle">Theo dõi xu hướng 48 giờ</div>
-                        </div>
-                        <div class="tabs">
-                            <button class="tab active" onclick="switchMetric('salinity', this)">Độ mặn</button>
-                            <button class="tab" onclick="switchMetric('do', this)">DO</button>
-                            <button class="tab" onclick="switchMetric('ph', this)">pH</button>
-                            <button class="tab" onclick="switchMetric('temperature', this)">Nhiệt độ</button>
-                            <button class="tab" onclick="switchMetric('ammonia', this)">NH3</button>
-                        </div>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="historyChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Page: Weather -->
-            <div class="page" id="page-weather">
-                <div class="grid-2 mb-20">
-                    <div class="card" id="weatherPageCard">
-                        <div class="card-header">
-                            <div class="card-title">Thời tiết chi tiết</div>
-                            <div class="card-subtitle" id="weatherPageDate"></div>
-                        </div>
-                        <div class="weather-main">
-                            <div class="weather-icon-large" id="weatherPageIcon">🌦</div>
-                            <div>
-                                <div class="weather-temp" id="weatherPageTemp">--°C</div>
-                                <div class="weather-desc" id="weatherPageDesc">--</div>
-                                <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Cảm giác như <strong id="weatherFeelsLike">--°C</strong></div>
-                            </div>
-                        </div>
-                        <div class="weather-details" id="weatherPageDetails"></div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Dự báo 5 ngày</div>
-                        </div>
-                        <div class="forecast-list" id="weatherPageForecast" style="flex-direction: column; padding: 0 20px 20px;"></div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Rủi ro thời tiết</div>
-                    </div>
-                    <div class="risk-meter" id="weatherRiskMeter"></div>
-                </div>
-            </div>
-
-            <!-- Page: Ponds -->
-            <div class="page" id="page-ponds">
-                <div class="section-title">Quản lý ao nuôi</div>
-                <div class="section-subtitle">Tổng quan tất cả ao trong trang trại</div>
-                <div class="grid-3 mb-20" id="pondsGrid"></div>
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Danh sách ao</div>
-                    </div>
-                    <div class="table-wrapper">
-                        <table id="pondsTable">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Tên ao</th>
-                                    <th>Loài</th>
-                                    <th>Diện tích</th>
-                                    <th>Mật độ</th>
-                                    <th>Trạng thái</th>
-                                </tr>
-                            </thead>
-                            <tbody id="pondsTableBody"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Page: Alerts -->
-            <div class="page" id="page-alerts">
-                <div class="section-title">Cảnh báo hệ thống</div>
-                <div class="section-subtitle">Các cảnh báo và thông báo quan trọng</div>
-                <div id="alertsList"></div>
-                <div class="card mt-20">
-                    <div class="card-header">
-                        <div class="card-title">Nguy cơ bệnh</div>
-                    </div>
-                    <div id="diseaseRisk"></div>
-                </div>
-            </div>
-
-            <!-- Page: Feeding -->
-            <div class="page" id="page-feeding">
-                <div class="section-title">Nhật ký cho ăn</div>
-                <div class="section-subtitle">Theo dõi lịch sử cho ăn của từng ao</div>
-                <div class="pond-selector" id="feedingPondSelector">
-                    <div class="pond-card active" onclick="selectFeedingPond('pond1', this)">
-                        <div class="pond-name">🦐 Ao #1 – Tôm sú</div>
-                    </div>
-                    <div class="pond-card" onclick="selectFeedingPond('pond2', this)">
-                        <div class="pond-name">🐟 Ao #2 – Cá tra</div>
-                    </div>
-                    <div class="pond-card" onclick="selectFeedingPond('pond3', this)">
-                        <div class="pond-name">🦐 Ao #3 – Tôm thẻ</div>
-                    </div>
-                </div>
-                <div class="card mb-20">
-                    <div class="card-header">
-                        <div>
-                            <div class="card-title">Tổng quan hôm nay</div>
-                            <div class="card-subtitle" id="feedingDate"></div>
-                        </div>
-                        <div style="text-align: right;">
-                            <div style="font-size: 24px; font-weight: 700; color: var(--ultramarine);" id="feedingTotal">-- g</div>
-                            <div style="font-size: 12px; color: var(--text-muted);">Mục tiêu: <span id="feedingTarget">-- g</span></div>
-                        </div>
-                    </div>
-                    <div style="background: var(--bg-main); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 20px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <span style="font-size: 12px; color: var(--text-muted);">Tiến độ</span>
-                            <span style="font-size: 12px; font-weight: 600;" id="feedingProgress">--%</span>
-                        </div>
-                        <div style="height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden;">
-                            <div style="height: 100%; background: linear-gradient(90deg, var(--ultramarine), var(--green-field)); border-radius: 4px; transition: width 0.5s ease;" id="feedingProgressBar"></div>
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Giờ</th>
-                                <th>Loại</th>
-                                <th>Thức ăn</th>
-                                <th>Số lượng (g)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="feedingTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Page: Chat -->
-            <div class="page" id="page-chat">
-                <div class="card" style="padding: 0;">
-                    <div style="padding: 16px 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px;">
-                        <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--ultramarine), var(--green-field)); display: flex; align-items: center; justify-content: center;">
-                            <i class="ri-robot-2-line" style="color: white; font-size: 18px;"></i>
-                        </div>
-                        <div>
-                            <div style="font-size: 14px; font-weight: 600;">AQUA·AI Trợ lý</div>
-                            <div style="font-size: 11px; color: var(--success);">● Đang trực tuyến</div>
-                        </div>
-                        <div style="margin-left: auto; font-size: 12px; color: var(--text-muted);">Ao: <span id="chatPondName">Ao #1 – Tôm sú</span></div>
-                    </div>
-                    <div class="chat-container">
-                        <div class="chat-messages" id="chatMessages">
-                            <div class="chat-msg ai">
-                                <div class="chat-avatar"><i class="ri-robot-2-line"></i></div>
-                                <div class="chat-bubble">
-                                    Xin chào! Tôi là <strong>AQUA·AI</strong> – trợ lý thông minh chuyên về nuôi trồng thủy sản. 🦐🐟<br><br>
-                                    Tôi có thể giúp bạn:<br>
-                                    • Phân tích dữ liệu cảm biến ao nuôi<br>
-                                    • Tư vấn xử lý vấn đề sức khỏe tôm cá<br>
-                                    • Đề xuất phương án cho ăn và chăm sóc<br>
-                                    • Cảnh báo rủi ro và biện pháp phòng ngừa<br><br>
-                                    Bạn cần tôi hỗ trợ gì hôm nay? 😊
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat-input-container">
-                            <input type="text" class="chat-input" id="chatInput" placeholder="Nhập câu hỏi của bạn..." onkeydown="if(event.key==='Enter')sendMessage()">
-                            <button class="chat-send" onclick="sendMessage()" id="chatSendBtn">
-                                <i class="ri-send-plane-fill"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Page: Analytics -->
-            <div class="page" id="page-analytics">
-                <div class="section-title">Phân tích & Báo cáo</div>
-                <div class="section-subtitle">Dữ liệu chi tiết và xu hướng</div>
-                <div class="grid-2 mb-20">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Xu hướng độ mặn</div>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="salinityChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Xu hướng DO</div>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="doChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid-2">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Xu hướng pH</div>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="phChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Xu hướng nhiệt độ</div>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="tempChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Page: Devices -->
-            <div class="page" id="page-devices">
-                <div class="section-title">Quản lý thiết bị</div>
-                <div class="section-subtitle">Trạng thái cảm biến và thiết bị IoT</div>
-                <div class="grid-3 mb-20" id="deviceStatusCards"></div>
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Danh sách thiết bị</div>
-                        <span class="badge badge-success" id="deviceOnlineCount">3/3 Online</span>
-                    </div>
-                    <div id="deviceList"></div>
-                </div>
+        <!-- Risk Card -->
+        <div class="section-label">Rủi ro thời tiết</div>
+        <div class="risk-card" id="riskCard">
+            <div class="risk-circle" id="riskCircle" style="background: var(--text-muted);">--</div>
+            <div class="risk-info">
+                <h3 id="riskTitle">Đang đánh giá...</h3>
+                <p id="riskDesc">Phân tích dữ liệu thời tiết</p>
             </div>
         </div>
-    </main>
+
+        <!-- Pond Tabs -->
+        <div class="section-label">Cảm biến ao nuôi</div>
+        <div class="pond-tabs" id="pondTabs">
+            <button class="pond-tab active" onclick="switchPond('pond1', this)">🦐 Ao #1 – Tôm sú</button>
+            <button class="pond-tab" onclick="switchPond('pond2', this)">🐟 Ao #2 – Cá tra</button>
+            <button class="pond-tab" onclick="switchPond('pond3', this)">🦐 Ao #3 – Tôm thẻ</button>
+        </div>
+
+        <!-- Sensor Grid -->
+        <div class="sensor-grid" id="sensorGrid"></div>
+
+        <!-- Sensor Chart -->
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <div class="card-title">Biểu đồ 48h</div>
+                    <div class="card-subtitle" id="chartSubtitle">Độ mặn (ppt)</div>
+                </div>
+            </div>
+            <div class="metric-tabs" id="metricTabs">
+                <button class="metric-tab active" onclick="switchMetric('salinity', this)">Độ mặn</button>
+                <button class="metric-tab" onclick="switchMetric('do', this)">DO</button>
+                <button class="metric-tab" onclick="switchMetric('ph', this)">pH</button>
+                <button class="metric-tab" onclick="switchMetric('temperature', this)">Nhiệt độ</button>
+                <button class="metric-tab" onclick="switchMetric('ammonia', this)">NH3</button>
+            </div>
+            <div class="chart-container">
+                <canvas id="mainChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="section-label">Đề xuất hành động</div>
+        <div id="recList"></div>
+
+        <!-- Harvest -->
+        <div class="section-label">Tối ưu thu hoạch</div>
+        <div id="harvestArea"></div>
+    </div>
+
+    <!-- Page: Ponds -->
+    <div class="page-mobile" id="page-ponds">
+        <div class="page-title-bar">
+            <div>
+                <h1>Quản lý ao 🐠</h1>
+                <div class="subtitle">Tất cả ao trong trang trại</div>
+            </div>
+        </div>
+        <div id="pondsList"></div>
+    </div>
+
+    <!-- Page: Alerts -->
+    <div class="page-mobile" id="page-alerts">
+        <div class="page-title-bar">
+            <div>
+                <h1>Cảnh báo 🚨</h1>
+                <div class="subtitle">Thông báo và cảnh báo hệ thống</div>
+            </div>
+        </div>
+        <div id="alertsList"></div>
+        <div class="section-label" style="margin-top: 12px;">Nguy cơ bệnh</div>
+        <div class="card" id="diseaseCard"></div>
+    </div>
+
+    <!-- Page: Feeding -->
+    <div class="page-mobile" id="page-feeding">
+        <div class="page-title-bar">
+            <div>
+                <h1>Cho ăn ️</h1>
+                <div class="subtitle">Nhật ký cho ăn hôm nay</div>
+            </div>
+        </div>
+        <div class="pond-tabs" id="feedingPondTabs">
+            <button class="pond-tab active" onclick="switchFeedingPond('pond1', this)">🦐 Ao #1</button>
+            <button class="pond-tab" onclick="switchFeedingPond('pond2', this)">🐟 Ao #2</button>
+            <button class="pond-tab" onclick="switchFeedingPond('pond3', this)">🦐 Ao #3</button>
+        </div>
+        <div id="feedingArea"></div>
+    </div>
+
+    <!-- Page: Chat -->
+    <div class="page-mobile" id="page-chat">
+        <div class="chat-page">
+            <div style="padding: 12px 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px;">
+                <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--ultramarine), var(--green-field)); display: flex; align-items: center; justify-content: center;">
+                    <i class="ri-robot-2-line" style="color: white; font-size: 16px;"></i>
+                </div>
+                <div>
+                    <div style="font-size: 14px; font-weight: 600;">AQUA·AI Trợ lý</div>
+                    <div style="font-size: 10px; color: var(--success);">● Đang trực tuyến</div>
+                </div>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-msg ai">
+                    <div class="chat-avatar-sm"><i class="ri-robot-2-line"></i></div>
+                    <div class="chat-bubble">
+                        Xin chào! Tôi là <strong>AQUA·AI</strong> – trợ lý thông minh chuyên về nuôi trồng thủy sản. 🦐🐟<br><br>
+                        Tôi có thể giúp bạn phân tích dữ liệu, tư vấn xử lý vấn đề, và cảnh báo rủi ro. Bạn cần hỗ trợ gì? 😊
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-bar">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Nhập câu hỏi..." onkeydown="if(event.key==='Enter')sendMessage()">
+                <button class="chat-send-btn" onclick="sendMessage()" id="chatSendBtn">
+                    <i class="ri-send-plane-fill"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page: Devices -->
+    <div class="page-mobile" id="page-devices">
+        <div class="page-title-bar">
+            <div>
+                <h1>Thiết bị 📡</h1>
+                <div class="subtitle">Trạng thái cảm biến IoT</div>
+            </div>
+        </div>
+        <div id="devicesList"></div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-item-mobile active" onclick="switchTab('dashboard')">
+            <i class="ri-home-5-line"></i>
+            <span>Trang chủ</span>
+        </button>
+        <button class="nav-item-mobile" onclick="switchTab('ponds')">
+            <i class="ri-water-flash-line"></i>
+            <span>Ao nuôi</span>
+        </button>
+        <button class="nav-item-mobile" onclick="switchTab('alerts')">
+            <i class="ri-alarm-warning-line"></i>
+            <span>Cảnh báo</span>
+        </button>
+        <button class="nav-item-mobile" onclick="switchTab('chat')">
+            <i class="ri-robot-2-line"></i>
+            <span>AI Chat</span>
+        </button>
+        <button class="nav-item-mobile" onclick="switchTab('devices')">
+            <i class="ri-cpu-line"></i>
+            <span>Thiết bị</span>
+        </button>
+    </nav>
 
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
-        // ============ CONFIG ============
-        const API_BASE = '';
+        const API_BASE = 'https://aqua-ai-bjg6.onrender.com';
+
         let currentPond = 'pond1';
         let currentMetric = 'salinity';
         let currentLocation = 'Cà Mau';
-        const locations = ['Cà Mau', 'Bạc Liêu', 'Kiên Giang', 'Sóc Trăng', 'Trà Vinh'];
         let chatHistory = [];
-        let refreshInterval = null;
+        let searchTimeout = null;
 
-        // ============ API HELPERS ============
+        const KNOWN_LOCATIONS = [
+            { name: 'Cà Mau', sub: 'Tỉnh Cà Mau' },
+            { name: 'Bạc Liêu', sub: 'Tỉnh Bạc Liêu' },
+            { name: 'Kiên Giang', sub: 'Tỉnh Kiên Giang' },
+            { name: 'Sóc Trăng', sub: 'Tỉnh Sóc Trăng' },
+            { name: 'Trà Vinh', sub: 'Tỉnh Trà Vinh' },
+            { name: 'An Giang', sub: 'Tỉnh An Giang' },
+            { name: 'Đồng Tháp', sub: 'Tỉnh Đồng Tháp' },
+            { name: 'Long An', sub: 'Tỉnh Long An' },
+            { name: 'Tiền Giang', sub: 'Tỉnh Tiền Giang' },
+            { name: 'Bến Tre', sub: 'Tỉnh Bến Tre' },
+            { name: 'Vĩnh Long', sub: 'Tỉnh Vĩnh Long' },
+            { name: 'Hậu Giang', sub: 'Tỉnh Hậu Giang' },
+            { name: 'Cần Thơ', sub: 'TP. Cần Thơ' },
+            { name: 'Kiên Giang', sub: 'Tỉnh Kiên Giang' },
+            { name: 'Bà Rịa - Vũng Tàu', sub: 'Tỉnh Bà Rịa - Vũng Tàu' },
+            { name: 'Quảng Ninh', sub: 'Tỉnh Quảng Ninh' },
+            { name: 'Hải Phòng', sub: 'TP. Hải Phòng' },
+            { name: 'Nam Định', sub: 'Tỉnh Nam Định' },
+            { name: 'Thái Bình', sub: 'Tỉnh Thái Bình' },
+            { name: 'Ninh Bình', sub: 'Tỉnh Ninh Bình' },
+        ];
+
         async function apiCall(endpoint, params = {}) {
             try {
-                const url = new URL(`${API_BASE}${endpoint}`, window.location.origin);
+                const url = new URL(`${API_BASE}${endpoint}`);
                 Object.entries(params).forEach(([key, val]) => url.searchParams.set(key, val));
                 const resp = await fetch(url.toString());
                 if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
@@ -1851,354 +1685,231 @@
             }
         }
 
-        // ============ PAGE NAVIGATION ============
-        function switchPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        // ============ TAB NAVIGATION ============
+        function switchTab(tabId) {
+            document.querySelectorAll('.page-mobile').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item-mobile').forEach(n => n.classList.remove('active'));
 
-            const page = document.getElementById(`page-${pageId}`);
+            const page = document.getElementById(`page-${tabId}`);
             if (page) page.classList.add('active');
 
-            const navItem = document.querySelector(`.nav-item[data-page="${pageId}"]`);
-            if (navItem) navItem.classList.add('active');
+            const navItems = document.querySelectorAll('.nav-item-mobile');
+            const tabMap = ['dashboard', 'ponds', 'alerts', 'chat', 'devices'];
+            const idx = tabMap.indexOf(tabId);
+            if (idx >= 0 && navItems[idx]) navItems[idx].classList.add('active');
 
-            const titles = {
-                dashboard: 'Dashboard',
-                sensors: 'Cảm biến',
-                weather: 'Thời tiết',
-                ponds: 'Quản lý ao',
-                alerts: 'Cảnh báo',
-                feeding: 'Cho ăn',
-                chat: 'Trợ lý AI',
-                analytics: 'Phân tích',
-                devices: 'Thiết bị'
-            };
-            document.getElementById('pageTitle').textContent = titles[pageId] || 'Dashboard';
+            loadTabData(tabId);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-            // Close sidebar on mobile
-            if (window.innerWidth <= 768) {
-                document.getElementById('sidebar').classList.remove('open');
-                document.getElementById('sidebarOverlay').classList.remove('open');
+        function loadTabData(tabId) {
+            switch (tabId) {
+                case 'dashboard': loadDashboard(); break;
+                case 'ponds': loadPondsPage(); break;
+                case 'alerts': loadAlertsPage(); break;
+                case 'feeding': loadFeedingPage(); break;
+                case 'devices': loadDevicesPage(); break;
+            }
+        }
+
+        // ============ LOCATION SEARCH ============
+        function onSearchInput() {
+            clearTimeout(searchTimeout);
+            const query = document.getElementById('locationInput').value.trim().toLowerCase();
+            searchTimeout = setTimeout(() => filterSuggestions(query), 200);
+        }
+
+        function onSearchFocus() {
+            const query = document.getElementById('locationInput').value.trim().toLowerCase();
+            filterSuggestions(query);
+        }
+
+        function onSearchBlur() {
+            setTimeout(() => {
+                document.getElementById('searchSuggestions').classList.remove('show');
+            }, 200);
+        }
+
+        function filterSuggestions(query) {
+            const container = document.getElementById('searchSuggestions');
+            if (!query) {
+                container.innerHTML = KNOWN_LOCATIONS.map(loc =>
+                    `<div class="suggestion-item" onmousedown="selectSuggestion('${loc.name}')">
+                        <i class="ri-map-pin-2-line"></i>
+                        <div>
+                            <div class="sg-text">${loc.name}</div>
+                            <div class="sg-sub">${loc.sub}</div>
+                        </div>
+                    </div>`
+                ).join('');
+                container.classList.add('show');
+                return;
             }
 
-            // Load page data
-            loadPageData(pageId);
+            const filtered = KNOWN_LOCATIONS.filter(loc =>
+                loc.name.toLowerCase().includes(query) || loc.sub.toLowerCase().includes(query)
+            );
+
+            if (filtered.length > 0) {
+                container.innerHTML = filtered.map(loc =>
+                    `<div class="suggestion-item" onmousedown="selectSuggestion('${loc.name}')">
+                        <i class="ri-map-pin-2-line"></i>
+                        <div>
+                            <div class="sg-text">${loc.name}</div>
+                            <div class="sg-sub">${loc.sub}</div>
+                        </div>
+                    </div>`
+                ).join('');
+            } else {
+                container.innerHTML = `
+                    <div class="suggestion-item" onmousedown="selectSuggestion('${document.getElementById('locationInput').value.trim()}')">
+                        <i class="ri-search-line"></i>
+                        <div>
+                            <div class="sg-text">Tìm "${document.getElementById('locationInput').value.trim()}"</div>
+                            <div class="sg-sub">Tìm kiếm địa điểm bất kỳ</div>
+                        </div>
+                    </div>
+                `;
+            }
+            container.classList.add('show');
         }
 
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-            document.getElementById('sidebarOverlay').classList.toggle('open');
+        function selectSuggestion(name) {
+            document.getElementById('locationInput').value = name;
+            document.getElementById('searchSuggestions').classList.remove('show');
+            selectLocation(name);
         }
 
-        function cycleLocation() {
-            const idx = locations.indexOf(currentLocation);
-            currentLocation = locations[(idx + 1) % locations.length];
-            document.getElementById('currentLocation').textContent = currentLocation;
-            loadWeather();
-            showToast(`Đã chuyển sang ${currentLocation}`, 'success');
+        function searchLocation() {
+            const input = document.getElementById('locationInput').value.trim();
+            if (!input) {
+                showToast('Vui lòng nhập địa điểm', 'warning');
+                return;
+            }
+            selectLocation(input);
+        }
+
+        function selectLocation(name, el) {
+            currentLocation = name;
+            document.getElementById('locationInput').value = name;
+            document.getElementById('searchSuggestions').classList.remove('show');
+
+            // Update quick tags
+            document.querySelectorAll('.loc-tag').forEach(t => t.classList.remove('active'));
+            if (el) el.classList.add('active');
+            else {
+                document.querySelectorAll('.loc-tag').forEach(t => {
+                    if (t.textContent.includes(name)) t.classList.add('active');
+                });
+            }
+
+            document.getElementById('wwLocationName').textContent = name;
+            showToast(`Đã chuyển sang ${name}`, 'success');
+            loadDashboard();
         }
 
         function switchPond(pondId, el) {
             currentPond = pondId;
-            document.querySelectorAll('#sensorTabs .tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.pond-tab').forEach(t => t.classList.remove('active'));
             if (el) el.classList.add('active');
             loadSensorData();
-        }
-
-        function selectPond(pondId, el) {
-            currentPond = pondId;
-            document.querySelectorAll('#sensorPondSelector .pond-card').forEach(c => c.classList.remove('active'));
-            if (el) el.classList.add('active');
-            loadSensorData();
-        }
-
-        function selectFeedingPond(pondId, el) {
-            document.querySelectorAll('#feedingPondSelector .pond-card').forEach(c => c.classList.remove('active'));
-            if (el) el.classList.add('active');
-            loadFeedingLog(pondId);
         }
 
         function switchMetric(metric, el) {
             currentMetric = metric;
-            document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.metric-tab').forEach(t => t.classList.remove('active'));
             if (el) el.classList.add('active');
-            loadHistoryData();
+            loadHistoryChart();
         }
 
-        // ============ LOAD PAGE DATA ============
-        function loadPageData(pageId) {
-            switch (pageId) {
-                case 'dashboard': loadDashboard(); break;
-                case 'sensors': loadSensorPage(); break;
-                case 'weather': loadWeatherPage(); break;
-                case 'ponds': loadPonds(); break;
-                case 'alerts': loadAlerts(); break;
-                case 'feeding': loadFeedingLog('pond1'); break;
-                case 'analytics': loadAnalytics(); break;
-                case 'devices': loadDevices(); break;
-            }
+        function switchFeedingPond(pondId, el) {
+            document.querySelectorAll('#feedingPondTabs .pond-tab').forEach(t => t.classList.remove('active'));
+            if (el) el.classList.add('active');
+            loadFeedingLog(pondId);
         }
 
-        // ============ DASHBOARD ============
+        // ============ LOAD DASHBOARD ============
         async function loadDashboard() {
-            // Load sensor data for stat cards
             const sensorData = await apiCall('/api/device/sensor-data', { pond: currentPond });
             if (sensorData) {
-                document.getElementById('statSalinity').textContent = sensorData.salinity + ' ppt';
-                document.getElementById('statDO').textContent = sensorData.do + ' mg/L';
-                document.getElementById('statPH').textContent = sensorData.ph;
-                document.getElementById('statTemp').textContent = sensorData.temperature + '°C';
-                document.getElementById('sensorPondName').textContent = sensorData.pond_name;
+                renderSensorGrid(sensorData);
             }
 
-            // Load weather
             loadWeather();
-
-            // Load risk
             loadWeatherRisk();
-
-            // Load recommendations
             loadRecommendations();
-
-            // Load harvest
             loadHarvest();
+            loadHistoryChart();
+            updateTime();
+        }
 
-            // Load alerts summary
-            loadAlertSummary();
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('wwTime').textContent = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
         }
 
         async function loadWeather() {
             const data = await apiCall('/api/weather', { location: currentLocation });
             if (!data) return;
 
-            document.getElementById('weatherDate').textContent = new Date().toLocaleDateString('vi-VN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-            document.getElementById('weatherIcon').textContent = data.icon;
-            document.getElementById('weatherTemp').textContent = data.temperature + '°C';
-            document.getElementById('weatherDesc').textContent = data.description;
+            document.getElementById('wwIcon').textContent = data.icon;
+            document.getElementById('wwTemp').textContent = data.temperature + '°C';
+            document.getElementById('wwDesc').textContent = data.description;
             document.getElementById('wdHumidity').textContent = data.humidity + '%';
             document.getElementById('wdWind').textContent = data.wind_speed + ' km/h';
             document.getElementById('wdRain').textContent = data.rainfall_today + ' mm';
-            document.getElementById('wdUV').textContent = data.uv_index;
-            document.getElementById('wdTide').textContent = data.tide_height + ' m';
-            document.getElementById('wdPressure').textContent = data.pressure + ' hPa';
 
             // Forecast
-            const forecastEl = document.getElementById('forecastList');
+            const forecastEl = document.getElementById('forecastScroll');
             forecastEl.innerHTML = data.forecast.map(f => `
-                <div class="forecast-item">
-                    <div class="fi-day">${f.day}</div>
-                    <div class="fi-icon">${f.icon}</div>
-                    <div class="fi-temp">${f.temp}°C</div>
-                    <div class="fi-rain">🌧 ${f.rain_prob}%</div>
+                <div class="forecast-mini">
+                    <div class="fm-day">${f.day}</div>
+                    <div class="fm-icon">${f.icon}</div>
+                    <div class="fm-temp">${f.temp}°</div>
+                    <div class="fm-rain">🌧${f.rain_prob}%</div>
                 </div>
             `).join('');
-
-            // Update page weather too
-            document.getElementById('weatherPageIcon').textContent = data.icon;
-            document.getElementById('weatherPageTemp').textContent = data.temperature + '°C';
-            document.getElementById('weatherPageDesc').textContent = data.description;
-            document.getElementById('weatherPageDate').textContent = data.location;
-            document.getElementById('weatherFeelsLike').textContent = data.feels_like + '°C';
         }
 
         async function loadWeatherRisk() {
             const data = await apiCall('/api/weather-risk', { location: currentLocation });
             if (!data) return;
 
-            const circle = document.getElementById('riskScoreCircle');
+            const circle = document.getElementById('riskCircle');
             circle.style.background = data.color;
-            document.getElementById('riskScoreValue').textContent = data.risk_score;
+            circle.textContent = data.risk_score;
+            document.getElementById('riskTitle').textContent = `Rủi ro ${data.level}`;
+            document.getElementById('riskDesc').textContent = data.message;
+        }
 
-            const levelColors = { 'Thấp': 'var(--success)', 'Trung bình': 'var(--warning)', 'Cao': 'var(--danger)' };
-            const badgeColors = { 'Thấp': 'badge-success', 'Trung bình': 'badge-warning', 'Cao': 'badge-danger' };
-            const badge = document.getElementById('riskLevelBadge');
-            badge.textContent = data.level;
-            badge.className = `badge ${badgeColors[data.level] || 'badge-info'}`;
+        function renderSensorGrid(data) {
+            const sensors = [
+                { name: 'Độ mặn', value: data.salinity, unit: 'ppt', icon: '💧', safe: data.salinity >= 10 && data.salinity <= 20 },
+                { name: 'DO', value: data.do, unit: 'mg/L', icon: '🌬️', safe: data.do >= 5 && data.do <= 10 },
+                { name: 'pH', value: data.ph, unit: '', icon: '', safe: data.ph >= 7.5 && data.ph <= 8.5 },
+                { name: 'Nhiệt độ', value: data.temperature, unit: '°C', icon: '️', safe: data.temperature >= 26 && data.temperature <= 32 },
+                { name: 'NH3', value: data.ammonia, unit: 'mg/L', icon: '️', safe: data.ammonia < 0.1 },
+                { name: 'NO2', value: data.nitrite, unit: 'mg/L', icon: '🔬', safe: data.nitrite < 0.1 },
+            ];
 
-            document.getElementById('riskLevel').textContent = `Rủi ro ${data.level}`;
-            document.getElementById('riskMessage').textContent = data.message;
-
-            document.getElementById('riskActions').innerHTML = data.actions.map(a =>
-                `<div style="display: flex; align-items: center; gap: 8px; padding: 8px 0; font-size: 13px; color: var(--text-secondary);">
-                    <i class="ri-check-line" style="color: var(--green-field);"></i> ${a}
-                </div>`
-            ).join('');
-
-            // Update weather page risk
-            const meterEl = document.getElementById('weatherRiskMeter');
-            if (meterEl) {
-                meterEl.innerHTML = `
-                    <div class="risk-score-circle" style="background: ${data.color}; font-size: 28px;">${data.risk_score}</div>
-                    <div class="risk-info">
-                        <h3>Rủi ro ${data.level}</h3>
-                        <p>${data.message}</p>
-                        <div style="margin-top: 12px;">
-                            ${data.actions.map(a => `<div style="display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 13px; color: var(--text-secondary);">
-                                <i class="ri-check-line" style="color: var(--green-field);"></i> ${a}
-                            </div>`).join('')}
-                        </div>
-                    </div>
-                `;
-            }
+            document.getElementById('sensorGrid').innerHTML = sensors.map(s => {
+                const cls = !s.safe ? 'danger' : '';
+                return `<div class="sensor-item ${cls}">
+                    <div class="si-icon">${s.icon}</div>
+                    <div class="si-name">${s.name}</div>
+                    <div class="si-value">${s.value}</div>
+                    <div class="si-unit">${s.unit}</div>
+                </div>`;
+            }).join('');
         }
 
         async function loadSensorData() {
             const data = await apiCall('/api/device/sensor-data', { pond: currentPond });
-            if (!data) return;
-
-            const sensors = [
-                { name: 'Độ mặn', value: data.salinity, unit: 'ppt', icon: '💧', range: '10-20 ppt', safe: data.salinity >= 10 && data.salinity <= 20 },
-                { name: 'DO', value: data.do, unit: 'mg/L', icon: '🌬️', range: '5-10 mg/L', safe: data.do >= 5 && data.do <= 10 },
-                { name: 'pH', value: data.ph, unit: '', icon: '️', range: '7.5-8.5', safe: data.ph >= 7.5 && data.ph <= 8.5 },
-                { name: 'Nhiệt độ', value: data.temperature, unit: '°C', icon: '🌡️', range: '26-32 °C', safe: data.temperature >= 26 && data.temperature <= 32 },
-                { name: 'NH3', value: data.ammonia, unit: 'mg/L', icon: '️', range: '< 0.1 mg/L', safe: data.ammonia < 0.1 },
-                { name: 'NO2', value: data.nitrite, unit: 'mg/L', icon: '🔬', range: '< 0.1 mg/L', safe: data.nitrite < 0.1 },
-                { name: 'Kiềm', value: data.alkalinity, unit: 'mg/L', icon: '', range: '100-140', safe: true },
-                { name: 'Đục', value: data.turbidity, unit: 'NTU', icon: '👁️', range: '25-55 NTU', safe: true },
-                { name: 'H2S', value: data.h2s, unit: 'mg/L', icon: '️', range: '< 0.003', safe: data.h2s < 0.003 },
-            ];
-
-            const gridEl = document.getElementById('sensorGrid');
-            const detailGridEl = document.getElementById('sensorDetailGrid');
-
-            const html = sensors.map(s => {
-                const cls = !s.safe ? (s.name === 'NH3' || s.name === 'H2S' ? 'danger' : 'warning') : '';
-                return `<div class="sensor-item ${cls}">
-                    <div class="sensor-icon">${s.icon}</div>
-                    <div class="sensor-name">${s.name}</div>
-                    <div class="sensor-value">${s.value}</div>
-                    <div class="sensor-unit">${s.unit}</div>
-                    <div class="sensor-range">${s.range}</div>
-                </div>`;
-            }).join('');
-
-            if (gridEl) gridEl.innerHTML = html;
-            if (detailGridEl) detailGridEl.innerHTML = html;
+            if (data) renderSensorGrid(data);
+            loadHistoryChart();
         }
 
-        async function loadRecommendations() {
-            const data = await apiCall('/api/action-recommendation', { pond: currentPond });
-            if (!data) return;
-
-            const el = document.getElementById('recommendations');
-            const priorityIcons = { high: 'ri-error-warning-fill', medium: 'ri-information-fill', low: 'ri-checkbox-circle-fill' };
-
-            el.innerHTML = data.recommendations.map(r => `
-                <div class="rec-card">
-                    <div class="rec-priority ${r.priority}">
-                        <i class="${priorityIcons[r.priority]}"></i>
-                    </div>
-                    <div class="rec-content">
-                        <div class="rec-action">${r.action}</div>
-                        <div class="rec-deadline"><i class="ri-time-line"></i> ${r.deadline}</div>
-                    </div>
-                    <span class="badge ${r.priority === 'high' ? 'badge-danger' : r.priority === 'medium' ? 'badge-warning' : 'badge-success'}">${r.priority === 'high' ? 'Cao' : r.priority === 'medium' ? 'TB' : 'Thấp'}</span>
-                </div>
-            `).join('');
-        }
-
-        async function loadHarvest() {
-            const data = await apiCall('/api/harvest-optimization', { pond: currentPond });
-            if (!data) return;
-
-            const el = document.getElementById('harvestCard');
-            el.innerHTML = `
-                <div class="harvest-card">
-                    <h3>🎯 Tăng trưởng</h3>
-                    <div class="harvest-value">${data.growth_percent}%</div>
-                    <div class="harvest-detail">Còn ${data.days_to_target} ngày đạt kích thước thương phẩm</div>
-                    <div style="margin-top: 16px; display: flex; gap: 24px;">
-                        <div>
-                            <div style="font-size: 11px; opacity: 0.7;">Sản lượng ước tính</div>
-                            <div style="font-size: 20px; font-weight: 700;">${data.estimated_yield} kg</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 11px; opacity: 0.7;">Lợi nhuận ước tính</div>
-                            <div style="font-size: 20px; font-weight: 700;">${(data.profit_estimate / 1000000).toFixed(1)}M ₫</div>
-                        </div>
-                    </div>
-                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.2);">
-                        <div style="font-size: 12px; opacity: 0.8;"> Cửa sổ thu hoạch: <strong>${data.recommended_window}</strong></div>
-                        <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;"> Giá thị trường: <strong>${data.market_price_trend === 'up' ? 'Tăng ↗' : 'Giảm '}</strong></div>
-                    </div>
-                </div>
-            `;
-        }
-
-        async function loadAlertSummary() {
-            const data = await apiCall('/api/shock-alert', { pond: currentPond });
-            if (!data) return;
-
-            const el = document.getElementById('alertsList');
-            if (!el) return;
-
-            el.innerHTML = data.alerts.map(a => `
-                <div class="alert-card ${a.severity}">
-                    <div class="alert-icon">${a.severity === 'danger' ? '🚨' : '⚠️'}</div>
-                    <div class="alert-content">
-                        <div class="alert-title">${a.title}</div>
-                        <div class="alert-message">${a.message}</div>
-                        <div class="alert-actions">
-                            ${a.actions.map(act => `<span class="alert-action">${act}</span>`).join('')}
-                        </div>
-                    </div>
-                    <div class="alert-meta">${a.time}</div>
-                </div>
-            `).join('');
-        }
-
-        async function loadAlerts() {
-            loadAlertSummary();
-            loadDiseaseRisk();
-        }
-
-        async function loadDiseaseRisk() {
-            const data = await apiCall('/api/disease-risk', { pond: currentPond });
-            if (!data) return;
-
-            const el = document.getElementById('diseaseRisk');
-            el.innerHTML = `
-                <div class="grid-2" style="margin-bottom: 16px;">
-                    <div>
-                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Xác suất Vibrio</div>
-                        <div style="font-size: 28px; font-weight: 700; color: ${data.risk_level === 'high' ? 'var(--danger)' : 'var(--warning)'};">${data.vibrio_probability}%</div>
-                    </div>
-                    <div>
-                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Mức độ rủi ro</div>
-                        <span class="badge ${data.risk_level === 'high' ? 'badge-danger' : 'badge-warning'}">${data.risk_level === 'high' ? 'Cao' : 'Trung bình'}</span>
-                    </div>
-                </div>
-                <div class="risk-conditions" style="margin-bottom: 16px;">
-                    <div class="risk-cond ${data.conditions.temperature_risk ? 'risky' : 'safe'}">
-                        <i class="ri-temp-hot-line"></i> Nhiệt độ: ${data.conditions.temperature_risk ? 'Rủi ro' : 'An toàn'}
-                    </div>
-                    <div class="risk-cond ${data.conditions.ph_risk ? 'risky' : 'safe'}">
-                        <i class="ri-flask-line"></i> pH: ${data.conditions.ph_risk ? 'Rủi ro' : 'An toàn'}
-                    </div>
-                    <div class="risk-cond ${data.conditions.do_risk ? 'risky' : 'safe'}">
-                        <i class="ri-windy-line"></i> DO: ${data.conditions.do_risk ? 'Rủi ro' : 'An toàn'}
-                    </div>
-                </div>
-                <div style="padding: 12px 16px; background: var(--alice-blue); border-radius: var(--radius-sm); font-size: 13px; color: var(--ultramarine);">
-                     <strong>Khuyến nghị:</strong> ${data.recommendation}
-                </div>
-                <div style="margin-top: 12px; font-size: 12px; color: var(--text-muted);">
-                    <i class="ri-time-line"></i> Kiểm tra tiếp theo: ${data.next_check}
-                </div>
-            `;
-        }
-
-        async function loadWeatherPage() {
-            loadWeather();
-            loadWeatherRisk();
-        }
-
-        async function loadSensorPage() {
-            loadSensorData();
-            loadHistoryData();
-        }
-
-        async function loadHistoryData() {
+        async function loadHistoryChart() {
             const data = await apiCall('/api/device/history', {
                 pond: currentPond,
                 metric: currentMetric,
@@ -2206,134 +1917,15 @@
             });
             if (!data) return;
 
-            const canvas = document.getElementById('historyChart');
+            const canvas = document.getElementById('mainChart');
             if (!canvas) return;
+
+            const unitNames = { salinity: 'Độ mặn (ppt)', do: 'DO (mg/L)', ph: 'pH', temperature: 'Nhiệt độ (°C)', ammonia: 'NH3 (mg/L)' };
+            document.getElementById('chartSubtitle').textContent = unitNames[currentMetric] || currentMetric;
 
             drawChart(canvas, data.data, currentMetric, data.unit, data.safe_min, data.safe_max);
         }
 
-        async function loadAnalytics() {
-            const metrics = ['salinity', 'do', 'ph', 'temperature'];
-            const canvasIds = ['salinityChart', 'doChart', 'phChart', 'tempChart'];
-
-            for (let i = 0; i < metrics.length; i++) {
-                const data = await apiCall('/api/device/history', {
-                    pond: currentPond,
-                    metric: metrics[i],
-                    hours: 48
-                });
-                if (data) {
-                    const canvas = document.getElementById(canvasIds[i]);
-                    if (canvas) {
-                        drawChart(canvas, data.data, metrics[i], data.unit, data.safe_min, data.safe_max);
-                    }
-                }
-            }
-        }
-
-        async function loadPonds() {
-            const data = await apiCall('/api/ponds');
-            if (!data) return;
-
-            const gridEl = document.getElementById('pondsGrid');
-            const tbodyEl = document.getElementById('pondsTableBody');
-
-            const speciesIcons = { 'Tôm sú': '', 'Cá tra': '🐟', 'Tôm thẻ': '🦐' };
-
-            gridEl.innerHTML = data.ponds.map(p => `
-                <div class="card" style="cursor: pointer;" onclick="switchPond('${p.id}'); switchPage('sensors');">
-                    <div style="font-size: 32px; margin-bottom: 12px;">${speciesIcons[p.species] || '🐠'}</div>
-                    <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">${p.name}</div>
-                    <div style="font-size: 12px; color: var(--text-muted);">${p.species}</div>
-                    <div style="display: flex; gap: 16px; margin-top: 12px;">
-                        <div>
-                            <div style="font-size: 11px; color: var(--text-muted);">Diện tích</div>
-                            <div style="font-size: 14px; font-weight: 600;">${p.area.toLocaleString()} m²</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 11px; color: var(--text-muted);">Mật độ</div>
-                            <div style="font-size: 14px; font-weight: 600;">${p.density} con/m²</div>
-                        </div>
-                    </div>
-                    <div class="pond-status online" style="margin-top: 12px;"><i class="ri-circle-fill"></i> Online</div>
-                </div>
-            `).join('');
-
-            tbodyEl.innerHTML = data.ponds.map(p => `
-                <tr>
-                    <td><strong>${p.id}</strong></td>
-                    <td>${p.name}</td>
-                    <td>${speciesIcons[p.species] || '🐠'} ${p.species}</td>
-                    <td>${p.area.toLocaleString()} m²</td>
-                    <td>${p.density} con/m²</td>
-                    <td><span class="badge badge-success">Online</span></td>
-                </tr>
-            `).join('');
-        }
-
-        async function loadFeedingLog(pondId = 'pond1') {
-            const data = await apiCall('/api/device/feeding-log', { pond: pondId });
-            if (!data) return;
-
-            document.getElementById('feedingDate').textContent = data.date;
-            document.getElementById('feedingTotal').textContent = data.total_today + ' g';
-            document.getElementById('feedingTarget').textContent = data.target + ' g';
-
-            const progress = Math.round((data.total_today / data.target) * 100);
-            document.getElementById('feedingProgress').textContent = progress + '%';
-            document.getElementById('feedingProgressBar').style.width = Math.min(progress, 100) + '%';
-
-            const typeIcons = { auto: '🤖', manual: '' };
-            const typeLabels = { auto: 'Tự động', manual: 'Thủ công' };
-
-            document.getElementById('feedingTableBody').innerHTML = data.logs.map(l => `
-                <tr>
-                    <td><strong>${l.time}</strong></td>
-                    <td><span class="badge badge-info">${typeLabels[l.type]} ${l.icon}</span></td>
-                    <td>${l.feed}</td>
-                    <td><strong>${l.amount} g</strong></td>
-                </tr>
-            `).join('');
-        }
-
-        async function loadDevices() {
-            const data = await apiCall('/api/device/status');
-            if (!data) return;
-
-            document.getElementById('deviceOnlineCount').textContent = `${data.online}/${data.total} Online`;
-
-            const listEl = document.getElementById('deviceList');
-            listEl.innerHTML = data.devices.map(d => {
-                const batClass = d.battery > 60 ? '' : d.battery > 30 ? 'low' : 'critical';
-                return `
-                    <div class="device-item">
-                        <div class="device-dot ${d.status}"></div>
-                        <div class="device-info">
-                            <div class="device-name">${d.id} – Ao ${d.pond}</div>
-                            <div class="device-detail">Lần cuối: ${new Date(d.last_seen).toLocaleTimeString('vi-VN')}</div>
-                            <div class="battery-bar">
-                                <div class="battery-fill ${batClass}" style="width: ${d.battery}%"></div>
-                            </div>
-                        </div>
-                        <div class="device-battery">${d.battery}%</div>
-                    </div>
-                `;
-            }).join('');
-
-            // Cards
-            const cardsEl = document.getElementById('deviceStatusCards');
-            cardsEl.innerHTML = data.devices.map(d => `
-                <div class="card text-center">
-                    <div style="font-size: 28px; margin-bottom: 8px;">${d.status === 'online' ? '📡' : ''}</div>
-                    <div style="font-size: 14px; font-weight: 600;">${d.id}</div>
-                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">${d.pond}</div>
-                    <span class="badge ${d.status === 'online' ? 'badge-success' : 'badge-danger'}" style="margin-top: 8px;">${d.status === 'online' ? 'Online' : 'Offline'}</span>
-                    <div style="margin-top: 12px; font-size: 13px;"> ${d.battery}%</div>
-                </div>
-            `).join('');
-        }
-
-        // ============ CHART DRAWING ============
         function drawChart(canvas, data, metric, unit, safeMin, safeMax) {
             const ctx = canvas.getContext('2d');
             const dpr = window.devicePixelRatio || 1;
@@ -2347,23 +1939,21 @@
 
             const w = rect.width;
             const h = rect.height;
-            const padding = { top: 30, right: 20, bottom: 40, left: 50 };
+            const padding = { top: 20, right: 12, bottom: 30, left: 42 };
             const chartW = w - padding.left - padding.right;
             const chartH = h - padding.top - padding.bottom;
 
-            // Clear
             ctx.clearRect(0, 0, w, h);
 
-            // Parse data
             const values = data.map(d => d.value);
             const labels = data.map(d => d.time);
-            const minVal = Math.min(...values) - 1;
-            const maxVal = Math.max(...values) + 1;
+            const minVal = Math.min(...values) - (metric === 'ammonia' ? 0.01 : 1);
+            const maxVal = Math.max(...values) + (metric === 'ammonia' ? 0.01 : 1);
             const range = maxVal - minVal || 1;
 
-            // Grid lines
+            // Grid
             ctx.strokeStyle = '#E2ECF6';
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 0.5;
             for (let i = 0; i <= 4; i++) {
                 const y = padding.top + (chartH / 4) * i;
                 ctx.beginPath();
@@ -2373,47 +1963,31 @@
 
                 const val = maxVal - (range / 4) * i;
                 ctx.fillStyle = '#8E9DB0';
-                ctx.font = '11px Inter';
+                ctx.font = '9px Inter';
                 ctx.textAlign = 'right';
-                ctx.fillText(val.toFixed(1) + (unit ? ' ' + unit : ''), padding.left - 8, y + 4);
+                ctx.fillText(val.toFixed(metric === 'ammonia' ? 3 : 1) + (unit ? ' ' + unit : ''), padding.left - 4, y + 3);
             }
 
             // Safe zone
             if (safeMin !== undefined && safeMax !== undefined) {
                 const yMin = padding.top + chartH - ((safeMin - minVal) / range) * chartH;
                 const yMax = padding.top + chartH - ((safeMax - minVal) / range) * chartH;
-                ctx.fillStyle = 'rgba(34, 197, 94, 0.08)';
+                ctx.fillStyle = 'rgba(34, 197, 94, 0.06)';
                 ctx.fillRect(padding.left, Math.min(yMin, yMax), chartW, Math.abs(yMax - yMin));
 
-                ctx.strokeStyle = 'rgba(34, 197, 94, 0.3)';
-                ctx.setLineDash([4, 4]);
+                ctx.strokeStyle = 'rgba(34, 197, 94, 0.25)';
+                ctx.setLineDash([3, 3]);
                 ctx.beginPath();
-                ctx.moveTo(padding.left, yMax);
-                ctx.lineTo(w - padding.right, yMax);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(padding.left, yMin);
-                ctx.lineTo(w - padding.right, yMin);
+                ctx.moveTo(padding.left, Math.max(yMax, yMin));
+                ctx.lineTo(w - padding.right, Math.max(yMax, yMin));
                 ctx.stroke();
                 ctx.setLineDash([]);
-
-                ctx.fillStyle = '#22C55E';
-                ctx.font = '10px Inter';
-                ctx.textAlign = 'left';
-                ctx.fillText(`An toàn: ${safeMin}-${safeMax}${unit ? ' ' + unit : ''}`, padding.left + 4, Math.max(yMax, yMin) - 4);
             }
 
-            // Draw line
-            const colorMap = {
-                salinity: '#2D69FF',
-                do: '#4BAA7D',
-                ph: '#F59E0B',
-                temperature: '#EF4444',
-                ammonia: '#8B5CF6'
-            };
+            const colorMap = { salinity: '#2D69FF', do: '#4BAA7D', ph: '#F59E0B', temperature: '#EF4444', ammonia: '#8B5CF6' };
             const lineColor = colorMap[metric] || '#2D69FF';
 
-            // Area fill
+            // Area
             ctx.beginPath();
             values.forEach((v, i) => {
                 const x = padding.left + (i / (values.length - 1)) * chartW;
@@ -2425,15 +1999,15 @@
             ctx.lineTo(padding.left, padding.top + chartH);
             ctx.closePath();
             const gradient = ctx.createLinearGradient(0, padding.top, 0, padding.top + chartH);
-            gradient.addColorStop(0, lineColor + '30');
-            gradient.addColorStop(1, lineColor + '05');
+            gradient.addColorStop(0, lineColor + '25');
+            gradient.addColorStop(1, lineColor + '02');
             ctx.fillStyle = gradient;
             ctx.fill();
 
             // Line
             ctx.beginPath();
             ctx.strokeStyle = lineColor;
-            ctx.lineWidth = 2.5;
+            ctx.lineWidth = 2;
             ctx.lineJoin = 'round';
             values.forEach((v, i) => {
                 const x = padding.left + (i / (values.length - 1)) * chartW;
@@ -2443,33 +2017,211 @@
             });
             ctx.stroke();
 
-            // Last point dot
+            // Last dot
             const lastX = padding.left + chartW;
             const lastY = padding.top + chartH - ((values[values.length - 1] - minVal) / range) * chartH;
             ctx.beginPath();
-            ctx.arc(lastX, lastY, 5, 0, Math.PI * 2);
+            ctx.arc(lastX, lastY, 4, 0, Math.PI * 2);
             ctx.fillStyle = lineColor;
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(lastX, lastY, 8, 0, Math.PI * 2);
-            ctx.fillStyle = lineColor + '30';
+            ctx.arc(lastX, lastY, 7, 0, Math.PI * 2);
+            ctx.fillStyle = lineColor + '25';
             ctx.fill();
 
             // X labels
             ctx.fillStyle = '#8E9DB0';
-            ctx.font = '10px Inter';
+            ctx.font = '9px Inter';
             ctx.textAlign = 'center';
-            const step = Math.ceil(values.length / 8);
+            const step = Math.ceil(values.length / 6);
             for (let i = 0; i < values.length; i += step) {
                 const x = padding.left + (i / (values.length - 1)) * chartW;
-                ctx.fillText(labels[i], x, h - 10);
+                ctx.fillText(labels[i], x, h - 8);
+            }
+        }
+
+        async function loadRecommendations() {
+            const data = await apiCall('/api/action-recommendation', { pond: currentPond });
+            if (!data) return;
+
+            const priorityIcons = { high: 'ri-error-warning-fill', medium: 'ri-information-fill', low: 'ri-checkbox-circle-fill' };
+            const priorityLabels = { high: 'Cao', medium: 'TB', low: 'Thấp' };
+            const badgeCls = { high: 'badge-danger', medium: 'badge-warning', low: 'badge-success' };
+
+            document.getElementById('recList').innerHTML = data.recommendations.map(r => `
+                <div class="rec-card">
+                    <div class="rec-priority ${r.priority}"><i class="${priorityIcons[r.priority]}"></i></div>
+                    <div class="rec-content">
+                        <div class="rc-action">${r.action}</div>
+                        <div class="rc-deadline"><i class="ri-time-line"></i> ${r.deadline}</div>
+                    </div>
+                    <span class="badge-mobile ${badgeCls[r.priority]}">${priorityLabels[r.priority]}</span>
+                </div>
+            `).join('');
+        }
+
+        async function loadHarvest() {
+            const data = await apiCall('/api/harvest-optimization', { pond: currentPond });
+            if (!data) return;
+
+            document.getElementById('harvestArea').innerHTML = `
+                <div class="harvest-card">
+                    <h3>🎯 Tăng trưởng ao nuôi</h3>
+                    <div class="hc-value">${data.growth_percent}%</div>
+                    <div class="hc-detail">Còn ${data.days_to_target} ngày đạt kích thước thương phẩm</div>
+                    <div class="hc-stats">
+                        <div>
+                            <div class="hc-stat-label">Sản lượng</div>
+                            <div class="hc-stat-value">${data.estimated_yield} kg</div>
+                        </div>
+                        <div>
+                            <div class="hc-stat-label">Lợi nhuận ước tính</div>
+                            <div class="hc-stat-value">${(data.profit_estimate / 1000000).toFixed(1)}M ₫</div>
+                        </div>
+                        <div>
+                            <div class="hc-stat-label">Cửa sổ thu hoạch</div>
+                            <div class="hc-stat-value">${data.recommended_window}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function loadAlertsPage() {
+            const shockData = await apiCall('/api/shock-alert', { pond: currentPond });
+            if (shockData) {
+                document.getElementById('alertsList').innerHTML = shockData.alerts.map(a => `
+                    <div class="alert-card ${a.severity}">
+                        <div class="ac-icon">${a.severity === 'danger' ? '🚨' : '⚠️'}</div>
+                        <div class="ac-content">
+                            <div class="ac-title">${a.title}</div>
+                            <div class="ac-msg">${a.message}</div>
+                        </div>
+                        <div class="ac-time">${a.time}</div>
+                    </div>
+                `).join('');
             }
 
-            // Metric label
-            ctx.fillStyle = lineColor;
-            ctx.font = 'bold 12px Inter';
-            ctx.textAlign = 'left';
-            ctx.fillText(`${metric.toUpperCase()}`, padding.left, 18);
+            loadDiseaseRisk();
+        }
+
+        async function loadDiseaseRisk() {
+            const data = await apiCall('/api/disease-risk', { pond: currentPond });
+            if (!data) return;
+
+            document.getElementById('diseaseCard').innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Xác suất Vibrio</div>
+                        <div style="font-size: 24px; font-weight: 700; color: ${data.risk_level === 'high' ? 'var(--danger)' : 'var(--warning)'};">${data.vibrio_probability}%</div>
+                    </div>
+                    <span class="badge-mobile ${data.risk_level === 'high' ? 'badge-danger' : 'badge-warning'}">${data.risk_level === 'high' ? 'Rủi ro cao' : 'Trung bình'}</span>
+                </div>
+                <div class="risk-conditions-mobile" style="margin-bottom: 12px;">
+                    <div class="risk-cond-mobile ${data.conditions.temperature_risk ? 'risky' : 'safe'}">
+                        <i class="ri-temp-hot-line"></i> ${data.conditions.temperature_risk ? 'Nhiệt độ rủi ro' : 'Nhiệt độ an toàn'}
+                    </div>
+                    <div class="risk-cond-mobile ${data.conditions.ph_risk ? 'risky' : 'safe'}">
+                        <i class="ri-flask-line"></i> ${data.conditions.ph_risk ? 'pH rủi ro' : 'pH an toàn'}
+                    </div>
+                    <div class="risk-cond-mobile ${data.conditions.do_risk ? 'risky' : 'safe'}">
+                        <i class="ri-windy-line"></i> ${data.conditions.do_risk ? 'DO rủi ro' : 'DO an toàn'}
+                    </div>
+                </div>
+                <div style="padding: 10px 14px; background: var(--alice-blue); border-radius: var(--radius-sm); font-size: 12px; color: var(--ultramarine);">
+                     <strong>💡 ${data.recommendation}</strong>
+                </div>
+                <div style="margin-top: 10px; font-size: 11px; color: var(--text-muted);">
+                    <i class="ri-time-line"></i> Kiểm tra tiếp: ${data.next_check}
+                </div>
+            `;
+        }
+
+        async function loadPondsPage() {
+            const data = await apiCall('/api/ponds');
+            if (!data) return;
+
+            const speciesIcons = { 'Tôm sú': '🦐', 'Cá tra': '', 'Tôm thẻ': '🦐' };
+
+            document.getElementById('pondsList').innerHTML = data.ponds.map(p => `
+                <div class="pond-card-mobile" onclick="switchPond('${p.id}'); switchTab('dashboard');">
+                    <div class="pcm-icon">${speciesIcons[p.species] || '🐠'}</div>
+                    <div class="pcm-info">
+                        <div class="pcm-name">${p.name}</div>
+                        <div class="pcm-desc">${p.species}</div>
+                        <div class="pcm-stats">
+                            <div><div class="pcm-stat-val">${p.area.toLocaleString()} m²</div><div class="pcm-stat-label">Diện tích</div></div>
+                            <div><div class="pcm-stat-val">${p.density} con/m²</div><div class="pcm-stat-label">Mật độ</div></div>
+                        </div>
+                    </div>
+                    <div class="pcm-status"><i class="ri-circle-fill" style="font-size: 6px;"></i> Online</div>
+                </div>
+            `).join('');
+        }
+
+        async function loadFeedingPage() {
+            loadFeedingLog('pond1');
+        }
+
+        async function loadFeedingLog(pondId = 'pond1') {
+            const data = await apiCall('/api/device/feeding-log', { pond: pondId });
+            if (!data) return;
+
+            const progress = Math.round((data.total_today / data.target) * 100);
+            const typeLabels = { auto: '🤖 Tự động', manual: '✋ Thủ công' };
+
+            document.getElementById('feedingArea').innerHTML = `
+                <div class="feeding-summary">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 12px; color: var(--text-muted);">Hôm nay (${data.date})</div>
+                            <div style="font-size: 22px; font-weight: 700; color: var(--ultramarine); margin-top: 4px;">${data.total_today} g</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 11px; color: var(--text-muted);">Mục tiêu</div>
+                            <div style="font-size: 16px; font-weight: 600;">${data.target} g</div>
+                        </div>
+                    </div>
+                    <div class="feeding-bar">
+                        <div class="feeding-bar-fill" style="width: ${Math.min(progress, 100)}%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted);">
+                        <span>${progress}% hoàn thành</span>
+                        <span>Còn ${Math.max(0, data.target - data.total_today)} g</span>
+                    </div>
+                </div>
+                <div class="section-label">Chi tiết cho ăn</div>
+                ${data.logs.map(l => `
+                    <div class="feeding-table-row">
+                        <div class="ftr-time">${l.time}</div>
+                        <div class="ftr-type">${typeLabels[l.type]}</div>
+                        <div class="ftr-feed">${l.icon} ${l.feed}</div>
+                        <div class="ftr-amount">${l.amount}g</div>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        async function loadDevicesPage() {
+            const data = await apiCall('/api/device/status');
+            if (!data) return;
+
+            document.getElementById('devicesList').innerHTML = data.devices.map(d => {
+                const batClass = d.battery > 60 ? '' : d.battery > 30 ? 'low' : 'critical';
+                return `
+                    <div class="device-item-mobile">
+                        <div class="device-dot ${d.status}"></div>
+                        <div class="device-info">
+                            <div class="device-name">${d.id} – Ao ${d.pond}</div>
+                            <div class="device-detail">Lần cuối: ${new Date(d.last_seen).toLocaleTimeString('vi-VN')}</div>
+                            <div class="battery-bar-sm">
+                                <div class="battery-fill-sm ${batClass}" style="width: ${d.battery}%"></div>
+                            </div>
+                        </div>
+                        <div class="battery-text">${d.battery}%</div>
+                    </div>
+                `;
+            }).join('');
         }
 
         // ============ CHAT ============
@@ -2479,31 +2231,24 @@
             if (!message) return;
 
             input.value = '';
-
-            // Add user message
             addChatMessage('user', message);
             chatHistory.push({ role: 'user', content: message });
 
-            // Show typing
-            const typingEl = document.getElementById('chatMessages');
+            const el = document.getElementById('chatMessages');
             const typingDiv = document.createElement('div');
             typingDiv.className = 'chat-msg ai';
             typingDiv.id = 'typingIndicator';
             typingDiv.innerHTML = `
-                <div class="chat-avatar"><i class="ri-robot-2-line"></i></div>
+                <div class="chat-avatar-sm"><i class="ri-robot-2-line"></i></div>
                 <div class="chat-bubble">
                     <div class="typing-indicator">
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
                     </div>
                 </div>
             `;
-            typingDiv.style.animation = 'fadeInUp 0.3s ease';
-            typingEl.appendChild(typingDiv);
-            typingEl.scrollTop = typingEl.scrollHeight;
+            el.appendChild(typingDiv);
+            el.scrollTop = el.scrollHeight;
 
-            // Disable send button
             document.getElementById('chatSendBtn').disabled = true;
 
             try {
@@ -2518,16 +2263,15 @@
                 });
                 const data = await resp.json();
 
-                // Remove typing indicator
                 const typing = document.getElementById('typingIndicator');
                 if (typing) typing.remove();
 
-                addChatMessage('ai', data.reply || '⚠️ Có lỗi xảy ra khi xử lý yêu cầu.');
+                addChatMessage('ai', data.reply || '⚠️ Có lỗi xảy ra.');
                 chatHistory.push({ role: 'assistant', content: data.reply });
             } catch (err) {
                 const typing = document.getElementById('typingIndicator');
                 if (typing) typing.remove();
-                addChatMessage('ai', '⚠️ Không thể kết nối đến máy chủ. Vui lòng thử lại sau.');
+                addChatMessage('ai', '⚠️ Không thể kết nối. Vui lòng thử lại.');
             }
 
             document.getElementById('chatSendBtn').disabled = false;
@@ -2537,30 +2281,24 @@
             const el = document.getElementById('chatMessages');
             const div = document.createElement('div');
             div.className = `chat-msg ${role}`;
-            div.style.animation = 'fadeInUp 0.3s ease';
 
             if (role === 'ai') {
+                let formatted = escapeHtml(text);
+                formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                formatted = formatted.replace(/\n/g, '<br>');
                 div.innerHTML = `
-                    <div class="chat-avatar"><i class="ri-robot-2-line"></i></div>
-                    <div class="chat-bubble">${formatChatMessage(text)}</div>
+                    <div class="chat-avatar-sm"><i class="ri-robot-2-line"></i></div>
+                    <div class="chat-bubble">${formatted}</div>
                 `;
             } else {
                 div.innerHTML = `
-                    <div class="chat-avatar"><i class="ri-user-line"></i></div>
+                    <div class="chat-avatar-sm"><i class="ri-user-line"></i></div>
                     <div class="chat-bubble">${escapeHtml(text)}</div>
                 `;
             }
 
             el.appendChild(div);
             el.scrollTop = el.scrollHeight;
-        }
-
-        function formatChatMessage(text) {
-            // Basic markdown-like formatting
-            let formatted = escapeHtml(text);
-            formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            formatted = formatted.replace(/\n/g, '<br>');
-            return formatted;
         }
 
         function escapeHtml(text) {
@@ -2573,19 +2311,12 @@
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
+            toast.className = `toast-mobile ${type}`;
 
-            const icons = {
-                success: 'ri-check-line',
-                danger: 'ri-error-warning-line',
-                warning: 'ri-alert-line',
-                info: 'ri-information-line'
-            };
-
-            toast.innerHTML = `<i class="${icons[type] || icons.info}" style="font-size: 18px;"></i> ${message}`;
+            const icons = { success: 'ri-check-line', danger: 'ri-error-warning-line', warning: 'ri-alert-line', info: 'ri-information-line' };
+            toast.innerHTML = `<i class="${icons[type] || icons.info}" style="font-size: 16px; flex-shrink: 0;"></i> ${message}`;
             container.appendChild(toast);
-
-            setTimeout(() => toast.remove(), 5000);
+            setTimeout(() => toast.remove(), 4000);
         }
 
         // ============ REFRESH ============
@@ -2597,31 +2328,27 @@
         // ============ INIT ============
         async function init() {
             loadDashboard();
+            updateTime();
+            setInterval(updateTime, 60000);
 
-            // Auto refresh every 30 seconds
-            refreshInterval = setInterval(() => {
-                const activePage = document.querySelector('.page.active');
-                if (activePage) {
-                    const pageId = activePage.id.replace('page-', '');
-                    if (pageId === 'dashboard' || pageId === 'sensors') {
-                        loadSensorData();
-                    }
-                }
+            // Auto refresh
+            setInterval(() => {
+                loadSensorData();
             }, 30000);
 
-            // Handle resize for charts
+            // Resize handler
             window.addEventListener('resize', () => {
-                const activePage = document.querySelector('.page.active');
-                if (activePage) {
-                    const pageId = activePage.id.replace('page-', '');
-                    if (pageId === 'sensors' || pageId === 'analytics') {
-                        loadPageData(pageId);
-                    }
+                loadHistoryChart();
+            });
+
+            // Close suggestions on outside click
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-wrapper')) {
+                    document.getElementById('searchSuggestions').classList.remove('show');
                 }
             });
         }
 
-        // Start
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>

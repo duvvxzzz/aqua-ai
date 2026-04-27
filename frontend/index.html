@@ -9,176 +9,176 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
 <style>
 :root {
-  /* ── New Palette ── */
-  --alice:     #E1F0FF;
-  --ultramarine: #2D69FF;
-  --ultramarine-dark: #1a50e0;
-  --ultramarine-pale: rgba(45, 105, 255, 0.10);
-  --ultramarine-pale2: rgba(45, 105, 255, 0.06);
-  --mint:      #DCFFF0;
-  --mint-dark: #b8f0d8;
-  --green:     #4BAA7D;
-  --green-dark: #38865f;
-  --green-pale: rgba(75, 170, 125, 0.12);
+/* ── New Palette ── */
+--alice:     #E1F0FF;
+--ultramarine: #2D69FF;
+--ultramarine-dark: #1a50e0;
+--ultramarine-pale: rgba(45, 105, 255, 0.10);
+--ultramarine-pale2: rgba(45, 105, 255, 0.06);
+--mint:      #DCFFF0;
+--mint-dark: #b8f0d8;
+--green:     #4BAA7D;
+--green-dark: #38865f;
+--green-pale: rgba(75, 170, 125, 0.12);
 
-  /* ── Semantic mapping ── */
-  --bg:        #E1F0FF;
-  --bg2:       #d4e9ff;
-  --surface:   #ffffff;
-  --surface2:  #f4faff;
-  --surface3:  #DCFFF0;
-  --border:    rgba(45, 105, 255, 0.14);
-  --border2:   rgba(45, 105, 255, 0.28);
-  --accent:    #2D69FF;
-  --accent-light: #5a8dff;
-  --accent-pale: rgba(45,105,255,0.08);
-  --accent2:   #4BAA7D;
-  --accent2-pale: rgba(75,170,125,0.10);
-  --warn:      #e09c00;
-  --warn-pale: rgba(254, 243, 199, 0.85);
-  --danger:    #e53e3e;
-  --danger-pale: rgba(254, 226, 226, 0.85);
-  --text:      #0d1f4a;
-  --text2:     #1a3266;
-  --text3:     #2d5096;
-  --text4:     #6a85b8;
-  --shadow:    0 2px 10px rgba(45,105,255,0.07);
-  --shadow-lg: 0 6px 24px rgba(45,105,255,0.12);
-  --radius:    14px;
-  --radius-sm: 9px;
+/* ── Semantic mapping ── */
+--bg:        #E1F0FF;
+--bg2:       #d4e9ff;
+--surface:   #ffffff;
+--surface2:  #f4faff;
+--surface3:  #DCFFF0;
+--border:    rgba(45, 105, 255, 0.14);
+--border2:   rgba(45, 105, 255, 0.28);
+--accent:    #2D69FF;
+--accent-light: #5a8dff;
+--accent-pale: rgba(45,105,255,0.08);
+--accent2:   #4BAA7D;
+--accent2-pale: rgba(75,170,125,0.10);
+--warn:      #e09c00;
+--warn-pale: rgba(254, 243, 199, 0.85);
+--danger:    #e53e3e;
+--danger-pale: rgba(254, 226, 226, 0.85);
+--text:      #0d1f4a;
+--text2:     #1a3266;
+--text3:     #2d5096;
+--text4:     #6a85b8;
+--shadow:    0 2px 10px rgba(45,105,255,0.07);
+--shadow-lg: 0 6px 24px rgba(45,105,255,0.12);
+--radius:    14px;
+--radius-sm: 9px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  background: linear-gradient(145deg, #c8deff 0%, #E1F0FF 40%, #d2f5e8 100%);
-  color: var(--text);
-  font-family: 'DM Sans', -apple-system, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+background: linear-gradient(145deg, #c8deff 0%, #E1F0FF 40%, #d2f5e8 100%);
+color: var(--text);
+font-family: 'DM Sans', -apple-system, sans-serif;
+-webkit-font-smoothing: antialiased;
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
 }
 
 /* ── Decorative BG blobs ── */
 body::before, body::after {
-  content: '';
-  position: fixed;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
+content: '';
+position: fixed;
+border-radius: 50%;
+pointer-events: none;
+z-index: 0;
 }
 body::before {
-  width: 500px; height: 500px;
-  top: -120px; right: -100px;
-  background: radial-gradient(circle, rgba(45,105,255,0.15) 0%, transparent 70%);
+width: 500px; height: 500px;
+top: -120px; right: -100px;
+background: radial-gradient(circle, rgba(45,105,255,0.15) 0%, transparent 70%);
 }
 body::after {
-  width: 400px; height: 400px;
-  bottom: -80px; left: -80px;
-  background: radial-gradient(circle, rgba(75,170,125,0.18) 0%, transparent 70%);
+width: 400px; height: 400px;
+bottom: -80px; left: -80px;
+background: radial-gradient(circle, rgba(75,170,125,0.18) 0%, transparent 70%);
 }
 
 .app {
-  width: 100%;
-  max-width: 430px;
-  height: 100vh;
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 60px rgba(45,105,255,0.12), 0 0 0 1px rgba(45,105,255,0.08);
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
+width: 100%;
+max-width: 430px;
+height: 100vh;
+background: rgba(255,255,255,0.85);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+display: flex;
+flex-direction: column;
+box-shadow: 0 0 60px rgba(45,105,255,0.12), 0 0 0 1px rgba(45,105,255,0.08);
+position: relative;
+overflow: hidden;
+z-index: 1;
 }
 
 /* Subtle mesh overlay inside app */
 .app::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 80% 10%, rgba(45,105,255,0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 10% 90%, rgba(75,170,125,0.06) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
+content: '';
+position: absolute;
+inset: 0;
+background:
+radial-gradient(ellipse at 80% 10%, rgba(45,105,255,0.06) 0%, transparent 50%),
+radial-gradient(ellipse at 10% 90%, rgba(75,170,125,0.06) 0%, transparent 50%);
+pointer-events: none;
+z-index: 0;
 }
 .app > * { position: relative; z-index: 1; }
 
 /* ── HEADER ── */
 .header {
-  padding: 16px 16px 10px;
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(255,255,255,0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1.5px solid var(--border);
+padding: 16px 16px 10px;
+position: sticky; top: 0; z-index: 100;
+background: rgba(255,255,255,0.88);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+border-bottom: 1.5px solid var(--border);
 }
 .header-row { display: flex; align-items: center; justify-content: space-between; }
 .logo { display: flex; align-items: center; gap: 10px; }
 .logo-icon {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, var(--ultramarine), var(--accent-light));
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; color: #fff;
-  box-shadow: 0 3px 12px rgba(45,105,255,0.35);
+width: 36px; height: 36px;
+background: linear-gradient(135deg, var(--ultramarine), var(--accent-light));
+border-radius: 10px;
+display: flex; align-items: center; justify-content: center;
+font-size: 20px; color: #fff;
+box-shadow: 0 3px 12px rgba(45,105,255,0.35);
 }
 .logo-text {
-  font-family: 'Syne', sans-serif;
-  font-size: 16px; font-weight: 800;
-  color: var(--ultramarine);
-  letter-spacing: 1.5px;
+font-family: 'Syne', sans-serif;
+font-size: 16px; font-weight: 800;
+color: var(--ultramarine);
+letter-spacing: 1.5px;
 }
 .logo-sub { font-size: 9px; color: var(--text4); font-family: 'JetBrains Mono', monospace; margin-top: 1px; }
 .header-actions { display: flex; gap: 6px; }
 .icon-btn {
-  width: 34px; height: 34px;
-  background: var(--accent-pale);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 18px; color: var(--accent);
-  position: relative; transition: all 0.15s;
+width: 34px; height: 34px;
+background: var(--accent-pale);
+border: 1.5px solid var(--border);
+border-radius: var(--radius-sm);
+display: flex; align-items: center; justify-content: center;
+cursor: pointer; font-size: 18px; color: var(--accent);
+position: relative; transition: all 0.15s;
 }
 .icon-btn:hover { background: var(--border); }
 .badge {
-  position: absolute; top: 3px; right: 3px;
-  width: 7px; height: 7px;
-  background: var(--danger); border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,0.6);
+position: absolute; top: 3px; right: 3px;
+width: 7px; height: 7px;
+background: var(--danger); border-radius: 50%;
+border: 1.5px solid rgba(255,255,255,0.6);
 }
 
 /* ── NAV ── */
 .nav {
-  display: flex;
-  border-bottom: 1.5px solid var(--border);
-  background: rgba(255,255,255,0.80);
-  backdrop-filter: blur(12px);
-  overflow-x: auto; scrollbar-width: none;
+display: flex;
+border-bottom: 1.5px solid var(--border);
+background: rgba(255,255,255,0.80);
+backdrop-filter: blur(12px);
+overflow-x: auto; scrollbar-width: none;
 }
 .nav::-webkit-scrollbar { display: none; }
 .nav-tab {
-  flex: 1; min-width: 70px;
-  padding: 8px 4px 7px;
-  display: flex; flex-direction: column;
-  align-items: center; gap: 2px;
-  cursor: pointer; border: none;
-  background: transparent;
-  color: var(--text4);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 10px; font-weight: 500;
-  transition: all 0.18s;
-  border-bottom: 2px solid transparent;
+flex: 1; min-width: 70px;
+padding: 8px 4px 7px;
+display: flex; flex-direction: column;
+align-items: center; gap: 2px;
+cursor: pointer; border: none;
+background: transparent;
+color: var(--text4);
+font-family: 'DM Sans', sans-serif;
+font-size: 10px; font-weight: 500;
+transition: all 0.18s;
+border-bottom: 2px solid transparent;
 }
 .nav-tab .ti { font-size: 22px; margin-bottom: 2px; }
 .nav-tab.active {
-  color: var(--ultramarine);
-  border-bottom-color: var(--ultramarine);
-  background: var(--ultramarine-pale2);
+color: var(--ultramarine);
+border-bottom-color: var(--ultramarine);
+background: var(--ultramarine-pale2);
 }
 
 /* ── PAGES ── */
@@ -188,25 +188,25 @@ body::after {
 
 .section { padding: 12px 14px 0; }
 .section-title {
-  font-size: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-bottom: 8px; margin-top: 2px;
-  display: flex; align-items: center; gap: 6px;
-  font-weight: 600;
+font-size: 10px;
+font-family: 'JetBrains Mono', monospace;
+color: var(--text3);
+text-transform: uppercase;
+letter-spacing: 1.5px;
+margin-bottom: 8px; margin-top: 2px;
+display: flex; align-items: center; gap: 6px;
+font-weight: 600;
 }
 .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
 /* ── CARDS ── */
 .card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 13px; margin-bottom: 10px;
-  box-shadow: var(--shadow);
-  transition: border-color 0.15s, box-shadow 0.15s;
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius);
+padding: 13px; margin-bottom: 10px;
+box-shadow: var(--shadow);
+transition: border-color 0.15s, box-shadow 0.15s;
 }
 .card:hover { border-color: var(--accent-light); box-shadow: var(--shadow-lg); }
 
@@ -215,29 +215,35 @@ body::after {
 /* ── WEATHER ── */
 .search-bar { display: flex; gap: 7px; margin-bottom: 10px; margin-top: 12px; }
 .search-input {
-  flex: 1;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 9px 12px;
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px; outline: none;
-  transition: border-color 0.15s;
+flex: 1;
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius-sm);
+padding: 9px 12px;
+color: var(--text);
+font-family: 'DM Sans', sans-serif;
+font-size: 12px; outline: none;
+transition: border-color 0.15s;
 }
 .search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-pale); }
 .search-input::placeholder { color: var(--text4); }
 .search-btn {
-  background: var(--ultramarine);
-  border: none; border-radius: var(--radius-sm);
-  padding: 9px 16px; color: #fff;
-  font-weight: 600; cursor: pointer;
-  font-size: 12px; font-family: 'DM Sans', sans-serif;
-  transition: all 0.15s;
-  box-shadow: 0 3px 10px rgba(45,105,255,0.3);
+background: var(--ultramarine);
+border: none; border-radius: var(--radius-sm);
+padding: 9px 16px; color: #fff;
+font-weight: 600; cursor: pointer;
+font-size: 12px; font-family: 'DM Sans', sans-serif;
+transition: all 0.15s;
+box-shadow: 0 3px 10px rgba(45,105,255,0.3);
 }
 .search-btn:hover { background: var(--ultramarine-dark); }
 
+.weather-card {
+  background: linear-gradient(140deg, #E1F0FF 0%, #DCFFF0 100%);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px; margin-bottom: 10px;
+  position: relative; overflow: hidden;
 /* --- Thiết kế Weather mới --- */
 .weather-hero {
   background: linear-gradient(180deg, #3389FF 0%, #7CB9FF 100%); /* Mặc định màu xanh mát */
@@ -249,13 +255,13 @@ body::after {
   position: relative;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(51, 137, 255, 0.2);
-.weather-card {
-  background: linear-gradient(140deg, #E1F0FF 0%, #DCFFF0 100%);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px; margin-bottom: 10px;
-  position: relative; overflow: hidden;
 }
+.weather-card::before {
+  content: ''; position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(45,105,255,0.12) 0%, transparent 70%);
+  border-radius: 50%;
 
 .w-main-icon { font-size: 80px; margin-bottom: 10px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1)); }
 .w-big-temp { font-family: 'Syne', sans-serif; font-size: 64px; font-weight: 800; line-height: 1; }
@@ -265,13 +271,13 @@ body::after {
 .w-grid-minimal {
   display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
   padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);
-.weather-card::before {
-  content: ''; position: absolute;
-  top: -40px; right: -40px;
-  width: 160px; height: 160px;
-  background: radial-gradient(circle, rgba(45,105,255,0.12) 0%, transparent 70%);
-  border-radius: 50%;
 }
+.weather-card::after {
+  content: ''; position: absolute;
+  bottom: -20px; left: -20px;
+  width: 100px; height: 100px;
+  background: radial-gradient(circle, rgba(75,170,125,0.12) 0%, transparent 70%);
+  border-radius: 50%;
 .w-item-min { text-align: left; }
 .w-item-min label { font-size: 10px; display: block; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
 .w-item-min span { font-size: 15px; font-weight: 700; }
@@ -279,65 +285,59 @@ body::after {
 .w-tip-card {
   background: var(--surface); border-radius: 18px; padding: 12px 16px;
   display: flex; align-items: center; gap: 12px; margin-bottom: 20px; border: 1.5px solid var(--border);
-.weather-card::after {
-  content: ''; position: absolute;
-  bottom: -20px; left: -20px;
-  width: 100px; height: 100px;
-  background: radial-gradient(circle, rgba(75,170,125,0.12) 0%, transparent 70%);
-  border-radius: 50%;
 }
 .w-tip-icon { background: #E1F0FF; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #2D69FF; }
 .weather-loc {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 11px; color: var(--text3);
-  margin-bottom: 12px; font-weight: 600;
+display: flex; align-items: center; gap: 5px;
+font-size: 11px; color: var(--text3);
+margin-bottom: 12px; font-weight: 600;
 }
 .weather-main { display: flex; align-items: flex-end; justify-content: space-between; }
 .weather-temp {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 54px; font-weight: 500;
-  color: var(--text); line-height: 1;
+font-family: 'JetBrains Mono', monospace;
+font-size: 54px; font-weight: 500;
+color: var(--text); line-height: 1;
 }
 .weather-temp sup { font-size: 18px; color: var(--text3); }
 .weather-icon-big { font-size: 50px; color: var(--ultramarine); }
 .weather-desc {
-  font-size: 12px; color: var(--text3);
-  margin-top: 10px; font-weight: 500;
-  display: flex; align-items: center; gap: 4px;
+font-size: 12px; color: var(--text3);
+margin-top: 10px; font-weight: 500;
+display: flex; align-items: center; gap: 4px;
 }
 .weather-badges { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
 .weather-badge {
-  display: flex; align-items: center; gap: 4px;
-  padding: 5px 10px;
-  background: rgba(255,255,255,0.85);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  font-size: 10px; font-weight: 500;
-  color: var(--text2);
-  box-shadow: 0 1px 4px rgba(45,105,255,0.06);
+display: flex; align-items: center; gap: 4px;
+padding: 5px 10px;
+background: rgba(255,255,255,0.85);
+border: 1px solid var(--border);
+border-radius: 20px;
+font-size: 10px; font-weight: 500;
+color: var(--text2);
+box-shadow: 0 1px 4px rgba(45,105,255,0.06);
 }
 
 .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
 .stat-card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 11px; transition: all 0.15s; cursor: pointer;
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius-sm);
+padding: 11px; transition: all 0.15s; cursor: pointer;
 }
 .stat-card:hover { border-color: var(--accent); box-shadow: var(--shadow); }
 .stat-card.active, .gauge-card.active {
-  border-color: var(--ultramarine);
-  background: var(--ultramarine-pale2);
-  box-shadow: 0 0 0 2px var(--accent-pale);
+border-color: var(--ultramarine);
+background: var(--ultramarine-pale2);
+box-shadow: 0 0 0 2px var(--accent-pale);
 }
 .stat-label {
-  font-size: 10px; color: var(--text4);
-  font-family: 'JetBrains Mono', monospace;
-  margin-bottom: 4px; display: flex; align-items: center;
+font-size: 10px; color: var(--text4);
+font-family: 'JetBrains Mono', monospace;
+margin-bottom: 4px; display: flex; align-items: center;
 }
 .stat-val {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 20px; font-weight: 500; color: var(--text);
+font-family: 'JetBrains Mono', monospace;
+font-size: 20px; font-weight: 500; color: var(--text);
 }
 .stat-unit { font-size: 11px; color: var(--text3); font-weight: 400; }
 .stat-trend { font-size: 10px; margin-top: 3px; color: var(--text4); }
@@ -345,24 +345,24 @@ body::after {
 .trend-down { color: var(--green); }
 
 .forecast-row {
-  display: flex; gap: 7px; overflow-x: auto;
-  scrollbar-width: none; padding-bottom: 2px; margin-bottom: 10px;
+display: flex; gap: 7px; overflow-x: auto;
+scrollbar-width: none; padding-bottom: 2px; margin-bottom: 10px;
 }
 .forecast-row::-webkit-scrollbar { display: none; }
 .forecast-item {
-  flex-shrink: 0;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 10px 10px; text-align: center; min-width: 66px;
-  transition: all 0.15s;
+flex-shrink: 0;
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius-sm);
+padding: 10px 10px; text-align: center; min-width: 66px;
+transition: all 0.15s;
 }
 .forecast-item:hover { border-color: var(--accent); box-shadow: var(--shadow); }
 .forecast-day { font-size: 10px; color: var(--text4); margin-bottom: 4px; font-weight: 600; }
 .forecast-icon { font-size: 24px; margin-bottom: 4px; color: var(--ultramarine); }
 .forecast-temp {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px; font-weight: 500; color: var(--text);
+font-family: 'JetBrains Mono', monospace;
+font-size: 13px; font-weight: 500; color: var(--text);
 }
 .forecast-rain { font-size: 9px; color: var(--accent2); margin-top: 2px; font-weight: 600; }
 
@@ -371,20 +371,20 @@ body::after {
 .score-ring { position: relative; width: 78px; height: 78px; flex-shrink: 0; }
 .score-ring svg { transform: rotate(-90deg); }
 .score-inner {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
+position: absolute; inset: 0;
+display: flex; flex-direction: column;
+align-items: center; justify-content: center;
 }
 .score-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 20px; font-weight: 700;
+font-family: 'JetBrains Mono', monospace;
+font-size: 20px; font-weight: 700;
 }
 .score-lbl { font-size: 8px; color: var(--text4); font-family: 'JetBrains Mono', monospace; }
 .risk-badge {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 3px 9px; border-radius: 6px;
-  font-size: 10px; font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
+display: inline-flex; align-items: center; gap: 4px;
+padding: 3px 9px; border-radius: 6px;
+font-size: 10px; font-weight: 700;
+font-family: 'JetBrains Mono', monospace;
 }
 .risk-badge.medium { background: var(--warn-pale); color: var(--warn); border: 1px solid rgba(224,156,0,0.3); }
 .risk-badge.low { background: var(--accent2-pale); color: var(--green-dark); border: 1px solid rgba(75,170,125,0.3); }
@@ -392,36 +392,36 @@ body::after {
 
 /* ── DEVICE ── */
 .pond-selector {
-  display: flex; gap: 6px; overflow-x: auto;
-  scrollbar-width: none; padding-bottom: 2px; margin-bottom: 10px;
+display: flex; gap: 6px; overflow-x: auto;
+scrollbar-width: none; padding-bottom: 2px; margin-bottom: 10px;
 }
 .pond-selector::-webkit-scrollbar { display: none; }
 .pond-chip {
-  flex-shrink: 0; padding: 6px 13px;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: 20px; font-size: 11px;
-  cursor: pointer; transition: all 0.15s;
-  white-space: nowrap; font-weight: 500; color: var(--text3);
+flex-shrink: 0; padding: 6px 13px;
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: 20px; font-size: 11px;
+cursor: pointer; transition: all 0.15s;
+white-space: nowrap; font-weight: 500; color: var(--text3);
 }
 .pond-chip.active {
-  background: var(--ultramarine);
-  border-color: var(--ultramarine);
-  color: #fff;
-  box-shadow: 0 3px 10px rgba(45,105,255,0.3);
+background: var(--ultramarine);
+border-color: var(--ultramarine);
+color: #fff;
+box-shadow: 0 3px 10px rgba(45,105,255,0.3);
 }
 
 .gauge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
 .gauge-card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 12px; transition: all 0.15s; cursor: pointer;
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius-sm);
+padding: 12px; transition: all 0.15s; cursor: pointer;
 }
 .gauge-card:hover { border-color: var(--accent); box-shadow: var(--shadow); }
 .gauge-label {
-  font-size: 10px; color: var(--text4);
-  font-family: 'JetBrains Mono', monospace; margin-bottom: 4px;
+font-size: 10px; color: var(--text4);
+font-family: 'JetBrains Mono', monospace; margin-bottom: 4px;
 }
 .gauge-val { font-family: 'JetBrains Mono', monospace; font-size: 19px; font-weight: 600; }
 .gauge-unit { font-size: 10px; color: var(--text3); font-weight: 400; }
@@ -430,96 +430,96 @@ body::after {
 .gauge-hint { font-size: 9px; color: var(--text4); margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
 
 .device-online-bar {
-  display: flex; align-items: center; gap: 8px;
-  padding: 9px 12px;
-  background: linear-gradient(90deg, rgba(75,170,125,0.1) 0%, rgba(220,255,240,0.6) 100%);
-  border: 1.5px solid rgba(75,170,125,0.25);
-  border-radius: var(--radius-sm);
-  margin-bottom: 10px; margin-top: 12px;
+display: flex; align-items: center; gap: 8px;
+padding: 9px 12px;
+background: linear-gradient(90deg, rgba(75,170,125,0.1) 0%, rgba(220,255,240,0.6) 100%);
+border: 1.5px solid rgba(75,170,125,0.25);
+border-radius: var(--radius-sm);
+margin-bottom: 10px; margin-top: 12px;
 }
 .online-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 8px var(--green);
-  animation: pulse 2s infinite;
+width: 8px; height: 8px; border-radius: 50%;
+background: var(--green);
+box-shadow: 0 0 8px var(--green);
+animation: pulse 2s infinite;
 }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.3)} }
 .online-text { font-size: 11px; color: var(--green-dark); font-weight: 600; flex: 1; }
 
 .feed-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 0; border-bottom: 1px solid var(--border);
+display: flex; align-items: center; gap: 10px;
+padding: 9px 0; border-bottom: 1px solid var(--border);
 }
 .feed-item:last-child { border-bottom: none; }
 .feed-icon {
-  width: 32px; height: 32px;
-  background: var(--ultramarine-pale);
-  border: 1.5px solid var(--border);
-  border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 17px; color: var(--ultramarine); flex-shrink: 0;
+width: 32px; height: 32px;
+background: var(--ultramarine-pale);
+border: 1.5px solid var(--border);
+border-radius: 9px;
+display: flex; align-items: center; justify-content: center;
+font-size: 17px; color: var(--ultramarine); flex-shrink: 0;
 }
 .feed-info { flex: 1; }
 .feed-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 1px; }
 .feed-time { font-size: 10px; color: var(--text4); font-family: 'JetBrains Mono', monospace; }
 .feed-type {
-  display: inline-block; padding: 1px 6px;
-  border-radius: 4px; font-size: 9px; font-weight: 700; margin-left: 4px;
+display: inline-block; padding: 1px 6px;
+border-radius: 4px; font-size: 9px; font-weight: 700; margin-left: 4px;
 }
 .feed-type.auto { background: var(--ultramarine-pale); color: var(--ultramarine); }
 .feed-type.manual { background: var(--accent2-pale); color: var(--green-dark); }
 .feed-amount {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px; font-weight: 600; color: var(--ultramarine);
+font-family: 'JetBrains Mono', monospace;
+font-size: 13px; font-weight: 600; color: var(--ultramarine);
 }
 .feed-total {
-  display: flex; justify-content: space-between;
-  padding-top: 10px; border-top: 1px solid var(--border); margin-top: 2px;
+display: flex; justify-content: space-between;
+padding-top: 10px; border-top: 1px solid var(--border); margin-top: 2px;
 }
 
 /* ── CHART WRAPPER ── */
 .chart-wrap {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 13px; margin-bottom: 14px; position: relative;
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius);
+padding: 13px; margin-bottom: 14px; position: relative;
 }
 .chart-title-row {
-  display: flex; align-items: center;
-  justify-content: space-between; margin-bottom: 10px;
+display: flex; align-items: center;
+justify-content: space-between; margin-bottom: 10px;
 }
 .chart-title { font-size: 12px; font-weight: 700; color: var(--text); }
 .chart-subtitle {
-  font-size: 10px; color: var(--text4);
-  font-family: 'JetBrains Mono', monospace; text-transform: uppercase;
+font-size: 10px; color: var(--text4);
+font-family: 'JetBrains Mono', monospace; text-transform: uppercase;
 }
 .chart-stat-row {
-  display: flex; gap: 12px; margin-top: 10px;
-  padding-top: 10px; border-top: 1px solid var(--border);
+display: flex; gap: 12px; margin-top: 10px;
+padding-top: 10px; border-top: 1px solid var(--border);
 }
 .chart-stat { flex: 1; text-align: center; }
 .chart-stat-val {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 14px; font-weight: 600; color: var(--text);
+font-family: 'JetBrains Mono', monospace;
+font-size: 14px; font-weight: 600; color: var(--text);
 }
 .chart-stat-lbl { font-size: 10px; color: var(--text4); margin-top: 2px; }
 
 /* ── NOTIFICATIONS ── */
 .notif-header {
-  display: flex; align-items: center;
-  justify-content: space-between; margin: 12px 0 10px;
+display: flex; align-items: center;
+justify-content: space-between; margin: 12px 0 10px;
 }
 .notif-count { font-size: 13px; font-weight: 700; color: var(--text); }
 .mark-read { font-size: 11px; color: var(--ultramarine); cursor: pointer; font-weight: 600; }
 .notif-item {
-  border-radius: var(--radius); padding: 12px;
-  margin-bottom: 8px; display: flex; gap: 10px;
-  cursor: pointer; position: relative; overflow: hidden;
-  transition: box-shadow 0.15s;
+border-radius: var(--radius); padding: 12px;
+margin-bottom: 8px; display: flex; gap: 10px;
+cursor: pointer; position: relative; overflow: hidden;
+transition: box-shadow 0.15s;
 }
 .notif-item::before {
-  content: ''; position: absolute;
-  left: 0; top: 0; bottom: 0; width: 3px; border-radius: 2px 0 0 2px;
+content: ''; position: absolute;
+left: 0; top: 0; bottom: 0; width: 3px; border-radius: 2px 0 0 2px;
 }
 .notif-item.danger::before { background: var(--danger); }
 .notif-item.warn::before { background: var(--warn); }
@@ -530,9 +530,9 @@ body::after {
 .notif-item.info { border: 1.5px solid rgba(45,105,255,0.25); background: rgba(225,240,255,0.9); }
 .notif-item.ok { border: 1.5px solid rgba(75,170,125,0.25); background: rgba(220,255,240,0.9); }
 .notif-icon {
-  width: 36px; height: 36px; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; flex-shrink: 0;
+width: 36px; height: 36px; border-radius: 10px;
+display: flex; align-items: center; justify-content: center;
+font-size: 20px; flex-shrink: 0;
 }
 .notif-item.danger .notif-icon { background: rgba(229,62,62,0.12); color: var(--danger); }
 .notif-item.warn .notif-icon { background: rgba(224,156,0,0.12); color: var(--warn); }
@@ -542,142 +542,142 @@ body::after {
 .notif-title { font-size: 12px; font-weight: 700; margin-bottom: 3px; color: var(--text); }
 .notif-msg { font-size: 11px; color: var(--text3); line-height: 1.6; }
 .notif-actions-box {
-  margin-top: 8px; padding: 8px;
-  background: rgba(255,255,255,0.85); border-radius: 8px;
-  font-size: 11px; line-height: 1.7;
-  border: 1px solid var(--border);
+margin-top: 8px; padding: 8px;
+background: rgba(255,255,255,0.85); border-radius: 8px;
+font-size: 11px; line-height: 1.7;
+border: 1px solid var(--border);
 }
 .notif-time {
-  font-size: 10px; color: var(--text4);
-  font-family: 'JetBrains Mono', monospace; margin-top: 5px;
+font-size: 10px; color: var(--text4);
+font-family: 'JetBrains Mono', monospace; margin-top: 5px;
 }
 .unread-dot {
-  width: 7px; height: 7px; background: var(--ultramarine);
-  border-radius: 50%; position: absolute; top: 12px; right: 12px;
-  box-shadow: 0 0 5px rgba(45,105,255,0.5);
+width: 7px; height: 7px; background: var(--ultramarine);
+border-radius: 50%; position: absolute; top: 12px; right: 12px;
+box-shadow: 0 0 5px rgba(45,105,255,0.5);
 }
 
 /* ── CHAT ── */
 .chat-page { display: flex; flex-direction: column; height: calc(100vh - 108px); }
 .chat-messages {
-  flex: 1; overflow-y: auto; padding: 14px;
-  display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth;
+flex: 1; overflow-y: auto; padding: 14px;
+display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth;
 }
 .chat-messages::-webkit-scrollbar { width: 4px; }
 .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
 .chat-bubble {
-  max-width: 85%; padding: 10px 14px;
-  border-radius: 14px; font-size: 13px; line-height: 1.65;
-  animation: bubbleIn 0.2s ease;
+max-width: 85%; padding: 10px 14px;
+border-radius: 14px; font-size: 13px; line-height: 1.65;
+animation: bubbleIn 0.2s ease;
 }
 @keyframes bubbleIn { from { opacity:0; transform:scale(0.96); } to { opacity:1; transform:scale(1); } }
 .chat-bubble.user {
-  background: linear-gradient(135deg, var(--ultramarine), var(--accent-light));
-  color: #fff; align-self: flex-end;
-  border-bottom-right-radius: 4px;
-  box-shadow: 0 3px 14px rgba(45,105,255,0.3);
+background: linear-gradient(135deg, var(--ultramarine), var(--accent-light));
+color: #fff; align-self: flex-end;
+border-bottom-right-radius: 4px;
+box-shadow: 0 3px 14px rgba(45,105,255,0.3);
 }
 .chat-bubble.ai {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  color: var(--text);
-  align-self: flex-start;
-  border-bottom-left-radius: 4px;
-  box-shadow: var(--shadow);
+background: var(--surface);
+border: 1.5px solid var(--border);
+color: var(--text);
+align-self: flex-start;
+border-bottom-left-radius: 4px;
+box-shadow: var(--shadow);
 }
 .ai-name {
-  font-size: 10px; color: var(--text4); margin-bottom: 4px;
-  font-family: 'JetBrains Mono', monospace; font-weight: 500;
-  display: flex; align-items: center; gap: 4px;
+font-size: 10px; color: var(--text4); margin-bottom: 4px;
+font-family: 'JetBrains Mono', monospace; font-weight: 500;
+display: flex; align-items: center; gap: 4px;
 }
 
 .chat-input-area {
-  padding: 10px 14px 14px;
-  border-top: 1.5px solid var(--border);
-  background: rgba(255,255,255,0.90);
-  backdrop-filter: blur(12px);
+padding: 10px 14px 14px;
+border-top: 1.5px solid var(--border);
+background: rgba(255,255,255,0.90);
+backdrop-filter: blur(12px);
 }
 .chat-pond-select { display: flex; gap: 5px; margin-bottom: 8px; overflow-x: auto; scrollbar-width: none; }
 .chat-pond-select::-webkit-scrollbar { display: none; }
 .chat-chip {
-  padding: 4px 11px;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: 20px; font-size: 10px;
-  cursor: pointer; white-space: nowrap; transition: all 0.15s; font-weight: 500;
+padding: 4px 11px;
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: 20px; font-size: 10px;
+cursor: pointer; white-space: nowrap; transition: all 0.15s; font-weight: 500;
 }
 .chat-chip.active {
-  background: var(--ultramarine);
-  border-color: var(--ultramarine); color: #fff;
+background: var(--ultramarine);
+border-color: var(--ultramarine); color: #fff;
 }
 .chat-row { display: flex; gap: 8px; }
 .chat-input {
-  flex: 1;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: 10px; padding: 9px 12px;
-  color: var(--text); font-family: 'DM Sans', sans-serif;
-  font-size: 13px; outline: none; transition: all 0.15s;
-  resize: none; max-height: 90px; min-height: 38px;
+flex: 1;
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: 10px; padding: 9px 12px;
+color: var(--text); font-family: 'DM Sans', sans-serif;
+font-size: 13px; outline: none; transition: all 0.15s;
+resize: none; max-height: 90px; min-height: 38px;
 }
 .chat-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-pale); }
 .chat-input::placeholder { color: var(--text4); }
 .chat-send {
-  width: 38px; height: 38px;
-  background: linear-gradient(135deg, var(--ultramarine), var(--accent-light));
-  border: none; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; flex-shrink: 0; font-size: 18px; color: white;
-  box-shadow: 0 3px 12px rgba(45,105,255,0.35);
-  transition: all 0.15s;
+width: 38px; height: 38px;
+background: linear-gradient(135deg, var(--ultramarine), var(--accent-light));
+border: none; border-radius: 10px;
+display: flex; align-items: center; justify-content: center;
+cursor: pointer; flex-shrink: 0; font-size: 18px; color: white;
+box-shadow: 0 3px 12px rgba(45,105,255,0.35);
+transition: all 0.15s;
 }
 .chat-send:hover { opacity: 0.88; transform: translateY(-1px); }
 
 .chat-quick { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-bottom: 8px; }
 .chat-quick::-webkit-scrollbar { display: none; }
 .quick-chip {
-  padding: 5px 11px;
-  background: rgba(45,105,255,0.07);
-  border: 1.5px solid rgba(45,105,255,0.18);
-  border-radius: 20px; font-size: 11px;
-  cursor: pointer; white-space: nowrap; color: var(--ultramarine);
-  font-weight: 500; transition: all 0.15s; flex-shrink: 0;
-  display: flex; align-items: center; gap: 4px;
+padding: 5px 11px;
+background: rgba(45,105,255,0.07);
+border: 1.5px solid rgba(45,105,255,0.18);
+border-radius: 20px; font-size: 11px;
+cursor: pointer; white-space: nowrap; color: var(--ultramarine);
+font-weight: 500; transition: all 0.15s; flex-shrink: 0;
+display: flex; align-items: center; gap: 4px;
 }
 .quick-chip:hover {
-  background: var(--ultramarine); color: #fff;
-  border-color: var(--ultramarine);
-  box-shadow: 0 3px 10px rgba(45,105,255,0.3);
+background: var(--ultramarine); color: #fff;
+border-color: var(--ultramarine);
+box-shadow: 0 3px 10px rgba(45,105,255,0.3);
 }
 
 .typing { display: flex; gap: 4px; align-items: center; padding: 10px 13px; }
 .typing span {
-  width: 6px; height: 6px; background: var(--text4);
-  border-radius: 50%; animation: typing 1.2s infinite;
+width: 6px; height: 6px; background: var(--text4);
+border-radius: 50%; animation: typing 1.2s infinite;
 }
 .typing span:nth-child(2) { animation-delay: 0.2s; }
 .typing span:nth-child(3) { animation-delay: 0.4s; }
 @keyframes typing { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
 
 .api-tag {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 2px 8px;
-  background: rgba(45,105,255,0.07);
-  border: 1px solid rgba(45,105,255,0.18);
-  border-radius: 4px;
-  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ultramarine);
-  margin-bottom: 8px;
+display: inline-flex; align-items: center; gap: 4px;
+padding: 2px 8px;
+background: rgba(45,105,255,0.07);
+border: 1px solid rgba(45,105,255,0.18);
+border-radius: 4px;
+font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ultramarine);
+margin-bottom: 8px;
 }
 .last-update {
-  font-size: 10px; color: var(--text4);
-  font-family: 'JetBrains Mono', monospace;
-  text-align: right; margin-bottom: 6px;
+font-size: 10px; color: var(--text4);
+font-family: 'JetBrains Mono', monospace;
+text-align: right; margin-bottom: 6px;
 }
 .spinner {
-  display: inline-block; width: 14px; height: 14px;
-  border: 2px solid var(--border); border-top-color: var(--ultramarine);
-  border-radius: 50%; animation: spin 0.6s linear infinite;
+display: inline-block; width: 14px; height: 14px;
+border: 2px solid var(--border); border-top-color: var(--ultramarine);
+border-radius: 50%; animation: spin 0.6s linear infinite;
 }
 @keyframes spin { to{transform:rotate(360deg)} }
 
@@ -690,64 +690,44 @@ body::after {
 <div class="app">
 
 <div class="header">
-  <div class="header-row">
-    <div class="logo">
-      <div class="logo-icon"><i class="ph-fill ph-fish"></i></div>
-      <div>
-        <div class="logo-text">AQUA·AI</div>
-        <div class="logo-sub">SMART AQUACULTURE · v1.0</div>
-      </div>
-    </div>
-    <div class="header-actions">
-      <div class="icon-btn" onclick="switchTab('notifications')">
-        <i class="ph ph-bell"></i><div class="badge" id="notif-badge"></div>
-      </div>
-    </div>
-  </div>
+<div class="header-row">
+<div class="logo">
+<div class="logo-icon"><i class="ph-fill ph-fish"></i></div>
+<div>
+<div class="logo-text">AQUA·AI</div>
+<div class="logo-sub">SMART AQUACULTURE · v1.0</div>
+</div>
+</div>
+<div class="header-actions">
+<div class="icon-btn" onclick="switchTab('notifications')">
+<i class="ph ph-bell"></i><div class="badge" id="notif-badge"></div>
+</div>
+</div>
+</div>
 </div>
 
 <nav class="nav">
-  <button class="nav-tab active" onclick="switchTab('weather')" id="tab-weather">
-    <i class="ph ph-cloud-sun ti"></i><span>Weather</span>
-  </button>
-  <button class="nav-tab" onclick="switchTab('device')" id="tab-device">
-    <i class="ph ph-broadcast ti"></i><span>Devices</span>
-  </button>
-  <button class="nav-tab" onclick="switchTab('chat')" id="tab-chat">
-    <i class="ph ph-chat-circle-dots ti"></i><span>AI Chat</span>
-  </button>
+<button class="nav-tab active" onclick="switchTab('weather')" id="tab-weather">
+<i class="ph ph-cloud-sun ti"></i><span>Weather</span>
+</button>
+<button class="nav-tab" onclick="switchTab('device')" id="tab-device">
+<i class="ph ph-broadcast ti"></i><span>Devices</span>
+</button>
+<button class="nav-tab" onclick="switchTab('chat')" id="tab-chat">
+<i class="ph ph-chat-circle-dots ti"></i><span>AI Chat</span>
+</button>
 </nav>
 
 <!-- ── WEATHER ── -->
 <div class="page active" id="page-weather">
-  <div class="section">
-    <div class="search-bar">
-      <input class="search-input" placeholder="Search location..." id="location-search">
-      <button class="search-btn" onclick="searchLocation()"><i class="ph ph-magnifying-glass"></i></button>
-    </div>
-
-    <div class="weather-hero" id="weather-hero-bg">
-      <div style="font-size: 12px; font-weight: 600; margin-bottom: 10px;" id="w-date-today">26 May, Thursday</div>
-      <div class="w-main-icon" id="w-icon-large"><i class="ph-fill ph-cloud-rain"></i></div>
-      <div class="w-big-temp" id="w-temp-large">22<sup>°C</sup></div>
-      <div class="w-feels-like" id="w-feels-val">feels like 18°C</div>
-      
-      <div class="w-grid-minimal">
-        <div class="w-item-min"><label>Humidity</label><span id="w-humi-val">80%</span></div>
-        <div class="w-item-min"><label>UV Index</label><span id="w-uv-val">4/10</span></div>
-        <div class="w-item-min"><label>Rain</label><span id="w-rain-val">12mm</span></div>
-        <div class="w-item-min"><label>Wind</label><span id="w-wind-val">25 km/h</span></div>
-      </div>
+<div class="section">
+<div class="search-bar">
       <input class="search-input" placeholder="Search location (e.g., Ca Mau)..." id="location-search"
         onkeydown="if(event.key==='Enter')searchLocation()">
       <button class="search-btn" onclick="searchLocation()">Search</button>
-    </div>
-
-    <div class="w-tip-card">
-      <div class="w-tip-icon">✨</div>
-      <div>
-        <div style="font-size: 13px; font-weight: 700; color: var(--text)">Take care!</div>
-        <div style="font-size: 11px; color: var(--text4)">Rapidly changing weather today.</div>
+      <input class="search-input" placeholder="Search location..." id="location-search">
+      <button class="search-btn" onclick="searchLocation()"><i class="ph ph-magnifying-glass"></i></button>
+</div>
     <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/weather · /api/weather-risk</div>
     <div id="weather-main">
       <div class="weather-card">
@@ -765,290 +745,310 @@ body::after {
           <div class="weather-badge"><i class="ph-fill ph-cloud-rain"></i> 12mm</div>
           <div class="weather-badge"><i class="ph-fill ph-eye"></i> 8km</div>
         </div>
+
+    <div class="weather-hero" id="weather-hero-bg">
+      <div style="font-size: 12px; font-weight: 600; margin-bottom: 10px;" id="w-date-today">26 May, Thursday</div>
+      <div class="w-main-icon" id="w-icon-large"><i class="ph-fill ph-cloud-rain"></i></div>
+      <div class="w-big-temp" id="w-temp-large">22<sup>°C</sup></div>
+      <div class="w-feels-like" id="w-feels-val">feels like 18°C</div>
+      
+      <div class="w-grid-minimal">
+        <div class="w-item-min"><label>Humidity</label><span id="w-humi-val">80%</span></div>
+        <div class="w-item-min"><label>UV Index</label><span id="w-uv-val">4/10</span></div>
+        <div class="w-item-min"><label>Rain</label><span id="w-rain-val">12mm</span></div>
+        <div class="w-item-min"><label>Wind</label><span id="w-wind-val">25 km/h</span></div>
       </div>
     </div>
+
+    <div class="w-tip-card">
+      <div class="w-tip-icon">✨</div>
+      <div>
+        <div style="font-size: 13px; font-weight: 700; color: var(--text)">Take care!</div>
+        <div style="font-size: 11px; color: var(--text4)">Rapidly changing weather today.</div>
+</div>
+</div>
 
     <div class="section-title">Forecast</div>
     <div class="forecast-row" id="forecast-row">
       </div>
   </div>
 </div>
-    <div class="last-update" id="w-updated">Updated: --:--:--</div>
+<div class="last-update" id="w-updated">Updated: --:--:--</div>
 
-    <div class="section-title"><i class="ph-bold ph-list-magnifying-glass"></i> Detailed Stats</div>
-    <div class="stat-grid" id="stat-grid">
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-drop ph-inline"></i> Humidity</div><div class="stat-val">84<span class="stat-unit">%</span></div><div class="stat-trend trend-up">↑ High</div></div>
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-waves ph-inline"></i> Tide</div><div class="stat-val">1.4<span class="stat-unit"> m</span></div><div class="stat-trend">↑ Peak 15:00</div></div>
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-lightning ph-inline"></i> UV Index</div><div class="stat-val">7<span class="stat-unit">/10</span></div><div class="stat-trend trend-up">⚠ High</div></div>
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-wind ph-inline"></i> Pressure</div><div class="stat-val">1008<span class="stat-unit"> hPa</span></div><div class="stat-trend trend-down">↓ Dropping</div></div>
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-cloud ph-inline"></i> Cloud Cover</div><div class="stat-val">72<span class="stat-unit">%</span></div><div class="stat-trend">→ Stable</div></div>
-      <div class="stat-card"><div class="stat-label"><i class="ph ph-plant ph-inline"></i> Dew Point</div><div class="stat-val">26<span class="stat-unit">°C</span></div><div class="stat-trend">→ Humid</div></div>
-    </div>
+<div class="section-title"><i class="ph-bold ph-list-magnifying-glass"></i> Detailed Stats</div>
+<div class="stat-grid" id="stat-grid">
+<div class="stat-card"><div class="stat-label"><i class="ph ph-drop ph-inline"></i> Humidity</div><div class="stat-val">84<span class="stat-unit">%</span></div><div class="stat-trend trend-up">↑ High</div></div>
+<div class="stat-card"><div class="stat-label"><i class="ph ph-waves ph-inline"></i> Tide</div><div class="stat-val">1.4<span class="stat-unit"> m</span></div><div class="stat-trend">↑ Peak 15:00</div></div>
+<div class="stat-card"><div class="stat-label"><i class="ph ph-lightning ph-inline"></i> UV Index</div><div class="stat-val">7<span class="stat-unit">/10</span></div><div class="stat-trend trend-up">⚠ High</div></div>
+<div class="stat-card"><div class="stat-label"><i class="ph ph-wind ph-inline"></i> Pressure</div><div class="stat-val">1008<span class="stat-unit"> hPa</span></div><div class="stat-trend trend-down">↓ Dropping</div></div>
+<div class="stat-card"><div class="stat-label"><i class="ph ph-cloud ph-inline"></i> Cloud Cover</div><div class="stat-val">72<span class="stat-unit">%</span></div><div class="stat-trend">→ Stable</div></div>
+<div class="stat-card"><div class="stat-label"><i class="ph ph-plant ph-inline"></i> Dew Point</div><div class="stat-val">26<span class="stat-unit">°C</span></div><div class="stat-trend">→ Humid</div></div>
+</div>
 
-    <div class="section-title"><i class="ph-bold ph-calendar-blank"></i> 5-Day Forecast</div>
-    <div class="forecast-row" id="forecast-row">
-      <div class="forecast-item"><div class="forecast-day">Today</div><div class="forecast-icon"><i class="ph-fill ph-cloud-rain"></i></div><div class="forecast-temp">31°</div><div class="forecast-rain">60%</div></div>
-      <div class="forecast-item"><div class="forecast-day">Wed</div><div class="forecast-icon"><i class="ph-fill ph-cloud-lightning"></i></div><div class="forecast-temp" style="color:var(--danger)">29°</div><div class="forecast-rain">85%</div></div>
-      <div class="forecast-item"><div class="forecast-day">Thu</div><div class="forecast-icon"><i class="ph-fill ph-cloud-rain"></i></div><div class="forecast-temp">28°</div><div class="forecast-rain">70%</div></div>
-      <div class="forecast-item"><div class="forecast-day">Fri</div><div class="forecast-icon"><i class="ph-fill ph-cloud-sun"></i></div><div class="forecast-temp">32°</div><div class="forecast-rain">30%</div></div>
-      <div class="forecast-item"><div class="forecast-day">Sat</div><div class="forecast-icon"><i class="ph-fill ph-sun"></i></div><div class="forecast-temp">34°</div><div class="forecast-rain">10%</div></div>
-    </div>
+<div class="section-title"><i class="ph-bold ph-calendar-blank"></i> 5-Day Forecast</div>
+<div class="forecast-row" id="forecast-row">
+<div class="forecast-item"><div class="forecast-day">Today</div><div class="forecast-icon"><i class="ph-fill ph-cloud-rain"></i></div><div class="forecast-temp">31°</div><div class="forecast-rain">60%</div></div>
+<div class="forecast-item"><div class="forecast-day">Wed</div><div class="forecast-icon"><i class="ph-fill ph-cloud-lightning"></i></div><div class="forecast-temp" style="color:var(--danger)">29°</div><div class="forecast-rain">85%</div></div>
+<div class="forecast-item"><div class="forecast-day">Thu</div><div class="forecast-icon"><i class="ph-fill ph-cloud-rain"></i></div><div class="forecast-temp">28°</div><div class="forecast-rain">70%</div></div>
+<div class="forecast-item"><div class="forecast-day">Fri</div><div class="forecast-icon"><i class="ph-fill ph-cloud-sun"></i></div><div class="forecast-temp">32°</div><div class="forecast-rain">30%</div></div>
+<div class="forecast-item"><div class="forecast-day">Sat</div><div class="forecast-icon"><i class="ph-fill ph-sun"></i></div><div class="forecast-temp">34°</div><div class="forecast-rain">10%</div></div>
+</div>
 
-    <div class="section-title"><i class="ph-bold ph-shield-warning"></i> Pond Risk Assessment</div>
-    <div class="card">
-      <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/weather-risk</div>
-      <div class="risk-card">
-        <div class="score-ring">
-          <svg width="78" height="78" viewBox="0 0 78 78">
-            <circle cx="39" cy="39" r="30" fill="none" stroke="var(--alice)" stroke-width="8"/>
-            <circle id="risk-arc" cx="39" cy="39" r="30" fill="none" stroke="var(--warn)" stroke-width="8"
-              stroke-dasharray="188" stroke-dashoffset="56" stroke-linecap="round" style="transition:stroke-dashoffset 0.8s ease"/>
-          </svg>
-          <div class="score-inner">
-            <div class="score-num" id="risk-num" style="color:var(--warn)">68</div>
-            <div class="score-lbl">RISK</div>
-          </div>
-        </div>
-        <div style="flex:1">
-          <div style="font-size:12px;font-weight:700;margin-bottom:5px" id="risk-title">Medium Risk</div>
-          <div style="font-size:11px;color:var(--text3);line-height:1.6" id="risk-msg">⚠️ Approaching storm may cause salinity shock. Recommend reducing feed by 30%.</div>
-          <div style="margin-top:8px"><span class="risk-badge medium" id="risk-badge"><i class="ph-fill ph-warning"></i> MEDIUM</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="section-title"><i class="ph-bold ph-shield-warning"></i> Pond Risk Assessment</div>
+<div class="card">
+<div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/weather-risk</div>
+<div class="risk-card">
+<div class="score-ring">
+<svg width="78" height="78" viewBox="0 0 78 78">
+<circle cx="39" cy="39" r="30" fill="none" stroke="var(--alice)" stroke-width="8"/>
+<circle id="risk-arc" cx="39" cy="39" r="30" fill="none" stroke="var(--warn)" stroke-width="8"
+stroke-dasharray="188" stroke-dashoffset="56" stroke-linecap="round" style="transition:stroke-dashoffset 0.8s ease"/>
+</svg>
+<div class="score-inner">
+<div class="score-num" id="risk-num" style="color:var(--warn)">68</div>
+<div class="score-lbl">RISK</div>
+</div>
+</div>
+<div style="flex:1">
+<div style="font-size:12px;font-weight:700;margin-bottom:5px" id="risk-title">Medium Risk</div>
+<div style="font-size:11px;color:var(--text3);line-height:1.6" id="risk-msg">⚠️ Approaching storm may cause salinity shock. Recommend reducing feed by 30%.</div>
+<div style="margin-top:8px"><span class="risk-badge medium" id="risk-badge"><i class="ph-fill ph-warning"></i> MEDIUM</span></div>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 <!-- ── DEVICE ── -->
 <div class="page" id="page-device">
-  <div class="section">
-    <div class="device-online-bar">
-      <div class="online-dot"></div>
-      <div class="online-text">All devices operating normally</div>
-      <span style="font-size:10px;color:var(--green-dark);font-family:'JetBrains Mono',monospace;font-weight:600">06:32</span>
-    </div>
-    <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/device/sensor-data · /history</div>
-    <div class="pond-selector" id="pond-selector">
-      <div class="pond-chip active" onclick="selectPond(this,'pond1')">Pond #1 – Black Tiger Shrimp</div>
-      <div class="pond-chip" onclick="selectPond(this,'pond2')">Pond #2 – Pangasius</div>
-      <div class="pond-chip" onclick="selectPond(this,'pond3')">Pond #3 – Whiteleg Shrimp</div>
-    </div>
+<div class="section">
+<div class="device-online-bar">
+<div class="online-dot"></div>
+<div class="online-text">All devices operating normally</div>
+<span style="font-size:10px;color:var(--green-dark);font-family:'JetBrains Mono',monospace;font-weight:600">06:32</span>
+</div>
+<div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/device/sensor-data · /history</div>
+<div class="pond-selector" id="pond-selector">
+<div class="pond-chip active" onclick="selectPond(this,'pond1')">Pond #1 – Black Tiger Shrimp</div>
+<div class="pond-chip" onclick="selectPond(this,'pond2')">Pond #2 – Pangasius</div>
+<div class="pond-chip" onclick="selectPond(this,'pond3')">Pond #3 – Whiteleg Shrimp</div>
+</div>
 
-    <div class="section-title"><i class="ph-bold ph-activity"></i> Real-time Water Quality</div>
-    <div class="gauge-grid" id="gauge-grid">
-      <div class="gauge-card active" onclick="selectMetricCard(this,'salinity')">
-        <div class="gauge-label"><i class="ph ph-drop-half ph-inline"></i> Salinity</div>
-        <div class="gauge-val" id="g-salinity" style="color:var(--warn)">18.5<span class="gauge-unit"> ppt</span></div>
-        <div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-salinity" style="width:74%;background:var(--warn)"></div></div>
-        <div class="gauge-hint">Safe: 10–20 ppt</div>
-      </div>
-      <div class="gauge-card" onclick="selectMetricCard(this,'do')">
-        <div class="gauge-label"><i class="ph ph-wind ph-inline"></i> Oxygen (DO)</div>
-        <div class="gauge-val" id="g-do" style="color:var(--green)">6.8<span class="gauge-unit"> mg/L</span></div>
-        <div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-do" style="width:85%;background:var(--green)"></div></div>
-        <div class="gauge-hint">Safe: ≥5 mg/L</div>
-      </div>
-      <div class="gauge-card" onclick="selectMetricCard(this,'ph')">
-        <div class="gauge-label"><i class="ph ph-flask ph-inline"></i> Water pH</div>
-        <div class="gauge-val" id="g-ph" style="color:var(--green)">7.8</div>
-        <div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-ph" style="width:78%;background:var(--green)"></div></div>
-        <div class="gauge-hint">Optimal: 7.5–8.5</div>
-      </div>
-      <div class="gauge-card" onclick="selectMetricCard(this,'temperature')">
-        <div class="gauge-label"><i class="ph ph-thermometer ph-inline"></i> Temperature</div>
-        <div class="gauge-val" id="g-temp" style="color:var(--warn)">29.4<span class="gauge-unit">°C</span></div>
-        <div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-temp" style="width:65%;background:var(--warn)"></div></div>
-        <div class="gauge-hint">Optimal: 26–32°C</div>
-      </div>
-    </div>
+<div class="section-title"><i class="ph-bold ph-activity"></i> Real-time Water Quality</div>
+<div class="gauge-grid" id="gauge-grid">
+<div class="gauge-card active" onclick="selectMetricCard(this,'salinity')">
+<div class="gauge-label"><i class="ph ph-drop-half ph-inline"></i> Salinity</div>
+<div class="gauge-val" id="g-salinity" style="color:var(--warn)">18.5<span class="gauge-unit"> ppt</span></div>
+<div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-salinity" style="width:74%;background:var(--warn)"></div></div>
+<div class="gauge-hint">Safe: 10–20 ppt</div>
+</div>
+<div class="gauge-card" onclick="selectMetricCard(this,'do')">
+<div class="gauge-label"><i class="ph ph-wind ph-inline"></i> Oxygen (DO)</div>
+<div class="gauge-val" id="g-do" style="color:var(--green)">6.8<span class="gauge-unit"> mg/L</span></div>
+<div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-do" style="width:85%;background:var(--green)"></div></div>
+<div class="gauge-hint">Safe: ≥5 mg/L</div>
+</div>
+<div class="gauge-card" onclick="selectMetricCard(this,'ph')">
+<div class="gauge-label"><i class="ph ph-flask ph-inline"></i> Water pH</div>
+<div class="gauge-val" id="g-ph" style="color:var(--green)">7.8</div>
+<div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-ph" style="width:78%;background:var(--green)"></div></div>
+<div class="gauge-hint">Optimal: 7.5–8.5</div>
+</div>
+<div class="gauge-card" onclick="selectMetricCard(this,'temperature')">
+<div class="gauge-label"><i class="ph ph-thermometer ph-inline"></i> Temperature</div>
+<div class="gauge-val" id="g-temp" style="color:var(--warn)">29.4<span class="gauge-unit">°C</span></div>
+<div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-temp" style="width:65%;background:var(--warn)"></div></div>
+<div class="gauge-hint">Optimal: 26–32°C</div>
+</div>
+</div>
 
-    <div class="chart-wrap" id="device-main-chart">
-      <div class="chart-title-row">
-        <div>
-          <div class="chart-title" id="chart-title">Salinity History</div>
-          <div class="chart-subtitle">Last 48 hours</div>
-        </div>
-        <div id="chart-loading" style="display:none"><div class="spinner"></div></div>
-      </div>
-      <canvas id="main-chart" height="160"></canvas>
-      <div class="chart-stat-row" id="chart-stats">
-        <div class="chart-stat"><div class="chart-stat-val" id="cs-min">—</div><div class="chart-stat-lbl">Lowest</div></div>
-        <div class="chart-stat"><div class="chart-stat-val" id="cs-avg">—</div><div class="chart-stat-lbl">Average</div></div>
-        <div class="chart-stat"><div class="chart-stat-val" id="cs-max">—</div><div class="chart-stat-lbl">Highest</div></div>
-        <div class="chart-stat"><div class="chart-stat-val" id="cs-unit">—</div><div class="chart-stat-lbl">Unit</div></div>
-      </div>
-    </div>
+<div class="chart-wrap" id="device-main-chart">
+<div class="chart-title-row">
+<div>
+<div class="chart-title" id="chart-title">Salinity History</div>
+<div class="chart-subtitle">Last 48 hours</div>
+</div>
+<div id="chart-loading" style="display:none"><div class="spinner"></div></div>
+</div>
+<canvas id="main-chart" height="160"></canvas>
+<div class="chart-stat-row" id="chart-stats">
+<div class="chart-stat"><div class="chart-stat-val" id="cs-min">—</div><div class="chart-stat-lbl">Lowest</div></div>
+<div class="chart-stat"><div class="chart-stat-val" id="cs-avg">—</div><div class="chart-stat-lbl">Average</div></div>
+<div class="chart-stat"><div class="chart-stat-val" id="cs-max">—</div><div class="chart-stat-lbl">Highest</div></div>
+<div class="chart-stat"><div class="chart-stat-val" id="cs-unit">—</div><div class="chart-stat-lbl">Unit</div></div>
+</div>
+</div>
 
-    <div class="section-title"><i class="ph-bold ph-test-tube"></i> Chemical Stats</div>
-    <div class="stat-grid">
-      <div class="stat-card" onclick="selectMetricCard(this,'ammonia')">
-        <div class="stat-label"><i class="ph ph-microscope ph-inline"></i> Ammonia (NH₃)</div>
-        <div class="stat-val" id="g-nh3" style="font-size:16px;color:var(--green)">0.02<span class="stat-unit"> mg/L</span></div>
-        <div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Safe &lt;0.1</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label"><i class="ph ph-test-tube ph-inline"></i> Nitrite (NO₂)</div>
-        <div class="stat-val" id="g-no2" style="font-size:16px;color:var(--green)">0.05<span class="stat-unit"> mg/L</span></div>
-        <div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Safe &lt;0.5</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label"><i class="ph ph-hexagon ph-inline"></i> Alkalinity</div>
-        <div class="stat-val" id="g-alk" style="font-size:16px;color:var(--ultramarine)">120<span class="stat-unit"> mg/L</span></div>
-        <div class="stat-trend">→ Good 80–160</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label"><i class="ph ph-virus ph-inline"></i> H₂S</div>
-        <div class="stat-val" id="g-h2s" style="font-size:16px;color:var(--green)">0.001<span class="stat-unit"> mg/L</span></div>
-        <div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Very Safe</div>
-      </div>
-    </div>
+<div class="section-title"><i class="ph-bold ph-test-tube"></i> Chemical Stats</div>
+<div class="stat-grid">
+<div class="stat-card" onclick="selectMetricCard(this,'ammonia')">
+<div class="stat-label"><i class="ph ph-microscope ph-inline"></i> Ammonia (NH₃)</div>
+<div class="stat-val" id="g-nh3" style="font-size:16px;color:var(--green)">0.02<span class="stat-unit"> mg/L</span></div>
+<div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Safe &lt;0.1</div>
+</div>
+<div class="stat-card">
+<div class="stat-label"><i class="ph ph-test-tube ph-inline"></i> Nitrite (NO₂)</div>
+<div class="stat-val" id="g-no2" style="font-size:16px;color:var(--green)">0.05<span class="stat-unit"> mg/L</span></div>
+<div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Safe &lt;0.5</div>
+</div>
+<div class="stat-card">
+<div class="stat-label"><i class="ph ph-hexagon ph-inline"></i> Alkalinity</div>
+<div class="stat-val" id="g-alk" style="font-size:16px;color:var(--ultramarine)">120<span class="stat-unit"> mg/L</span></div>
+<div class="stat-trend">→ Good 80–160</div>
+</div>
+<div class="stat-card">
+<div class="stat-label"><i class="ph ph-virus ph-inline"></i> H₂S</div>
+<div class="stat-val" id="g-h2s" style="font-size:16px;color:var(--green)">0.001<span class="stat-unit"> mg/L</span></div>
+<div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Very Safe</div>
+</div>
+</div>
 
-    <div class="section-title"><i class="ph-bold ph-radar"></i> Compare 3 Ponds Overview</div>
-    <div class="chart-wrap">
-      <canvas id="compare-chart" height="180"></canvas>
-    </div>
+<div class="section-title"><i class="ph-bold ph-radar"></i> Compare 3 Ponds Overview</div>
+<div class="chart-wrap">
+<canvas id="compare-chart" height="180"></canvas>
+</div>
 
-    <div class="section-title"><i class="ph-bold ph-clock"></i> Feeding Log & Trends</div>
-    <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/device/feeding-log</div>
-    <div class="card">
-      <div class="feed-log" id="feed-log">
-        <div class="feed-item">
-          <div class="feed-icon"><i class="ph ph-shrimp"></i></div>
-          <div class="feed-info">
-            <div class="feed-name">Grobest Shrimp Feed #2 <span class="feed-type auto">AUTO</span></div>
-            <div class="feed-time">06:30</div>
-          </div>
-          <div class="feed-amount">250g</div>
-        </div>
-        <div class="feed-item">
-          <div class="feed-icon"><i class="ph ph-leaf"></i></div>
-          <div class="feed-info">
-            <div class="feed-name">Probiotic Supplement <span class="feed-type manual">MANUAL</span></div>
-            <div class="feed-time">10:00</div>
-          </div>
-          <div class="feed-amount">50g</div>
-        </div>
-      </div>
-      <div class="feed-total">
-        <span style="font-size:12px;color:var(--text3)">Total Today</span>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--ultramarine)" id="feed-total-text">300g / 600g</span>
-      </div>
-    </div>
+<div class="section-title"><i class="ph-bold ph-clock"></i> Feeding Log & Trends</div>
+<div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/device/feeding-log</div>
+<div class="card">
+<div class="feed-log" id="feed-log">
+<div class="feed-item">
+<div class="feed-icon"><i class="ph ph-shrimp"></i></div>
+<div class="feed-info">
+<div class="feed-name">Grobest Shrimp Feed #2 <span class="feed-type auto">AUTO</span></div>
+<div class="feed-time">06:30</div>
+</div>
+<div class="feed-amount">250g</div>
+</div>
+<div class="feed-item">
+<div class="feed-icon"><i class="ph ph-leaf"></i></div>
+<div class="feed-info">
+<div class="feed-name">Probiotic Supplement <span class="feed-type manual">MANUAL</span></div>
+<div class="feed-time">10:00</div>
+</div>
+<div class="feed-amount">50g</div>
+</div>
+</div>
+<div class="feed-total">
+<span style="font-size:12px;color:var(--text3)">Total Today</span>
+<span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--ultramarine)" id="feed-total-text">300g / 600g</span>
+</div>
+</div>
 
-    <div class="chart-wrap">
-      <div class="chart-subtitle" style="margin-bottom:10px">7-Day Feeding Volume</div>
-      <canvas id="feed-chart" height="120"></canvas>
-    </div>
-  </div>
+<div class="chart-wrap">
+<div class="chart-subtitle" style="margin-bottom:10px">7-Day Feeding Volume</div>
+<canvas id="feed-chart" height="120"></canvas>
+</div>
+</div>
 </div>
 
 <!-- ── NOTIFICATIONS ── -->
 <div class="page" id="page-notifications">
-  <div class="section">
-    <div class="notif-header">
-      <div class="notif-count" id="notif-unread-count">4 unread alerts</div>
-      <div class="mark-read" onclick="markAllRead()">Mark all read</div>
-    </div>
-    <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> /api/shock-alert · /api/disease-risk</div>
+<div class="section">
+<div class="notif-header">
+<div class="notif-count" id="notif-unread-count">4 unread alerts</div>
+<div class="mark-read" onclick="markAllRead()">Mark all read</div>
+</div>
+<div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> /api/shock-alert · /api/disease-risk</div>
 
-    <div class="notif-item danger" onclick="readNotif(this)">
-      <div class="unread-dot"></div>
-      <div class="notif-icon"><i class="ph-fill ph-waves"></i></div>
-      <div class="notif-body">
-        <div class="notif-title"><i class="ph-fill ph-warning"></i> Salinity Shock Alert – Pond #1</div>
-        <div class="notif-msg">Salinity forecast to rise to 24 ppt by 14:00 tomorrow due to storm. Action required before 18:00 today.</div>
-        <div class="notif-actions-box">
-          <strong style="color:var(--danger)"><i class="ph-bold ph-target"></i> Recommended Actions:</strong><br>
-          1. Reduce pond density by 20–30%<br>
-          2. Prepare freshwater for dilution<br>
-          3. Stop evening feeding schedule
-        </div>
-        <div class="notif-time">2 hours ago · /shock-alert · Confidence: 87%</div>
-      </div>
-    </div>
+<div class="notif-item danger" onclick="readNotif(this)">
+<div class="unread-dot"></div>
+<div class="notif-icon"><i class="ph-fill ph-waves"></i></div>
+<div class="notif-body">
+<div class="notif-title"><i class="ph-fill ph-warning"></i> Salinity Shock Alert – Pond #1</div>
+<div class="notif-msg">Salinity forecast to rise to 24 ppt by 14:00 tomorrow due to storm. Action required before 18:00 today.</div>
+<div class="notif-actions-box">
+<strong style="color:var(--danger)"><i class="ph-bold ph-target"></i> Recommended Actions:</strong><br>
+1. Reduce pond density by 20–30%<br>
+2. Prepare freshwater for dilution<br>
+3. Stop evening feeding schedule
+</div>
+<div class="notif-time">2 hours ago · /shock-alert · Confidence: 87%</div>
+</div>
+</div>
 
-    <div class="notif-item warn" onclick="readNotif(this)">
-      <div class="unread-dot"></div>
-      <div class="notif-icon"><i class="ph-fill ph-hurricane"></i></div>
-      <div class="notif-body">
-        <div class="notif-title"><i class="ph-fill ph-warning"></i> Storm Warning – Next 36h</div>
-        <div class="notif-msg">Tropical depression forecasted to hit Ca Mau. Wind gusts level 7-8, coastal waves 2-3m.</div>
-        <div class="notif-time">3 hours ago · National Weather Service</div>
-      </div>
-    </div>
+<div class="notif-item warn" onclick="readNotif(this)">
+<div class="unread-dot"></div>
+<div class="notif-icon"><i class="ph-fill ph-hurricane"></i></div>
+<div class="notif-body">
+<div class="notif-title"><i class="ph-fill ph-warning"></i> Storm Warning – Next 36h</div>
+<div class="notif-msg">Tropical depression forecasted to hit Ca Mau. Wind gusts level 7-8, coastal waves 2-3m.</div>
+<div class="notif-time">3 hours ago · National Weather Service</div>
+</div>
+</div>
 
-    <div class="notif-item warn" onclick="readNotif(this)">
-      <div class="unread-dot"></div>
-      <div class="notif-icon"><i class="ph-fill ph-bug"></i></div>
-      <div class="notif-body">
-        <div class="notif-title"><i class="ph-fill ph-warning"></i> Disease Risk – Medium</div>
-        <div class="notif-msg">Current temp & pH are favorable for Vibrio bacteria. Outbreak probability: 42% in next 72h.</div>
-        <div class="notif-actions-box">
-          <strong style="color:var(--warn)"><i class="ph-bold ph-target"></i> Recommendation:</strong> Add probiotics, inspect shrimp every 6 hours.
-        </div>
-        <div class="notif-time">5 hours ago · /disease-risk</div>
-      </div>
-    </div>
+<div class="notif-item warn" onclick="readNotif(this)">
+<div class="unread-dot"></div>
+<div class="notif-icon"><i class="ph-fill ph-bug"></i></div>
+<div class="notif-body">
+<div class="notif-title"><i class="ph-fill ph-warning"></i> Disease Risk – Medium</div>
+<div class="notif-msg">Current temp & pH are favorable for Vibrio bacteria. Outbreak probability: 42% in next 72h.</div>
+<div class="notif-actions-box">
+<strong style="color:var(--warn)"><i class="ph-bold ph-target"></i> Recommendation:</strong> Add probiotics, inspect shrimp every 6 hours.
+</div>
+<div class="notif-time">5 hours ago · /disease-risk</div>
+</div>
+</div>
 
-    <div class="notif-item info" onclick="readNotif(this)">
-      <div class="unread-dot"></div>
-      <div class="notif-icon"><i class="ph-fill ph-chart-bar"></i></div>
-      <div class="notif-body">
-        <div class="notif-title"><i class="ph-fill ph-lightbulb"></i> Harvest Optimization – Pond #3</div>
-        <div class="notif-msg">Pond #3 has reached 82% of target size. Market prices are trending up. Recommended to harvest in 5-7 days.</div>
-        <div class="notif-time">Yesterday 08:15 · /harvest-optimization</div>
-      </div>
-    </div>
+<div class="notif-item info" onclick="readNotif(this)">
+<div class="unread-dot"></div>
+<div class="notif-icon"><i class="ph-fill ph-chart-bar"></i></div>
+<div class="notif-body">
+<div class="notif-title"><i class="ph-fill ph-lightbulb"></i> Harvest Optimization – Pond #3</div>
+<div class="notif-msg">Pond #3 has reached 82% of target size. Market prices are trending up. Recommended to harvest in 5-7 days.</div>
+<div class="notif-time">Yesterday 08:15 · /harvest-optimization</div>
+</div>
+</div>
 
-    <div class="notif-item ok">
-      <div class="notif-icon"><i class="ph-fill ph-check-circle"></i></div>
-      <div class="notif-body">
-        <div class="notif-title">Feeding Equipment Online</div>
-        <div class="notif-msg">06:30 feeding schedule executed successfully. 250g distributed.</div>
-        <div class="notif-time">Today 06:31 · Device #AQ-001</div>
-      </div>
-    </div>
-  </div>
+<div class="notif-item ok">
+<div class="notif-icon"><i class="ph-fill ph-check-circle"></i></div>
+<div class="notif-body">
+<div class="notif-title">Feeding Equipment Online</div>
+<div class="notif-msg">06:30 feeding schedule executed successfully. 250g distributed.</div>
+<div class="notif-time">Today 06:31 · Device #AQ-001</div>
+</div>
+</div>
+</div>
 </div>
 
 <!-- ── CHAT ── -->
 <div class="page" id="page-chat">
-  <div class="chat-page">
-    <div class="chat-messages" id="chat-messages">
-      <div>
-        <div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI Assistant</div>
-        <div class="chat-bubble ai">
-          Hello! I am AQUA·AI, your smart aquaculture assistant. <i class="ph ph-waves ph-inline"></i><br><br>
-          I can help you with:<br>
-          • Water quality analysis<br>
-          • Weather & disease alerts<br>
-          • Feeding & harvest planning<br>
-          • Technical farming advice<br><br>
-          Ask me anything! <i class="ph ph-fish ph-inline"></i>
-        </div>
-      </div>
-    </div>
-    <div class="chat-input-area">
-      <div class="chat-quick">
-        <div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-chart-bar ph-inline"></i> Analyze Pond #1</div>
-        <div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-warning ph-inline"></i> Today's Alerts</div>
-        <div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-shrimp ph-inline"></i> Feeding Schedule</div>
-        <div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-flask ph-inline"></i> Optimal pH?</div>
-        <div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-pill ph-inline"></i> Prevent Vibrio</div>
-      </div>
-      <div class="chat-pond-select" id="chat-pond-select">
-        <div class="chat-chip active" onclick="selectChatPond(this,'pond1')">Pond #1 – Black Tiger</div>
-        <div class="chat-chip" onclick="selectChatPond(this,'pond2')">Pond #2 – Pangasius</div>
-        <div class="chat-chip" onclick="selectChatPond(this,'pond3')">Pond #3 – Whiteleg</div>
-      </div>
-      <div class="chat-row">
-        <textarea class="chat-input" id="chat-input" placeholder="Ask AQUA·AI..." rows="1"
-          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"
-          oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-        <button class="chat-send" onclick="sendMessage()"><i class="ph-bold ph-paper-plane-right"></i></button>
-      </div>
-    </div>
-  </div>
+<div class="chat-page">
+<div class="chat-messages" id="chat-messages">
+<div>
+<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI Assistant</div>
+<div class="chat-bubble ai">
+Hello! I am AQUA·AI, your smart aquaculture assistant. <i class="ph ph-waves ph-inline"></i><br><br>
+I can help you with:<br>
+• Water quality analysis<br>
+• Weather & disease alerts<br>
+• Feeding & harvest planning<br>
+• Technical farming advice<br><br>
+Ask me anything! <i class="ph ph-fish ph-inline"></i>
+</div>
+</div>
+</div>
+<div class="chat-input-area">
+<div class="chat-quick">
+<div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-chart-bar ph-inline"></i> Analyze Pond #1</div>
+<div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-warning ph-inline"></i> Today's Alerts</div>
+<div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-shrimp ph-inline"></i> Feeding Schedule</div>
+<div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-flask ph-inline"></i> Optimal pH?</div>
+<div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-pill ph-inline"></i> Prevent Vibrio</div>
+</div>
+<div class="chat-pond-select" id="chat-pond-select">
+<div class="chat-chip active" onclick="selectChatPond(this,'pond1')">Pond #1 – Black Tiger</div>
+<div class="chat-chip" onclick="selectChatPond(this,'pond2')">Pond #2 – Pangasius</div>
+<div class="chat-chip" onclick="selectChatPond(this,'pond3')">Pond #3 – Whiteleg</div>
+</div>
+<div class="chat-row">
+<textarea class="chat-input" id="chat-input" placeholder="Ask AQUA·AI..." rows="1"
+onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"
+oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+<button class="chat-send" onclick="sendMessage()"><i class="ph-bold ph-paper-plane-right"></i></button>
+</div>
+</div>
+</div>
 </div>
 
 </div>
@@ -1066,232 +1066,232 @@ let chatPond = 'pond1';
 const API_BASE = 'https://aqua-ai-bjg6.onrender.com/api';
 
 function switchTab(tab) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + tab).classList.add('active');
+document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+document.getElementById('page-' + tab).classList.add('active');
 
-  const tabBtn = document.getElementById('tab-' + tab);
-  if (tabBtn) tabBtn.classList.add('active');
+const tabBtn = document.getElementById('tab-' + tab);
+if (tabBtn) tabBtn.classList.add('active');
 
-  if (tab === 'device' && !chartsInitialized) { 
-    initCharts(); 
-    chartsInitialized = true; 
-  }
+if (tab === 'device' && !chartsInitialized) { 
+initCharts(); 
+chartsInitialized = true; 
+}
 }
 function selectMetricCard(el, metric) {
-  document.querySelectorAll('.gauge-card, .stat-card').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  currentMetric = metric;
-  loadChartData();
-  setTimeout(() => { document.getElementById('device-main-chart').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 50);
+document.querySelectorAll('.gauge-card, .stat-card').forEach(c => c.classList.remove('active'));
+el.classList.add('active');
+currentMetric = metric;
+loadChartData();
+setTimeout(() => { document.getElementById('device-main-chart').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 50);
 }
 
 async function searchLocation() {
-  const val = document.getElementById('location-search').value.trim();
-  if (!val) return;
-  document.getElementById('loc-name').textContent = val + ', Vietnam';
-  try {
-    const r = await fetch(`${API_BASE}/weather?location=${encodeURIComponent(val)}`);
-    const d = await r.json();
-    updateWeatherUI(d);
-  } catch {
-    const temps = [27,28,29,30,31,32,33];
-    const icons = ['<i class="ph-fill ph-cloud-rain"></i>','<i class="ph-fill ph-cloud-lightning"></i>','<i class="ph-fill ph-cloud-sun"></i>','<i class="ph-fill ph-sun"></i>'];
-    const descs = ['Cloudy, high humidity','Clear sky','Light rain breeze'];
-    document.getElementById('w-temp').innerHTML = temps[Math.floor(Math.random()*temps.length)] + '<sup>°C</sup>';
-    document.getElementById('w-icon').innerHTML = icons[Math.floor(Math.random()*icons.length)];
-    document.getElementById('w-desc').innerHTML = '<i class="ph-fill ph-cloud-sun"></i> ' + descs[Math.floor(Math.random()*descs.length)];
-  }
-  document.getElementById('w-updated').textContent = 'Updated: ' + new Date().toLocaleTimeString('en-US');
-  document.getElementById('location-search').value = '';
+const val = document.getElementById('location-search').value.trim();
+if (!val) return;
+document.getElementById('loc-name').textContent = val + ', Vietnam';
+try {
+const r = await fetch(`${API_BASE}/weather?location=${encodeURIComponent(val)}`);
+const d = await r.json();
+updateWeatherUI(d);
+} catch {
+const temps = [27,28,29,30,31,32,33];
+const icons = ['<i class="ph-fill ph-cloud-rain"></i>','<i class="ph-fill ph-cloud-lightning"></i>','<i class="ph-fill ph-cloud-sun"></i>','<i class="ph-fill ph-sun"></i>'];
+const descs = ['Cloudy, high humidity','Clear sky','Light rain breeze'];
+document.getElementById('w-temp').innerHTML = temps[Math.floor(Math.random()*temps.length)] + '<sup>°C</sup>';
+document.getElementById('w-icon').innerHTML = icons[Math.floor(Math.random()*icons.length)];
+document.getElementById('w-desc').innerHTML = '<i class="ph-fill ph-cloud-sun"></i> ' + descs[Math.floor(Math.random()*descs.length)];
+}
+document.getElementById('w-updated').textContent = 'Updated: ' + new Date().toLocaleTimeString('en-US');
+document.getElementById('location-search').value = '';
 }
 
 function updateWeatherUI(d) {
-  document.getElementById('w-temp').innerHTML = d.temperature + '<sup>°C</sup>';
-  const iconMap = {'🌦':'<i class="ph-fill ph-cloud-rain"></i>','⛅':'<i class="ph-fill ph-cloud-sun"></i>','☀️':'<i class="ph-fill ph-sun"></i>','🌧':'<i class="ph-fill ph-cloud-rain"></i>','⛈':'<i class="ph-fill ph-cloud-lightning"></i>'};
-  document.getElementById('w-icon').innerHTML = iconMap[d.icon] || '<i class="ph-fill ph-cloud-sun"></i>';
-  document.getElementById('w-desc').innerHTML = '<i class="ph-fill ph-cloud-sun"></i> ' + d.description;
-  document.getElementById('w-badges').innerHTML = `
-    <div class="weather-badge"><i class="ph-fill ph-drop"></i> ${d.humidity}%</div>
-    <div class="weather-badge"><i class="ph-fill ph-wind"></i> ${d.wind_speed} km/h ${d.wind_dir}</div>
-    <div class="weather-badge"><i class="ph-fill ph-cloud-rain"></i> ${d.rainfall_today}mm</div>
-    <div class="weather-badge"><i class="ph-fill ph-eye"></i> ${d.visibility}km</div>
-  `;
-  if (d.forecast) {
-    const fr = document.getElementById('forecast-row');
-    fr.innerHTML = d.forecast.map(f => `
-      <div class="forecast-item">
-        <div class="forecast-day">${f.day}</div>
-        <div class="forecast-icon">${iconMap[f.icon]||'<i class="ph-fill ph-cloud-sun"></i>'}</div>
-        <div class="forecast-temp">${f.temp}°</div>
-        <div class="forecast-rain">${f.rain_prob}%</div>
-      </div>
-    `).join('');
-  }
+document.getElementById('w-temp').innerHTML = d.temperature + '<sup>°C</sup>';
+const iconMap = {'🌦':'<i class="ph-fill ph-cloud-rain"></i>','⛅':'<i class="ph-fill ph-cloud-sun"></i>','☀️':'<i class="ph-fill ph-sun"></i>','🌧':'<i class="ph-fill ph-cloud-rain"></i>','⛈':'<i class="ph-fill ph-cloud-lightning"></i>'};
+document.getElementById('w-icon').innerHTML = iconMap[d.icon] || '<i class="ph-fill ph-cloud-sun"></i>';
+document.getElementById('w-desc').innerHTML = '<i class="ph-fill ph-cloud-sun"></i> ' + d.description;
+document.getElementById('w-badges').innerHTML = `
+   <div class="weather-badge"><i class="ph-fill ph-drop"></i> ${d.humidity}%</div>
+   <div class="weather-badge"><i class="ph-fill ph-wind"></i> ${d.wind_speed} km/h ${d.wind_dir}</div>
+   <div class="weather-badge"><i class="ph-fill ph-cloud-rain"></i> ${d.rainfall_today}mm</div>
+   <div class="weather-badge"><i class="ph-fill ph-eye"></i> ${d.visibility}km</div>
+ `;
+if (d.forecast) {
+const fr = document.getElementById('forecast-row');
+fr.innerHTML = d.forecast.map(f => `
+     <div class="forecast-item">
+       <div class="forecast-day">${f.day}</div>
+       <div class="forecast-icon">${iconMap[f.icon]||'<i class="ph-fill ph-cloud-sun"></i>'}</div>
+       <div class="forecast-temp">${f.temp}°</div>
+       <div class="forecast-rain">${f.rain_prob}%</div>
+     </div>
+   `).join('');
+}
 }
 
 function selectPond(el, pondId) {
-  document.querySelectorAll('#pond-selector .pond-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  currentPond = pondId;
-  loadSensorData(pondId);
-  loadChartData();
+document.querySelectorAll('#pond-selector .pond-chip').forEach(c => c.classList.remove('active'));
+el.classList.add('active');
+currentPond = pondId;
+loadSensorData(pondId);
+loadChartData();
 }
 
 async function loadSensorData(pond) {
-  try {
-    const r = await fetch(`${API_BASE}/device/sensor-data?pond=${pond}`);
-    const d = await r.json();
-    updateSensors(d);
-  } catch {}
+try {
+const r = await fetch(`${API_BASE}/device/sensor-data?pond=${pond}`);
+const d = await r.json();
+updateSensors(d);
+} catch {}
 }
 
 function updateSensors(d) {
-  const salinityColor = (d.salinity >= 10 && d.salinity <= 20) ? 'var(--green)' : 'var(--warn)';
-  document.getElementById('g-salinity').innerHTML = `${d.salinity}<span class="gauge-unit"> ppt</span>`;
-  document.getElementById('g-salinity').style.color = salinityColor;
-  document.getElementById('gb-salinity').style.width = Math.min(100,(d.salinity/25)*100) + '%';
-  document.getElementById('gb-salinity').style.background = salinityColor;
-  document.getElementById('g-do').innerHTML = `${d.do}<span class="gauge-unit"> mg/L</span>`;
-  document.getElementById('gb-do').style.width = Math.min(100,(d.do/10)*100) + '%';
-  document.getElementById('g-ph').textContent = d.ph;
-  document.getElementById('gb-ph').style.width = ((d.ph-6)/4)*100 + '%';
-  document.getElementById('g-temp').innerHTML = `${d.temperature}<span class="gauge-unit">°C</span>`;
-  document.getElementById('gb-temp').style.width = ((d.temperature-20)/20)*100 + '%';
-  document.getElementById('g-nh3').innerHTML = `${d.ammonia}<span class="stat-unit"> mg/L</span>`;
-  document.getElementById('g-no2').innerHTML = `${d.nitrite}<span class="stat-unit"> mg/L</span>`;
-  document.getElementById('g-alk').innerHTML = `${d.alkalinity}<span class="stat-unit"> mg/L</span>`;
-  document.getElementById('g-h2s').innerHTML = `${d.h2s}<span class="stat-unit"> mg/L</span>`;
+const salinityColor = (d.salinity >= 10 && d.salinity <= 20) ? 'var(--green)' : 'var(--warn)';
+document.getElementById('g-salinity').innerHTML = `${d.salinity}<span class="gauge-unit"> ppt</span>`;
+document.getElementById('g-salinity').style.color = salinityColor;
+document.getElementById('gb-salinity').style.width = Math.min(100,(d.salinity/25)*100) + '%';
+document.getElementById('gb-salinity').style.background = salinityColor;
+document.getElementById('g-do').innerHTML = `${d.do}<span class="gauge-unit"> mg/L</span>`;
+document.getElementById('gb-do').style.width = Math.min(100,(d.do/10)*100) + '%';
+document.getElementById('g-ph').textContent = d.ph;
+document.getElementById('gb-ph').style.width = ((d.ph-6)/4)*100 + '%';
+document.getElementById('g-temp').innerHTML = `${d.temperature}<span class="gauge-unit">°C</span>`;
+document.getElementById('gb-temp').style.width = ((d.temperature-20)/20)*100 + '%';
+document.getElementById('g-nh3').innerHTML = `${d.ammonia}<span class="stat-unit"> mg/L</span>`;
+document.getElementById('g-no2').innerHTML = `${d.nitrite}<span class="stat-unit"> mg/L</span>`;
+document.getElementById('g-alk').innerHTML = `${d.alkalinity}<span class="stat-unit"> mg/L</span>`;
+document.getElementById('g-h2s').innerHTML = `${d.h2s}<span class="stat-unit"> mg/L</span>`;
 }
 
 const metricNames = { salinity:'Salinity', do:'Oxygen (DO)', ph:'pH', temperature:'Temperature', ammonia:'Ammonia (NH₃)' };
 
 function initCharts() {
-  if (!compareChart) buildCompareChart();
-  if (!feedChart) buildFeedChart();
-  loadChartData();
+if (!compareChart) buildCompareChart();
+if (!feedChart) buildFeedChart();
+loadChartData();
 }
 
 async function loadChartData() {
-  document.getElementById('chart-loading').style.display = 'flex';
-  document.getElementById('chart-title').textContent = `${metricNames[currentMetric]||currentMetric} History`;
-  let data, unit, safeMin, safeMax;
-  try {
-    const r = await fetch(`${API_BASE}/device/history?pond=${currentPond}&metric=${currentMetric}&hours=48`);
-    const d = await r.json();
-    data = d.data; unit = d.unit; safeMin = d.safe_min; safeMax = d.safe_max;
-  } catch {
-    const configs = { salinity:[16,3], do:[6.5,1], ph:[7.8,0.25], temperature:[29,2], ammonia:[0.03,0.01] };
-    const units = { salinity:'ppt', do:'mg/L', ph:'', temperature:'°C', ammonia:'mg/L' };
-    const safeMins = { salinity:10, do:5, ph:7.5, temperature:26, ammonia:0 };
-    const safeMaxes = { salinity:20, do:10, ph:8.5, temperature:32, ammonia:0.1 };
-    const [base, amp] = configs[currentMetric]||[10,2];
-    unit = units[currentMetric]||''; safeMin = safeMins[currentMetric]; safeMax = safeMaxes[currentMetric];
-    data = Array.from({length:48},(_,i) => {
-      const t = new Date(Date.now()-(47-i)*3600000);
-      return { time: t.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}), value: +(base+amp*Math.sin(2*Math.PI*i/24)+(Math.random()-0.5)*0.4).toFixed(2) };
-    });
-  }
-  const vals = data.map(d => d.value);
-  const mn = Math.min(...vals), mx = Math.max(...vals), avg = vals.reduce((a,b)=>a+b,0)/vals.length;
-  document.getElementById('cs-min').textContent = mn.toFixed(2);
-  document.getElementById('cs-avg').textContent = avg.toFixed(2);
-  document.getElementById('cs-max').textContent = mx.toFixed(2);
-  document.getElementById('cs-unit').textContent = unit||'—';
-  const sample = data.filter((_,i)=>i%3===0);
-  if (mainChart) mainChart.destroy();
-  mainChart = new Chart(document.getElementById('main-chart'), {
-    type:'line',
-    data: { labels: sample.map(d=>d.time), datasets:[{ data: sample.map(d=>d.value), borderColor:'#2D69FF', backgroundColor:'rgba(45,105,255,0.08)', borderWidth:2, pointRadius:0, pointHoverRadius:4, fill:true, tension:0.4 }] },
-    options: {
-      responsive:true, interaction:{mode:'index',intersect:false},
-      plugins:{ legend:{display:false}, annotation:{ annotations: safeMin!=null?[{type:'line',yMin:safeMin,yMax:safeMax,borderColor:'rgba(75,170,125,0.2)',borderWidth:0,backgroundColor:'rgba(75,170,125,0.05)'}]:[] }, tooltip:{callbacks:{label:ctx=>`${ctx.parsed.y.toFixed(2)} ${unit}`}} },
-      scales:{ x:{ticks:{font:{size:9},color:'#6a85b8',maxTicksLimit:8},grid:{color:'rgba(45,105,255,0.06)'}}, y:{ticks:{font:{size:9},color:'#6a85b8'},grid:{color:'rgba(45,105,255,0.06)'}} }
-    }
-  });
-  document.getElementById('chart-loading').style.display = 'none';
+document.getElementById('chart-loading').style.display = 'flex';
+document.getElementById('chart-title').textContent = `${metricNames[currentMetric]||currentMetric} History`;
+let data, unit, safeMin, safeMax;
+try {
+const r = await fetch(`${API_BASE}/device/history?pond=${currentPond}&metric=${currentMetric}&hours=48`);
+const d = await r.json();
+data = d.data; unit = d.unit; safeMin = d.safe_min; safeMax = d.safe_max;
+} catch {
+const configs = { salinity:[16,3], do:[6.5,1], ph:[7.8,0.25], temperature:[29,2], ammonia:[0.03,0.01] };
+const units = { salinity:'ppt', do:'mg/L', ph:'', temperature:'°C', ammonia:'mg/L' };
+const safeMins = { salinity:10, do:5, ph:7.5, temperature:26, ammonia:0 };
+const safeMaxes = { salinity:20, do:10, ph:8.5, temperature:32, ammonia:0.1 };
+const [base, amp] = configs[currentMetric]||[10,2];
+unit = units[currentMetric]||''; safeMin = safeMins[currentMetric]; safeMax = safeMaxes[currentMetric];
+data = Array.from({length:48},(_,i) => {
+const t = new Date(Date.now()-(47-i)*3600000);
+return { time: t.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}), value: +(base+amp*Math.sin(2*Math.PI*i/24)+(Math.random()-0.5)*0.4).toFixed(2) };
+});
+}
+const vals = data.map(d => d.value);
+const mn = Math.min(...vals), mx = Math.max(...vals), avg = vals.reduce((a,b)=>a+b,0)/vals.length;
+document.getElementById('cs-min').textContent = mn.toFixed(2);
+document.getElementById('cs-avg').textContent = avg.toFixed(2);
+document.getElementById('cs-max').textContent = mx.toFixed(2);
+document.getElementById('cs-unit').textContent = unit||'—';
+const sample = data.filter((_,i)=>i%3===0);
+if (mainChart) mainChart.destroy();
+mainChart = new Chart(document.getElementById('main-chart'), {
+type:'line',
+data: { labels: sample.map(d=>d.time), datasets:[{ data: sample.map(d=>d.value), borderColor:'#2D69FF', backgroundColor:'rgba(45,105,255,0.08)', borderWidth:2, pointRadius:0, pointHoverRadius:4, fill:true, tension:0.4 }] },
+options: {
+responsive:true, interaction:{mode:'index',intersect:false},
+plugins:{ legend:{display:false}, annotation:{ annotations: safeMin!=null?[{type:'line',yMin:safeMin,yMax:safeMax,borderColor:'rgba(75,170,125,0.2)',borderWidth:0,backgroundColor:'rgba(75,170,125,0.05)'}]:[] }, tooltip:{callbacks:{label:ctx=>`${ctx.parsed.y.toFixed(2)} ${unit}`}} },
+scales:{ x:{ticks:{font:{size:9},color:'#6a85b8',maxTicksLimit:8},grid:{color:'rgba(45,105,255,0.06)'}}, y:{ticks:{font:{size:9},color:'#6a85b8'},grid:{color:'rgba(45,105,255,0.06)'}} }
+}
+});
+document.getElementById('chart-loading').style.display = 'none';
 }
 
 function buildCompareChart() {
-  compareChart = new Chart(document.getElementById('compare-chart'),{
-    type:'radar',
-    data:{
-      labels:['Salinity','DO','pH','Temp','Alk'],
-      datasets:[
-        {label:'Pond #1',data:[75,85,78,65,75],borderColor:'#2D69FF',backgroundColor:'rgba(45,105,255,0.08)',borderWidth:2,pointBackgroundColor:'#2D69FF'},
-        {label:'Pond #2',data:[60,70,82,70,80],borderColor:'#4BAA7D',backgroundColor:'rgba(75,170,125,0.08)',borderWidth:2,pointBackgroundColor:'#4BAA7D'},
-        {label:'Pond #3',data:[80,90,75,60,70],borderColor:'#e09c00',backgroundColor:'rgba(224,156,0,0.08)',borderWidth:2,pointBackgroundColor:'#e09c00'},
-      ]
-    },
-    options:{responsive:true,plugins:{legend:{labels:{font:{size:10},color:'#2d5096'}}},scales:{r:{ticks:{font:{size:9},color:'#6a85b8',backdropColor:'transparent'},grid:{color:'rgba(45,105,255,0.1)'},pointLabels:{font:{size:10},color:'#1a3266'}}}}
-  });
+compareChart = new Chart(document.getElementById('compare-chart'),{
+type:'radar',
+data:{
+labels:['Salinity','DO','pH','Temp','Alk'],
+datasets:[
+{label:'Pond #1',data:[75,85,78,65,75],borderColor:'#2D69FF',backgroundColor:'rgba(45,105,255,0.08)',borderWidth:2,pointBackgroundColor:'#2D69FF'},
+{label:'Pond #2',data:[60,70,82,70,80],borderColor:'#4BAA7D',backgroundColor:'rgba(75,170,125,0.08)',borderWidth:2,pointBackgroundColor:'#4BAA7D'},
+{label:'Pond #3',data:[80,90,75,60,70],borderColor:'#e09c00',backgroundColor:'rgba(224,156,0,0.08)',borderWidth:2,pointBackgroundColor:'#e09c00'},
+]
+},
+options:{responsive:true,plugins:{legend:{labels:{font:{size:10},color:'#2d5096'}}},scales:{r:{ticks:{font:{size:9},color:'#6a85b8',backdropColor:'transparent'},grid:{color:'rgba(45,105,255,0.1)'},pointLabels:{font:{size:10},color:'#1a3266'}}}}
+});
 }
 
 function buildFeedChart() {
-  feedChart = new Chart(document.getElementById('feed-chart'),{
-    type:'bar',
-    data:{
-      labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-      datasets:[
-        {label:'Pond #1',data:[550,580,500,620,590,540,560],backgroundColor:'rgba(45,105,255,0.75)',borderRadius:4},
-        {label:'Pond #2',data:[800,820,780,850,810,790,830],backgroundColor:'rgba(75,170,125,0.75)',borderRadius:4},
-        {label:'Pond #3',data:[400,420,380,450,410,390,430],backgroundColor:'rgba(224,156,0,0.75)',borderRadius:4}
-      ]
-    },
-    options:{responsive:true,plugins:{legend:{labels:{font:{size:10},color:'#2d5096'}}},scales:{x:{ticks:{font:{size:10},color:'#6a85b8'},grid:{display:false}},y:{ticks:{font:{size:10},color:'#6a85b8'},grid:{color:'rgba(45,105,255,0.06)'}}}}
-  });
+feedChart = new Chart(document.getElementById('feed-chart'),{
+type:'bar',
+data:{
+labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+datasets:[
+{label:'Pond #1',data:[550,580,500,620,590,540,560],backgroundColor:'rgba(45,105,255,0.75)',borderRadius:4},
+{label:'Pond #2',data:[800,820,780,850,810,790,830],backgroundColor:'rgba(75,170,125,0.75)',borderRadius:4},
+{label:'Pond #3',data:[400,420,380,450,410,390,430],backgroundColor:'rgba(224,156,0,0.75)',borderRadius:4}
+]
+},
+options:{responsive:true,plugins:{legend:{labels:{font:{size:10},color:'#2d5096'}}},scales:{x:{ticks:{font:{size:10},color:'#6a85b8'},grid:{display:false}},y:{ticks:{font:{size:10},color:'#6a85b8'},grid:{color:'rgba(45,105,255,0.06)'}}}}
+});
 }
 
 function readNotif(el) {
-  const dot = el.querySelector('.unread-dot');
-  if (dot){dot.remove();unreadCount=Math.max(0,unreadCount-1);updateNotifCount();}
+const dot = el.querySelector('.unread-dot');
+if (dot){dot.remove();unreadCount=Math.max(0,unreadCount-1);updateNotifCount();}
 }
 function markAllRead() { document.querySelectorAll('.unread-dot').forEach(d=>d.remove()); unreadCount=0; updateNotifCount(); }
 function updateNotifCount() {
-  document.getElementById('notif-unread-count').textContent = unreadCount>0?`${unreadCount} unread alerts`:'No new alerts';
-  if (unreadCount===0) document.getElementById('notif-badge').style.display='none';
+document.getElementById('notif-unread-count').textContent = unreadCount>0?`${unreadCount} unread alerts`:'No new alerts';
+if (unreadCount===0) document.getElementById('notif-badge').style.display='none';
 }
 
 function selectChatPond(el, pond) {
-  document.querySelectorAll('#chat-pond-select .chat-chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active'); chatPond=pond;
+document.querySelectorAll('#chat-pond-select .chat-chip').forEach(c=>c.classList.remove('active'));
+el.classList.add('active'); chatPond=pond;
 }
 
 function sendQuick(el) {
-  const txt = el.textContent.trim();
-  document.getElementById('chat-input').value=txt; sendMessage();
+const txt = el.textContent.trim();
+document.getElementById('chat-input').value=txt; sendMessage();
 }
 
 async function sendMessage() {
-  const input = document.getElementById('chat-input');
-  const msg = input.value.trim();
-  if (!msg) return;
-  input.value=''; input.style.height='auto';
-  appendBubble('user',msg);
-  const typingId='typing-'+Date.now();
-  const msgs = document.getElementById('chat-messages');
-  const typingDiv = document.createElement('div');
-  typingDiv.id=typingId;
-  typingDiv.innerHTML=`<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI</div><div class="chat-bubble ai"><div class="typing"><span></span><span></span><span></span></div></div>`;
-  msgs.appendChild(typingDiv); msgs.scrollTop=msgs.scrollHeight;
-  try {
-    const response = await fetch(`${API_BASE}/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,pond:chatPond,history:chatHistory})});
-    const data = await response.json();
-    const reply = data.reply||'Sorry, an error occurred.';
-    document.getElementById(typingId).remove();
-    appendBubble('ai',reply);
-    chatHistory.push({role:'user',content:msg}); chatHistory.push({role:'assistant',content:reply});
-  } catch {
-    document.getElementById(typingId).remove(); appendBubble('ai','⚠️ Cannot connect to AI server.');
-  }
+const input = document.getElementById('chat-input');
+const msg = input.value.trim();
+if (!msg) return;
+input.value=''; input.style.height='auto';
+appendBubble('user',msg);
+const typingId='typing-'+Date.now();
+const msgs = document.getElementById('chat-messages');
+const typingDiv = document.createElement('div');
+typingDiv.id=typingId;
+typingDiv.innerHTML=`<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI</div><div class="chat-bubble ai"><div class="typing"><span></span><span></span><span></span></div></div>`;
+msgs.appendChild(typingDiv); msgs.scrollTop=msgs.scrollHeight;
+try {
+const response = await fetch(`${API_BASE}/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,pond:chatPond,history:chatHistory})});
+const data = await response.json();
+const reply = data.reply||'Sorry, an error occurred.';
+document.getElementById(typingId).remove();
+appendBubble('ai',reply);
+chatHistory.push({role:'user',content:msg}); chatHistory.push({role:'assistant',content:reply});
+} catch {
+document.getElementById(typingId).remove(); appendBubble('ai','⚠️ Cannot connect to AI server.');
+}
 }
 
 function appendBubble(role,text) {
-  const msgs=document.getElementById('chat-messages');
-  const div=document.createElement('div');
-  if(role==='ai'){div.innerHTML=`<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI</div><div class="chat-bubble ai">${text.replace(/\n/g,'<br>')}</div>`;}
-  else{div.style.display='flex';div.style.justifyContent='flex-end';div.innerHTML=`<div class="chat-bubble user">${text.replace(/\n/g,'<br>')}</div>`;}
-  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+const msgs=document.getElementById('chat-messages');
+const div=document.createElement('div');
+if(role==='ai'){div.innerHTML=`<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI</div><div class="chat-bubble ai">${text.replace(/\n/g,'<br>')}</div>`;}
+else{div.style.display='flex';div.style.justifyContent='flex-end';div.innerHTML=`<div class="chat-bubble user">${text.replace(/\n/g,'<br>')}</div>`;}
+msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
 }
 
 document.getElementById('w-updated').textContent='Updated: '+new Date().toLocaleTimeString('en-US');

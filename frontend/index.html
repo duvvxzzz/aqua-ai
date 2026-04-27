@@ -1,1538 +1,1301 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>AQUA·AI</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
 <style>
-/* ── TOKENS ── */
 :root {
-  --alice:        #E1F0FF;
-  --alice-deep:   #C8DEFF;
-  --ultra:        #2D69FF;
-  --ultra-dark:   #1B55E0;
-  --ultra-light:  #5A8AFF;
-  --ultra-pale:   rgba(45,105,255,0.08);
-  --ultra-pale2:  rgba(45,105,255,0.04);
-  --mint:         #DCFFF0;
-  --mint-mid:     #B8F0D8;
-  --green:        #4BAA7D;
-  --green-dark:   #38865F;
-  --green-pale:   rgba(75,170,125,0.10);
-  --bg:           #F0F6FF;
-  --surface:      #FFFFFF;
-  --surface2:     #F7FAFF;
-  --border:       rgba(45,105,255,0.12);
-  --border-mid:   rgba(45,105,255,0.20);
-  --text:         #0E1F3D;
-  --text2:        #2A4068;
-  --text3:        #4A6490;
-  --muted:        #8EA4C0;
-  --danger:       #EF4444;
-  --danger-pale:  #FEE2E2;
-  --warning:      #F59E0B;
-  --warning-pale: #FEF3C7;
-  --success:      #22C55E;
-  --success-pale: #DCFCE7;
-  --shadow-xs:    0 1px 3px rgba(45,105,255,0.06);
-  --shadow-sm:    0 2px 8px rgba(45,105,255,0.08);
-  --shadow-md:    0 6px 20px rgba(45,105,255,0.10);
-  --shadow-lg:    0 12px 36px rgba(45,105,255,0.14);
-  --r-sm:  10px;
-  --r-md:  14px;
-  --r-lg:  18px;
-  --r-xl:  22px;
-  --r-full:50px;
-  --ease:  cubic-bezier(0.4,0,0.2,1);
-  --t:     all 0.25s var(--ease);
+/* ── New Palette ── */
+--alice:     #E1F0FF;
+--ultramarine: #2D69FF;
+--ultramarine-dark: #1a50e0;
+--ultramarine-pale: rgba(45, 105, 255, 0.10);
+--ultramarine-pale2: rgba(45, 105, 255, 0.06);
+--mint:      #DCFFF0;
+--mint-dark: #b8f0d8;
+--green:     #4BAA7D;
+--green-dark: #38865f;
+--green-pale: rgba(75, 170, 125, 0.12);
+
+/* ── Semantic mapping ── */
+--bg:        #E1F0FF;
+--bg2:       #d4e9ff;
+--surface:   #ffffff;
+--surface2:  #f4faff;
+--surface3:  #DCFFF0;
+--border:    rgba(45, 105, 255, 0.14);
+--border2:   rgba(45, 105, 255, 0.28);
+--accent:    #2D69FF;
+--accent-light: #5a8dff;
+--accent-pale: rgba(45,105,255,0.08);
+--accent2:   #4BAA7D;
+--accent2-pale: rgba(75,170,125,0.10);
+--warn:      #e09c00;
+--warn-pale: rgba(254, 243, 199, 0.85);
+--danger:    #e53e3e;
+--danger-pale: rgba(254, 226, 226, 0.85);
+--text:      #0d1f4a;
+--text2:     #1a3266;
+--text3:     #2d5096;
+--text4:     #6a85b8;
+--shadow:    0 2px 10px rgba(45,105,255,0.07);
+--shadow-lg: 0 6px 24px rgba(45,105,255,0.12);
+--radius:    14px;
+--radius-sm: 9px;
 }
 
-/* ── RESET ── */
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html{height:100%;}
-body{
-  font-family:'Plus Jakarta Sans',-apple-system,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  overflow-x:hidden;
-  min-height:100dvh;
-  padding-bottom:calc(72px + env(safe-area-inset-bottom));
-  -webkit-font-smoothing:antialiased;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: linear-gradient(145deg, #c8deff 0%, #E1F0FF 40%, #d2f5e8 100%);
+color: var(--text);
+font-family: 'DM Sans', -apple-system, sans-serif;
+-webkit-font-smoothing: antialiased;
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
 }
-::-webkit-scrollbar{display:none;}
-button{font-family:inherit;cursor:pointer;border:none;background:none;}
-input{font-family:inherit;}
 
-/* ── SCROLLBAR HIDDEN ── */
-.no-scrollbar{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-.no-scrollbar::-webkit-scrollbar{display:none;}
-
-/* ── TYPOGRAPHY ── */
-.mono{font-family:'JetBrains Mono',monospace;}
-
-/* ── ANIMATIONS ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.6;transform:scale(1.25);}}
-@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
-@keyframes slideDown{from{opacity:0;transform:translateY(-12px);}to{opacity:1;transform:translateY(0);}}
-@keyframes typingBounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
-@keyframes toastIn{from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:translateY(0);}}
-@keyframes spin{to{transform:rotate(360deg);}}
-
-/* ── SKELETON ── */
-.skeleton{
-  background:linear-gradient(90deg,var(--surface2) 25%,var(--alice) 50%,var(--surface2) 75%);
-  background-size:200% 100%;
-  animation:shimmer 1.6s infinite;
-  border-radius:var(--r-sm);
+/* ── Decorative BG blobs ── */
+body::before, body::after {
+content: '';
+position: fixed;
+border-radius: 50%;
+pointer-events: none;
+z-index: 0;
 }
+body::before {
+width: 500px; height: 500px;
+top: -120px; right: -100px;
+background: radial-gradient(circle, rgba(45,105,255,0.15) 0%, transparent 70%);
+}
+body::after {
+width: 400px; height: 400px;
+bottom: -80px; left: -80px;
+background: radial-gradient(circle, rgba(75,170,125,0.18) 0%, transparent 70%);
+}
+
+.app {
+width: 100%;
+max-width: 430px;
+height: 100vh;
+background: rgba(255,255,255,0.85);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+display: flex;
+flex-direction: column;
+box-shadow: 0 0 60px rgba(45,105,255,0.12), 0 0 0 1px rgba(45,105,255,0.08);
+position: relative;
+overflow: hidden;
+z-index: 1;
+}
+
+/* Subtle mesh overlay inside app */
+.app::before {
+content: '';
+position: absolute;
+inset: 0;
+background:
+radial-gradient(ellipse at 80% 10%, rgba(45,105,255,0.06) 0%, transparent 50%),
+radial-gradient(ellipse at 10% 90%, rgba(75,170,125,0.06) 0%, transparent 50%);
+pointer-events: none;
+z-index: 0;
+}
+.app > * { position: relative; z-index: 1; }
 
 /* ── HEADER ── */
-.header{
-  position:sticky;top:0;z-index:60;
-  background:rgba(255,255,255,0.90);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-  padding:12px 16px;
-  display:flex;align-items:center;gap:12px;
+.header {
+padding: 16px 16px 10px;
+position: sticky; top: 0; z-index: 100;
+background: rgba(255,255,255,0.88);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+border-bottom: 1.5px solid var(--border);
 }
-.logo{display:flex;align-items:center;gap:10px;}
-.logo-mark{
-  width:36px;height:36px;border-radius:10px;
-  background:linear-gradient(135deg,var(--ultra),var(--ultra-light));
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;color:#fff;
-  box-shadow:0 3px 10px rgba(45,105,255,0.30);
-  flex-shrink:0;
+.header-row { display: flex; align-items: center; justify-content: space-between; }
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-icon {
+width: 36px; height: 36px;
+background: linear-gradient(135deg, var(--ultramarine), var(--accent-light));
+border-radius: 10px;
+display: flex; align-items: center; justify-content: center;
+font-size: 20px; color: #fff;
+box-shadow: 0 3px 12px rgba(45,105,255,0.35);
 }
-.logo-name{font-size:17px;font-weight:800;color:var(--ultra);letter-spacing:-.3px;}
-.logo-sub{font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:.3px;margin-top:1px;}
-.header-right{margin-left:auto;display:flex;align-items:center;gap:6px;}
-.hdr-btn{
-  width:36px;height:36px;border-radius:50%;
-  background:var(--surface2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;color:var(--text3);
-  transition:var(--t);position:relative;
+.logo-text {
+font-family: 'Syne', sans-serif;
+font-size: 16px; font-weight: 800;
+color: var(--ultramarine);
+letter-spacing: 1.5px;
 }
-.hdr-btn:active{background:var(--alice);color:var(--ultra);transform:scale(.92);}
-.hdr-btn .dot{
-  position:absolute;top:5px;right:5px;
-  width:8px;height:8px;border-radius:50%;
-  background:var(--danger);border:2px solid white;
+.logo-sub { font-size: 9px; color: var(--text4); font-family: 'JetBrains Mono', monospace; margin-top: 1px; }
+.header-actions { display: flex; gap: 6px; }
+.icon-btn {
+width: 34px; height: 34px;
+background: var(--accent-pale);
+border: 1.5px solid var(--border);
+border-radius: var(--radius-sm);
+display: flex; align-items: center; justify-content: center;
+cursor: pointer; font-size: 18px; color: var(--accent);
+position: relative; transition: all 0.15s;
+}
+.icon-btn:hover { background: var(--border); }
+.badge {
+position: absolute; top: 3px; right: 3px;
+width: 7px; height: 7px;
+background: var(--danger); border-radius: 50%;
+border: 1.5px solid rgba(255,255,255,0.6);
+}
+
+/* ── NAV ── */
+.nav {
+display: flex;
+border-bottom: 1.5px solid var(--border);
+background: rgba(255,255,255,0.80);
+backdrop-filter: blur(12px);
+overflow-x: auto; scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav-tab {
+flex: 1; min-width: 70px;
+padding: 8px 4px 7px;
+display: flex; flex-direction: column;
+align-items: center; gap: 2px;
+cursor: pointer; border: none;
+background: transparent;
+color: var(--text4);
+font-family: 'DM Sans', sans-serif;
+font-size: 10px; font-weight: 500;
+transition: all 0.18s;
+border-bottom: 2px solid transparent;
+}
+.nav-tab .ti { font-size: 22px; margin-bottom: 2px; }
+.nav-tab.active {
+color: var(--ultramarine);
+border-bottom-color: var(--ultramarine);
+background: var(--ultramarine-pale2);
 }
 
 /* ── PAGES ── */
-.page{display:none;animation:fadeUp .25s var(--ease);}
-.page.active{display:block;}
-.chat-page-wrap{display:none;flex-direction:column;height:calc(100dvh - 56px - 72px - env(safe-area-inset-bottom));}
-.chat-page-wrap.active{display:flex;}
+.page { display: none; flex: 1; overflow-y: auto; padding-bottom: 32px; }
+.page.active { display: block; animation: fadeUp 0.22s ease; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ── SECTION LABEL ── */
-.section-label{
-  padding:14px 16px 8px;
-  font-size:11px;font-weight:700;color:var(--muted);
-  text-transform:uppercase;letter-spacing:.8px;
-  display:flex;align-items:center;gap:8px;
+.section { padding: 12px 14px 0; }
+.section-title {
+font-size: 10px;
+font-family: 'JetBrains Mono', monospace;
+color: var(--text3);
+text-transform: uppercase;
+letter-spacing: 1.5px;
+margin-bottom: 8px; margin-top: 2px;
+display: flex; align-items: center; gap: 6px;
+font-weight: 600;
 }
-.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-/* ── PAGE TITLE ── */
-.page-title{padding:16px 16px 4px;}
-.page-title h1{font-size:22px;font-weight:800;letter-spacing:-.5px;}
-.page-title p{font-size:12px;color:var(--muted);margin-top:3px;}
+/* ── CARDS ── */
+.card {
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius);
+padding: 13px; margin-bottom: 10px;
+box-shadow: var(--shadow);
+transition: border-color 0.15s, box-shadow 0.15s;
+}
+.card:hover { border-color: var(--accent-light); box-shadow: var(--shadow-lg); }
 
-/* ── CARD ── */
-.card{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--r-lg);padding:16px;
-  margin:0 16px 12px;box-shadow:var(--shadow-xs);
-  transition:var(--t);
-}
-.card-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
-.card-title{font-size:14px;font-weight:700;}
-.card-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.ph-inline { vertical-align: text-bottom; font-size: 1.1em; margin-right: 4px; }
 
-/* ── CHIP TABS ── */
-.chip-row{display:flex;gap:7px;padding:0 16px 12px;overflow-x:auto;}
-.chip-row::-webkit-scrollbar{display:none;}
-.chip{
-  flex-shrink:0;padding:7px 16px;
-  border-radius:var(--r-full);
-  border:1.5px solid var(--border-mid);
-  background:var(--surface);
-  font-size:12px;font-weight:600;color:var(--text3);
-  transition:var(--t);white-space:nowrap;
+/* ── WEATHER ── */
+.search-bar { display: flex; gap: 7px; margin-bottom: 10px; margin-top: 12px; }
+.search-input {
+flex: 1;
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius-sm);
+padding: 9px 12px;
+color: var(--text);
+font-family: 'DM Sans', sans-serif;
+font-size: 12px; outline: none;
+transition: border-color 0.15s;
 }
-.chip:active{transform:scale(.95);}
-.chip.active{border-color:var(--ultra);background:var(--ultra);color:#fff;box-shadow:0 3px 10px rgba(45,105,255,.28);}
+.search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-pale); }
+.search-input::placeholder { color: var(--text4); }
+.search-btn {
+background: var(--ultramarine);
+border: none; border-radius: var(--radius-sm);
+padding: 9px 16px; color: #fff;
+font-weight: 600; cursor: pointer;
+font-size: 12px; font-family: 'DM Sans', sans-serif;
+transition: all 0.15s;
+box-shadow: 0 3px 10px rgba(45,105,255,0.3);
+}
+.search-btn:hover { background: var(--ultramarine-dark); }
 
-/* ── BADGE ── */
-.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:var(--r-full);font-size:10px;font-weight:700;}
-.badge-blue{background:var(--ultra-pale);color:var(--ultra);}
-.badge-green{background:var(--green-pale);color:var(--green-dark);}
-.badge-warning{background:var(--warning-pale);color:var(--warning);}
-.badge-danger{background:var(--danger-pale);color:var(--danger);}
-.badge-success{background:var(--success-pale);color:var(--success);}
-
-/* ─────────────────────────────────
-   DASHBOARD PAGE
-───────────────────────────────── */
-
-/* Weather Hero */
-.weather-hero{
-  background:linear-gradient(140deg, var(--ultra) 0%, var(--ultra-light) 60%, #74a8ff 100%);
-  border-radius:var(--r-xl);margin:0 16px 12px;
-  padding:20px;color:#fff;position:relative;overflow:hidden;
-}
-.weather-hero::before{
-  content:'';position:absolute;
-  top:-40px;right:-30px;width:180px;height:180px;
-  border-radius:50%;background:rgba(255,255,255,.07);
-}
-.weather-hero::after{
-  content:'';position:absolute;
-  bottom:-50px;left:-20px;width:140px;height:140px;
-  border-radius:50%;background:rgba(255,255,255,.04);
-}
-.wh-top{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:16px;position:relative;z-index:1;
-}
-.wh-loc{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;opacity:.9;}
-.wh-time{font-size:11px;font-family:'JetBrains Mono',monospace;opacity:.65;}
-.wh-main{display:flex;align-items:center;gap:14px;position:relative;z-index:1;margin-bottom:16px;}
-.wh-icon{font-size:52px;line-height:1;}
-.wh-temp-big{font-size:46px;font-weight:800;line-height:1;letter-spacing:-2px;}
-.wh-desc{font-size:13px;opacity:.85;margin-top:4px;}
-.wh-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
-  position:relative;z-index:1;
-}
-.wh-cell{
-  background:rgba(255,255,255,.12);border-radius:var(--r-sm);
-  padding:10px;text-align:center;
-}
-.wh-cell-val{font-size:15px;font-weight:700;}
-.wh-cell-lbl{font-size:10px;opacity:.65;margin-top:2px;}
-
-/* Search */
-.search-wrap{padding:0 16px 12px;}
-.search-inner{
-  display:flex;align-items:center;gap:10px;
-  background:var(--surface);border:1.5px solid var(--border-mid);
-  border-radius:var(--r-lg);padding:10px 14px;
-  transition:var(--t);
-}
-.search-inner:focus-within{border-color:var(--ultra);box-shadow:0 0 0 3px var(--ultra-pale);}
-.search-inner i{font-size:18px;color:var(--muted);}
-.search-inner input{flex:1;border:none;outline:none;font-size:13px;font-family:inherit;color:var(--text);background:transparent;}
-.search-inner input::placeholder{color:var(--muted);}
-.search-go{
-  padding:6px 14px;border-radius:var(--r-sm);
-  background:var(--ultra);color:#fff;
-  font-size:12px;font-weight:700;
-  transition:var(--t);white-space:nowrap;
-}
-.search-go:active{background:var(--ultra-dark);transform:scale(.95);}
-/* Suggestions */
-.suggestions-box{
-  display:none;position:relative;
-  background:var(--surface);border:1px solid var(--border-mid);
-  border-radius:var(--r-md);box-shadow:var(--shadow-lg);
-  margin-top:6px;overflow:hidden;max-height:240px;overflow-y:auto;
-}
-.suggestions-box.open{display:block;animation:slideDown .2s var(--ease);}
-.sugg-item{
-  display:flex;align-items:center;gap:12px;
-  padding:11px 14px;transition:var(--t);
-}
-.sugg-item:active,.sugg-item:hover{background:var(--alice);}
-.sugg-item i{font-size:16px;color:var(--muted);}
-.sugg-name{font-size:13px;font-weight:600;}
-.sugg-sub{font-size:11px;color:var(--muted);}
-
-/* Forecast strip */
-.forecast-strip{display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto;}
-.forecast-strip::-webkit-scrollbar{display:none;}
-.forecast-card{
-  flex-shrink:0;width:68px;text-align:center;
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--r-md);padding:11px 6px;
-  transition:var(--t);
-}
-.forecast-card:active{border-color:var(--ultra);}
-.fc-day{font-size:10px;color:var(--muted);font-weight:700;margin-bottom:6px;}
-.fc-icon{font-size:22px;margin-bottom:5px;}
-.fc-temp{font-size:13px;font-weight:700;}
-.fc-rain{font-size:9px;color:var(--ultra);margin-top:2px;font-weight:600;}
-
-/* Risk banner */
-.risk-banner{
-  display:flex;align-items:center;gap:14px;
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--r-lg);padding:14px 16px;margin:0 16px 12px;
-  box-shadow:var(--shadow-xs);
-}
-.risk-pill{
-  width:60px;height:60px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
-}
-.risk-pill span{font-size:20px;font-weight:800;color:#fff;}
-.risk-info h3{font-size:14px;font-weight:700;margin-bottom:3px;}
-.risk-info p{font-size:12px;color:var(--text3);line-height:1.5;}
-
-/* Sensor grid */
-.sensor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 16px 12px;}
-.sensor-card{
-  background:var(--surface);border:1.5px solid var(--border);
-  border-radius:var(--r-md);padding:13px 10px;text-align:center;
-  transition:var(--t);position:relative;overflow:hidden;
-}
-.sensor-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:var(--ultra);border-radius:0 0 2px 2px;
-}
-.sensor-card.ok::before{background:var(--green);}
-.sensor-card.warn::before{background:var(--warning);}
-.sensor-card.bad::before{background:var(--danger);}
-.sensor-card.bad{background:var(--danger-pale);border-color:rgba(239,68,68,.3);}
-.sensor-card.warn{background:var(--warning-pale);border-color:rgba(245,158,11,.3);}
-.sc-icon{font-size:20px;margin-bottom:5px;}
-.sc-label{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
-.sc-val{font-size:17px;font-weight:700;font-family:'JetBrains Mono',monospace;margin:2px 0;}
-.sc-unit{font-size:9px;color:var(--text3);}
-
-/* Chart card */
-.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;margin:0 16px 12px;}
-.chart-canvas-wrap{width:100%;height:180px;margin-top:12px;}
-.chart-canvas-wrap canvas{width:100%!important;height:100%!important;}
-.metric-tabs{display:flex;gap:6px;overflow-x:auto;}
-.metric-tabs::-webkit-scrollbar{display:none;}
-.metric-tab{
-  flex-shrink:0;padding:5px 13px;border-radius:var(--r-full);
-  border:1.5px solid var(--border-mid);background:var(--surface2);
-  font-size:11px;font-weight:600;color:var(--text3);
-  transition:var(--t);white-space:nowrap;
-}
-.metric-tab.active{border-color:var(--ultra);background:var(--ultra);color:#fff;}
-
-/* Rec card */
-.rec-row{
-  display:flex;align-items:center;gap:12px;
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--r-md);padding:13px 16px;margin:0 16px 8px;
-  transition:var(--t);
-}
-.rec-icon-wrap{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
-.rec-icon-wrap.high{background:var(--danger-pale);color:var(--danger);}
-.rec-icon-wrap.medium{background:var(--warning-pale);color:var(--warning);}
-.rec-icon-wrap.low{background:var(--success-pale);color:var(--success);}
-.rec-body{flex:1;}
-.rec-action{font-size:13px;font-weight:500;line-height:1.4;}
-.rec-deadline{font-size:11px;color:var(--muted);margin-top:2px;}
-
-/* Harvest */
-.harvest-hero{
-  background:linear-gradient(140deg,var(--green) 0%,var(--green-dark) 100%);
-  border-radius:var(--r-xl);padding:20px;margin:0 16px 12px;
-  color:#fff;position:relative;overflow:hidden;
-}
-.harvest-hero::before{content:'';position:absolute;top:-30px;right:-20px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.07);}
-.hh-label{font-size:12px;opacity:.8;font-weight:600;margin-bottom:6px;position:relative;}
-.hh-pct{font-size:34px;font-weight:800;line-height:1;position:relative;letter-spacing:-1px;}
-.hh-sub{font-size:12px;opacity:.75;margin-top:4px;position:relative;}
-.hh-stats{display:flex;gap:0;margin-top:16px;position:relative;border-top:1px solid rgba(255,255,255,.15);padding-top:14px;}
-.hh-stat{flex:1;text-align:center;}
-.hh-stat:not(:last-child){border-right:1px solid rgba(255,255,255,.15);}
-.hh-stat-val{font-size:15px;font-weight:700;}
-.hh-stat-lbl{font-size:10px;opacity:.65;margin-top:2px;}
-
-/* ─────────────────────────────────
-   PONDS PAGE
-───────────────────────────────── */
-.pond-row{
-  display:flex;align-items:center;gap:13px;
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--r-lg);padding:15px 16px;margin:0 16px 10px;
-  transition:var(--t);cursor:pointer;
-}
-.pond-row:active{border-color:var(--ultra);background:var(--alice);}
-.pond-icon{width:48px;height:48px;border-radius:14px;background:var(--alice);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
-.pond-info{flex:1;}
-.pond-name{font-size:14px;font-weight:700;}
-.pond-desc{font-size:11px;color:var(--muted);margin-top:2px;}
-.pond-meta{display:flex;gap:14px;margin-top:7px;}
-.pond-meta-item{display:flex;flex-direction:column;}
-.pond-meta-val{font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;}
-.pond-meta-lbl{font-size:9px;color:var(--muted);margin-top:1px;}
-
-/* ─────────────────────────────────
-   FEEDING PAGE
-───────────────────────────────── */
-.feeding-summary{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--r-lg);padding:16px;margin:0 16px 12px;
-}
-.fs-numbers{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px;}
-.fs-consumed{font-size:26px;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--ultra);}
-.fs-target{font-size:13px;color:var(--muted);}
-.progress-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
-.progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--ultra),var(--green));transition:width .6s var(--ease);}
-.progress-labels{display:flex;justify-content:space-between;margin-top:6px;}
-.progress-labels span{font-size:11px;color:var(--muted);}
-
-.feed-row{
-  display:flex;align-items:center;gap:11px;
-  background:var(--surface);border-bottom:1px solid var(--border);
-  padding:12px 16px;
-}
-.feed-row:first-child{border-radius:var(--r-md) var(--r-md) 0 0;border:1px solid var(--border);border-bottom:1px solid var(--border);}
-.feed-row:last-child{border-radius:0 0 var(--r-md) var(--r-md);border:1px solid var(--border);border-top:none;}
-.feed-row:only-child{border-radius:var(--r-md);}
-.feed-time{font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;width:52px;flex-shrink:0;color:var(--ultra);}
-.feed-label{flex:1;}
-.feed-label .feed-name{font-size:12px;font-weight:600;}
-.feed-label .feed-type-badge{font-size:9px;padding:2px 7px;border-radius:var(--r-full);font-weight:700;margin-top:2px;display:inline-block;}
-.feed-type-auto{background:var(--ultra-pale);color:var(--ultra);}
-.feed-type-manual{background:var(--green-pale);color:var(--green-dark);}
-.feed-amount-val{font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;}
-
-/* ─────────────────────────────────
-   ALERTS PAGE
-───────────────────────────────── */
-.alert-row{
-  display:flex;gap:12px;
-  border-radius:var(--r-md);padding:14px 16px;
-  margin:0 16px 10px;border:1px solid;
-}
-.alert-row.danger{background:var(--danger-pale);border-color:rgba(239,68,68,.3);}
-.alert-row.warning{background:var(--warning-pale);border-color:rgba(245,158,11,.3);}
-.alert-row.info{background:var(--alice);border-color:rgba(45,105,255,.2);}
-.alert-row.ok{background:var(--success-pale);border-color:rgba(34,197,94,.2);}
-.alert-icon-wrap{font-size:22px;flex-shrink:0;}
-.alert-body{flex:1;}
-.alert-title{font-size:13px;font-weight:700;margin-bottom:3px;}
-.alert-msg{font-size:12px;color:var(--text3);line-height:1.55;}
-.alert-time{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:5px;}
-
-/* Disease risk */
-.disease-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;margin:0 16px 12px;}
-.disease-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-.disease-pct{font-size:28px;font-weight:800;font-family:'JetBrains Mono',monospace;}
-.conditions-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;}
-.cond-pill{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:5px 11px;border-radius:var(--r-full);}
-.cond-pill.safe{background:var(--success-pale);color:var(--success);}
-.cond-pill.risky{background:var(--danger-pale);color:var(--danger);}
-.disease-tip{background:var(--alice);border-radius:var(--r-sm);padding:10px 12px;font-size:12px;color:var(--ultra);font-weight:500;line-height:1.5;}
-
-/* ─────────────────────────────────
-   AI CHAT PAGE
-───────────────────────────────── */
-.chat-header{
-  display:flex;align-items:center;gap:10px;
-  padding:12px 16px;border-bottom:1px solid var(--border);
-  background:var(--surface);flex-shrink:0;
-}
-.chat-avatar{
-  width:34px;height:34px;border-radius:50%;
-  background:linear-gradient(135deg,var(--ultra),var(--green));
-  display:flex;align-items:center;justify-content:center;
-  font-size:17px;color:#fff;flex-shrink:0;
-}
-.chat-ai-name{font-size:14px;font-weight:700;}
-.chat-ai-status{font-size:10px;color:var(--success);display:flex;align-items:center;gap:4px;margin-top:1px;}
-.chat-ai-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--success);}
-.chat-messages{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:12px;}
-.chat-msg{display:flex;gap:8px;max-width:90%;animation:fadeUp .25s var(--ease);}
-.chat-msg.user{align-self:flex-end;flex-direction:row-reverse;}
-.msg-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
-.chat-msg.ai .msg-avatar{background:linear-gradient(135deg,var(--ultra),var(--green));color:#fff;}
-.chat-msg.user .msg-avatar{background:var(--surface2);color:var(--text3);}
-.msg-bubble{padding:10px 13px;border-radius:14px;font-size:13px;line-height:1.6;}
-.chat-msg.ai .msg-bubble{background:var(--surface);border:1px solid var(--border);border-top-left-radius:4px;box-shadow:var(--shadow-xs);}
-.chat-msg.user .msg-bubble{background:var(--ultra);color:#fff;border-top-right-radius:4px;box-shadow:0 3px 12px rgba(45,105,255,.3);}
-.chat-quick-row{display:flex;gap:6px;padding:8px 16px 0;overflow-x:auto;}
-.chat-quick-row::-webkit-scrollbar{display:none;}
-.chat-quick-btn{
-  flex-shrink:0;padding:6px 12px;
-  border-radius:var(--r-full);
-  border:1.5px solid var(--border-mid);
-  background:var(--ultra-pale);
-  font-size:11px;font-weight:600;color:var(--ultra);
-  transition:var(--t);white-space:nowrap;
-}
-.chat-quick-btn:active{background:var(--ultra);color:#fff;}
-.chat-input-wrap{
-  display:flex;gap:8px;align-items:center;
-  padding:10px 16px;padding-bottom:max(10px,env(safe-area-inset-bottom,10px));
-  border-top:1px solid var(--border);background:var(--surface);flex-shrink:0;
-}
-.chat-input{
-  flex:1;padding:10px 14px;
-  border:1.5px solid var(--border-mid);border-radius:var(--r-full);
-  font-size:13px;font-family:inherit;outline:none;
-  background:var(--bg);color:var(--text);
-  transition:var(--t);
-}
-.chat-input:focus{border-color:var(--ultra);background:var(--surface);box-shadow:0 0 0 3px var(--ultra-pale);}
-.chat-input::placeholder{color:var(--muted);}
-.chat-send{
-  width:40px;height:40px;border-radius:50%;
-  background:var(--ultra);color:#fff;
-  display:flex;align-items:center;justify-content:center;font-size:18px;
-  box-shadow:0 3px 10px rgba(45,105,255,.3);
-  transition:var(--t);flex-shrink:0;
-}
-.chat-send:active{transform:scale(.9);}
-.chat-send:disabled{opacity:.5;}
-.typing-dots{display:flex;gap:4px;padding:4px 2px;align-items:center;}
-.typing-dots span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:typingBounce 1.4s infinite;}
-.typing-dots span:nth-child(2){animation-delay:.2s;}
-.typing-dots span:nth-child(3){animation-delay:.4s;}
-
-/* ─────────────────────────────────
-   BOTTOM NAV
-───────────────────────────────── */
-.bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:60;
-  background:rgba(255,255,255,.95);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border-top:1px solid var(--border);
-  display:flex;justify-content:space-around;
-  padding:5px 0;
-  padding-bottom:max(5px,env(safe-area-inset-bottom));
-  height:calc(72px + env(safe-area-inset-bottom));
-}
-.nav-btn{
-  display:flex;flex-direction:column;align-items:center;gap:2px;
-  padding:5px 12px;flex:1;max-width:80px;
-  position:relative;transition:var(--t);
-}
-.nav-btn:active{transform:scale(.9);}
-.nav-btn i{font-size:22px;color:var(--muted);transition:var(--t);}
-.nav-btn span{font-size:9px;font-weight:700;color:var(--muted);transition:var(--t);white-space:nowrap;}
-.nav-btn.active i{color:var(--ultra);}
-.nav-btn.active span{color:var(--ultra);}
-.nav-btn.active::before{
-  content:'';position:absolute;top:-5px;
-  width:20px;height:3px;border-radius:2px;
-  background:var(--ultra);
+/* --- Thiết kế Weather mới --- */
+.weather-hero {
+  background: linear-gradient(180deg, #3389FF 0%, #7CB9FF 100%); /* Mặc định màu xanh mát */
+  border-radius: 24px;
+  padding: 30px 20px;
+  margin-bottom: 16px;
+  color: white;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(51, 137, 255, 0.2);
+.weather-card {
+  background: linear-gradient(140deg, #E1F0FF 0%, #DCFFF0 100%);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px; margin-bottom: 10px;
+  position: relative; overflow: hidden;
 }
 
-/* ─────────────────────────────────
-   DEVICES
-───────────────────────────────── */
-.device-row{
-  display:flex;align-items:center;gap:12px;
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--r-md);padding:13px 16px;margin:0 16px 8px;
+.w-main-icon { font-size: 80px; margin-bottom: 10px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1)); }
+.w-big-temp { font-family: 'Syne', sans-serif; font-size: 64px; font-weight: 800; line-height: 1; }
+.w-big-temp sup { font-size: 24px; top: -0.5em; }
+.w-feels-like { font-size: 14px; opacity: 0.9; margin-top: 4px; margin-bottom: 20px; }
+
+.w-grid-minimal {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+  padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);
+.weather-card::before {
+  content: ''; position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(45,105,255,0.12) 0%, transparent 70%);
+  border-radius: 50%;
 }
-.device-status{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.device-status.online{background:var(--success);box-shadow:0 0 6px var(--success);animation:pulse 2s infinite;}
-.device-status.offline{background:var(--danger);}
-.device-name{font-size:13px;font-weight:600;}
-.device-detail{font-size:11px;color:var(--muted);margin-top:1px;}
-.bat-bar{width:50px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:5px;}
-.bat-fill{height:100%;border-radius:3px;background:var(--green);}
-.bat-fill.low{background:var(--warning);}
-.bat-fill.critical{background:var(--danger);}
-.bat-pct{font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--green);}
-.bat-pct.low{color:var(--warning);}
-.bat-pct.critical{color:var(--danger);}
+.w-item-min { text-align: left; }
+.w-item-min label { font-size: 10px; display: block; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+.w-item-min span { font-size: 15px; font-weight: 700; }
 
-/* ─────────────────────────────────
-   TOAST
-───────────────────────────────── */
-.toast-box{position:fixed;top:68px;left:16px;right:16px;z-index:200;display:flex;flex-direction:column;gap:6px;pointer-events:none;}
-.toast{
-  display:flex;align-items:center;gap:10px;
-  padding:12px 14px;background:var(--surface);
-  border-radius:var(--r-md);box-shadow:var(--shadow-lg);
-  border-left:4px solid var(--ultra);
-  font-size:12px;font-weight:600;pointer-events:auto;
-  animation:toastIn .25s var(--ease);
+.w-tip-card {
+  background: var(--surface); border-radius: 18px; padding: 12px 16px;
+  display: flex; align-items: center; gap: 12px; margin-bottom: 20px; border: 1.5px solid var(--border);
+.weather-card::after {
+  content: ''; position: absolute;
+  bottom: -20px; left: -20px;
+  width: 100px; height: 100px;
+  background: radial-gradient(circle, rgba(75,170,125,0.12) 0%, transparent 70%);
+  border-radius: 50%;
 }
-.toast.danger{border-left-color:var(--danger);}
-.toast.warning{border-left-color:var(--warning);}
-.toast.success{border-left-color:var(--success);}
-.toast i{font-size:16px;flex-shrink:0;}
-.toast.danger i{color:var(--danger);}
-.toast.warning i{color:var(--warning);}
-.toast.success i{color:var(--success);}
-.toast.info i{color:var(--ultra);}
+.w-tip-icon { background: #E1F0FF; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #2D69FF; }
+.weather-loc {
+display: flex; align-items: center; gap: 5px;
+font-size: 11px; color: var(--text3);
+margin-bottom: 12px; font-weight: 600;
+}
+.weather-main { display: flex; align-items: flex-end; justify-content: space-between; }
+.weather-temp {
+font-family: 'JetBrains Mono', monospace;
+font-size: 54px; font-weight: 500;
+color: var(--text); line-height: 1;
+}
+.weather-temp sup { font-size: 18px; color: var(--text3); }
+.weather-icon-big { font-size: 50px; color: var(--ultramarine); }
+.weather-desc {
+font-size: 12px; color: var(--text3);
+margin-top: 10px; font-weight: 500;
+display: flex; align-items: center; gap: 4px;
+}
+.weather-badges { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.weather-badge {
+display: flex; align-items: center; gap: 4px;
+padding: 5px 10px;
+background: rgba(255,255,255,0.85);
+border: 1px solid var(--border);
+border-radius: 20px;
+font-size: 10px; font-weight: 500;
+color: var(--text2);
+box-shadow: 0 1px 4px rgba(45,105,255,0.06);
+}
 
-/* ── EMPTY STATE ── */
-.empty{text-align:center;padding:40px 20px;}
-.empty i{font-size:42px;color:var(--muted);margin-bottom:10px;display:block;}
-.empty h3{font-size:15px;font-weight:700;margin-bottom:4px;}
-.empty p{font-size:12px;color:var(--muted);}
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.stat-card {
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius-sm);
+padding: 11px; transition: all 0.15s; cursor: pointer;
+}
+.stat-card:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+.stat-card.active, .gauge-card.active {
+border-color: var(--ultramarine);
+background: var(--ultramarine-pale2);
+box-shadow: 0 0 0 2px var(--accent-pale);
+}
+.stat-label {
+font-size: 10px; color: var(--text4);
+font-family: 'JetBrains Mono', monospace;
+margin-bottom: 4px; display: flex; align-items: center;
+}
+.stat-val {
+font-family: 'JetBrains Mono', monospace;
+font-size: 20px; font-weight: 500; color: var(--text);
+}
+.stat-unit { font-size: 11px; color: var(--text3); font-weight: 400; }
+.stat-trend { font-size: 10px; margin-top: 3px; color: var(--text4); }
+.trend-up { color: var(--danger); }
+.trend-down { color: var(--green); }
 
-/* ── LOADING STATE ── */
-.skeleton-line{height:14px;margin-bottom:8px;}
-.skeleton-block{height:80px;}
+.forecast-row {
+display: flex; gap: 7px; overflow-x: auto;
+scrollbar-width: none; padding-bottom: 2px; margin-bottom: 10px;
+}
+.forecast-row::-webkit-scrollbar { display: none; }
+.forecast-item {
+flex-shrink: 0;
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius-sm);
+padding: 10px 10px; text-align: center; min-width: 66px;
+transition: all 0.15s;
+}
+.forecast-item:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+.forecast-day { font-size: 10px; color: var(--text4); margin-bottom: 4px; font-weight: 600; }
+.forecast-icon { font-size: 24px; margin-bottom: 4px; color: var(--ultramarine); }
+.forecast-temp {
+font-family: 'JetBrains Mono', monospace;
+font-size: 13px; font-weight: 500; color: var(--text);
+}
+.forecast-rain { font-size: 9px; color: var(--accent2); margin-top: 2px; font-weight: 600; }
 
-/* ── PULL HINT ── */
-.pull-hint{text-align:center;padding:6px 16px 2px;font-size:11px;color:var(--muted);}
+/* Risk score */
+.risk-card { display: flex; gap: 14px; align-items: center; }
+.score-ring { position: relative; width: 78px; height: 78px; flex-shrink: 0; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-inner {
+position: absolute; inset: 0;
+display: flex; flex-direction: column;
+align-items: center; justify-content: center;
+}
+.score-num {
+font-family: 'JetBrains Mono', monospace;
+font-size: 20px; font-weight: 700;
+}
+.score-lbl { font-size: 8px; color: var(--text4); font-family: 'JetBrains Mono', monospace; }
+.risk-badge {
+display: inline-flex; align-items: center; gap: 4px;
+padding: 3px 9px; border-radius: 6px;
+font-size: 10px; font-weight: 700;
+font-family: 'JetBrains Mono', monospace;
+}
+.risk-badge.medium { background: var(--warn-pale); color: var(--warn); border: 1px solid rgba(224,156,0,0.3); }
+.risk-badge.low { background: var(--accent2-pale); color: var(--green-dark); border: 1px solid rgba(75,170,125,0.3); }
+.risk-badge.high { background: var(--danger-pale); color: var(--danger); border: 1px solid rgba(229,62,62,0.3); }
 
-/* ── LIVE DOT ── */
-.live-dot{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--success);font-weight:600;}
-.live-dot::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 2s infinite;flex-shrink:0;}
+/* ── DEVICE ── */
+.pond-selector {
+display: flex; gap: 6px; overflow-x: auto;
+scrollbar-width: none; padding-bottom: 2px; margin-bottom: 10px;
+}
+.pond-selector::-webkit-scrollbar { display: none; }
+.pond-chip {
+flex-shrink: 0; padding: 6px 13px;
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: 20px; font-size: 11px;
+cursor: pointer; transition: all 0.15s;
+white-space: nowrap; font-weight: 500; color: var(--text3);
+}
+.pond-chip.active {
+background: var(--ultramarine);
+border-color: var(--ultramarine);
+color: #fff;
+box-shadow: 0 3px 10px rgba(45,105,255,0.3);
+}
+
+.gauge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.gauge-card {
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius-sm);
+padding: 12px; transition: all 0.15s; cursor: pointer;
+}
+.gauge-card:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+.gauge-label {
+font-size: 10px; color: var(--text4);
+font-family: 'JetBrains Mono', monospace; margin-bottom: 4px;
+}
+.gauge-val { font-family: 'JetBrains Mono', monospace; font-size: 19px; font-weight: 600; }
+.gauge-unit { font-size: 10px; color: var(--text3); font-weight: 400; }
+.gauge-bar-bg { height: 4px; background: var(--alice); border-radius: 2px; margin-top: 7px; }
+.gauge-bar-fill { height: 4px; border-radius: 2px; transition: width 0.8s ease; }
+.gauge-hint { font-size: 9px; color: var(--text4); margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+
+.device-online-bar {
+display: flex; align-items: center; gap: 8px;
+padding: 9px 12px;
+background: linear-gradient(90deg, rgba(75,170,125,0.1) 0%, rgba(220,255,240,0.6) 100%);
+border: 1.5px solid rgba(75,170,125,0.25);
+border-radius: var(--radius-sm);
+margin-bottom: 10px; margin-top: 12px;
+}
+.online-dot {
+width: 8px; height: 8px; border-radius: 50%;
+background: var(--green);
+box-shadow: 0 0 8px var(--green);
+animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.3)} }
+.online-text { font-size: 11px; color: var(--green-dark); font-weight: 600; flex: 1; }
+
+.feed-item {
+display: flex; align-items: center; gap: 10px;
+padding: 9px 0; border-bottom: 1px solid var(--border);
+}
+.feed-item:last-child { border-bottom: none; }
+.feed-icon {
+width: 32px; height: 32px;
+background: var(--ultramarine-pale);
+border: 1.5px solid var(--border);
+border-radius: 9px;
+display: flex; align-items: center; justify-content: center;
+font-size: 17px; color: var(--ultramarine); flex-shrink: 0;
+}
+.feed-info { flex: 1; }
+.feed-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 1px; }
+.feed-time { font-size: 10px; color: var(--text4); font-family: 'JetBrains Mono', monospace; }
+.feed-type {
+display: inline-block; padding: 1px 6px;
+border-radius: 4px; font-size: 9px; font-weight: 700; margin-left: 4px;
+}
+.feed-type.auto { background: var(--ultramarine-pale); color: var(--ultramarine); }
+.feed-type.manual { background: var(--accent2-pale); color: var(--green-dark); }
+.feed-amount {
+font-family: 'JetBrains Mono', monospace;
+font-size: 13px; font-weight: 600; color: var(--ultramarine);
+}
+.feed-total {
+display: flex; justify-content: space-between;
+padding-top: 10px; border-top: 1px solid var(--border); margin-top: 2px;
+}
+
+/* ── CHART WRAPPER ── */
+.chart-wrap {
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: var(--radius);
+padding: 13px; margin-bottom: 14px; position: relative;
+}
+.chart-title-row {
+display: flex; align-items: center;
+justify-content: space-between; margin-bottom: 10px;
+}
+.chart-title { font-size: 12px; font-weight: 700; color: var(--text); }
+.chart-subtitle {
+font-size: 10px; color: var(--text4);
+font-family: 'JetBrains Mono', monospace; text-transform: uppercase;
+}
+.chart-stat-row {
+display: flex; gap: 12px; margin-top: 10px;
+padding-top: 10px; border-top: 1px solid var(--border);
+}
+.chart-stat { flex: 1; text-align: center; }
+.chart-stat-val {
+font-family: 'JetBrains Mono', monospace;
+font-size: 14px; font-weight: 600; color: var(--text);
+}
+.chart-stat-lbl { font-size: 10px; color: var(--text4); margin-top: 2px; }
+
+/* ── NOTIFICATIONS ── */
+.notif-header {
+display: flex; align-items: center;
+justify-content: space-between; margin: 12px 0 10px;
+}
+.notif-count { font-size: 13px; font-weight: 700; color: var(--text); }
+.mark-read { font-size: 11px; color: var(--ultramarine); cursor: pointer; font-weight: 600; }
+.notif-item {
+border-radius: var(--radius); padding: 12px;
+margin-bottom: 8px; display: flex; gap: 10px;
+cursor: pointer; position: relative; overflow: hidden;
+transition: box-shadow 0.15s;
+}
+.notif-item::before {
+content: ''; position: absolute;
+left: 0; top: 0; bottom: 0; width: 3px; border-radius: 2px 0 0 2px;
+}
+.notif-item.danger::before { background: var(--danger); }
+.notif-item.warn::before { background: var(--warn); }
+.notif-item.info::before { background: var(--ultramarine); }
+.notif-item.ok::before { background: var(--green); }
+.notif-item.danger { border: 1.5px solid rgba(229,62,62,0.4); background: var(--danger-pale); }
+.notif-item.warn { border: 1.5px solid rgba(224,156,0,0.4); background: var(--warn-pale); }
+.notif-item.info { border: 1.5px solid rgba(45,105,255,0.25); background: rgba(225,240,255,0.9); }
+.notif-item.ok { border: 1.5px solid rgba(75,170,125,0.25); background: rgba(220,255,240,0.9); }
+.notif-icon {
+width: 36px; height: 36px; border-radius: 10px;
+display: flex; align-items: center; justify-content: center;
+font-size: 20px; flex-shrink: 0;
+}
+.notif-item.danger .notif-icon { background: rgba(229,62,62,0.12); color: var(--danger); }
+.notif-item.warn .notif-icon { background: rgba(224,156,0,0.12); color: var(--warn); }
+.notif-item.info .notif-icon { background: var(--ultramarine-pale); color: var(--ultramarine); }
+.notif-item.ok .notif-icon { background: var(--accent2-pale); color: var(--green); }
+.notif-body { flex: 1; min-width: 0; }
+.notif-title { font-size: 12px; font-weight: 700; margin-bottom: 3px; color: var(--text); }
+.notif-msg { font-size: 11px; color: var(--text3); line-height: 1.6; }
+.notif-actions-box {
+margin-top: 8px; padding: 8px;
+background: rgba(255,255,255,0.85); border-radius: 8px;
+font-size: 11px; line-height: 1.7;
+border: 1px solid var(--border);
+}
+.notif-time {
+font-size: 10px; color: var(--text4);
+font-family: 'JetBrains Mono', monospace; margin-top: 5px;
+}
+.unread-dot {
+width: 7px; height: 7px; background: var(--ultramarine);
+border-radius: 50%; position: absolute; top: 12px; right: 12px;
+box-shadow: 0 0 5px rgba(45,105,255,0.5);
+}
+
+/* ── CHAT ── */
+.chat-page { display: flex; flex-direction: column; height: calc(100vh - 108px); }
+.chat-messages {
+flex: 1; overflow-y: auto; padding: 14px;
+display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth;
+}
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.chat-bubble {
+max-width: 85%; padding: 10px 14px;
+border-radius: 14px; font-size: 13px; line-height: 1.65;
+animation: bubbleIn 0.2s ease;
+}
+@keyframes bubbleIn { from { opacity:0; transform:scale(0.96); } to { opacity:1; transform:scale(1); } }
+.chat-bubble.user {
+background: linear-gradient(135deg, var(--ultramarine), var(--accent-light));
+color: #fff; align-self: flex-end;
+border-bottom-right-radius: 4px;
+box-shadow: 0 3px 14px rgba(45,105,255,0.3);
+}
+.chat-bubble.ai {
+background: var(--surface);
+border: 1.5px solid var(--border);
+color: var(--text);
+align-self: flex-start;
+border-bottom-left-radius: 4px;
+box-shadow: var(--shadow);
+}
+.ai-name {
+font-size: 10px; color: var(--text4); margin-bottom: 4px;
+font-family: 'JetBrains Mono', monospace; font-weight: 500;
+display: flex; align-items: center; gap: 4px;
+}
+
+.chat-input-area {
+padding: 10px 14px 14px;
+border-top: 1.5px solid var(--border);
+background: rgba(255,255,255,0.90);
+backdrop-filter: blur(12px);
+}
+.chat-pond-select { display: flex; gap: 5px; margin-bottom: 8px; overflow-x: auto; scrollbar-width: none; }
+.chat-pond-select::-webkit-scrollbar { display: none; }
+.chat-chip {
+padding: 4px 11px;
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: 20px; font-size: 10px;
+cursor: pointer; white-space: nowrap; transition: all 0.15s; font-weight: 500;
+}
+.chat-chip.active {
+background: var(--ultramarine);
+border-color: var(--ultramarine); color: #fff;
+}
+.chat-row { display: flex; gap: 8px; }
+.chat-input {
+flex: 1;
+background: var(--surface);
+border: 1.5px solid var(--border);
+border-radius: 10px; padding: 9px 12px;
+color: var(--text); font-family: 'DM Sans', sans-serif;
+font-size: 13px; outline: none; transition: all 0.15s;
+resize: none; max-height: 90px; min-height: 38px;
+}
+.chat-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-pale); }
+.chat-input::placeholder { color: var(--text4); }
+.chat-send {
+width: 38px; height: 38px;
+background: linear-gradient(135deg, var(--ultramarine), var(--accent-light));
+border: none; border-radius: 10px;
+display: flex; align-items: center; justify-content: center;
+cursor: pointer; flex-shrink: 0; font-size: 18px; color: white;
+box-shadow: 0 3px 12px rgba(45,105,255,0.35);
+transition: all 0.15s;
+}
+.chat-send:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.chat-quick { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin-bottom: 8px; }
+.chat-quick::-webkit-scrollbar { display: none; }
+.quick-chip {
+padding: 5px 11px;
+background: rgba(45,105,255,0.07);
+border: 1.5px solid rgba(45,105,255,0.18);
+border-radius: 20px; font-size: 11px;
+cursor: pointer; white-space: nowrap; color: var(--ultramarine);
+font-weight: 500; transition: all 0.15s; flex-shrink: 0;
+display: flex; align-items: center; gap: 4px;
+}
+.quick-chip:hover {
+background: var(--ultramarine); color: #fff;
+border-color: var(--ultramarine);
+box-shadow: 0 3px 10px rgba(45,105,255,0.3);
+}
+
+.typing { display: flex; gap: 4px; align-items: center; padding: 10px 13px; }
+.typing span {
+width: 6px; height: 6px; background: var(--text4);
+border-radius: 50%; animation: typing 1.2s infinite;
+}
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+
+.api-tag {
+display: inline-flex; align-items: center; gap: 4px;
+padding: 2px 8px;
+background: rgba(45,105,255,0.07);
+border: 1px solid rgba(45,105,255,0.18);
+border-radius: 4px;
+font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ultramarine);
+margin-bottom: 8px;
+}
+.last-update {
+font-size: 10px; color: var(--text4);
+font-family: 'JetBrains Mono', monospace;
+text-align: right; margin-bottom: 6px;
+}
+.spinner {
+display: inline-block; width: 14px; height: 14px;
+border: 2px solid var(--border); border-top-color: var(--ultramarine);
+border-radius: 50%; animation: spin 0.6s linear infinite;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 </style>
 </head>
 <body>
+<div class="app">
 
-<!-- ── HEADER ── -->
-<header class="header">
-  <div class="logo">
-    <div class="logo-mark"><i class="ri-fish-line"></i></div>
-    <div>
-      <div class="logo-name">AQUA·AI</div>
-      <div class="logo-sub">SMART AQUACULTURE</div>
-    </div>
-  </div>
-  <div class="header-right">
-    <button class="hdr-btn" onclick="refreshAll()" title="Làm mới">
-      <i class="ri-refresh-line" id="refreshIcon"></i>
-    </button>
-    <button class="hdr-btn" onclick="switchTab('alerts')" title="Cảnh báo">
-      <i class="ri-notification-3-line"></i>
-      <span class="dot" id="notifDot"></span>
-    </button>
-  </div>
-</header>
-
-<!-- ═══════════════════════════════
-     PAGE: DASHBOARD
-════════════════════════════════ -->
-<div class="page active" id="page-dashboard">
-  <div class="page-title">
-    <h1>Xin chào 👋</h1>
-    <p>Giám sát ao nuôi thông minh</p>
-  </div>
-
-  <!-- Search -->
-  <div class="search-wrap">
-    <div class="search-inner">
-      <i class="ri-map-pin-2-line"></i>
-      <input type="text" id="locationInput" placeholder="Tìm địa điểm..."
-        oninput="onSearchInput(event)" onfocus="showSuggestions()" onblur="hideSuggestions()">
-      <button class="search-go" onclick="doSearch()">Tìm</button>
-    </div>
-    <div class="suggestions-box" id="suggestionsBox"></div>
-  </div>
-
-  <!-- Quick Locations -->
-  <div class="chip-row" id="quickLocs">
-    <button class="chip active" onclick="selectLoc('Cà Mau',this)">📍 Cà Mau</button>
-    <button class="chip" onclick="selectLoc('Bạc Liêu',this)">📍 Bạc Liêu</button>
-    <button class="chip" onclick="selectLoc('Kiên Giang',this)">📍 Kiên Giang</button>
-    <button class="chip" onclick="selectLoc('Sóc Trăng',this)">📍 Sóc Trăng</button>
-    <button class="chip" onclick="selectLoc('Cần Thơ',this)">📍 Cần Thơ</button>
-  </div>
-
-  <div class="pull-hint">⬇ Kéo xuống để làm mới</div>
-
-  <!-- Weather Hero -->
-  <div class="weather-hero" id="weatherHero">
-    <div class="wh-top">
-      <div class="wh-loc"><i class="ri-map-pin-2-fill"></i>&nbsp;<span id="wLocName">Cà Mau</span></div>
-      <div class="wh-time mono" id="wTime">--:--</div>
-    </div>
-    <div class="wh-main">
-      <div class="wh-icon" id="wIcon">⛅</div>
-      <div>
-        <div class="wh-temp-big" id="wTemp">--°C</div>
-        <div class="wh-desc" id="wDesc">Đang tải dữ liệu...</div>
-      </div>
-    </div>
-    <div class="wh-grid">
-      <div class="wh-cell"><div class="wh-cell-val" id="wHumid">--%</div><div class="wh-cell-lbl">Độ ẩm</div></div>
-      <div class="wh-cell"><div class="wh-cell-val" id="wWind">-- km/h</div><div class="wh-cell-lbl">Gió</div></div>
-      <div class="wh-cell"><div class="wh-cell-val" id="wRain">-- mm</div><div class="wh-cell-lbl">Mưa</div></div>
-    </div>
-  </div>
-
-  <div class="section-label">Dự báo 5 ngày</div>
-  <div class="forecast-strip" id="forecastStrip">
-    <div style="padding:0 16px;color:var(--muted);font-size:13px;display:flex;align-items:center;gap:8px;">
-      <div class="skeleton" style="width:60px;height:88px;border-radius:12px;"></div>
-      <div class="skeleton" style="width:60px;height:88px;border-radius:12px;"></div>
-      <div class="skeleton" style="width:60px;height:88px;border-radius:12px;"></div>
-    </div>
-  </div>
-
-  <div class="section-label">Rủi ro thời tiết</div>
-  <div class="risk-banner" id="riskBanner">
-    <div class="risk-pill" id="riskPill" style="background:var(--muted);">
-      <span id="riskScore">--</span>
-    </div>
-    <div class="risk-info">
-      <h3 id="riskTitle">Đang đánh giá...</h3>
-      <p id="riskDesc">Đang phân tích dữ liệu thời tiết</p>
-    </div>
-  </div>
-
-  <div class="section-label">Cảm biến theo ao</div>
-  <div class="chip-row" id="pondTabs">
-    <button class="chip active" data-pond="pond1" onclick="switchPond('pond1',this)">🦐 Ao #1 – Tôm sú</button>
-    <button class="chip" data-pond="pond2" onclick="switchPond('pond2',this)">🐟 Ao #2 – Cá tra</button>
-    <button class="chip" data-pond="pond3" onclick="switchPond('pond3',this)">🦐 Ao #3 – Tôm thẻ</button>
-  </div>
-  <div class="sensor-grid" id="sensorGrid">
-    <!-- Skeleton -->
-    <div class="skeleton" style="height:90px;border-radius:14px;"></div>
-    <div class="skeleton" style="height:90px;border-radius:14px;"></div>
-    <div class="skeleton" style="height:90px;border-radius:14px;"></div>
-    <div class="skeleton" style="height:90px;border-radius:14px;"></div>
-    <div class="skeleton" style="height:90px;border-radius:14px;"></div>
-    <div class="skeleton" style="height:90px;border-radius:14px;"></div>
-  </div>
-
-  <!-- Chart -->
-  <div class="chart-card">
-    <div class="card-hd">
-      <div>
-        <div class="card-title">Biểu đồ lịch sử 48h</div>
-        <div class="card-sub" id="chartSubLabel">Độ mặn (ppt)</div>
-      </div>
-      <span class="live-dot">Trực tiếp</span>
-    </div>
-    <div class="metric-tabs" id="metricTabs">
-      <button class="metric-tab active" onclick="switchMetric('salinity',this)">Độ mặn</button>
-      <button class="metric-tab" onclick="switchMetric('do',this)">DO</button>
-      <button class="metric-tab" onclick="switchMetric('ph',this)">pH</button>
-      <button class="metric-tab" onclick="switchMetric('temperature',this)">Nhiệt độ</button>
-      <button class="metric-tab" onclick="switchMetric('ammonia',this)">NH₃</button>
-    </div>
-    <div class="chart-canvas-wrap">
-      <canvas id="mainChart"></canvas>
-    </div>
-  </div>
-
-  <div class="section-label">Đề xuất hành động</div>
-  <div id="recList"></div>
-
-  <div class="section-label">Tối ưu thu hoạch</div>
-  <div id="harvestArea"></div>
-
-  <div style="height:8px;"></div>
+<div class="header">
+<div class="header-row">
+<div class="logo">
+<div class="logo-icon"><i class="ph-fill ph-fish"></i></div>
+<div>
+<div class="logo-text">AQUA·AI</div>
+<div class="logo-sub">SMART AQUACULTURE · v1.0</div>
+</div>
+</div>
+<div class="header-actions">
+<div class="icon-btn" onclick="switchTab('notifications')">
+<i class="ph ph-bell"></i><div class="badge" id="notif-badge"></div>
+</div>
+</div>
+</div>
 </div>
 
-<!-- ═══════════════════════════════
-     PAGE: PONDS
-════════════════════════════════ -->
-<div class="page" id="page-ponds">
-  <div class="page-title">
-    <h1>Ao nuôi 🐠</h1>
-    <p>Tổng quan toàn bộ ao</p>
-  </div>
-  <div id="pondsList"></div>
-
-  <div class="section-label">Thiết bị IoT</div>
-  <div id="devicesList"></div>
-  <div style="height:8px;"></div>
-</div>
-
-<!-- ═══════════════════════════════
-     PAGE: FEEDING
-════════════════════════════════ -->
-<div class="page" id="page-feeding">
-  <div class="page-title">
-    <h1>Cho ăn 🍤</h1>
-    <p>Nhật ký và kế hoạch hôm nay</p>
-  </div>
-  <div class="chip-row" id="feedingPondTabs">
-    <button class="chip active" onclick="switchFeedingPond('pond1',this)">🦐 Ao #1</button>
-    <button class="chip" onclick="switchFeedingPond('pond2',this)">🐟 Ao #2</button>
-    <button class="chip" onclick="switchFeedingPond('pond3',this)">🦐 Ao #3</button>
-  </div>
-  <div id="feedingArea"></div>
-  <div style="height:8px;"></div>
-</div>
-
-<!-- ═══════════════════════════════
-     PAGE: ALERTS
-════════════════════════════════ -->
-<div class="page" id="page-alerts">
-  <div class="page-title">
-    <h1>Cảnh báo 🚨</h1>
-    <p>Thông báo & rủi ro hệ thống</p>
-  </div>
-  <div id="alertsList"></div>
-  <div class="section-label">Nguy cơ bệnh dịch</div>
-  <div id="diseaseArea"></div>
-  <div style="height:8px;"></div>
-</div>
-
-<!-- ═══════════════════════════════
-     PAGE: CHAT
-════════════════════════════════ -->
-<div class="chat-page-wrap" id="page-chat">
-  <div class="chat-header">
-    <div class="chat-avatar"><i class="ri-robot-2-line"></i></div>
-    <div>
-      <div class="chat-ai-name">AQUA·AI Trợ lý</div>
-      <div class="chat-ai-status">Trực tuyến</div>
-    </div>
-    <div style="margin-left:auto;">
-      <div class="chip-row" id="chatPondRow" style="padding:0;gap:5px;">
-        <button class="chip active" style="padding:4px 10px;font-size:10px;" onclick="setChatPond('pond1',this)">Ao #1</button>
-        <button class="chip" style="padding:4px 10px;font-size:10px;" onclick="setChatPond('pond2',this)">Ao #2</button>
-        <button class="chip" style="padding:4px 10px;font-size:10px;" onclick="setChatPond('pond3',this)">Ao #3</button>
-      </div>
-    </div>
-  </div>
-  <div class="chat-messages" id="chatMessages">
-    <div class="chat-msg ai">
-      <div class="msg-avatar"><i class="ri-robot-2-line"></i></div>
-      <div class="msg-bubble">
-        Xin chào! Tôi là <strong>AQUA·AI</strong> 🦐<br><br>
-        Tôi giúp bạn:<br>
-        • Phân tích chất lượng nước<br>
-        • Cảnh báo thời tiết & dịch bệnh<br>
-        • Lên kế hoạch cho ăn & thu hoạch<br><br>
-        Bạn cần hỗ trợ gì? 😊
-      </div>
-    </div>
-  </div>
-  <div class="chat-quick-row">
-    <button class="chat-quick-btn" onclick="quickAsk('Phân tích ao đang chọn')">📊 Phân tích ao</button>
-    <button class="chat-quick-btn" onclick="quickAsk('Các cảnh báo hôm nay')">🚨 Cảnh báo</button>
-    <button class="chat-quick-btn" onclick="quickAsk('Kế hoạch cho ăn hợp lý')">🍤 Cho ăn</button>
-    <button class="chat-quick-btn" onclick="quickAsk('pH tối ưu cho tôm sú')">🧪 pH tối ưu</button>
-    <button class="chat-quick-btn" onclick="quickAsk('Cách phòng ngừa bệnh Vibrio')">🦠 Phòng bệnh</button>
-  </div>
-  <div class="chat-input-wrap">
-    <input class="chat-input" id="chatInput" type="text"
-      placeholder="Hỏi về ao nuôi của bạn..."
-      onkeydown="if(event.key==='Enter')sendChat()">
-    <button class="chat-send" id="chatSendBtn" onclick="sendChat()">
-      <i class="ri-send-plane-fill"></i>
-    </button>
-  </div>
-</div>
-
-<!-- ── BOTTOM NAV ── -->
-<nav class="bottom-nav">
-  <button class="nav-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">
-    <i class="ri-home-5-line"></i><span>Trang chủ</span>
-  </button>
-  <button class="nav-btn" data-tab="ponds" onclick="switchTab('ponds')">
-    <i class="ri-water-flash-line"></i><span>Ao nuôi</span>
-  </button>
-  <button class="nav-btn" data-tab="feeding" onclick="switchTab('feeding')">
-    <i class="ri-restaurant-2-line"></i><span>Cho ăn</span>
-  </button>
-  <button class="nav-btn" data-tab="alerts" onclick="switchTab('alerts')">
-    <i class="ri-alarm-warning-line"></i><span>Cảnh báo</span>
-  </button>
-  <button class="nav-btn" data-tab="chat" onclick="switchTab('chat')">
-    <i class="ri-robot-2-line"></i><span>AI Chat</span>
-  </button>
+<nav class="nav">
+<button class="nav-tab active" onclick="switchTab('weather')" id="tab-weather">
+<i class="ph ph-cloud-sun ti"></i><span>Weather</span>
+</button>
+<button class="nav-tab" onclick="switchTab('device')" id="tab-device">
+<i class="ph ph-broadcast ti"></i><span>Devices</span>
+</button>
+<button class="nav-tab" onclick="switchTab('chat')" id="tab-chat">
+<i class="ph ph-chat-circle-dots ti"></i><span>AI Chat</span>
+</button>
 </nav>
 
-<!-- ── TOAST ── -->
-<div class="toast-box" id="toastBox"></div>
+<!-- ── WEATHER ── -->
+<div class="page active" id="page-weather">
+<div class="section">
+<div class="search-bar">
+      <input class="search-input" placeholder="Search location..." id="location-search">
+      <button class="search-btn" onclick="searchLocation()"><i class="ph ph-magnifying-glass"></i></button>
+    </div>
 
+    <div class="weather-hero" id="weather-hero-bg">
+      <div style="font-size: 12px; font-weight: 600; margin-bottom: 10px;" id="w-date-today">26 May, Thursday</div>
+      <div class="w-main-icon" id="w-icon-large"><i class="ph-fill ph-cloud-rain"></i></div>
+      <div class="w-big-temp" id="w-temp-large">22<sup>°C</sup></div>
+      <div class="w-feels-like" id="w-feels-val">feels like 18°C</div>
+      
+      <div class="w-grid-minimal">
+        <div class="w-item-min"><label>Humidity</label><span id="w-humi-val">80%</span></div>
+        <div class="w-item-min"><label>UV Index</label><span id="w-uv-val">4/10</span></div>
+        <div class="w-item-min"><label>Rain</label><span id="w-rain-val">12mm</span></div>
+        <div class="w-item-min"><label>Wind</label><span id="w-wind-val">25 km/h</span></div>
+      </div>
+      <input class="search-input" placeholder="Search location (e.g., Ca Mau)..." id="location-search"
+        onkeydown="if(event.key==='Enter')searchLocation()">
+      <button class="search-btn" onclick="searchLocation()">Search</button>
+</div>
+
+    <div class="w-tip-card">
+      <div class="w-tip-icon">✨</div>
+      <div>
+        <div style="font-size: 13px; font-weight: 700; color: var(--text)">Take care!</div>
+        <div style="font-size: 11px; color: var(--text4)">Rapidly changing weather today.</div>
+    <div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/weather · /api/weather-risk</div>
+    <div id="weather-main">
+      <div class="weather-card">
+        <div class="weather-loc"><i class="ph-fill ph-map-pin"></i> <span id="loc-name">Hanoi, Vietnam</span></div>
+        <div class="weather-main">
+          <div>
+            <div class="weather-temp" id="w-temp">31<sup>°C</sup></div>
+            <div class="weather-desc" id="w-desc"><i class="ph-fill ph-cloud-sun"></i> Cloudy, high humidity</div>
+          </div>
+          <div class="weather-icon-big" id="w-icon"><i class="ph-fill ph-cloud-rain"></i></div>
+        </div>
+        <div class="weather-badges" id="w-badges">
+          <div class="weather-badge"><i class="ph-fill ph-drop"></i> 84%</div>
+          <div class="weather-badge"><i class="ph-fill ph-wind"></i> 18 km/h SE</div>
+          <div class="weather-badge"><i class="ph-fill ph-cloud-rain"></i> 12mm</div>
+          <div class="weather-badge"><i class="ph-fill ph-eye"></i> 8km</div>
+        </div>
+</div>
+</div>
+
+    <div class="section-title">Forecast</div>
+    <div class="forecast-row" id="forecast-row">
+      </div>
+  </div>
+</div>
+<div class="last-update" id="w-updated">Updated: --:--:--</div>
+
+<div class="section-title"><i class="ph-bold ph-list-magnifying-glass"></i> Detailed Stats</div>
+<div class="stat-grid" id="stat-grid">
+<div class="stat-card"><div class="stat-label"><i class="ph ph-drop ph-inline"></i> Humidity</div><div class="stat-val">84<span class="stat-unit">%</span></div><div class="stat-trend trend-up">↑ High</div></div>
+<div class="stat-card"><div class="stat-label"><i class="ph ph-waves ph-inline"></i> Tide</div><div class="stat-val">1.4<span class="stat-unit"> m</span></div><div class="stat-trend">↑ Peak 15:00</div></div>
+<div class="stat-card"><div class="stat-label"><i class="ph ph-lightning ph-inline"></i> UV Index</div><div class="stat-val">7<span class="stat-unit">/10</span></div><div class="stat-trend trend-up">⚠ High</div></div>
+<div class="stat-card"><div class="stat-label"><i class="ph ph-wind ph-inline"></i> Pressure</div><div class="stat-val">1008<span class="stat-unit"> hPa</span></div><div class="stat-trend trend-down">↓ Dropping</div></div>
+<div class="stat-card"><div class="stat-label"><i class="ph ph-cloud ph-inline"></i> Cloud Cover</div><div class="stat-val">72<span class="stat-unit">%</span></div><div class="stat-trend">→ Stable</div></div>
+<div class="stat-card"><div class="stat-label"><i class="ph ph-plant ph-inline"></i> Dew Point</div><div class="stat-val">26<span class="stat-unit">°C</span></div><div class="stat-trend">→ Humid</div></div>
+</div>
+
+<div class="section-title"><i class="ph-bold ph-calendar-blank"></i> 5-Day Forecast</div>
+<div class="forecast-row" id="forecast-row">
+<div class="forecast-item"><div class="forecast-day">Today</div><div class="forecast-icon"><i class="ph-fill ph-cloud-rain"></i></div><div class="forecast-temp">31°</div><div class="forecast-rain">60%</div></div>
+<div class="forecast-item"><div class="forecast-day">Wed</div><div class="forecast-icon"><i class="ph-fill ph-cloud-lightning"></i></div><div class="forecast-temp" style="color:var(--danger)">29°</div><div class="forecast-rain">85%</div></div>
+<div class="forecast-item"><div class="forecast-day">Thu</div><div class="forecast-icon"><i class="ph-fill ph-cloud-rain"></i></div><div class="forecast-temp">28°</div><div class="forecast-rain">70%</div></div>
+<div class="forecast-item"><div class="forecast-day">Fri</div><div class="forecast-icon"><i class="ph-fill ph-cloud-sun"></i></div><div class="forecast-temp">32°</div><div class="forecast-rain">30%</div></div>
+<div class="forecast-item"><div class="forecast-day">Sat</div><div class="forecast-icon"><i class="ph-fill ph-sun"></i></div><div class="forecast-temp">34°</div><div class="forecast-rain">10%</div></div>
+</div>
+
+<div class="section-title"><i class="ph-bold ph-shield-warning"></i> Pond Risk Assessment</div>
+<div class="card">
+<div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/weather-risk</div>
+<div class="risk-card">
+<div class="score-ring">
+<svg width="78" height="78" viewBox="0 0 78 78">
+<circle cx="39" cy="39" r="30" fill="none" stroke="var(--alice)" stroke-width="8"/>
+<circle id="risk-arc" cx="39" cy="39" r="30" fill="none" stroke="var(--warn)" stroke-width="8"
+stroke-dasharray="188" stroke-dashoffset="56" stroke-linecap="round" style="transition:stroke-dashoffset 0.8s ease"/>
+</svg>
+<div class="score-inner">
+<div class="score-num" id="risk-num" style="color:var(--warn)">68</div>
+<div class="score-lbl">RISK</div>
+</div>
+</div>
+<div style="flex:1">
+<div style="font-size:12px;font-weight:700;margin-bottom:5px" id="risk-title">Medium Risk</div>
+<div style="font-size:11px;color:var(--text3);line-height:1.6" id="risk-msg">⚠️ Approaching storm may cause salinity shock. Recommend reducing feed by 30%.</div>
+<div style="margin-top:8px"><span class="risk-badge medium" id="risk-badge"><i class="ph-fill ph-warning"></i> MEDIUM</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ── DEVICE ── -->
+<div class="page" id="page-device">
+<div class="section">
+<div class="device-online-bar">
+<div class="online-dot"></div>
+<div class="online-text">All devices operating normally</div>
+<span style="font-size:10px;color:var(--green-dark);font-family:'JetBrains Mono',monospace;font-weight:600">06:32</span>
+</div>
+<div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/device/sensor-data · /history</div>
+<div class="pond-selector" id="pond-selector">
+<div class="pond-chip active" onclick="selectPond(this,'pond1')">Pond #1 – Black Tiger Shrimp</div>
+<div class="pond-chip" onclick="selectPond(this,'pond2')">Pond #2 – Pangasius</div>
+<div class="pond-chip" onclick="selectPond(this,'pond3')">Pond #3 – Whiteleg Shrimp</div>
+</div>
+
+<div class="section-title"><i class="ph-bold ph-activity"></i> Real-time Water Quality</div>
+<div class="gauge-grid" id="gauge-grid">
+<div class="gauge-card active" onclick="selectMetricCard(this,'salinity')">
+<div class="gauge-label"><i class="ph ph-drop-half ph-inline"></i> Salinity</div>
+<div class="gauge-val" id="g-salinity" style="color:var(--warn)">18.5<span class="gauge-unit"> ppt</span></div>
+<div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-salinity" style="width:74%;background:var(--warn)"></div></div>
+<div class="gauge-hint">Safe: 10–20 ppt</div>
+</div>
+<div class="gauge-card" onclick="selectMetricCard(this,'do')">
+<div class="gauge-label"><i class="ph ph-wind ph-inline"></i> Oxygen (DO)</div>
+<div class="gauge-val" id="g-do" style="color:var(--green)">6.8<span class="gauge-unit"> mg/L</span></div>
+<div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-do" style="width:85%;background:var(--green)"></div></div>
+<div class="gauge-hint">Safe: ≥5 mg/L</div>
+</div>
+<div class="gauge-card" onclick="selectMetricCard(this,'ph')">
+<div class="gauge-label"><i class="ph ph-flask ph-inline"></i> Water pH</div>
+<div class="gauge-val" id="g-ph" style="color:var(--green)">7.8</div>
+<div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-ph" style="width:78%;background:var(--green)"></div></div>
+<div class="gauge-hint">Optimal: 7.5–8.5</div>
+</div>
+<div class="gauge-card" onclick="selectMetricCard(this,'temperature')">
+<div class="gauge-label"><i class="ph ph-thermometer ph-inline"></i> Temperature</div>
+<div class="gauge-val" id="g-temp" style="color:var(--warn)">29.4<span class="gauge-unit">°C</span></div>
+<div class="gauge-bar-bg"><div class="gauge-bar-fill" id="gb-temp" style="width:65%;background:var(--warn)"></div></div>
+<div class="gauge-hint">Optimal: 26–32°C</div>
+</div>
+</div>
+
+<div class="chart-wrap" id="device-main-chart">
+<div class="chart-title-row">
+<div>
+<div class="chart-title" id="chart-title">Salinity History</div>
+<div class="chart-subtitle">Last 48 hours</div>
+</div>
+<div id="chart-loading" style="display:none"><div class="spinner"></div></div>
+</div>
+<canvas id="main-chart" height="160"></canvas>
+<div class="chart-stat-row" id="chart-stats">
+<div class="chart-stat"><div class="chart-stat-val" id="cs-min">—</div><div class="chart-stat-lbl">Lowest</div></div>
+<div class="chart-stat"><div class="chart-stat-val" id="cs-avg">—</div><div class="chart-stat-lbl">Average</div></div>
+<div class="chart-stat"><div class="chart-stat-val" id="cs-max">—</div><div class="chart-stat-lbl">Highest</div></div>
+<div class="chart-stat"><div class="chart-stat-val" id="cs-unit">—</div><div class="chart-stat-lbl">Unit</div></div>
+</div>
+</div>
+
+<div class="section-title"><i class="ph-bold ph-test-tube"></i> Chemical Stats</div>
+<div class="stat-grid">
+<div class="stat-card" onclick="selectMetricCard(this,'ammonia')">
+<div class="stat-label"><i class="ph ph-microscope ph-inline"></i> Ammonia (NH₃)</div>
+<div class="stat-val" id="g-nh3" style="font-size:16px;color:var(--green)">0.02<span class="stat-unit"> mg/L</span></div>
+<div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Safe &lt;0.1</div>
+</div>
+<div class="stat-card">
+<div class="stat-label"><i class="ph ph-test-tube ph-inline"></i> Nitrite (NO₂)</div>
+<div class="stat-val" id="g-no2" style="font-size:16px;color:var(--green)">0.05<span class="stat-unit"> mg/L</span></div>
+<div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Safe &lt;0.5</div>
+</div>
+<div class="stat-card">
+<div class="stat-label"><i class="ph ph-hexagon ph-inline"></i> Alkalinity</div>
+<div class="stat-val" id="g-alk" style="font-size:16px;color:var(--ultramarine)">120<span class="stat-unit"> mg/L</span></div>
+<div class="stat-trend">→ Good 80–160</div>
+</div>
+<div class="stat-card">
+<div class="stat-label"><i class="ph ph-virus ph-inline"></i> H₂S</div>
+<div class="stat-val" id="g-h2s" style="font-size:16px;color:var(--green)">0.001<span class="stat-unit"> mg/L</span></div>
+<div class="stat-trend trend-down"><i class="ph-fill ph-check-circle"></i> Very Safe</div>
+</div>
+</div>
+
+<div class="section-title"><i class="ph-bold ph-radar"></i> Compare 3 Ponds Overview</div>
+<div class="chart-wrap">
+<canvas id="compare-chart" height="180"></canvas>
+</div>
+
+<div class="section-title"><i class="ph-bold ph-clock"></i> Feeding Log & Trends</div>
+<div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> GET /api/device/feeding-log</div>
+<div class="card">
+<div class="feed-log" id="feed-log">
+<div class="feed-item">
+<div class="feed-icon"><i class="ph ph-shrimp"></i></div>
+<div class="feed-info">
+<div class="feed-name">Grobest Shrimp Feed #2 <span class="feed-type auto">AUTO</span></div>
+<div class="feed-time">06:30</div>
+</div>
+<div class="feed-amount">250g</div>
+</div>
+<div class="feed-item">
+<div class="feed-icon"><i class="ph ph-leaf"></i></div>
+<div class="feed-info">
+<div class="feed-name">Probiotic Supplement <span class="feed-type manual">MANUAL</span></div>
+<div class="feed-time">10:00</div>
+</div>
+<div class="feed-amount">50g</div>
+</div>
+</div>
+<div class="feed-total">
+<span style="font-size:12px;color:var(--text3)">Total Today</span>
+<span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--ultramarine)" id="feed-total-text">300g / 600g</span>
+</div>
+</div>
+
+<div class="chart-wrap">
+<div class="chart-subtitle" style="margin-bottom:10px">7-Day Feeding Volume</div>
+<canvas id="feed-chart" height="120"></canvas>
+</div>
+</div>
+</div>
+
+<!-- ── NOTIFICATIONS ── -->
+<div class="page" id="page-notifications">
+<div class="section">
+<div class="notif-header">
+<div class="notif-count" id="notif-unread-count">4 unread alerts</div>
+<div class="mark-read" onclick="markAllRead()">Mark all read</div>
+</div>
+<div class="api-tag"><i class="ph-fill ph-plugs-connected"></i> /api/shock-alert · /api/disease-risk</div>
+
+<div class="notif-item danger" onclick="readNotif(this)">
+<div class="unread-dot"></div>
+<div class="notif-icon"><i class="ph-fill ph-waves"></i></div>
+<div class="notif-body">
+<div class="notif-title"><i class="ph-fill ph-warning"></i> Salinity Shock Alert – Pond #1</div>
+<div class="notif-msg">Salinity forecast to rise to 24 ppt by 14:00 tomorrow due to storm. Action required before 18:00 today.</div>
+<div class="notif-actions-box">
+<strong style="color:var(--danger)"><i class="ph-bold ph-target"></i> Recommended Actions:</strong><br>
+1. Reduce pond density by 20–30%<br>
+2. Prepare freshwater for dilution<br>
+3. Stop evening feeding schedule
+</div>
+<div class="notif-time">2 hours ago · /shock-alert · Confidence: 87%</div>
+</div>
+</div>
+
+<div class="notif-item warn" onclick="readNotif(this)">
+<div class="unread-dot"></div>
+<div class="notif-icon"><i class="ph-fill ph-hurricane"></i></div>
+<div class="notif-body">
+<div class="notif-title"><i class="ph-fill ph-warning"></i> Storm Warning – Next 36h</div>
+<div class="notif-msg">Tropical depression forecasted to hit Ca Mau. Wind gusts level 7-8, coastal waves 2-3m.</div>
+<div class="notif-time">3 hours ago · National Weather Service</div>
+</div>
+</div>
+
+<div class="notif-item warn" onclick="readNotif(this)">
+<div class="unread-dot"></div>
+<div class="notif-icon"><i class="ph-fill ph-bug"></i></div>
+<div class="notif-body">
+<div class="notif-title"><i class="ph-fill ph-warning"></i> Disease Risk – Medium</div>
+<div class="notif-msg">Current temp & pH are favorable for Vibrio bacteria. Outbreak probability: 42% in next 72h.</div>
+<div class="notif-actions-box">
+<strong style="color:var(--warn)"><i class="ph-bold ph-target"></i> Recommendation:</strong> Add probiotics, inspect shrimp every 6 hours.
+</div>
+<div class="notif-time">5 hours ago · /disease-risk</div>
+</div>
+</div>
+
+<div class="notif-item info" onclick="readNotif(this)">
+<div class="unread-dot"></div>
+<div class="notif-icon"><i class="ph-fill ph-chart-bar"></i></div>
+<div class="notif-body">
+<div class="notif-title"><i class="ph-fill ph-lightbulb"></i> Harvest Optimization – Pond #3</div>
+<div class="notif-msg">Pond #3 has reached 82% of target size. Market prices are trending up. Recommended to harvest in 5-7 days.</div>
+<div class="notif-time">Yesterday 08:15 · /harvest-optimization</div>
+</div>
+</div>
+
+<div class="notif-item ok">
+<div class="notif-icon"><i class="ph-fill ph-check-circle"></i></div>
+<div class="notif-body">
+<div class="notif-title">Feeding Equipment Online</div>
+<div class="notif-msg">06:30 feeding schedule executed successfully. 250g distributed.</div>
+<div class="notif-time">Today 06:31 · Device #AQ-001</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ── CHAT ── -->
+<div class="page" id="page-chat">
+<div class="chat-page">
+<div class="chat-messages" id="chat-messages">
+<div>
+<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI Assistant</div>
+<div class="chat-bubble ai">
+Hello! I am AQUA·AI, your smart aquaculture assistant. <i class="ph ph-waves ph-inline"></i><br><br>
+I can help you with:<br>
+• Water quality analysis<br>
+• Weather & disease alerts<br>
+• Feeding & harvest planning<br>
+• Technical farming advice<br><br>
+Ask me anything! <i class="ph ph-fish ph-inline"></i>
+</div>
+</div>
+</div>
+<div class="chat-input-area">
+<div class="chat-quick">
+<div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-chart-bar ph-inline"></i> Analyze Pond #1</div>
+<div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-warning ph-inline"></i> Today's Alerts</div>
+<div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-shrimp ph-inline"></i> Feeding Schedule</div>
+<div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-flask ph-inline"></i> Optimal pH?</div>
+<div class="quick-chip" onclick="sendQuick(this)"><i class="ph ph-pill ph-inline"></i> Prevent Vibrio</div>
+</div>
+<div class="chat-pond-select" id="chat-pond-select">
+<div class="chat-chip active" onclick="selectChatPond(this,'pond1')">Pond #1 – Black Tiger</div>
+<div class="chat-chip" onclick="selectChatPond(this,'pond2')">Pond #2 – Pangasius</div>
+<div class="chat-chip" onclick="selectChatPond(this,'pond3')">Pond #3 – Whiteleg</div>
+</div>
+<div class="chat-row">
+<textarea class="chat-input" id="chat-input" placeholder="Ask AQUA·AI..." rows="1"
+onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"
+oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+<button class="chat-send" onclick="sendMessage()"><i class="ph-bold ph-paper-plane-right"></i></button>
+</div>
+</div>
+</div>
+</div>
+
+</div>
 <script>
-/* ═══════════════════════════════════════
-   STATE
-════════════════════════════════════════ */
-const API = 'https://aqua-ai-bjg6.onrender.com';
-let state = {
-  tab: 'dashboard',
-  pond: 'pond1',
-  metric: 'salinity',
-  location: 'Cà Mau',
-  chatPond: 'pond1',
-  chatHistory: [],
-  refreshing: false,
-};
+let currentPond = 'pond1';
+let currentMetric = 'salinity';
+let chatHistory = [];
+let mainChart = null;
+let compareChart = null;
+let feedChart = null;
+let unreadCount = 4;
+let chartsInitialized = false;
+let chatPond = 'pond1';
 
-const LOCATIONS = [
-  {name:'Cà Mau',sub:'Tỉnh Cà Mau'},{name:'Bạc Liêu',sub:'Tỉnh Bạc Liêu'},
-  {name:'Kiên Giang',sub:'Tỉnh Kiên Giang'},{name:'Sóc Trăng',sub:'Tỉnh Sóc Trăng'},
-  {name:'Trà Vinh',sub:'Tỉnh Trà Vinh'},{name:'Cần Thơ',sub:'TP. Cần Thơ'},
-  {name:'Hậu Giang',sub:'Tỉnh Hậu Giang'},{name:'Long An',sub:'Tỉnh Long An'},
-  {name:'Tiền Giang',sub:'Tỉnh Tiền Giang'},{name:'Bến Tre',sub:'Tỉnh Bến Tre'},
-  {name:'An Giang',sub:'Tỉnh An Giang'},{name:'Đồng Tháp',sub:'Tỉnh Đồng Tháp'},
-  {name:'Vĩnh Long',sub:'Tỉnh Vĩnh Long'},{name:'Quảng Ninh',sub:'Tỉnh Quảng Ninh'},
-  {name:'Hải Phòng',sub:'TP. Hải Phòng'},{name:'Nam Định',sub:'Tỉnh Nam Định'},
-  {name:'Bà Rịa - Vũng Tàu',sub:'Tỉnh Bà Rịa - Vũng Tàu'},
-];
+const API_BASE = 'https://aqua-ai-bjg6.onrender.com/api';
 
-/* ═══════════════════════════════════════
-   UTILS
-════════════════════════════════════════ */
-async function api(path, params = {}) {
-  try {
-    const url = new URL(`${API}${path}`);
-    Object.entries(params).forEach(([k,v]) => url.searchParams.set(k,v));
-    const res = await fetch(url.toString());
-    if (!res.ok) throw new Error(res.status);
-    return await res.json();
-  } catch(e) {
-    console.warn('API fail:', path, e);
-    return null;
-  }
+function switchTab(tab) {
+document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+document.getElementById('page-' + tab).classList.add('active');
+
+const tabBtn = document.getElementById('tab-' + tab);
+if (tabBtn) tabBtn.classList.add('active');
+
+if (tab === 'device' && !chartsInitialized) { 
+initCharts(); 
+chartsInitialized = true; 
+}
+}
+function selectMetricCard(el, metric) {
+document.querySelectorAll('.gauge-card, .stat-card').forEach(c => c.classList.remove('active'));
+el.classList.add('active');
+currentMetric = metric;
+loadChartData();
+setTimeout(() => { document.getElementById('device-main-chart').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 50);
 }
 
-function esc(str) {
-  const d = document.createElement('div');
-  d.textContent = str;
-  return d.innerHTML;
+async function searchLocation() {
+const val = document.getElementById('location-search').value.trim();
+if (!val) return;
+document.getElementById('loc-name').textContent = val + ', Vietnam';
+try {
+const r = await fetch(`${API_BASE}/weather?location=${encodeURIComponent(val)}`);
+const d = await r.json();
+updateWeatherUI(d);
+} catch {
+const temps = [27,28,29,30,31,32,33];
+const icons = ['<i class="ph-fill ph-cloud-rain"></i>','<i class="ph-fill ph-cloud-lightning"></i>','<i class="ph-fill ph-cloud-sun"></i>','<i class="ph-fill ph-sun"></i>'];
+const descs = ['Cloudy, high humidity','Clear sky','Light rain breeze'];
+document.getElementById('w-temp').innerHTML = temps[Math.floor(Math.random()*temps.length)] + '<sup>°C</sup>';
+document.getElementById('w-icon').innerHTML = icons[Math.floor(Math.random()*icons.length)];
+document.getElementById('w-desc').innerHTML = '<i class="ph-fill ph-cloud-sun"></i> ' + descs[Math.floor(Math.random()*descs.length)];
+}
+document.getElementById('w-updated').textContent = 'Updated: ' + new Date().toLocaleTimeString('en-US');
+document.getElementById('location-search').value = '';
 }
 
-function toast(msg, type='info') {
-  const icons = {success:'ri-check-line',danger:'ri-error-warning-line',warning:'ri-alert-line',info:'ri-information-line'};
-  const t = document.createElement('div');
-  t.className = `toast ${type}`;
-  t.innerHTML = `<i class="${icons[type]||icons.info}"></i> ${msg}`;
-  document.getElementById('toastBox').appendChild(t);
-  setTimeout(() => t.remove(), 3800);
+function updateWeatherUI(d) {
+document.getElementById('w-temp').innerHTML = d.temperature + '<sup>°C</sup>';
+const iconMap = {'🌦':'<i class="ph-fill ph-cloud-rain"></i>','⛅':'<i class="ph-fill ph-cloud-sun"></i>','☀️':'<i class="ph-fill ph-sun"></i>','🌧':'<i class="ph-fill ph-cloud-rain"></i>','⛈':'<i class="ph-fill ph-cloud-lightning"></i>'};
+document.getElementById('w-icon').innerHTML = iconMap[d.icon] || '<i class="ph-fill ph-cloud-sun"></i>';
+document.getElementById('w-desc').innerHTML = '<i class="ph-fill ph-cloud-sun"></i> ' + d.description;
+document.getElementById('w-badges').innerHTML = `
+   <div class="weather-badge"><i class="ph-fill ph-drop"></i> ${d.humidity}%</div>
+   <div class="weather-badge"><i class="ph-fill ph-wind"></i> ${d.wind_speed} km/h ${d.wind_dir}</div>
+   <div class="weather-badge"><i class="ph-fill ph-cloud-rain"></i> ${d.rainfall_today}mm</div>
+   <div class="weather-badge"><i class="ph-fill ph-eye"></i> ${d.visibility}km</div>
+ `;
+if (d.forecast) {
+const fr = document.getElementById('forecast-row');
+fr.innerHTML = d.forecast.map(f => `
+     <div class="forecast-item">
+       <div class="forecast-day">${f.day}</div>
+       <div class="forecast-icon">${iconMap[f.icon]||'<i class="ph-fill ph-cloud-sun"></i>'}</div>
+       <div class="forecast-temp">${f.temp}°</div>
+       <div class="forecast-rain">${f.rain_prob}%</div>
+     </div>
+   `).join('');
+}
 }
 
-function updateTime() {
-  const el = document.getElementById('wTime');
-  if (el) el.textContent = new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
+function selectPond(el, pondId) {
+document.querySelectorAll('#pond-selector .pond-chip').forEach(c => c.classList.remove('active'));
+el.classList.add('active');
+currentPond = pondId;
+loadSensorData(pondId);
+loadChartData();
 }
 
-/* ═══════════════════════════════════════
-   NAVIGATION
-════════════════════════════════════════ */
-function switchTab(tabId) {
-  // Hide all pages
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.chat-page-wrap').forEach(p => p.classList.remove('active'));
-  // Update nav
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-
-  if (tabId === 'chat') {
-    document.getElementById('page-chat').classList.add('active');
-  } else {
-    const page = document.getElementById('page-' + tabId);
-    if (page) page.classList.add('active');
-  }
-
-  const navBtn = document.querySelector(`.nav-btn[data-tab="${tabId}"]`);
-  if (navBtn) navBtn.classList.add('active');
-
-  state.tab = tabId;
-  window.scrollTo({top:0,behavior:'smooth'});
-  loadTab(tabId);
+async function loadSensorData(pond) {
+try {
+const r = await fetch(`${API_BASE}/device/sensor-data?pond=${pond}`);
+const d = await r.json();
+updateSensors(d);
+} catch {}
 }
 
-function loadTab(tabId) {
-  switch(tabId) {
-    case 'dashboard': loadDashboard(); break;
-    case 'ponds': loadPondsPage(); break;
-    case 'feeding': loadFeedingPage(); break;
-    case 'alerts': loadAlertsPage(); break;
-  }
+function updateSensors(d) {
+const salinityColor = (d.salinity >= 10 && d.salinity <= 20) ? 'var(--green)' : 'var(--warn)';
+document.getElementById('g-salinity').innerHTML = `${d.salinity}<span class="gauge-unit"> ppt</span>`;
+document.getElementById('g-salinity').style.color = salinityColor;
+document.getElementById('gb-salinity').style.width = Math.min(100,(d.salinity/25)*100) + '%';
+document.getElementById('gb-salinity').style.background = salinityColor;
+document.getElementById('g-do').innerHTML = `${d.do}<span class="gauge-unit"> mg/L</span>`;
+document.getElementById('gb-do').style.width = Math.min(100,(d.do/10)*100) + '%';
+document.getElementById('g-ph').textContent = d.ph;
+document.getElementById('gb-ph').style.width = ((d.ph-6)/4)*100 + '%';
+document.getElementById('g-temp').innerHTML = `${d.temperature}<span class="gauge-unit">°C</span>`;
+document.getElementById('gb-temp').style.width = ((d.temperature-20)/20)*100 + '%';
+document.getElementById('g-nh3').innerHTML = `${d.ammonia}<span class="stat-unit"> mg/L</span>`;
+document.getElementById('g-no2').innerHTML = `${d.nitrite}<span class="stat-unit"> mg/L</span>`;
+document.getElementById('g-alk').innerHTML = `${d.alkalinity}<span class="stat-unit"> mg/L</span>`;
+document.getElementById('g-h2s').innerHTML = `${d.h2s}<span class="stat-unit"> mg/L</span>`;
 }
 
-/* ═══════════════════════════════════════
-   SEARCH
-════════════════════════════════════════ */
-let searchTimer;
-function onSearchInput(e) {
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => renderSuggestions(e.target.value.trim()), 180);
+const metricNames = { salinity:'Salinity', do:'Oxygen (DO)', ph:'pH', temperature:'Temperature', ammonia:'Ammonia (NH₃)' };
+
+function initCharts() {
+if (!compareChart) buildCompareChart();
+if (!feedChart) buildFeedChart();
+loadChartData();
 }
 
-function showSuggestions() {
-  renderSuggestions(document.getElementById('locationInput').value.trim());
+async function loadChartData() {
+document.getElementById('chart-loading').style.display = 'flex';
+document.getElementById('chart-title').textContent = `${metricNames[currentMetric]||currentMetric} History`;
+let data, unit, safeMin, safeMax;
+try {
+const r = await fetch(`${API_BASE}/device/history?pond=${currentPond}&metric=${currentMetric}&hours=48`);
+const d = await r.json();
+data = d.data; unit = d.unit; safeMin = d.safe_min; safeMax = d.safe_max;
+} catch {
+const configs = { salinity:[16,3], do:[6.5,1], ph:[7.8,0.25], temperature:[29,2], ammonia:[0.03,0.01] };
+const units = { salinity:'ppt', do:'mg/L', ph:'', temperature:'°C', ammonia:'mg/L' };
+const safeMins = { salinity:10, do:5, ph:7.5, temperature:26, ammonia:0 };
+const safeMaxes = { salinity:20, do:10, ph:8.5, temperature:32, ammonia:0.1 };
+const [base, amp] = configs[currentMetric]||[10,2];
+unit = units[currentMetric]||''; safeMin = safeMins[currentMetric]; safeMax = safeMaxes[currentMetric];
+data = Array.from({length:48},(_,i) => {
+const t = new Date(Date.now()-(47-i)*3600000);
+return { time: t.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}), value: +(base+amp*Math.sin(2*Math.PI*i/24)+(Math.random()-0.5)*0.4).toFixed(2) };
+});
+}
+const vals = data.map(d => d.value);
+const mn = Math.min(...vals), mx = Math.max(...vals), avg = vals.reduce((a,b)=>a+b,0)/vals.length;
+document.getElementById('cs-min').textContent = mn.toFixed(2);
+document.getElementById('cs-avg').textContent = avg.toFixed(2);
+document.getElementById('cs-max').textContent = mx.toFixed(2);
+document.getElementById('cs-unit').textContent = unit||'—';
+const sample = data.filter((_,i)=>i%3===0);
+if (mainChart) mainChart.destroy();
+mainChart = new Chart(document.getElementById('main-chart'), {
+type:'line',
+data: { labels: sample.map(d=>d.time), datasets:[{ data: sample.map(d=>d.value), borderColor:'#2D69FF', backgroundColor:'rgba(45,105,255,0.08)', borderWidth:2, pointRadius:0, pointHoverRadius:4, fill:true, tension:0.4 }] },
+options: {
+responsive:true, interaction:{mode:'index',intersect:false},
+plugins:{ legend:{display:false}, annotation:{ annotations: safeMin!=null?[{type:'line',yMin:safeMin,yMax:safeMax,borderColor:'rgba(75,170,125,0.2)',borderWidth:0,backgroundColor:'rgba(75,170,125,0.05)'}]:[] }, tooltip:{callbacks:{label:ctx=>`${ctx.parsed.y.toFixed(2)} ${unit}`}} },
+scales:{ x:{ticks:{font:{size:9},color:'#6a85b8',maxTicksLimit:8},grid:{color:'rgba(45,105,255,0.06)'}}, y:{ticks:{font:{size:9},color:'#6a85b8'},grid:{color:'rgba(45,105,255,0.06)'}} }
+}
+});
+document.getElementById('chart-loading').style.display = 'none';
 }
 
-function hideSuggestions() {
-  setTimeout(() => document.getElementById('suggestionsBox').classList.remove('open'), 180);
+function buildCompareChart() {
+compareChart = new Chart(document.getElementById('compare-chart'),{
+type:'radar',
+data:{
+labels:['Salinity','DO','pH','Temp','Alk'],
+datasets:[
+{label:'Pond #1',data:[75,85,78,65,75],borderColor:'#2D69FF',backgroundColor:'rgba(45,105,255,0.08)',borderWidth:2,pointBackgroundColor:'#2D69FF'},
+{label:'Pond #2',data:[60,70,82,70,80],borderColor:'#4BAA7D',backgroundColor:'rgba(75,170,125,0.08)',borderWidth:2,pointBackgroundColor:'#4BAA7D'},
+{label:'Pond #3',data:[80,90,75,60,70],borderColor:'#e09c00',backgroundColor:'rgba(224,156,0,0.08)',borderWidth:2,pointBackgroundColor:'#e09c00'},
+]
+},
+options:{responsive:true,plugins:{legend:{labels:{font:{size:10},color:'#2d5096'}}},scales:{r:{ticks:{font:{size:9},color:'#6a85b8',backdropColor:'transparent'},grid:{color:'rgba(45,105,255,0.1)'},pointLabels:{font:{size:10},color:'#1a3266'}}}}
+});
 }
 
-function renderSuggestions(q) {
-  const box = document.getElementById('suggestionsBox');
-  const list = q
-    ? LOCATIONS.filter(l => l.name.toLowerCase().includes(q.toLowerCase()) || l.sub.toLowerCase().includes(q.toLowerCase()))
-    : LOCATIONS;
-  if (!list.length) {
-    box.innerHTML = `<div class="sugg-item"><i class="ri-search-line"></i><div><div class="sugg-name">Tìm "${esc(q)}"</div><div class="sugg-sub">Nhấn Tìm để tra cứu</div></div></div>`;
-  } else {
-    box.innerHTML = list.slice(0,8).map(l =>
-      `<div class="sugg-item" onmousedown="pickLoc('${esc(l.name)}')">
-         <i class="ri-map-pin-2-line"></i>
-         <div><div class="sugg-name">${esc(l.name)}</div><div class="sugg-sub">${esc(l.sub)}</div></div>
-       </div>`
-    ).join('');
-  }
-  box.classList.add('open');
+function buildFeedChart() {
+feedChart = new Chart(document.getElementById('feed-chart'),{
+type:'bar',
+data:{
+labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+datasets:[
+{label:'Pond #1',data:[550,580,500,620,590,540,560],backgroundColor:'rgba(45,105,255,0.75)',borderRadius:4},
+{label:'Pond #2',data:[800,820,780,850,810,790,830],backgroundColor:'rgba(75,170,125,0.75)',borderRadius:4},
+{label:'Pond #3',data:[400,420,380,450,410,390,430],backgroundColor:'rgba(224,156,0,0.75)',borderRadius:4}
+]
+},
+options:{responsive:true,plugins:{legend:{labels:{font:{size:10},color:'#2d5096'}}},scales:{x:{ticks:{font:{size:10},color:'#6a85b8'},grid:{display:false}},y:{ticks:{font:{size:10},color:'#6a85b8'},grid:{color:'rgba(45,105,255,0.06)'}}}}
+});
 }
 
-function pickLoc(name) {
-  document.getElementById('locationInput').value = name;
-  document.getElementById('suggestionsBox').classList.remove('open');
-  selectLoc(name);
+function readNotif(el) {
+const dot = el.querySelector('.unread-dot');
+if (dot){dot.remove();unreadCount=Math.max(0,unreadCount-1);updateNotifCount();}
+}
+function markAllRead() { document.querySelectorAll('.unread-dot').forEach(d=>d.remove()); unreadCount=0; updateNotifCount(); }
+function updateNotifCount() {
+document.getElementById('notif-unread-count').textContent = unreadCount>0?`${unreadCount} unread alerts`:'No new alerts';
+if (unreadCount===0) document.getElementById('notif-badge').style.display='none';
 }
 
-function doSearch() {
-  const val = document.getElementById('locationInput').value.trim();
-  if (!val) { toast('Vui lòng nhập địa điểm','warning'); return; }
-  document.getElementById('suggestionsBox').classList.remove('open');
-  selectLoc(val);
+function selectChatPond(el, pond) {
+document.querySelectorAll('#chat-pond-select .chat-chip').forEach(c=>c.classList.remove('active'));
+el.classList.add('active'); chatPond=pond;
 }
 
-function selectLoc(name, chipEl) {
-  state.location = name;
-  document.getElementById('locationInput').value = name;
-  document.getElementById('wLocName').textContent = name;
-  document.querySelectorAll('#quickLocs .chip').forEach(c => {
-    c.classList.toggle('active', c.textContent.includes(name));
-  });
-  if (chipEl) {
-    document.querySelectorAll('#quickLocs .chip').forEach(c => c.classList.remove('active'));
-    chipEl.classList.add('active');
-  }
-  toast(`Đã chuyển sang ${name}`, 'success');
-  loadWeather();
-  loadWeatherRisk();
+function sendQuick(el) {
+const txt = el.textContent.trim();
+document.getElementById('chat-input').value=txt; sendMessage();
 }
 
-/* ═══════════════════════════════════════
-   DASHBOARD
-════════════════════════════════════════ */
-async function loadDashboard() {
-  updateTime();
-  await Promise.all([loadWeather(), loadWeatherRisk(), loadSensors(), loadRecommendations(), loadHarvest()]);
-  loadChart();
+async function sendMessage() {
+const input = document.getElementById('chat-input');
+const msg = input.value.trim();
+if (!msg) return;
+input.value=''; input.style.height='auto';
+appendBubble('user',msg);
+const typingId='typing-'+Date.now();
+const msgs = document.getElementById('chat-messages');
+const typingDiv = document.createElement('div');
+typingDiv.id=typingId;
+typingDiv.innerHTML=`<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI</div><div class="chat-bubble ai"><div class="typing"><span></span><span></span><span></span></div></div>`;
+msgs.appendChild(typingDiv); msgs.scrollTop=msgs.scrollHeight;
+try {
+const response = await fetch(`${API_BASE}/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,pond:chatPond,history:chatHistory})});
+const data = await response.json();
+const reply = data.reply||'Sorry, an error occurred.';
+document.getElementById(typingId).remove();
+appendBubble('ai',reply);
+chatHistory.push({role:'user',content:msg}); chatHistory.push({role:'assistant',content:reply});
+} catch {
+document.getElementById(typingId).remove(); appendBubble('ai','⚠️ Cannot connect to AI server.');
+}
 }
 
-async function loadWeather() {
-  const data = await api('/api/weather', {location: state.location});
-  if (!data) return;
-
-  document.getElementById('wIcon').textContent = data.icon || '⛅';
-  document.getElementById('wTemp').textContent = data.temperature + '°C';
-  document.getElementById('wDesc').textContent = data.description || '';
-  document.getElementById('wHumid').textContent = data.humidity + '%';
-  document.getElementById('wWind').textContent = data.wind_speed + ' km/h';
-  document.getElementById('wRain').textContent = data.rainfall_today + ' mm';
-
-  if (data.forecast && data.forecast.length) {
-    document.getElementById('forecastStrip').innerHTML = data.forecast.map(f => `
-      <div class="forecast-card">
-        <div class="fc-day">${esc(f.day)}</div>
-        <div class="fc-icon">${esc(f.icon)}</div>
-        <div class="fc-temp">${f.temp}°</div>
-        <div class="fc-rain">🌧 ${f.rain_prob}%</div>
-      </div>
-    `).join('');
-  }
+function appendBubble(role,text) {
+const msgs=document.getElementById('chat-messages');
+const div=document.createElement('div');
+if(role==='ai'){div.innerHTML=`<div class="ai-name"><i class="ph-fill ph-chat-circle-dots"></i> AQUA·AI</div><div class="chat-bubble ai">${text.replace(/\n/g,'<br>')}</div>`;}
+else{div.style.display='flex';div.style.justifyContent='flex-end';div.innerHTML=`<div class="chat-bubble user">${text.replace(/\n/g,'<br>')}</div>`;}
+msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
 }
 
-async function loadWeatherRisk() {
-  const data = await api('/api/weather-risk', {location: state.location});
-  if (!data) return;
-  const pill = document.getElementById('riskPill');
-  pill.style.background = data.color || 'var(--muted)';
-  document.getElementById('riskScore').textContent = data.risk_score ?? '--';
-  document.getElementById('riskTitle').textContent = `Rủi ro ${data.level || '--'}`;
-  document.getElementById('riskDesc').textContent = data.message || '';
-}
-
-async function loadSensors() {
-  const data = await api('/api/device/sensor-data', {pond: state.pond});
-  if (!data) { renderSensorGrid(null); return; }
-  renderSensorGrid(data);
-}
-
-function renderSensorGrid(d) {
-  const grid = document.getElementById('sensorGrid');
-  if (!d) {
-    grid.innerHTML = '<div class="empty" style="grid-column:1/-1;"><i class="ri-wifi-off-line"></i><h3>Không thể tải dữ liệu</h3><p>Kiểm tra kết nối</p></div>';
-    return;
-  }
-
-  const sensors = [
-    {icon:'💧', label:'Độ mặn', val:d.salinity, unit:'ppt',
-     status: d.salinity>=10&&d.salinity<=20 ? 'ok' : d.salinity>20||d.salinity<8 ? 'bad' : 'warn'},
-    {icon:'🌬️', label:'DO', val:d.do, unit:'mg/L',
-     status: d.do>=5 ? 'ok' : d.do>=3 ? 'warn' : 'bad'},
-    {icon:'🧪', label:'pH', val:d.ph, unit:'',
-     status: d.ph>=7.5&&d.ph<=8.5 ? 'ok' : d.ph>=7&&d.ph<=9 ? 'warn' : 'bad'},
-    {icon:'🌡️', label:'Nhiệt độ', val:d.temperature, unit:'°C',
-     status: d.temperature>=26&&d.temperature<=32 ? 'ok' : d.temperature>=24&&d.temperature<=34 ? 'warn' : 'bad'},
-    {icon:'🔬', label:'NH₃', val:d.ammonia, unit:'mg/L',
-     status: d.ammonia<0.1 ? 'ok' : d.ammonia<0.3 ? 'warn' : 'bad'},
-    {icon:'⚗️', label:'NO₂', val:d.nitrite, unit:'mg/L',
-     status: d.nitrite<0.1 ? 'ok' : d.nitrite<0.5 ? 'warn' : 'bad'},
-  ];
-
-  grid.innerHTML = sensors.map(s => `
-    <div class="sensor-card ${s.status}">
-      <div class="sc-icon">${s.icon}</div>
-      <div class="sc-label">${s.label}</div>
-      <div class="sc-val">${s.val}</div>
-      <div class="sc-unit">${s.unit}</div>
-    </div>
-  `).join('');
-}
-
-async function loadChart() {
-  const metricLabels = {salinity:'Độ mặn (ppt)',do:'DO (mg/L)',ph:'pH',temperature:'Nhiệt độ (°C)',ammonia:'NH₃ (mg/L)'};
-  document.getElementById('chartSubLabel').textContent = metricLabels[state.metric] || state.metric;
-
-  const data = await api('/api/device/history', {pond:state.pond, metric:state.metric, hours:48});
-  if (!data) return;
-  drawChart(data.data, state.metric, data.unit, data.safe_min, data.safe_max);
-}
-
-async function loadRecommendations() {
-  const data = await api('/api/action-recommendation', {pond: state.pond});
-  const container = document.getElementById('recList');
-  if (!data || !data.recommendations?.length) {
-    container.innerHTML = `<div class="empty"><i class="ri-checkbox-circle-line" style="color:var(--green)"></i><h3>Không có đề xuất</h3><p>Ao nuôi đang trong trạng thái tốt</p></div>`;
-    return;
-  }
-  const iconMap = {high:'ri-error-warning-fill',medium:'ri-information-fill',low:'ri-checkbox-circle-fill'};
-  const badgeMap = {high:'badge-danger',medium:'badge-warning',low:'badge-success'};
-  const labelMap = {high:'Ưu tiên cao',medium:'Trung bình',low:'Bình thường'};
-  container.innerHTML = data.recommendations.map(r => `
-    <div class="rec-row">
-      <div class="rec-icon-wrap ${r.priority}"><i class="${iconMap[r.priority]||iconMap.medium}"></i></div>
-      <div class="rec-body">
-        <div class="rec-action">${esc(r.action)}</div>
-        <div class="rec-deadline"><i class="ri-time-line"></i> ${esc(r.deadline)}</div>
-      </div>
-      <span class="badge ${badgeMap[r.priority]}">${labelMap[r.priority]}</span>
-    </div>
-  `).join('');
-}
-
-async function loadHarvest() {
-  const data = await api('/api/harvest-optimization', {pond: state.pond});
-  const container = document.getElementById('harvestArea');
-  if (!data) { container.innerHTML = ''; return; }
-  container.innerHTML = `
-    <div class="harvest-hero">
-      <div class="hh-label">🎯 Tăng trưởng ao nuôi</div>
-      <div class="hh-pct">${data.growth_percent}%</div>
-      <div class="hh-sub">Còn ${data.days_to_target} ngày đạt kích thước thương phẩm</div>
-      <div class="hh-stats">
-        <div class="hh-stat"><div class="hh-stat-val">${data.estimated_yield} kg</div><div class="hh-stat-lbl">Sản lượng</div></div>
-        <div class="hh-stat"><div class="hh-stat-val">${(data.profit_estimate/1e6).toFixed(1)}M ₫</div><div class="hh-stat-lbl">Lợi nhuận</div></div>
-        <div class="hh-stat"><div class="hh-stat-val">${esc(data.recommended_window)}</div><div class="hh-stat-lbl">Thu hoạch</div></div>
-      </div>
-    </div>
-  `;
-}
-
-/* ═══════════════════════════════════════
-   POND & METRIC SWITCHES
-════════════════════════════════════════ */
-function switchPond(pondId, el) {
-  state.pond = pondId;
-  document.querySelectorAll('#pondTabs .chip').forEach(c => c.classList.remove('active'));
-  if (el) el.classList.add('active');
-  loadSensors();
-  loadChart();
-}
-
-function switchMetric(metric, el) {
-  state.metric = metric;
-  document.querySelectorAll('.metric-tab').forEach(t => t.classList.remove('active'));
-  if (el) el.classList.add('active');
-  loadChart();
-}
-
-/* ═══════════════════════════════════════
-   CHART RENDERER (Canvas)
-════════════════════════════════════════ */
-function drawChart(data, metric, unit, safeMin, safeMax) {
-  const canvas = document.getElementById('mainChart');
-  if (!canvas || !data || !data.length) return;
-  const ctx = canvas.getContext('2d');
-  const dpr = window.devicePixelRatio || 1;
-  const wrap = canvas.parentElement;
-  const W = wrap.clientWidth;
-  const H = wrap.clientHeight;
-
-  canvas.width = W * dpr;
-  canvas.height = H * dpr;
-  canvas.style.width = W + 'px';
-  canvas.style.height = H + 'px';
-  ctx.scale(dpr, dpr);
-
-  const pad = {top:16, right:14, bottom:28, left:44};
-  const cW = W - pad.left - pad.right;
-  const cH = H - pad.top - pad.bottom;
-
-  ctx.clearRect(0, 0, W, H);
-
-  const vals = data.map(d => d.value);
-  const mn = Math.min(...vals);
-  const mx = Math.max(...vals);
-  const range = mx - mn || 1;
-  const vPad = range * 0.15;
-  const minV = mn - vPad;
-  const maxV = mx + vPad;
-  const vRange = maxV - minV;
-
-  const toY = v => pad.top + cH - ((v - minV) / vRange) * cH;
-  const toX = i => pad.left + (i / (data.length - 1)) * cW;
-
-  // Grid lines
-  ctx.strokeStyle = 'rgba(45,105,255,0.07)';
-  ctx.lineWidth = 1;
-  for (let i = 0; i <= 4; i++) {
-    const y = pad.top + (cH / 4) * i;
-    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
-    const v = maxV - (vRange / 4) * i;
-    ctx.fillStyle = '#8EA4C0';
-    ctx.font = `600 9px 'Plus Jakarta Sans',sans-serif`;
-    ctx.textAlign = 'right';
-    ctx.fillText(v.toFixed(metric==='ammonia'?3:1), pad.left - 5, y + 3);
-  }
-
-  // Safe zone
-  if (safeMin != null && safeMax != null) {
-    const y1 = toY(Math.min(safeMin, safeMax));
-    const y2 = toY(Math.max(safeMin, safeMax));
-    ctx.fillStyle = 'rgba(75,170,125,0.07)';
-    ctx.fillRect(pad.left, Math.min(y1,y2), cW, Math.abs(y1-y2));
-    ctx.strokeStyle = 'rgba(75,170,125,0.3)';
-    ctx.setLineDash([4,4]);
-    ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(pad.left, Math.max(y1,y2)); ctx.lineTo(W-pad.right, Math.max(y1,y2)); ctx.stroke();
-    ctx.setLineDash([]);
-  }
-
-  const colorMap = {salinity:'#2D69FF',do:'#4BAA7D',ph:'#F59E0B',temperature:'#EF4444',ammonia:'#8B5CF6'};
-  const color = colorMap[metric] || '#2D69FF';
-
-  // Gradient fill
-  const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + cH);
-  grad.addColorStop(0, color + '30');
-  grad.addColorStop(1, color + '03');
-
-  ctx.beginPath();
-  data.forEach((d,i) => {
-    const x = toX(i), y = toY(d.value);
-    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
-  });
-  ctx.lineTo(toX(data.length-1), pad.top+cH);
-  ctx.lineTo(pad.left, pad.top+cH);
-  ctx.closePath();
-  ctx.fillStyle = grad;
-  ctx.fill();
-
-  // Line
-  ctx.beginPath();
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 2;
-  ctx.lineJoin = 'round';
-  data.forEach((d,i) => {
-    const x = toX(i), y = toY(d.value);
-    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
-  });
-  ctx.stroke();
-
-  // Last point glow
-  const lx = toX(data.length-1), ly = toY(vals[vals.length-1]);
-  ctx.beginPath(); ctx.arc(lx,ly,7,0,Math.PI*2); ctx.fillStyle=color+'20'; ctx.fill();
-  ctx.beginPath(); ctx.arc(lx,ly,4,0,Math.PI*2); ctx.fillStyle=color; ctx.fill();
-  ctx.beginPath(); ctx.arc(lx,ly,2,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
-
-  // X labels
-  ctx.fillStyle = '#8EA4C0';
-  ctx.font = `600 9px 'Plus Jakarta Sans',sans-serif`;
-  ctx.textAlign = 'center';
-  const step = Math.ceil(data.length / 7);
-  for (let i = 0; i < data.length; i += step) {
-    ctx.fillText(data[i].time, toX(i), H - 8);
-  }
-}
-
-/* ═══════════════════════════════════════
-   PONDS PAGE
-════════════════════════════════════════ */
-async function loadPondsPage() {
-  const [pondsData, devicesData] = await Promise.all([
-    api('/api/ponds'),
-    api('/api/device/status'),
-  ]);
-
-  const pondContainer = document.getElementById('pondsList');
-  const icons = {'Tôm sú':'🦐','Cá tra':'🐟','Tôm thẻ':'🦐'};
-  if (!pondsData || !pondsData.ponds?.length) {
-    pondContainer.innerHTML = `<div class="empty"><i class="ri-water-flash-line"></i><h3>Không có dữ liệu ao</h3></div>`;
-  } else {
-    pondContainer.innerHTML = pondsData.ponds.map(p => `
-      <div class="pond-row" onclick="switchPond('${p.id}',null);switchTab('dashboard');">
-        <div class="pond-icon">${icons[p.species]||'🐠'}</div>
-        <div class="pond-info">
-          <div class="pond-name">${esc(p.name)}</div>
-          <div class="pond-desc">${esc(p.species)}</div>
-          <div class="pond-meta">
-            <div class="pond-meta-item"><div class="pond-meta-val">${p.area?.toLocaleString()} m²</div><div class="pond-meta-lbl">Diện tích</div></div>
-            <div class="pond-meta-item"><div class="pond-meta-val">${p.density} con/m²</div><div class="pond-meta-lbl">Mật độ</div></div>
-          </div>
-        </div>
-        <span class="badge badge-success">● Online</span>
-      </div>
-    `).join('');
-  }
-
-  const devContainer = document.getElementById('devicesList');
-  if (!devicesData || !devicesData.devices?.length) {
-    devContainer.innerHTML = `<div class="empty"><i class="ri-cpu-line"></i><h3>Không có thiết bị</h3></div>`;
-  } else {
-    devContainer.innerHTML = devicesData.devices.map(d => {
-      const batCls = d.battery > 60 ? '' : d.battery > 30 ? 'low' : 'critical';
-      const ts = d.last_seen ? new Date(d.last_seen).toLocaleTimeString('vi-VN') : '--';
-      return `
-        <div class="device-row">
-          <div class="device-status ${d.status}"></div>
-          <div style="flex:1;">
-            <div class="device-name">${esc(d.id)} – Ao ${esc(d.pond)}</div>
-            <div class="device-detail">Cập nhật: ${ts}</div>
-            <div class="bat-bar"><div class="bat-fill ${batCls}" style="width:${d.battery}%;"></div></div>
-          </div>
-          <div class="bat-pct ${batCls}">${d.battery}%</div>
-        </div>
-      `;
-    }).join('');
-  }
-}
-
-/* ═══════════════════════════════════════
-   FEEDING PAGE
-════════════════════════════════════════ */
-async function loadFeedingPage() {
-  loadFeedingLog('pond1');
-}
-
-async function switchFeedingPond(pondId, el) {
-  document.querySelectorAll('#feedingPondTabs .chip').forEach(c => c.classList.remove('active'));
-  if (el) el.classList.add('active');
-  await loadFeedingLog(pondId);
-}
-
-async function loadFeedingLog(pondId) {
-  const container = document.getElementById('feedingArea');
-  container.innerHTML = `<div style="padding:24px 16px;text-align:center;color:var(--muted);font-size:13px;">Đang tải...</div>`;
-
-  const data = await api('/api/device/feeding-log', {pond: pondId});
-  if (!data) {
-    container.innerHTML = `<div class="empty"><i class="ri-restaurant-2-line"></i><h3>Không có dữ liệu</h3><p>Không thể tải nhật ký cho ăn</p></div>`;
-    return;
-  }
-
-  const pct = Math.min(100, Math.round((data.total_today / data.target) * 100));
-  const typeLabels = {auto:'🤖 Tự động',manual:'✋ Thủ công'};
-  const typeCls = {auto:'feed-type-auto',manual:'feed-type-manual'};
-
-  container.innerHTML = `
-    <div class="feeding-summary">
-      <div class="fs-numbers">
-        <div>
-          <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Hôm nay – ${esc(data.date||'')}</div>
-          <div class="fs-consumed">${data.total_today} <span style="font-size:14px;color:var(--muted);">g</span></div>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-size:11px;color:var(--muted);">Mục tiêu</div>
-          <div style="font-size:18px;font-weight:700;font-family:'JetBrains Mono',monospace;">${data.target} g</div>
-        </div>
-      </div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;"></div></div>
-      <div class="progress-labels">
-        <span>${pct}% hoàn thành</span>
-        <span>Còn ${Math.max(0, data.target - data.total_today)} g</span>
-      </div>
-    </div>
-    <div class="section-label">Chi tiết lần cho ăn</div>
-    <div style="margin:0 16px 12px;border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border);">
-      ${(data.logs||[]).map((l,i) => `
-        <div class="feed-row" style="${i===0?'border:none!important;':'border-top:1px solid var(--border);border-left:none;border-right:none;border-bottom:none;'}">
-          <div class="feed-time">${esc(l.time)}</div>
-          <div class="feed-label">
-            <div class="feed-name">${esc(l.icon||'')} ${esc(l.feed)}</div>
-            <div class="feed-type-badge ${typeCls[l.type]||typeCls.auto}">${typeLabels[l.type]||l.type}</div>
-          </div>
-          <div class="feed-amount-val">${l.amount}g</div>
-        </div>
-      `).join('')}
-    </div>
-  `;
-}
-
-/* ═══════════════════════════════════════
-   ALERTS PAGE
-════════════════════════════════════════ */
-async function loadAlertsPage() {
-  const [shockData, diseaseData] = await Promise.all([
-    api('/api/shock-alert', {pond: state.pond}),
-    api('/api/disease-risk', {pond: state.pond}),
-  ]);
-
-  const alertContainer = document.getElementById('alertsList');
-  const typeIcon = {danger:'🚨', warning:'⚠️', info:'ℹ️', ok:'✅'};
-  if (!shockData || !shockData.alerts?.length) {
-    alertContainer.innerHTML = `<div class="empty"><i class="ri-shield-check-line" style="color:var(--green)"></i><h3>Không có cảnh báo</h3><p>Hệ thống đang hoạt động bình thường</p></div>`;
-    document.getElementById('notifDot').style.display = 'none';
-  } else {
-    alertContainer.innerHTML = shockData.alerts.map(a => `
-      <div class="alert-row ${a.severity||'info'}">
-        <div class="alert-icon-wrap">${typeIcon[a.severity]||'📋'}</div>
-        <div class="alert-body">
-          <div class="alert-title">${esc(a.title)}</div>
-          <div class="alert-msg">${esc(a.message)}</div>
-          <div class="alert-time"><i class="ri-time-line"></i> ${esc(a.time||'')}</div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  const diseaseContainer = document.getElementById('diseaseArea');
-  if (!diseaseData) { diseaseContainer.innerHTML = ''; return; }
-  const isHigh = diseaseData.risk_level === 'high';
-  const c = diseaseData.conditions || {};
-  diseaseContainer.innerHTML = `
-    <div class="disease-card">
-      <div class="disease-header">
-        <div>
-          <div style="font-size:11px;color:var(--muted);margin-bottom:3px;">Xác suất Vibrio (72h)</div>
-          <div class="disease-pct" style="color:${isHigh?'var(--danger)':'var(--warning)'};">${diseaseData.vibrio_probability}%</div>
-        </div>
-        <span class="badge ${isHigh?'badge-danger':'badge-warning'}">${isHigh?'Nguy hiểm':'Trung bình'}</span>
-      </div>
-      <div class="conditions-row">
-        <div class="cond-pill ${c.temperature_risk?'risky':'safe'}"><i class="ri-temp-hot-line"></i> Nhiệt độ</div>
-        <div class="cond-pill ${c.ph_risk?'risky':'safe'}"><i class="ri-flask-line"></i> pH</div>
-        <div class="cond-pill ${c.do_risk?'risky':'safe'}"><i class="ri-windy-line"></i> DO</div>
-      </div>
-      <div class="disease-tip">💡 ${esc(diseaseData.recommendation||'')}</div>
-      <div style="margin-top:10px;font-size:11px;color:var(--muted);"><i class="ri-time-line"></i> Kiểm tra tiếp: ${esc(diseaseData.next_check||'')}</div>
-    </div>
-  `;
-}
-
-/* ═══════════════════════════════════════
-   AI CHAT
-════════════════════════════════════════ */
-function setChatPond(pondId, el) {
-  state.chatPond = pondId;
-  document.querySelectorAll('#chatPondRow .chip').forEach(c => c.classList.remove('active'));
-  if (el) el.classList.add('active');
-}
-
-function quickAsk(msg) {
-  document.getElementById('chatInput').value = msg;
-  sendChat();
-}
-
-async function sendChat() {
-  const input = document.getElementById('chatInput');
-  const msg = input.value.trim();
-  if (!msg) return;
-
-  input.value = '';
-  addChatBubble('user', msg);
-  state.chatHistory.push({role:'user', content:msg});
-
-  const btn = document.getElementById('chatSendBtn');
-  btn.disabled = true;
-
-  // Typing indicator
-  const typId = 'typ-' + Date.now();
-  const typDiv = document.createElement('div');
-  typDiv.className = 'chat-msg ai';
-  typDiv.id = typId;
-  typDiv.innerHTML = `
-    <div class="msg-avatar"><i class="ri-robot-2-line"></i></div>
-    <div class="msg-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>
-  `;
-  const msgs = document.getElementById('chatMessages');
-  msgs.appendChild(typDiv);
-  msgs.scrollTop = msgs.scrollHeight;
-
-  const data = await api('/api/chat', {}).catch(()=>null) ||
-    await fetch(`${API}/api/chat`, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({message:msg, pond:state.chatPond, history:state.chatHistory.slice(-10)})
-    }).then(r=>r.json()).catch(()=>null);
-
-  document.getElementById(typId)?.remove();
-
-  const reply = data?.reply || '⚠️ Không thể kết nối đến máy chủ. Vui lòng thử lại.';
-  addChatBubble('ai', reply);
-  state.chatHistory.push({role:'assistant', content:reply});
-  btn.disabled = false;
-}
-
-function addChatBubble(role, text) {
-  const msgs = document.getElementById('chatMessages');
-  const div = document.createElement('div');
-  div.className = `chat-msg ${role}`;
-  const safeText = esc(text).replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
-  if (role === 'ai') {
-    div.innerHTML = `<div class="msg-avatar"><i class="ri-robot-2-line"></i></div><div class="msg-bubble">${safeText}</div>`;
-  } else {
-    div.innerHTML = `<div class="msg-avatar"><i class="ri-user-line"></i></div><div class="msg-bubble">${safeText}</div>`;
-  }
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-/* ═══════════════════════════════════════
-   REFRESH
-════════════════════════════════════════ */
-async function refreshAll() {
-  if (state.refreshing) return;
-  state.refreshing = true;
-  const icon = document.getElementById('refreshIcon');
-  icon.style.animation = 'spin 0.6s linear infinite';
-  await loadTab(state.tab);
-  icon.style.animation = '';
-  state.refreshing = false;
-  toast('Đã làm mới dữ liệu', 'success');
-}
-
-/* ═══════════════════════════════════════
-   INIT
-════════════════════════════════════════ */
-(async function init() {
-  // Close suggestions on outside click
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.search-wrap')) {
-      document.getElementById('suggestionsBox').classList.remove('open');
-    }
-  });
-
-  // Resize chart on orientation change
-  window.addEventListener('resize', () => {
-    if (state.tab === 'dashboard') loadChart();
-  });
-
-  // Clock
-  updateTime();
-  setInterval(updateTime, 60000);
-
-  // Auto-refresh sensors every 30s
-  setInterval(() => {
-    if (state.tab === 'dashboard') loadSensors();
-  }, 30000);
-
-  // Initial load
-  await loadDashboard();
-})();
+document.getElementById('w-updated').textContent='Updated: '+new Date().toLocaleTimeString('en-US');
+setInterval(()=>{document.getElementById('w-updated').textContent='Updated: '+new Date().toLocaleTimeString('en-US');},30000);
+setInterval(()=>{if(document.getElementById('page-device').classList.contains('active')){loadSensorData(currentPond);}},60000);
 </script>
 </body>
-</html>

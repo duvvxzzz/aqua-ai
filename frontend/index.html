@@ -369,22 +369,42 @@ async function loadWeather(loc = 'Hanoi') {
   try {
     const wRes = await fetch(`${API_BASE}/api/weather?location=${encodeURIComponent(loc)}`);
     
-    // Nếu gõ địa điểm tào lao, API sẽ trả về lỗi 404
+    // 404: City not found - no fallback data, show error state
     if (wRes.status === 404) {
-        showToast('Lỗi', 'Không tìm thấy địa điểm này! Vui lòng nhập tên thành phố hợp lệ.', 'error', 'error');
-        $('#hero-location').textContent = 'Location Not Found';
-        $('#hero-desc').textContent = 'Vui lòng thử lại';
-        return;
+      $('#hero-location').textContent = 'Không tìm thấy thành phố';
+      $('#hero-desc').textContent = 'Vui lòng kiểm tra lại chính tả';
+      $('#hero-temp').textContent = '--';
+      
+      // Clear badges and stats
+      if ($('#w-badges')) $('#w-badges').innerHTML = '';
+      if ($('#stat-humidity')) $('#stat-humidity').textContent = '--';
+      if ($('#stat-tide')) $('#stat-tide').textContent = '--';
+      if ($('#stat-pressure')) $('#stat-pressure').textContent = '--';
+      if ($('#stat-cloud')) $('#stat-cloud').textContent = '--';
+      if ($('#stat-dew')) $('#stat-dew').textContent = '--';
+      if ($('#stat-uv')) $('#stat-uv').textContent = '--';
+      
+      return;
     }
     
-    if (!wRes.ok) throw new Error("API chưa thức");
+    // 500: Server/API Key error - show error and stop
+    if (wRes.status === 500) {
+      $('#hero-desc').textContent = 'Lỗi máy chủ thời tiết';
+      console.error('Weather API server error (500)');
+      return;
+    }
     
+    // Other API errors - throw to catch block for fallback
+    if (!wRes.ok) throw new Error(`API returned status ${wRes.status}`);
+    
+    // Fetch risk data
     const rRes = await fetch(`${API_BASE}/api/weather-risk?location=${encodeURIComponent(loc)}`);
     
     renderWeather(await wRes.json());
-    renderRisk(await rRes.json());
+    if (rRes.ok) renderRisk(await rRes.json());
   } catch (e) {
-    console.warn("Render đang ngủ, dùng data tạm");
+    // Network error or backend completely down - use fallback data
+    console.warn("Network error or backend down, using fallback data:", e.message);
     renderWeather({ ...FALLBACK_W, location: loc + " (Local)" });
     renderRisk(FALLBACK_R);
   }

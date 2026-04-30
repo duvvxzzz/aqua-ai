@@ -248,10 +248,9 @@
       </div>
     </section>
 
-<section id="tab-chat" class="tab-content flex flex-col h-full">
-      <div id="messagesWrapper" class="flex-1 overflow-y-auto space-y-4 pb-4"></div>
-      </section>
-
+<section id="tab-chat" class="tab-content">
+  <div id="messagesWrapper" class="space-y-4 pb-4"></div>
+</section>
 <section id="tab-notifications" class="tab-content space-y-4">
       
       <div class="flex items-center gap-2 bg-white border border-outline-variant rounded-full p-2 shadow-sm focus-within:border-primary transition-all">
@@ -399,23 +398,26 @@ function switchTab(tabId) {
     const targetTab = $(`#tab-${tabId}`);
     if (targetTab) {
         targetTab.classList.add('active');
-        targetTab.style.display = tabId === 'chat' ? 'flex' : 'block';
+        // Sửa lại chỉ dùng block, không dùng flex nữa
+        targetTab.style.display = 'block'; 
     }
     
     const titles = { weather: 'Weather', devices: 'Devices', chat: 'AI Assistant', notifications: 'Alerts' };
     $('#pageTitle').textContent = titles[tabId];
     
+    const mainEl = document.querySelector('main');
     if(tabId === 'chat') {
       $('#chatInputArea').classList.remove('hidden');
+      mainEl.classList.remove('pb-20');
+      mainEl.classList.add('pb-36'); // Nới đáy thẻ main để tin nhắn không bị che
       if ($('#messagesWrapper').children.length === 0) initChat();
+      setTimeout(() => { mainEl.scrollTop = mainEl.scrollHeight; }, 10);
     } else {
       $('#chatInputArea').classList.add('hidden');
+      mainEl.classList.remove('pb-36');
+      mainEl.classList.add('pb-20'); // Trả lại chiều cao đáy bình thường
     }
 }
-
-$$('.mobile-nav-item').forEach(btn => {
-  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
-});
 
 $('#notifBtn').addEventListener('click', () => {
   $('#notifDot').classList.add('hidden'); 
@@ -753,7 +755,8 @@ function appendMsg(sender, text) {
     </div>
   `;
   $('#messagesWrapper').insertAdjacentHTML('beforeend', html);
-  $('#messagesWrapper').scrollTop = $('#messagesWrapper').scrollHeight;
+  const mainEl = document.querySelector('main');
+mainEl.scrollTop = mainEl.scrollHeight;
 }
 
 // HIỆU ỨNG GÕ CHỮ CHO AI
@@ -777,7 +780,8 @@ function appendDynamicAIMsg(text) {
   const typingInterval = setInterval(() => {
     i += charsPerFrame;
     bubble.innerHTML = marked.parse(text.substring(0, i));
-    $('#messagesWrapper').scrollTop = $('#messagesWrapper').scrollHeight;
+    const mainEl = document.querySelector('main');
+mainEl.scrollTop = mainEl.scrollHeight;
     
     if (i >= text.length) {
       clearInterval(typingInterval);
@@ -815,7 +819,8 @@ $('#chatForm').addEventListener('submit', async (e) => {
     </div>
   `;
   $('#messagesWrapper').insertAdjacentHTML('beforeend', typingHtml);
-  $('#messagesWrapper').scrollTop = $('#messagesWrapper').scrollHeight;
+  const mainEl = document.querySelector('main');
+mainEl.scrollTop = mainEl.scrollHeight;
   
   // 3. Gọi API
   try {

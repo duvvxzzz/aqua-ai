@@ -354,16 +354,6 @@ function renderWeather(d) {
     `).join("");
   }
 }
-function renderRisk(r) {
-  $('#risk-level').textContent = r.level;
-  $('#risk-level').style.color = r.color;
-  $('#risk-icon').style.color = r.color;
-  $('#risk-score').textContent = r.risk_score;
-  $('#risk-score').style.color = r.color;
-  $('#risk-bar').style.width = r.risk_score + "%";
-  $('#risk-bar').style.background = r.color;
-  $('#risk-actions').innerHTML = r.actions.map(a => `<li>• ${a}</li>`).join("");
-}
 
 async function loadWeather(loc = 'Hanoi') {
   try {
@@ -401,12 +391,10 @@ async function loadWeather(loc = 'Hanoi') {
     const rRes = await fetch(`${API_BASE}/api/weather-risk?location=${encodeURIComponent(loc)}`);
     
     renderWeather(await wRes.json());
-    if (rRes.ok) renderRisk(await rRes.json());
   } catch (e) {
     // Network error or backend completely down - use fallback data
     console.warn("Network error or backend down, using fallback data:", e.message);
     renderWeather({ ...FALLBACK_W, location: loc + " (Local)" });
-    renderRisk(FALLBACK_R);
   }
 }
 

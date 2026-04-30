@@ -381,7 +381,6 @@ const FALLBACK_R = { risk_score: 62, level: "Medium", color: "#f59e0b", message:
 function switchTab(tabId) {
     currentTab = tabId;
     
-    // Cập nhật trạng thái thanh menu dưới cùng
     $$('.mobile-nav-item').forEach(b => {
       if (b.dataset.tab === tabId) {
         b.classList.add('active', 'text-primary');
@@ -392,7 +391,6 @@ function switchTab(tabId) {
       }
     });
     
-    // Ẩn/Hiện thẻ content
     $$('.tab-content').forEach(c => {
         c.classList.remove('active');
         c.style.display = 'none'; 
@@ -404,11 +402,9 @@ function switchTab(tabId) {
         targetTab.style.display = tabId === 'chat' ? 'flex' : 'block';
     }
     
-    // Đổi tiêu đề
     const titles = { weather: 'Weather', devices: 'Devices', chat: 'AI Assistant', notifications: 'Alerts' };
     $('#pageTitle').textContent = titles[tabId];
     
-    // Hiện ô Chat
     if(tabId === 'chat') {
       $('#chatInputArea').classList.remove('hidden');
       if ($('#messagesWrapper').children.length === 0) initChat();
@@ -417,14 +413,12 @@ function switchTab(tabId) {
     }
 }
 
-// Bắt sự kiện menu dưới cùng
 $$('.mobile-nav-item').forEach(btn => {
   btn.addEventListener('click', () => switchTab(btn.dataset.tab));
 });
 
-// Bắt sự kiện Nút Chuông Thông Báo
 $('#notifBtn').addEventListener('click', () => {
-  $('#notifDot').classList.add('hidden'); // Tắt dấu chấm đỏ khi đã xem
+  $('#notifDot').classList.add('hidden'); 
   switchTab('notifications');
 });
 
@@ -745,10 +739,11 @@ async function loadChart(pond) {
   } catch(e) {}
 }
 
+// Hàm in tin nhắn tức thì (dùng cho User)
 function appendMsg(sender, text) {
   const isUser = sender === 'User';
   const html = `
-    <div class="flex gap-2 ${isUser ? 'flex-row-reverse' : ''}">
+    <div class="flex gap-2 ${isUser ? 'flex-row-reverse' : ''} message-enter">
       <div class="w-8 h-8 rounded-full flex shrink-0 items-center justify-center ${isUser ? 'bg-surface-variant' : 'bg-primary text-white'}">
         <span class="material-symbols-outlined text-[16px]">${isUser ? 'person' : 'smart_toy'}</span>
       </div>
@@ -761,6 +756,36 @@ function appendMsg(sender, text) {
   $('#messagesWrapper').scrollTop = $('#messagesWrapper').scrollHeight;
 }
 
+// HIỆU ỨNG GÕ CHỮ CHO AI
+function appendDynamicAIMsg(text) {
+  const msgId = 'ai-msg-' + Date.now();
+  const html = `
+    <div class="flex gap-2 message-enter">
+      <div class="w-8 h-8 rounded-full flex shrink-0 items-center justify-center bg-primary text-white">
+        <span class="material-symbols-outlined text-[16px]">smart_toy</span>
+      </div>
+      <div id="${msgId}" class="p-3 rounded-2xl max-w-[80%] text-sm bg-surface-container rounded-tl-sm markdown-content min-h-[44px]">
+      </div>
+    </div>
+  `;
+  $('#messagesWrapper').insertAdjacentHTML('beforeend', html);
+  
+  const bubble = document.getElementById(msgId);
+  let i = 0;
+  const charsPerFrame = 2; // Tốc độ gõ: Tăng số này lên nếu muốn gõ nhanh hơn
+  
+  const typingInterval = setInterval(() => {
+    i += charsPerFrame;
+    bubble.innerHTML = marked.parse(text.substring(0, i));
+    $('#messagesWrapper').scrollTop = $('#messagesWrapper').scrollHeight;
+    
+    if (i >= text.length) {
+      clearInterval(typingInterval);
+      bubble.innerHTML = marked.parse(text); // Chốt hạ nội dung cuối cùng
+    }
+  }, 15);
+}
+
 function initChat() {
   appendMsg('AI', "**Hello!** Aqua-AI system is online. How can I assist you today?");
 }
@@ -771,22 +796,21 @@ $('#chatForm').addEventListener('submit', async (e) => {
   const msg = input.value.trim();
   if(!msg) return;
   
-  // 1. Hiển thị tin nhắn của người dùng
+  // 1. Hiển thị tin nhắn User
   input.value = '';
   appendMsg('User', msg);
-  $('#messagesWrapper').scrollTop = $('#messagesWrapper').scrollHeight;
   
-  // 2. Tạo bong bóng "AI đang gõ..." (Typing Indicator)
+  // 2. Hiện bong bóng "AI đang suy nghĩ..." (Lượn sóng)
   const typingId = 'typing-' + Date.now();
   const typingHtml = `
     <div id="${typingId}" class="flex gap-2 message-enter">
       <div class="w-8 h-8 rounded-full flex shrink-0 items-center justify-center bg-primary text-white">
         <span class="material-symbols-outlined text-[16px]">smart_toy</span>
       </div>
-      <div class="p-3 rounded-2xl bg-surface-container rounded-tl-sm flex items-center justify-center gap-1 min-w-[60px]">
-        <span class="w-1.5 h-1.5 bg-outline rounded-full typing-dot"></span>
-        <span class="w-1.5 h-1.5 bg-outline rounded-full typing-dot"></span>
-        <span class="w-1.5 h-1.5 bg-outline rounded-full typing-dot"></span>
+      <div class="p-3 rounded-2xl bg-surface-container rounded-tl-sm flex items-center justify-center gap-1 min-w-[50px] h-[40px]">
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
       </div>
     </div>
   `;
@@ -801,20 +825,38 @@ $('#chatForm').addEventListener('submit', async (e) => {
     });
     const data = await res.json();
     
-    // 4. Xóa bong bóng "đang gõ" và hiện câu trả lời thật
+    // 4. Tắt bong bóng lượn sóng
     const typingEl = document.getElementById(typingId);
     if (typingEl) typingEl.remove();
     
-    appendMsg('AI', data.reply || data.response);
+    // 5. Chạy hiệu ứng AI gõ từng chữ
+    appendDynamicAIMsg(data.reply || data.response);
+    
     chatHistory.push({role: 'user', content: msg}, {role: 'assistant', content: data.reply});
   } catch(e) {
-    // Nếu lỗi cũng phải xóa bong bóng "đang gõ"
     const typingEl = document.getElementById(typingId);
     if (typingEl) typingEl.remove();
-    
-    appendMsg('AI', "⚠️ Connection Error. Please try again later!");
+    appendMsg('AI', "⚠️ Lỗi kết nối đến máy chủ AI. Xin thử lại sau.");
   }
 });
+
+// Toast Notification Helper
+function showToast(title, message, icon = 'info') {
+  const toast = document.createElement('div');
+  toast.className = 'fixed bottom-20 left-4 right-4 bg-surface-container border border-outline-variant rounded-lg px-4 py-3 shadow-lg z-50 animate-fade-in';
+  toast.innerHTML = `
+    <div class="flex items-start gap-2">
+      <span class="material-symbols-outlined text-primary mt-0.5">${icon}</span>
+      <div>
+        <p class="font-bold text-sm text-on-surface">${title}</p>
+        <p class="text-xs text-on-surface-variant mt-0.5">${message}</p>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
 $('#weatherSearch').addEventListener('keydown', (e) => { if (e.key === 'Enter') loadWeather(e.target.value); });
 $('#metricSelect').addEventListener('change', () => loadChart($('#globalPondSelector').value));
 $('#globalPondSelector').addEventListener('change', () => { loadDevices(); if(currentTab === 'weather') loadWeather(); });

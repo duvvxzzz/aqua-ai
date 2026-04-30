@@ -745,22 +745,40 @@ async function loadChart(pond) {
   } catch(e) {}
 }
 
-function appendMsg(sender, text) {
-  const isUser = sender === 'User';
+// Hàm tạo hiệu ứng AI đang gõ từng chữ (Typewriter Effect)
+function appendDynamicAIMsg(text) {
+  const msgId = 'ai-msg-' + Date.now();
   const html = `
-    <div class="flex gap-2 ${isUser ? 'flex-row-reverse' : ''}">
-      <div class="w-8 h-8 rounded-full flex shrink-0 items-center justify-center ${isUser ? 'bg-surface-variant' : 'bg-primary text-white'}">
-        <span class="material-symbols-outlined text-[16px]">${isUser ? 'person' : 'smart_toy'}</span>
+    <div class="flex gap-2 message-enter">
+      <div class="w-8 h-8 rounded-full flex shrink-0 items-center justify-center bg-primary text-white">
+        <span class="material-symbols-outlined text-[16px]">smart_toy</span>
       </div>
-      <div class="p-3 rounded-2xl max-w-[80%] text-sm ${isUser ? 'bg-primary text-white rounded-tr-sm' : 'bg-surface-container rounded-tl-sm markdown-content'}">
-        ${isUser ? text : marked.parse(text)}
+      <div id="${msgId}" class="p-3 rounded-2xl max-w-[80%] text-sm bg-surface-container rounded-tl-sm markdown-content">
       </div>
     </div>
   `;
   $('#messagesWrapper').insertAdjacentHTML('beforeend', html);
-  $('#messagesWrapper').scrollTop = $('#messagesWrapper').scrollHeight;
+  
+  const bubble = document.getElementById(msgId);
+  let i = 0;
+  const charsPerFrame = 3; // Số ký tự hiện ra mỗi nhịp (Tăng lên nếu muốn AI gõ nhanh hơn)
+  
+  // Vòng lặp chạy hiệu ứng gõ chữ
+  const typingInterval = setInterval(() => {
+    i += charsPerFrame;
+    // Cắt chuỗi và chuyển Markdown thành HTML liên tục
+    bubble.innerHTML = marked.parse(text.substring(0, i));
+    
+    // Tự động cuộn xuống cùng khi chữ đang sinh ra
+    $('#messagesWrapper').scrollTop = $('#messagesWrapper').scrollHeight;
+    
+    // Khi gõ xong toàn bộ chữ
+    if (i >= text.length) {
+      clearInterval(typingInterval);
+      bubble.innerHTML = marked.parse(text); // Chốt hạ nội dung cuối cùng
+    }
+  }, 15); // Tốc độ gõ (15ms/nhịp)
 }
-
 function initChat() {
   appendMsg('AI', "**Hello!** Aqua-AI system is online. How can I assist you today?");
 }
@@ -800,6 +818,12 @@ $('#chatForm').addEventListener('submit', async (e) => {
       body: JSON.stringify({ message: msg, pond: $('#globalPondSelector').value, history: chatHistory })
     });
     const data = await res.json();
+    $('#typingIndicator').classList.add('hidden');
+    
+    // Gọi hiệu ứng gõ chữ động thay vì in ra toàn bộ
+    appendDynamicAIMsg(data.reply || data.response); 
+    
+    chatHistory.push({role: 'user', content: msg}, {role: 'assistant', content: data.reply});
     
     // 4. Xóa bong bóng "đang gõ" và hiện câu trả lời thật
     const typingEl = document.getElementById(typingId);

@@ -138,7 +138,7 @@ async def chat(req: ChatRequest):
     except:
         weather_data = {"description": "N/A", "temperature": 31, "humidity": 84, "wind_speed": 10}
         
-    risk_data = get_disease_risk(req.pond)
+    # risk_data = get_disease_risk(req.pond)
     system_prompt = f"""CURRENT ENVIRONMENT DATA:
 Salinity: {sensor_data.get('salinity')} ppt | pH: {sensor_data.get('ph')}
 Temp: {sensor_data.get('temperature')} °C | DO: {sensor_data.get('do')} mg/L

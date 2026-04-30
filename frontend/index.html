@@ -276,22 +276,34 @@ $$('.mobile-nav-item').forEach(btn => {
     btn.classList.add('active', 'text-primary');
     btn.classList.remove('text-on-surface-variant');
     
-    $$('.tab-content').forEach(c => c.classList.remove('active'));
-    $(`#tab-${tabId}`).classList.add('active');
+    // ÉP ẨN TOÀN BỘ CÁC TAB BẰNG CSS INLINE ĐỂ KHÔNG BỊ TRÀN
+    $$('.tab-content').forEach(c => {
+        c.classList.remove('active');
+        c.style.display = 'none'; 
+    });
+    
+    // HIỂN THỊ LẠI TAB ĐƯỢC CHỌN
+    const targetTab = $(`#tab-${tabId}`);
+    if (targetTab) {
+        targetTab.classList.add('active');
+        targetTab.style.display = tabId === 'chat' ? 'flex' : 'block';
+    }
     
     const titles = { weather: 'Weather', devices: 'Devices', chat: 'AI Assistant' };
     $('#pageTitle').textContent = titles[tabId];
     
-    // Hiện/Ẩn thanh nhập Chat
+    // Hiện/Ẩn thanh nhập Chat & Logic kiểm tra chào 1 lần
     if(tabId === 'chat') {
       $('#chatInputArea').classList.remove('hidden');
-      if(chatHistory.length === 0) initChat();
+      // Chỉ chào nếu giao diện chưa có đoạn chat nào
+      if ($('#messagesWrapper').children.length === 0) {
+         initChat();
+      }
     } else {
       $('#chatInputArea').classList.add('hidden');
     }
   });
 });
-
 // 1. Hàm tính mức độ UV (Bị thiếu khiến code sập)
 function uvLabel(v) {
   if (v <= 2) return { l: "Low", c: "#22c55e" };
@@ -472,7 +484,7 @@ function appendMsg(sender, text) {
 }
 
 function initChat() {
-  appendMsg('AI', "**Chào bạn!** Hệ thống Aqua-AI đang hoạt động. Tôi có thể giúp gì cho bạn hôm nay?");
+  appendMsg('AI', "**Hello!** Aqua-AI system is online. How can I assist you today?");
 }
 
 $('#chatForm').addEventListener('submit', async (e) => {

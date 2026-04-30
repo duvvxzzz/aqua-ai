@@ -54,6 +54,16 @@
     .chart-container { position: relative; height: 220px; width: 100%; }
     .mobile-nav-item.active { color: #005394; }
     .markdown-content ul { list-style-type: disc; padding-left: 1.5rem; margin: 0.5rem 0; }
+    
+    /* Device Card Styles - Updated from Aquaculture Pro */
+    .device-card { transition: all 0.2s ease; }
+    .device-card:active { transform: scale(0.99); }
+    .signal-bars span { display: inline-block; width: 2px; margin: 0 1px; background: currentColor; border-radius: 1px; }
+    .signal-bars span:nth-child(1) { height: 3px; }
+    .signal-bars span:nth-child(2) { height: 6px; }
+    .signal-bars span:nth-child(3) { height: 9px; }
+    .signal-bars span:nth-child(4) { height: 12px; }
+    .battery-fill { transition: width 0.3s ease; }
   </style>
 </head>
 
@@ -183,6 +193,7 @@
         </div>
       </div>
 
+      <!-- UPDATED: Devices Grid with Polished Card Design -->
       <div id="devicesGrid" class="space-y-3">
         <p class="text-center text-sm text-outline loading-pulse mt-4">Đang tải dữ liệu thiết bị...</p>
       </div>
@@ -304,7 +315,8 @@ $$('.mobile-nav-item').forEach(btn => {
     }
   });
 });
-// 1. Hàm tính mức độ UV (Bị thiếu khiến code sập)
+
+// 1. Hàm tính mức độ UV
 function uvLabel(v) {
   if (v <= 2) return { l: "Low", c: "#22c55e" };
   if (v <= 5) return { l: "Moderate", c: "#f59e0b" };
@@ -347,7 +359,7 @@ function renderWeather(d) {
   
   if ($('#stat-uv')) {
     const uvVal = d.uv_index || 0;
-    const uv = uvLabel(uvVal); // Hàm này giờ đã có mặt, code sẽ không sập nữa
+    const uv = uvLabel(uvVal);
     $('#stat-uv').textContent = d.uv_index !== undefined ? `${uvVal} ${uv.l}` : '--';
     if ($('#stat-uv-dot')) $('#stat-uv-dot').style.backgroundColor = uv.c;
   }
@@ -371,13 +383,11 @@ async function loadWeather(loc = 'Hanoi') {
   try {
     const wRes = await fetch(`${API_BASE}/api/weather?location=${encodeURIComponent(loc)}`);
     
-    // 404: City not found - no fallback data, show error state
     if (wRes.status === 404) {
       $('#hero-location').textContent = 'Không tìm thấy thành phố';
       $('#hero-desc').textContent = 'Vui lòng kiểm tra lại chính tả';
       $('#hero-temp').textContent = '--';
       
-      // Clear badges and stats
       if ($('#w-badges')) $('#w-badges').innerHTML = '';
       if ($('#stat-humidity')) $('#stat-humidity').textContent = '--';
       if ($('#stat-tide')) $('#stat-tide').textContent = '--';
@@ -389,28 +399,105 @@ async function loadWeather(loc = 'Hanoi') {
       return;
     }
     
-    // 500: Server/API Key error - show error and stop
     if (wRes.status === 500) {
       $('#hero-desc').textContent = 'Lỗi máy chủ thời tiết';
       console.error('Weather API server error (500)');
       return;
     }
     
-    // Other API errors - throw to catch block for fallback
     if (!wRes.ok) throw new Error(`API returned status ${wRes.status}`);
     
-    // Fetch risk data
     const rRes = await fetch(`${API_BASE}/api/weather-risk?location=${encodeURIComponent(loc)}`);
     
     renderWeather(await wRes.json());
   } catch (e) {
-    // Network error or backend completely down - use fallback data
     console.warn("Network error or backend down, using fallback data:", e.message);
     renderWeather({ ...FALLBACK_W, location: loc + " (Local)" });
   }
 }
 
-// Render Devices
+// ========== UPDATED: Render Devices with Polished Card Design ==========
+function getBatteryColor(level) {
+  if (level >= 80) return 'text-secondary';
+  if (level >= 40) return 'text-tertiary';
+  return 'text-error';
+}
+
+function getSignalLevel(signal) {
+  if (signal >= 80) return 4;
+  if (signal >= 60) return 3;
+  if (signal >= 40) return 2;
+  return 1;
+}
+
+function renderDeviceCard(data) {
+  const statusConfig = {
+    online: { bg: 'bg-secondary-container', text: 'text-on-secondary-container', dot: 'bg-secondary', label: 'Online' },
+    warning: { bg: 'bg-error-container', text: 'text-on-error-container', dot: 'bg-error', label: 'Warning' },
+    offline: { bg: 'bg-surface-variant', text: 'text-on-surface-variant', dot: 'bg-outline', label: 'Offline' }
+  };
+  const cfg = statusConfig[data.status] || statusConfig.offline;
+  const isOffline = data.status === 'offline';
+  
+  const iconMap = { temperature: 'device_thermostat', ph: 'science', salinity: 'opacity', do: 'water_drop', ammonia: 'dangerous' };
+  
+  return `
+    <div class="device-card bg-surface-container-lowest border border-surface-variant rounded-xl p-4 shadow-sm" data-device-id="${data.device_id}">
+      <!-- Header: Icon, Name, ID, Status -->
+      <div class="flex justify-between items-start mb-3">
+        <div class="flex items-center gap-2">
+          <div class="${isOffline ? 'bg-surface-variant' : 'bg-primary-container/10'} p-2 rounded-lg flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px] ${isOffline ? 'text-on-surface-variant' : 'text-primary'}">${iconMap.temperature}</span>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-on-surface">${data.pond_name || 'Unknown'} Sensor</h3>
+            <p class="text-[10px] text-on-surface-variant">ID: ${data.device_id}</p>
+          </div>
+        </div>
+        <span class="${cfg.bg} ${cfg.text} text-[10px] px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full ${cfg.dot}"></span>
+          ${cfg.label}
+        </span>
+      </div>
+      
+      <!-- Metrics Grid: 4 key readings -->
+      <div class="grid grid-cols-2 gap-2 mb-3">
+        <div class="bg-surface-container-low p-2 rounded-lg">
+          <p class="text-[10px] text-on-surface-variant">Temperature</p>
+          <p class="font-bold text-lg ${isOffline ? 'text-outline' : ''}">${data.temperature !== undefined ? data.temperature + '°C' : '--'}</p>
+        </div>
+        <div class="bg-surface-container-low p-2 rounded-lg">
+          <p class="text-[10px] text-on-surface-variant">pH Level</p>
+          <p class="font-bold text-lg ${isOffline ? 'text-outline' : (data.ph < 7.5 || data.ph > 8.5 ? 'text-error' : '')}">${data.ph !== undefined ? data.ph : '--'}</p>
+        </div>
+        <div class="bg-surface-container-low p-2 rounded-lg">
+          <p class="text-[10px] text-on-surface-variant">Salinity</p>
+          <p class="font-bold text-lg ${isOffline ? 'text-outline' : ''}">${data.salinity !== undefined ? data.salinity + ' ppt' : '--'}</p>
+        </div>
+        <div class="bg-surface-container-low p-2 rounded-lg">
+          <p class="text-[10px] text-on-surface-variant">Dissolved O₂</p>
+          <p class="font-bold text-lg ${isOffline ? 'text-outline' : (data.do < 5 ? 'text-error' : '')}">${data.do !== undefined ? data.do + ' mg/L' : '--'}</p>
+        </div>
+      </div>
+      
+      <!-- Footer: Battery, Signal, Details -->
+      <div class="pt-2 border-t border-surface-variant flex items-center justify-between text-[10px]">
+        <div class="flex items-center gap-1">
+          <span class="material-symbols-outlined text-[14px] ${getBatteryColor(data.battery)}">battery_${data.battery >= 80 ? 'full' : data.battery >= 40 ? '5_bar' : 'alert'}</span>
+          <span class="${getBatteryColor(data.battery)} font-bold">${data.battery}%</span>
+        </div>
+        <div class="flex items-center gap-1 signal-bars ${isOffline ? 'text-outline' : 'text-on-surface-variant'}">
+          ${[1,2,3,4].map(i => `<span style="opacity: ${i <= getSignalLevel(data.signal || 70) ? 1 : 0.3}"></span>`).join('')}
+          <span class="ml-0.5">${data.signal !== undefined ? data.signal + '%' : '--'}</span>
+        </div>
+        <button class="view-details-btn text-primary font-bold flex items-center gap-0.5" data-device='${JSON.stringify(data).replace(/'/g, "&apos;")}'>
+          Details <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
 async function loadDevices() {
   const pond = $('#globalPondSelector').value;
   try {
@@ -425,23 +512,20 @@ async function loadDevices() {
     $('#onlineDevices').textContent = stats.online;
     $$('.loading-pulse').forEach(el => el.classList.remove('loading-pulse'));
 
-    $('#devicesGrid').innerHTML = `
-      <div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-4 shadow-sm">
-        <div class="flex justify-between items-center mb-3">
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary bg-primary-container/10 p-1.5 rounded-lg">science</span>
-            <span class="font-bold text-sm">${data.pond_name}</span>
-          </div>
-          <span class="bg-secondary-container text-on-secondary-container text-[10px] px-2 py-1 rounded-full font-bold">ONLINE</span>
-        </div>
-        <div class="grid grid-cols-2 gap-3 text-sm">
-          <div class="bg-surface-container-low p-2 rounded-lg"><p class="text-[10px] text-outline">pH Level</p><p class="font-bold text-lg">${data.ph}</p></div>
-          <div class="bg-surface-container-low p-2 rounded-lg"><p class="text-[10px] text-outline">Temp</p><p class="font-bold text-lg">${data.temperature}°C</p></div>
-          <div class="bg-surface-container-low p-2 rounded-lg"><p class="text-[10px] text-outline">Salinity</p><p class="font-bold text-lg">${data.salinity} ppt</p></div>
-          <div class="bg-surface-container-low p-2 rounded-lg"><p class="text-[10px] text-outline">Oxygen (DO)</p><p class="font-bold text-lg">${data.do} mg/L</p></div>
-        </div>
-      </div>
-    `;
+    // UPDATED: Render using polished card design
+    $('#devicesGrid').innerHTML = renderDeviceCard({
+      ...data,
+      status: 'online',
+      battery: data.battery || 85,
+      signal: data.signal || 90
+    });
+    
+    // Attach details button listener
+    $('.view-details-btn')?.addEventListener('click', (e) => {
+      const deviceData = JSON.parse(e.currentTarget.dataset.device.replace(/&apos;/g, "'"));
+      showToast('Device Details', `Viewing ${deviceData.device_id}`, 'info');
+    });
+    
     loadChart(pond);
   } catch (e) {
     $('#devicesGrid').innerHTML = `<p class="text-center text-sm text-error">Không thể tải dữ liệu thiết bị lúc này.</p>`;
@@ -512,6 +596,24 @@ $('#chatForm').addEventListener('submit', async (e) => {
     appendMsg('AI', "⚠️ Lỗi kết nối đến máy chủ AI. Xin thử lại sau.");
   }
 });
+
+// Toast Notification Helper
+function showToast(title, message, icon = 'info') {
+  // Simple inline toast for mobile
+  const toast = document.createElement('div');
+  toast.className = 'fixed bottom-20 left-4 right-4 bg-surface-container border border-outline-variant rounded-lg px-4 py-3 shadow-lg z-50 animate-fade-in';
+  toast.innerHTML = `
+    <div class="flex items-start gap-2">
+      <span class="material-symbols-outlined text-primary mt-0.5">${icon}</span>
+      <div>
+        <p class="font-bold text-sm text-on-surface">${title}</p>
+        <p class="text-xs text-on-surface-variant mt-0.5">${message}</p>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
 
 // Event Listeners
 $('#weatherSearch').addEventListener('keydown', (e) => { if (e.key === 'Enter') loadWeather(e.target.value); });

@@ -212,11 +212,11 @@
             <span class="material-symbols-outlined text-primary text-[18px]">timeline</span>
             Sensor History (24h)
           </h2>
-          <select id="metricSelect" class="bg-surface border border-outline-variant rounded-md px-2 py-1 text-[10px] outline-none font-bold">
-            <option value="ph">pH Level</option>
-            <option value="salinity">Salinity</option>
-            <option value="temperature">Temperature</option>
-          </select>
+<select id="metricSelect" class="bg-surface border border-outline-variant rounded-md pl-2 pr-6 py-1.5 text-[10px] outline-none font-bold text-on-surface cursor-pointer">
+  <option value="temperature" selected>Temperature</option>
+  <option value="ph">pH Level</option>
+  <option value="salinity">Salinity</option>
+</select>
         </div>
         
         <div class="flex gap-4 mb-2" id="chart-stats">
@@ -717,15 +717,18 @@ async function loadChart(pond) {
     const labels = data.data.map(d => d.time);
     const values = data.data.map(d => d.value);
     
-    // Tính toán Thấp nhất, Cao nhất, Trung bình
-    const maxVal = Math.max(...values).toFixed(2);
-    const minVal = Math.min(...values).toFixed(2);
-    const avgVal = (values.reduce((a, b) => a + b, 0) / values.length).toFixed(2);
+    // Cập nhật High, Low, Avg
+    if (values.length > 0) {
+      const maxVal = Math.max(...values).toFixed(1);
+      const minVal = Math.min(...values).toFixed(1);
+      const avgVal = (values.reduce((a, b) => a + b, 0) / values.length).toFixed(1);
+      
+      if ($('#chart-high')) $('#chart-high').textContent = maxVal;
+      if ($('#chart-low')) $('#chart-low').textContent = minVal;
+      if ($('#chart-avg')) $('#chart-avg').textContent = avgVal;
+    }
     
-    $('#chart-high').textContent = maxVal;
-    $('#chart-low').textContent = minVal;
-    $('#chart-avg').textContent = avgVal;
-    
+    // Vẽ biểu đồ
     historyChart = new Chart($('#historyChart').getContext('2d'), {
       type: 'line',
       data: { 
@@ -734,11 +737,11 @@ async function loadChart(pond) {
           label: metric, 
           data: values, 
           borderColor: '#005394', 
-          backgroundColor: 'rgba(43, 108, 176, 0.15)', // Màu gradient xanh nhạt
+          backgroundColor: 'rgba(43, 108, 176, 0.1)', 
           fill: true, 
           tension: 0.4, 
           pointRadius: 0,
-          borderWidth: 2
+          borderWidth: 3
         }] 
       },
       options: { 
@@ -748,13 +751,18 @@ async function loadChart(pond) {
         scales: { 
           x: { display: false },
           y: { 
-            display: false, // Ẩn cột Y để giống thiết kế của bạn
-            min: Math.min(...values) * 0.9 // Để đường line không chạm sát đáy
+            display: true, // Bật trục Y giống ảnh của bạn
+            position: 'left',
+            grid: { color: 'rgba(0,0,0,0.05)' },
+            border: { display: false },
+            ticks: { font: { size: 10 }, color: '#727782' }
           } 
         } 
       }
     });
-  } catch(e) {}
+  } catch(e) {
+    console.error("There is an error in loading map:", e);
+  }
 }
 async function loadChart(pond) {
   const metric = $('#metricSelect').value;

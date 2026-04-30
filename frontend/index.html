@@ -248,22 +248,15 @@
       </div>
     </section>
 
-    <section id="tab-chat" class="tab-content flex flex-col h-full">
+<section id="tab-chat" class="tab-content flex flex-col h-full">
       <div id="messagesWrapper" class="flex-1 overflow-y-auto space-y-4 pb-4"></div>
-      
-      <div id="typingIndicator" class="hidden pb-4">
-        <div class="flex gap-2 items-center">
-          <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-white text-[14px]">smart_toy</span></div>
-          <div class="bg-surface-container px-3 py-2 rounded-xl flex gap-1"><span class="w-1.5 h-1.5 bg-outline rounded-full typing-dot"></span><span class="w-1.5 h-1.5 bg-outline rounded-full typing-dot"></span><span class="w-1.5 h-1.5 bg-outline rounded-full typing-dot"></span></div>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="tab-notifications" class="tab-content space-y-4">
+<section id="tab-notifications" class="tab-content space-y-4">
       
       <div class="flex items-center gap-2 bg-white border border-outline-variant rounded-full p-2 shadow-sm focus-within:border-primary transition-all">
         <span class="material-symbols-outlined text-outline ml-2 text-[20px]">search</span>
-        <input class="w-full bg-transparent border-none focus:ring-0 text-sm outline-none" placeholder="Search alerts by pond, metric..." type="text"/>
+        <input class="w-full bg-transparent border-none focus:ring-0 text-sm outline-none" placeholder="Search alerts..." type="text"/>
       </div>
 
       <div class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col gap-3 shadow-sm relative overflow-hidden">
@@ -274,25 +267,14 @@
           </div>
           <div class="flex-1">
             <div class="flex justify-between items-start">
-              <h3 class="font-bold text-sm text-on-surface">Salinity High Alert</h3>
+              <h3 class="font-bold text-sm text-on-surface">Aerator Power Alert</h3>
               <span class="text-[10px] text-outline-variant">5 mins ago</span>
             </div>
-            <p class="text-xs text-on-surface-variant mt-1">Critical levels detected in <span class="font-bold text-on-surface">Pond #1</span>. Immediate action required.</p>
-          </div>
-        </div>
-        <div class="bg-surface-container-low rounded-lg p-2 flex gap-4 items-center ml-12">
-          <div>
-            <span class="text-[9px] text-outline uppercase font-bold">Current</span>
-            <p class="text-sm font-bold text-red-600">22.5 ppt</p>
-          </div>
-          <div class="w-px h-6 bg-outline-variant"></div>
-          <div>
-            <span class="text-[9px] text-outline uppercase font-bold">Safe Limit</span>
-            <p class="text-sm font-bold text-on-surface-variant">20.0 ppt</p>
+            <p class="text-xs text-on-surface-variant mt-1">Sudden voltage drop detected at the main aerator. System has automatically engaged backup battery.</p>
           </div>
         </div>
         <div class="flex gap-2 ml-12 mt-1">
-          <button class="bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-lg flex-1">View Pond</button>
+          <button class="bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-lg flex-1">Check Power</button>
           <button class="bg-transparent text-primary border border-primary text-xs font-bold px-3 py-1.5 rounded-lg flex-1">Mute</button>
         </div>
       </div>
@@ -301,35 +283,31 @@
         <div class="absolute left-0 top-0 bottom-0 w-1 bg-orange-500"></div>
         <div class="flex gap-3">
           <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">thermostat</span>
+            <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">science</span>
           </div>
           <div class="flex-1">
             <div class="flex justify-between items-start">
-              <h3 class="font-bold text-sm text-on-surface">Low Oxygen Warning</h3>
+              <h3 class="font-bold text-sm text-on-surface">pH Minor Deviation</h3>
               <span class="text-[10px] text-outline-variant">15 mins ago</span>
             </div>
-            <p class="text-xs text-on-surface-variant mt-1">Dissolved oxygen levels are dropping in <span class="font-bold text-on-surface">Pond #3</span>.</p>
-            <div class="mt-1 flex items-center gap-1">
-              <span class="material-symbols-outlined text-orange-600 text-[14px]">trending_down</span>
-              <span class="font-bold text-sm text-on-surface">4.8 mg/L</span>
-            </div>
+            <p class="text-xs text-on-surface-variant mt-1">Slight pH fluctuation detected following recent rainfall. AI is actively monitoring the trend.</p>
           </div>
         </div>
         <div class="ml-12 mt-1">
-          <button class="bg-transparent text-primary border border-primary text-xs font-bold px-3 py-1.5 rounded-lg w-full">Adjust Aerator</button>
+          <button class="bg-transparent text-primary border border-primary text-xs font-bold px-3 py-1.5 rounded-lg w-full">View Analytics</button>
         </div>
       </div>
 
       <div class="bg-white border border-outline-variant rounded-xl p-4 flex gap-3 shadow-sm relative overflow-hidden">
         <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
-          <span class="material-symbols-outlined text-[20px]">info</span>
+          <span class="material-symbols-outlined text-[20px]">restaurant</span>
         </div>
         <div class="flex-1">
           <div class="flex justify-between items-start">
-            <h3 class="font-bold text-sm text-on-surface">Schedule Updated</h3>
+            <h3 class="font-bold text-sm text-on-surface">Auto-Feeding Executed</h3>
             <span class="text-[10px] text-outline-variant">1 hour ago</span>
           </div>
-          <p class="text-xs text-on-surface-variant mt-1">Automated feeding schedule successfully synced for <span class="font-bold text-on-surface">Pond #2</span>.</p>
+          <p class="text-xs text-on-surface-variant mt-1">Morning automated feeding cycle completed successfully. 250g of feed dispensed.</p>
         </div>
       </div>
 
@@ -339,10 +317,10 @@
         </div>
         <div class="flex-1">
           <div class="flex justify-between items-start">
-            <h3 class="font-bold text-sm text-on-surface">Update Complete</h3>
+            <h3 class="font-bold text-sm text-on-surface">Sensor Calibration</h3>
             <span class="text-[10px] text-outline-variant">2 hours ago</span>
           </div>
-          <p class="text-xs text-on-surface-variant mt-1">Firmware v4.2 installed. All sensors are operating normally.</p>
+          <p class="text-xs text-on-surface-variant mt-1">Main sensor cluster successfully recalibrated. Real-time telemetry is syncing normally.</p>
         </div>
       </div>
     </section>
@@ -793,26 +771,50 @@ $('#chatForm').addEventListener('submit', async (e) => {
   const msg = input.value.trim();
   if(!msg) return;
   
+  // 1. Hiển thị tin nhắn của người dùng
   input.value = '';
   appendMsg('User', msg);
-  $('#typingIndicator').classList.remove('hidden');
   $('#messagesWrapper').scrollTop = $('#messagesWrapper').scrollHeight;
   
+  // 2. Tạo bong bóng "AI đang gõ..." (Typing Indicator)
+  const typingId = 'typing-' + Date.now();
+  const typingHtml = `
+    <div id="${typingId}" class="flex gap-2 message-enter">
+      <div class="w-8 h-8 rounded-full flex shrink-0 items-center justify-center bg-primary text-white">
+        <span class="material-symbols-outlined text-[16px]">smart_toy</span>
+      </div>
+      <div class="p-3 rounded-2xl bg-surface-container rounded-tl-sm flex items-center justify-center gap-1 min-w-[60px]">
+        <span class="w-1.5 h-1.5 bg-outline rounded-full typing-dot"></span>
+        <span class="w-1.5 h-1.5 bg-outline rounded-full typing-dot"></span>
+        <span class="w-1.5 h-1.5 bg-outline rounded-full typing-dot"></span>
+      </div>
+    </div>
+  `;
+  $('#messagesWrapper').insertAdjacentHTML('beforeend', typingHtml);
+  $('#messagesWrapper').scrollTop = $('#messagesWrapper').scrollHeight;
+  
+  // 3. Gọi API
   try {
     const res = await fetch(`${API_BASE}/api/chat`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: msg, pond: $('#globalPondSelector').value, history: chatHistory })
     });
     const data = await res.json();
-    $('#typingIndicator').classList.add('hidden');
+    
+    // 4. Xóa bong bóng "đang gõ" và hiện câu trả lời thật
+    const typingEl = document.getElementById(typingId);
+    if (typingEl) typingEl.remove();
+    
     appendMsg('AI', data.reply || data.response);
     chatHistory.push({role: 'user', content: msg}, {role: 'assistant', content: data.reply});
   } catch(e) {
-    $('#typingIndicator').classList.add('hidden');
-    appendMsg('AI', "⚠️ Lỗi kết nối đến máy chủ AI. Xin thử lại sau.");
+    // Nếu lỗi cũng phải xóa bong bóng "đang gõ"
+    const typingEl = document.getElementById(typingId);
+    if (typingEl) typingEl.remove();
+    
+    appendMsg('AI', "⚠️ Connection Error. Please try again later!");
   }
 });
-
 $('#weatherSearch').addEventListener('keydown', (e) => { if (e.key === 'Enter') loadWeather(e.target.value); });
 $('#metricSelect').addEventListener('change', () => loadChart($('#globalPondSelector').value));
 $('#globalPondSelector').addEventListener('change', () => { loadDevices(); if(currentTab === 'weather') loadWeather(); });

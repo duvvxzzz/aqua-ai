@@ -419,6 +419,15 @@ function switchTab(tabId) {
     }
 }
 
+$$('.mobile-nav-item').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+$('#notifBtn').addEventListener('click', () => {
+  $('#notifDot').classList.add('hidden'); 
+  switchTab('notifications');
+});
+
 $('#notifBtn').addEventListener('click', () => {
   $('#notifDot').classList.add('hidden'); 
   switchTab('notifications');

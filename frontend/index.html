@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>Aqua-AI Mobile</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-low": "#f2f3fa", "error-container": "#ffdad6",
+            "on-primary-fixed": "#001c38", "tertiary-fixed": "#ffdad7",
+            "surface-container-high": "#e7e8ee", "on-surface": "#191c20", 
+            "primary-container": "#2b6cb0", "on-error-container": "#93000a", 
+            "surface-container-highest": "#e1e2e8", "primary": "#005394", 
+            "surface-variant": "#e1e2e8", "secondary-container": "#8ef5b5", 
+            "surface-dim": "#d9dae0", "secondary": "#006d40", "outline": "#727782", 
+            "surface-container": "#ededf4", "surface": "#f8f9ff", "tertiary": "#a70819", 
+            "surface-container-lowest": "#ffffff", "background": "#f8f9ff", 
+            "on-surface-variant": "#414750", "error": "#ba1a1a", "outline-variant": "#c1c7d2",
+            "on-primary": "#ffffff"
+          },
+          fontFamily: { "body-md": ["Inter", "sans-serif"], "headline-md": ["Inter", "sans-serif"] }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    /* Fix app to mobile size on desktop */
+    body { background-color: #e5e7eb; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+    #app-container { width: 100%; max-width: 430px; height: 100dvh; background: #f8f9ff; position: relative; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+    
+    .tab-content { display: none; animation: fadeIn 0.2s ease; }
+    .tab-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .loading-pulse { animation: pulse 1.5s infinite; color: #727782; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .storm-pulse { animation: storm 2s infinite; }
+    @keyframes storm { 0%, 100% { transform: scale(1); opacity: 1;} 50% { transform: scale(1.2); opacity: 0.5;} }
+    
+    .chart-container { position: relative; height: 220px; width: 100%; }
+    .mobile-nav-item.active { color: #005394; }
+    .markdown-content ul { list-style-type: disc; padding-left: 1.5rem; margin: 0.5rem 0; }
+  </style>
+</head>
+
+<body>
+
+<div id="app-container">
+  
+<header class="bg-surface-container-lowest border-b border-surface-variant z-30 px-4 py-3 flex items-center justify-between shrink-0">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+      <h1 id="pageTitle" class="font-headline-md text-on-surface text-lg font-bold tracking-tight">Weather</h1>
+    </div>
+    <div class="flex items-center gap-2">
+      <select id="globalPondSelector" class="hidden">
+        <option value="pond1">Pond 1</option>
+        <option value="pond2">Pond 2</option>
+      </select>
+      <button id="notifBtn" class="relative p-1 rounded-full bg-surface-container text-on-surface-variant">
+        <span class="material-symbols-outlined text-[20px]">notifications</span>
+        <span id="notifDot" class="hidden absolute top-0 right-0 w-2 h-2 bg-error rounded-full storm-pulse"></span>
+      </button>
+    </div>
+  </header>
+  <main class="flex-1 overflow-y-auto overflow-x-hidden p-4 relative pb-20">
+    
+<section id="tab-weather" class="tab-content active space-y-6">
+      <div class="relative flex gap-2">
+        <input id="weatherSearch" class="w-full pl-10 pr-3 py-3 border border-outline-variant rounded-full text-sm bg-white shadow-sm outline-none" placeholder="Hanoi, Vietnam" value="Hanoi, Vietnam"/>
+        <span class="material-symbols-outlined absolute left-3 top-3 text-outline">search</span>
+      </div>
+
+      <div class="flex flex-col items-center justify-center pt-2">
+        <h2 class="text-2xl font-bold text-on-surface" id="hero-location">Đang kết nối...</h2>
+        <div class="flex items-center space-x-4 my-3 text-primary">
+          <span id="hero-icon" class="material-symbols-outlined text-[80px] font-light">hourglass_empty</span>
+          <div class="text-on-surface">
+            <div class="text-[64px] font-bold leading-none tracking-tight" id="hero-temp">--°C</div>
+          </div>
+        </div>
+        <p class="text-sm font-medium text-on-surface-variant mt-1" id="hero-desc">Đang tải dữ liệu</p>
+        
+        <div class="flex flex-wrap justify-center gap-2 mt-4" id="w-badges">
+          </div>
+      </div>
+
+      <div class="mt-8">
+        <h3 class="font-bold text-on-surface mb-4 text-lg">Current Conditions</h3>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
+            <div class="flex justify-between items-start">
+              <span class="material-symbols-outlined text-outline">humidity_percentage</span>
+              <span class="material-symbols-outlined text-error text-[16px]">arrow_upward</span>
+            </div>
+            <div class="mt-4">
+              <p class="text-[11px] font-bold text-outline mb-0.5">Humidity</p>
+              <p class="text-3xl font-bold text-on-surface" id="stat-humidity">--%</p>
+            </div>
+          </div>
+          <div class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
+            <div class="flex justify-between items-start">
+              <span class="material-symbols-outlined text-outline">waves</span>
+              <span class="material-symbols-outlined text-secondary text-[16px]">arrow_downward</span>
+            </div>
+            <div class="mt-4">
+              <p class="text-[11px] font-bold text-outline mb-0.5">Tide</p>
+              <p class="text-3xl font-bold text-on-surface" id="stat-tide">--m</p>
+            </div>
+          </div>
+          <div class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
+            <div class="flex justify-between items-start">
+              <span class="material-symbols-outlined text-outline">light_mode</span>
+              <span class="w-2 h-2 rounded-full bg-error mt-1" id="stat-uv-dot"></span>
+            </div>
+            <div class="mt-4">
+              <p class="text-[11px] font-bold text-outline mb-0.5">UV Index</p>
+              <p class="text-2xl font-bold text-on-surface" id="stat-uv">--</p>
+            </div>
+          </div>
+          <div class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
+            <div class="flex justify-between items-start">
+              <span class="material-symbols-outlined text-outline">compress</span>
+              <span class="material-symbols-outlined text-outline text-[16px]">remove</span>
+            </div>
+            <div class="mt-4">
+              <p class="text-[11px] font-bold text-outline mb-0.5">Pressure</p>
+              <p class="text-2xl font-bold text-on-surface" id="stat-pressure">-- hPa</p>
+            </div>
+          </div>
+          <div class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
+            <div class="flex justify-between items-start">
+              <span class="material-symbols-outlined text-outline">cloud</span>
+            </div>
+            <div class="mt-4">
+              <p class="text-[11px] font-bold text-outline mb-0.5">Cloud Cover</p>
+              <p class="text-3xl font-bold text-on-surface" id="stat-cloud">--%</p>
+            </div>
+          </div>
+          <div class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
+            <div class="flex justify-between items-start">
+              <span class="material-symbols-outlined text-outline">water_drop</span>
+            </div>
+            <div class="mt-4">
+              <p class="text-[11px] font-bold text-outline mb-0.5">Dew Point</p>
+              <p class="text-3xl font-bold text-on-surface" id="stat-dew">--°C</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <h3 class="font-bold text-on-surface mb-4 text-lg">5-Day Forecast</h3>
+        <div class="flex overflow-x-auto pb-4 gap-3 snap-x no-scrollbar" id="forecast-row">
+           <div class="min-w-[100px] h-[120px] bg-surface-container-highest rounded-2xl animate-pulse"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-devices" class="tab-content space-y-6">
+      <div class="grid grid-cols-2 gap-3">
+        <div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-3 text-center shadow-sm">
+          <p class="text-[10px] text-outline font-bold">TOTAL DEVICES</p>
+          <p id="totalDevices" class="text-xl font-bold mt-1 loading-pulse">--</p>
+        </div>
+        <div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-3 text-center shadow-sm">
+          <p class="text-[10px] text-outline font-bold">ONLINE</p>
+          <p id="onlineDevices" class="text-xl font-bold text-secondary mt-1 loading-pulse">--</p>
+        </div>
+      </div>
+
+      <div id="devicesGrid" class="space-y-3">
+        <p class="text-center text-sm text-outline loading-pulse mt-4">Đang tải dữ liệu thiết bị...</p>
+      </div>
+
+      <div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-4 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-sm">Sensor History</h3>
+          <select id="metricSelect" class="bg-surface border border-outline-variant rounded-md px-2 py-1 text-xs">
+            <option value="ph">pH Level</option>
+            <option value="salinity">Salinity</option>
+            <option value="temperature">Temperature</option>
+          </select>
+        </div>
+        <div class="chart-container"><canvas id="historyChart"></canvas></div>
+      </div>
+    </section>
+
+    <section id="tab-chat" class="tab-content flex flex-col h-full">
+      <div id="messagesWrapper" class="flex-1 overflow-y-auto space-y-4 pb-4"></div>
+      
+      <div id="typingIndicator" class="hidden pb-4">
+        <div class="flex gap-2 items-center">
+          <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-white text-[14px]">smart_toy</span></div>
+          <div class="bg-surface-container px-3 py-2 rounded-xl flex gap-1"><span class="w-1.5 h-1.5 bg-outline rounded-full typing-dot"></span><span class="w-1.5 h-1.5 bg-outline rounded-full typing-dot"></span><span class="w-1.5 h-1.5 bg-outline rounded-full typing-dot"></span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="chatInputArea" class="hidden absolute bottom-16 left-0 w-full bg-white border-t border-surface-variant p-3 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+    <form id="chatForm" class="flex items-center bg-surface-container rounded-full px-3 py-1">
+      <input id="messageInput" class="flex-1 bg-transparent border-none focus:ring-0 text-sm py-2 outline-none" placeholder="Ask Aqua-AI..." autocomplete="off"/>
+      <button type="submit" id="sendBtn" class="text-primary p-1 disabled:opacity-50"><span class="material-symbols-outlined">send</span></button>
+    </form>
+  </div>
+
+  <nav class="absolute bottom-0 left-0 w-full bg-white border-t border-surface-variant z-50 flex justify-around items-center h-16 shrink-0">
+    <button data-tab="weather" class="mobile-nav-item flex flex-col items-center gap-1 active w-16">
+      <span class="material-symbols-outlined text-[24px]">cloud</span>
+      <span class="text-[10px] font-bold">Weather</span>
+    </button>
+    <button data-tab="devices" class="mobile-nav-item flex flex-col items-center gap-1 w-16 text-on-surface-variant">
+      <span class="material-symbols-outlined text-[24px]">sensors</span>
+      <span class="text-[10px] font-bold">Devices</span>
+    </button>
+    <button data-tab="chat" class="mobile-nav-item flex flex-col items-center gap-1 w-16 text-on-surface-variant">
+      <span class="material-symbols-outlined text-[24px]">smart_toy</span>
+      <span class="text-[10px] font-bold">AI Chat</span>
+    </button>
+  </nav>
+
+</div>
+
+<script>
+const API_BASE = 'https://aqua-ai-zzz.onrender.com';
+let currentTab = 'weather';
+let historyChart = null;
+let chatHistory = [];
+let isTyping = false;
+
+const $ = sel => document.querySelector(sel);
+const $$ = sel => document.querySelectorAll(sel);
+
+// Dữ liệu dự phòng khi Render API ngủ đông
+const FALLBACK_W = { 
+  location: "Hanoi, Vietnam", temperature: 31, feels_like: 34, 
+  humidity: 84, description: "Cloudy, high humidity", 
+  wind_speed: 18, wind_dir: "SE", rainfall_today: 12, visibility: 8,
+  tide_height: 1.2, uv_index: 8, pressure: 1008, cloud_cover: 75, dew_point: 26,
+  updated_at: new Date().toISOString(), 
+  forecast: [
+    {day: "Today", icon: "cloud", temp: 31, rain_prob: 40},
+    {day: "Tomorrow", icon: "rainy", temp: 29, rain_prob: 70},
+    {day: "Wed", icon: "thunderstorm", temp: 28, rain_prob: 85},
+    {day: "Thu", icon: "partly_cloudy_day", temp: 32, rain_prob: 25},
+    {day: "Fri", icon: "clear_day", temp: 34, rain_prob: 10}
+  ] 
+};
+const FALLBACK_R = { risk_score: 62, level: "Medium", color: "#f59e0b", message: "Risk level medium due to weather", actions: ["Reduce feeding by 20%", "Check salinity"], storm_warning: false };
+
+// Đổi Tab Mobile
+$$('.mobile-nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tabId = btn.dataset.tab;
+    currentTab = tabId;
+    
+    $$('.mobile-nav-item').forEach(b => {
+      b.classList.remove('active', 'text-primary');
+      b.classList.add('text-on-surface-variant');
+    });
+    btn.classList.add('active', 'text-primary');
+    btn.classList.remove('text-on-surface-variant');
+    
+    $$('.tab-content').forEach(c => c.classList.remove('active'));
+    $(`#tab-${tabId}`).classList.add('active');
+    
+    const titles = { weather: 'Weather', devices: 'Devices', chat: 'AI Assistant' };
+    $('#pageTitle').textContent = titles[tabId];
+    
+    // Hiện/Ẩn thanh nhập Chat
+    if(tabId === 'chat') {
+      $('#chatInputArea').classList.remove('hidden');
+      if(chatHistory.length === 0) initChat();
+    } else {
+      $('#chatInputArea').classList.add('hidden');
+    }
+  });
+});
+
+// 1. Hàm tính mức độ UV (Bị thiếu khiến code sập)
+function uvLabel(v) {
+  if (v <= 2) return { l: "Low", c: "#22c55e" };
+  if (v <= 5) return { l: "Moderate", c: "#f59e0b" };
+  if (v <= 7) return { l: "High", c: "#f97316" };
+  if (v <= 10) return { l: "Very High", c: "#ef4444" };
+  return { l: "Extreme", c: "#7c3aed" };
+}
+
+// 2. Hàm dịch icon
+function getMaterialIcon(condition) {
+  const lower = (condition || '').toLowerCase();
+  if (lower.includes('rain') || lower.includes('mưa')) return 'rainy';
+  if (lower.includes('cloud') || lower.includes('mây')) return 'cloud';
+  if (lower.includes('storm') || lower.includes('bão')) return 'thunderstorm';
+  if (lower.includes('clear') || lower.includes('trong')) return 'clear_day';
+  if (lower.includes('sun') || lower.includes('nắng')) return 'sunny';
+  return 'partly_cloudy_day'; 
+}
+
+// 3. Hàm render chính đã thêm an toàn cho UV
+function renderWeather(d) {
+  if (!d) return;
+
+  if ($('#hero-location')) $('#hero-location').textContent = d.location || '--';
+  if ($('#hero-temp')) $('#hero-temp').textContent = (d.temperature !== undefined ? d.temperature : '--') + "°C";
+  if ($('#hero-desc')) $('#hero-desc').textContent = d.description || '--';
+  if ($('#hero-icon')) $('#hero-icon').textContent = getMaterialIcon(d.icon || d.description);
+
+  if ($('#w-badges')) {
+    $('#w-badges').innerHTML = `
+      <div class="flex items-center gap-1 bg-surface-container-low border border-surface-variant px-3 py-1.5 rounded-full text-[11px] font-bold text-outline"><span class="material-symbols-outlined text-[14px] text-primary">water_drop</span> ${d.humidity ?? '--'}%</div>
+      <div class="flex items-center gap-1 bg-surface-container-low border border-surface-variant px-3 py-1.5 rounded-full text-[11px] font-bold text-outline"><span class="material-symbols-outlined text-[14px] text-primary">air</span> ${d.wind_speed ?? '--'} km/h ${d.wind_dir || ''}</div>
+      <div class="flex items-center gap-1 bg-surface-container-low border border-surface-variant px-3 py-1.5 rounded-full text-[11px] font-bold text-outline"><span class="material-symbols-outlined text-[14px] text-primary">rainy</span> ${d.rainfall_today ?? '--'}mm</div>
+      <div class="flex items-center gap-1 bg-surface-container-low border border-surface-variant px-3 py-1.5 rounded-full text-[11px] font-bold text-outline"><span class="material-symbols-outlined text-[14px] text-primary">visibility</span> ${d.visibility ?? '--'}km</div>
+    `;
+  }
+
+  if ($('#stat-humidity')) $('#stat-humidity').textContent = (d.humidity !== undefined ? d.humidity : '--') + "%";
+  if ($('#stat-tide')) $('#stat-tide').textContent = (d.tide_height !== undefined ? d.tide_height : '--') + "m";
+  
+  if ($('#stat-uv')) {
+    const uvVal = d.uv_index || 0;
+    const uv = uvLabel(uvVal); // Hàm này giờ đã có mặt, code sẽ không sập nữa
+    $('#stat-uv').textContent = d.uv_index !== undefined ? `${uvVal} ${uv.l}` : '--';
+    if ($('#stat-uv-dot')) $('#stat-uv-dot').style.backgroundColor = uv.c;
+  }
+  
+  if ($('#stat-pressure')) $('#stat-pressure').textContent = (d.pressure !== undefined ? d.pressure : '--') + " hPa";
+  if ($('#stat-cloud')) $('#stat-cloud').textContent = (d.cloud_cover !== undefined ? d.cloud_cover : '--') + "%";
+  if ($('#stat-dew')) $('#stat-dew').textContent = (d.dew_point !== undefined ? d.dew_point : '--') + "°C";
+
+  if ($('#forecast-row') && d.forecast && Array.isArray(d.forecast)) {
+    $('#forecast-row').innerHTML = d.forecast.map(f => `
+      <div class="min-w-[105px] bg-white border border-surface-variant rounded-2xl p-4 flex flex-col items-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] snap-center">
+        <span class="text-xs text-outline font-bold mb-2">${f.day || '-'}</span>
+        <span class="material-symbols-outlined text-[32px] text-primary mb-3">${getMaterialIcon(f.icon || f.description)}</span>
+        <div class="text-sm font-bold text-on-surface">${f.temp ?? '-'}° <span class="text-outline font-normal ml-1">${f.temp !== undefined ? f.temp - 5 : '-'}°</span></div>
+      </div>
+    `).join("");
+  }
+}
+function renderRisk(r) {
+  $('#risk-level').textContent = r.level;
+  $('#risk-level').style.color = r.color;
+  $('#risk-icon').style.color = r.color;
+  $('#risk-score').textContent = r.risk_score;
+  $('#risk-score').style.color = r.color;
+  $('#risk-bar').style.width = r.risk_score + "%";
+  $('#risk-bar').style.background = r.color;
+  $('#risk-actions').innerHTML = r.actions.map(a => `<li>• ${a}</li>`).join("");
+}
+
+async function loadWeather(loc = 'Hanoi') {
+  try {
+    const wRes = await fetch(`${API_BASE}/api/weather?location=${encodeURIComponent(loc)}`);
+    
+    // Nếu gõ địa điểm tào lao, API sẽ trả về lỗi 404
+    if (wRes.status === 404) {
+        showToast('Lỗi', 'Không tìm thấy địa điểm này! Vui lòng nhập tên thành phố hợp lệ.', 'error', 'error');
+        $('#hero-location').textContent = 'Location Not Found';
+        $('#hero-desc').textContent = 'Vui lòng thử lại';
+        return;
+    }
+    
+    if (!wRes.ok) throw new Error("API chưa thức");
+    
+    const rRes = await fetch(`${API_BASE}/api/weather-risk?location=${encodeURIComponent(loc)}`);
+    
+    renderWeather(await wRes.json());
+    renderRisk(await rRes.json());
+  } catch (e) {
+    console.warn("Render đang ngủ, dùng data tạm");
+    renderWeather({ ...FALLBACK_W, location: loc + " (Local)" });
+    renderRisk(FALLBACK_R);
+  }
+}
+
+// Render Devices
+async function loadDevices() {
+  const pond = $('#globalPondSelector').value;
+  try {
+    const res = await fetch(`${API_BASE}/api/device/sensor-data?pond=${pond}`);
+    const statRes = await fetch(`${API_BASE}/api/device/status`);
+    if(!res.ok) throw new Error();
+    
+    const data = await res.json();
+    const stats = await statRes.json();
+    
+    $('#totalDevices').textContent = stats.total;
+    $('#onlineDevices').textContent = stats.online;
+    $$('.loading-pulse').forEach(el => el.classList.remove('loading-pulse'));
+
+    $('#devicesGrid').innerHTML = `
+      <div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-4 shadow-sm">
+        <div class="flex justify-between items-center mb-3">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary bg-primary-container/10 p-1.5 rounded-lg">science</span>
+            <span class="font-bold text-sm">${data.pond_name}</span>
+          </div>
+          <span class="bg-secondary-container text-on-secondary-container text-[10px] px-2 py-1 rounded-full font-bold">ONLINE</span>
+        </div>
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <div class="bg-surface-container-low p-2 rounded-lg"><p class="text-[10px] text-outline">pH Level</p><p class="font-bold text-lg">${data.ph}</p></div>
+          <div class="bg-surface-container-low p-2 rounded-lg"><p class="text-[10px] text-outline">Temp</p><p class="font-bold text-lg">${data.temperature}°C</p></div>
+          <div class="bg-surface-container-low p-2 rounded-lg"><p class="text-[10px] text-outline">Salinity</p><p class="font-bold text-lg">${data.salinity} ppt</p></div>
+          <div class="bg-surface-container-low p-2 rounded-lg"><p class="text-[10px] text-outline">Oxygen (DO)</p><p class="font-bold text-lg">${data.do} mg/L</p></div>
+        </div>
+      </div>
+    `;
+    loadChart(pond);
+  } catch (e) {
+    $('#devicesGrid').innerHTML = `<p class="text-center text-sm text-error">Không thể tải dữ liệu thiết bị lúc này.</p>`;
+  }
+}
+
+async function loadChart(pond) {
+  const metric = $('#metricSelect').value;
+  try {
+    const res = await fetch(`${API_BASE}/api/device/history?pond=${pond}&metric=${metric}&hours=24`);
+    const data = await res.json();
+    if (historyChart) historyChart.destroy();
+    
+    const labels = data.data.map(d => d.time);
+    const values = data.data.map(d => d.value);
+    
+    historyChart = new Chart($('#historyChart').getContext('2d'), {
+      type: 'line',
+      data: { labels, datasets: [{ label: metric, data: values, borderColor: '#005394', backgroundColor: 'rgba(0,83,148,0.1)', fill: true, tension: 0.4, pointRadius: 0 }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false } } }
+    });
+  } catch(e) {}
+}
+
+// Render Chat
+function appendMsg(sender, text) {
+  const isUser = sender === 'User';
+  const html = `
+    <div class="flex gap-2 ${isUser ? 'flex-row-reverse' : ''}">
+      <div class="w-8 h-8 rounded-full flex shrink-0 items-center justify-center ${isUser ? 'bg-surface-variant' : 'bg-primary text-white'}">
+        <span class="material-symbols-outlined text-[16px]">${isUser ? 'person' : 'smart_toy'}</span>
+      </div>
+      <div class="p-3 rounded-2xl max-w-[80%] text-sm ${isUser ? 'bg-primary text-white rounded-tr-sm' : 'bg-surface-container rounded-tl-sm markdown-content'}">
+        ${isUser ? text : marked.parse(text)}
+      </div>
+    </div>
+  `;
+  $('#messagesWrapper').insertAdjacentHTML('beforeend', html);
+  $('#messagesWrapper').scrollTop = $('#messagesWrapper').scrollHeight;
+}
+
+function initChat() {
+  appendMsg('AI', "**Chào bạn!** Hệ thống Aqua-AI đang hoạt động. Tôi có thể giúp gì cho bạn hôm nay?");
+}
+
+$('#chatForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = $('#messageInput');
+  const msg = input.value.trim();
+  if(!msg) return;
+  
+  input.value = '';
+  appendMsg('User', msg);
+  $('#typingIndicator').classList.remove('hidden');
+  $('#messagesWrapper').scrollTop = $('#messagesWrapper').scrollHeight;
+  
+  try {
+    const res = await fetch(`${API_BASE}/api/chat`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg, pond: $('#globalPondSelector').value, history: chatHistory })
+    });
+    const data = await res.json();
+    $('#typingIndicator').classList.add('hidden');
+    appendMsg('AI', data.reply || data.response);
+    chatHistory.push({role: 'user', content: msg}, {role: 'assistant', content: data.reply});
+  } catch(e) {
+    $('#typingIndicator').classList.add('hidden');
+    appendMsg('AI', "⚠️ Lỗi kết nối đến máy chủ AI. Xin thử lại sau.");
+  }
+});
+
+// Event Listeners
+$('#weatherSearch').addEventListener('keydown', (e) => { if (e.key === 'Enter') loadWeather(e.target.value); });
+$('#metricSelect').addEventListener('change', () => loadChart($('#globalPondSelector').value));
+$('#globalPondSelector').addEventListener('change', () => { loadDevices(); if(currentTab === 'weather') loadWeather(); });
+
+// Khởi chạy
+loadWeather();
+loadDevices();
+</script>
+</body>
+</html>

@@ -42,8 +42,8 @@ PONDS = {
 # ==================== API THỜI TIẾT THẬT ====================
 @app.get("/api/weather")
 async def get_weather(location: str = Query("Hanoi")):
-    # Định dạng lại tên thành phố cho chuẩn quốc tế
-    query_loc = f"{location.strip()},VN" if "," not in location else location.strip()
+# Cho phép OpenWeather tự do tìm kiếm toàn cầu
+    query_loc = location.strip()
     
     url = f"https://api.openweathermap.org/data/2.5/weather?q={query_loc}&appid={OPENWEATHER_API_KEY}&units=metric"
     forecast_url = f"https://api.openweathermap.org/data/2.5/forecast?q={query_loc}&appid={OPENWEATHER_API_KEY}&units=metric"

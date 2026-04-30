@@ -751,7 +751,7 @@ async function loadChart(pond) {
         scales: { 
           x: { display: false },
           y: { 
-            display: true, // Bật trục Y giống ảnh của bạn
+            display: true, // Bật trục Y
             position: 'left',
             grid: { color: 'rgba(0,0,0,0.05)' },
             border: { display: false },
@@ -761,25 +761,8 @@ async function loadChart(pond) {
       }
     });
   } catch(e) {
-    console.error("There is an error in loading map:", e);
+    console.error("Lỗi tải biểu đồ:", e);
   }
-}
-async function loadChart(pond) {
-  const metric = $('#metricSelect').value;
-  try {
-    const res = await fetch(`${API_BASE}/api/device/history?pond=${pond}&metric=${metric}&hours=24`);
-    const data = await res.json();
-    if (historyChart) historyChart.destroy();
-    
-    const labels = data.data.map(d => d.time);
-    const values = data.data.map(d => d.value);
-    
-    historyChart = new Chart($('#historyChart').getContext('2d'), {
-      type: 'line',
-      data: { labels, datasets: [{ label: metric, data: values, borderColor: '#005394', backgroundColor: 'rgba(0,83,148,0.1)', fill: true, tension: 0.4, pointRadius: 0 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false } } }
-    });
-  } catch(e) {}
 }
 
 // Render Chat

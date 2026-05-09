@@ -314,7 +314,7 @@
         </div>
       </section>
 
-      <section id="tab-devices" class="tab-content space-y-6">
+      <section id="tab-devices" class="tab-content space-y-6" style="display: none;">
         <div
           class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
           <div class="flex justify-between items-center mb-4">
@@ -455,21 +455,21 @@
             </div>
           </section>
           <!-- Farming Process Tabs -->
-          <section class="bg-white border border-outline rounded-lg p-3 shadow-sm mt-2">
+          <section class="mt-2">
             <h2 class="text-sm font-semibold mb-2">Farming Process</h2>
             <div class="flex w-full gap-2 justify-between">
               <button onclick="switchTab('preparation')"
-                class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-surface hover:bg-surface-container-low transition-colors">
+                class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-white hover:bg-surface-container-low transition-colors">
                 <span class="material-symbols-outlined text-on-surface-variant text-[16px]">agriculture</span>
                 <span class="text-[9px] font-semibold text-center leading-tight">1. Preparation</span>
               </button>
               <button onclick="switchTab('active')"
-                class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-surface hover:bg-surface-container-low transition-colors">
+                class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-white hover:bg-surface-container-low transition-colors">
                 <span class="material-symbols-outlined text-on-surface-variant text-[16px]">set_meal</span>
                 <span class="text-[9px] font-semibold text-center leading-tight">2. Active</span>
               </button>
               <button onclick="switchTab('export')"
-                class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-surface hover:bg-surface-container-low transition-colors">
+                class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-white hover:bg-surface-container-low transition-colors">
                 <span class="material-symbols-outlined text-on-surface-variant text-[16px]">local_shipping</span>
                 <span class="text-[9px] font-semibold text-center leading-tight">3. Export</span>
               </button>
@@ -537,7 +537,7 @@
         </div>
       </section>
 
-      <section id="tab-preparation" class="tab-content flex flex-col min-h-full">
+      <section id="tab-preparation" class="tab-content flex flex-col min-h-full" style="display: none;">
         <div class="space-y-6 flex-1 pb-4">
           <!-- Phase Summary -->
           <section>
@@ -964,7 +964,7 @@
           </section>
         </div>
       </section>
-      <section id="tab-active" class="tab-content flex flex-col min-h-full">
+      <section id="tab-active" class="tab-content flex flex-col min-h-full" style="display: none;">
         <div class="space-y-6 flex-1 pb-4">
           <!-- Bento Grid Container -->
           <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -1309,7 +1309,7 @@
           </div>
         </div>
       </section>
-      <section id="tab-traceability" class="tab-content flex flex-col min-h-full">
+      <section id="tab-traceability" class="tab-content flex flex-col min-h-full" style="display: none;">
         <div class="space-y-lg flex-1 pb-4">
           <!-- Batch Summary Card -->
           <section
@@ -1387,7 +1387,7 @@
           <!-- Lifecycle Timeline -->
           <section>
             <h3 class="text-headline-md font-headline-md font-bold text-on-surface mb-md">Lifecycle Stages</h3>
-            <div class="flex overflow-x-auto pb-sm snap-x hide-scrollbar gap-sm -mx-md px-md">
+            <div class="flex overflow-x-auto pb-sm snap-x hide-scrollbar gap-sm">
               <!-- Stage 1 -->
               <div
                 class="snap-start w-64 flex-shrink-0 bg-surface-container-lowest border border-outline-variant rounded-xl p-sm shadow-[0_1px_3px_rgba(0,0,0,0.05)] flex flex-col justify-between">
@@ -1589,10 +1589,10 @@
         </div>
       </section>
 
-      <section id="tab-chat" class="tab-content">
+      <section id="tab-chat" class="tab-content" style="display: none;">
         <div id="messagesWrapper" class="space-y-4 pb-4"></div>
       </section>
-      <section id="tab-notifications" class="tab-content space-y-4">
+      <section id="tab-notifications" class="tab-content space-y-4" style="display: none;">
 
         <div
           class="flex items-center gap-2 bg-white border border-outline-variant rounded-full p-2 shadow-sm focus-within:border-primary transition-all">

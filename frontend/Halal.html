@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <title>Halal Farm-to-Export</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#f8f9ff",
+                        "inverse-on-surface": "#eff0f7",
+                        "on-error-container": "#93000a",
+                        "secondary": "#006d40",
+                        "background": "#f8f9ff",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2e3035",
+                        "tertiary": "#a70819",
+                        "on-tertiary-container": "#ffe6e3",
+                        "surface-tint": "#1960a3",
+                        "on-secondary-fixed": "#002110",
+                        "surface-variant": "#e1e2e8",
+                        "on-primary-fixed": "#001c38",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#ca2a2e",
+                        "surface-container-low": "#f2f3fa",
+                        "surface-container-high": "#e7e8ee",
+                        "on-primary-fixed-variant": "#004881",
+                        "on-surface-variant": "#414750",
+                        "outline-variant": "#c1c7d2",
+                        "on-primary-container": "#e1ecff",
+                        "surface": "#ffffff",
+                        "surface-container-highest": "#e1e2e8",
+                        "on-secondary-fixed-variant": "#00522f",
+                        "primary-fixed-dim": "#a2c9ff",
+                        "on-secondary-container": "#007243",
+                        "tertiary-fixed": "#ffdad7",
+                        "primary": "#1E3A8A",
+                        "on-surface": "#1E3A8A",
+                        "on-background": "#1E3A8A",
+                        "on-tertiary-fixed": "#410004",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#74db9d",
+                        "secondary-fixed": "#91f8b8",
+                        "inverse-primary": "#a2c9ff",
+                        "outline": "#E2E8F0",
+                        "primary-fixed": "#d3e4ff",
+                        "surface-container": "#ededf4",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#930013",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb3ad",
+                        "secondary-container": "#8ef5b5",
+                        "primary-container": "#2b6cb0",
+                        "surface-dim": "#d9dae0",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "1rem",
+                        "xl": "2rem",
+                        "gutter": "1rem",
+                        "container-padding": "1.5rem",
+                        "sm": "0.5rem",
+                        "lg": "1.5rem",
+                        "xs": "0.25rem",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "display-xl": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-xl": ["48px", { "lineHeight": "1.1", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-lg": ["30px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface font-body-md h-screen flex flex-col">
+    <!-- TopAppBar -->
+    <header
+        class="flex-none flex justify-between items-center w-full px-4 py-2 border-b border-outline shadow-sm bg-surface z-50">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-[20px]">monitoring</span>
+            <h1 class="font-headline-md text-headline-md text-primary truncate">Halal Farm-to-Export</h1>
+        </div>
+        <div class="flex items-center gap-2">
+            <button class="hover:bg-surface-container-low transition-colors p-1.5 rounded-full">
+                <span class="material-symbols-outlined text-on-surface-variant text-[20px]">notifications</span>
+            </button>
+            <img alt="User Profile" class="w-7 h-7 rounded-full border border-outline"
+                data-alt="A small circular profile picture of a professional individual with short dark hair, wearing a clean light-colored button-down shirt. The lighting is bright and evenly distributed, casting soft highlights on the face. The background is a blurred, out-of-focus office environment that conveys a corporate, modern SaaS aesthetic. The overall mood is approachable, trustworthy, and precise."
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPRfXMaD4Sk0Pk7L_SYxwTmSEVoQZaUrwRhNrb9wOgjQU3_CUdFY8o9TRW31fE8nijYlxExTsIfOl8uYc8LcEAgWpKlbEE9lU--igY_AzVbw5gZNLKuVZENfxrAdEeDIUAuV1nfKnl_-RcFGfJncS5ifb9zhyszwugrACkuiSl2aRB-IJInbmGjU87IL7qWvbZHtrmigatQUVxs1tgH9l-z-N-xSCo6VXLSc7fnoRGTvUjgOrOmQ_YyJ4yOIGZ6-ROf8frRefZVekq">
+        </div>
+    </header>
+    <main class="flex-1 px-4 py-3 grid gap-3 overflow-y-auto max-w-7xl mx-auto w-full">
+        <!-- Overview Metrics -->
+        <section class="grid grid-cols-2 gap-2">
+            <!-- Halal Integrity Score -->
+            <div class="bg-surface border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm">
+                <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Halal Integrity
+                </p>
+                <div class="mt-1 flex items-end justify-between">
+                    <span class="text-xl font-bold leading-none">92<span
+                            class="text-xs font-normal text-on-surface-variant">/100</span></span>
+                </div>
+                <div class="mt-1.5 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
+                    <div class="h-full bg-secondary w-[92%]"></div>
+                </div>
+            </div>
+            <!-- Export Readiness -->
+            <div class="bg-surface border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm">
+                <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Export Readiness
+                </p>
+                <div class="mt-1 flex items-center h-full">
+                    <span
+                        class="inline-flex items-center gap-1 text-[10px] font-semibold bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full">
+                        <span class="material-symbols-outlined text-[12px]">check_circle</span> READY
+                    </span>
+                </div>
+                <div class="mt-1.5 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
+                    <div class="h-full bg-primary-container w-full"></div>
+                </div>
+            </div>
+            <!-- Ponds Compliant -->
+            <div class="bg-surface border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm">
+                <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Ponds Compliant
+                </p>
+                <div class="mt-1 flex items-end justify-between">
+                    <span class="text-lg font-bold leading-none">8<span
+                            class="text-xs font-normal text-on-surface-variant">/10</span></span>
+                </div>
+                <div class="mt-1.5 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
+                    <div class="h-full bg-[#8b5cf6] w-[80%]"></div>
+                </div>
+            </div>
+            <!-- Active Risks -->
+            <div
+                class="bg-surface border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm bg-error-container/20">
+                <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Active Risks</p>
+                <div class="mt-1 flex items-center gap-1.5">
+                    <span class="text-xl font-bold leading-none text-tertiary-container">2</span>
+                    <span class="material-symbols-outlined text-tertiary-container text-[18px]"
+                        style="font-variation-settings: &quot;FILL&quot; 1;">warning</span>
+                </div>
+            </div>
+            <!-- Certificate Health -->
+            <div
+                class="bg-surface border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm col-span-2">
+                <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Certificate Health
+                </p>
+                <div class="mt-1 flex items-center justify-between">
+                    <span class="text-lg font-bold leading-none">7</span>
+                    <p class="text-[10px] font-semibold text-[#0d9488]">Expiring in 30 days</p>
+                </div>
+            </div>
+        </section>
+        <!-- Farming Process Tabs -->
+        <section>
+            <h2 class="text-sm font-semibold mb-2">Farming Process</h2>
+            <div class="flex w-full gap-2 justify-between">
+                <button
+                    class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-surface hover:bg-surface-container-low transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant text-[16px]">agriculture</span>
+                    <span class="text-[9px] font-semibold text-center leading-tight">1. Prep</span>
+                </button>
+                <button
+                    class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border-2 border-primary bg-primary-fixed/30 text-on-primary-fixed transition-colors shadow-sm">
+                    <span class="material-symbols-outlined text-[16px]"
+                        style="font-variation-settings: &quot;FILL&quot; 1;">set_meal</span>
+                    <span class="text-[9px] font-semibold text-center leading-tight">2. Active</span>
+                </button>
+                <button
+                    class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-surface hover:bg-surface-container-low transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant text-[16px]">local_shipping</span>
+                    <span class="text-[9px] font-semibold text-center leading-tight">3. Harvest</span>
+                </button>
+            </div>
+        </section>
+        <!-- Risk Heatmap -->
+        <h2 class="text-sm font-semibold mb-2">Halal Risk Map</h2>
+        <section
+            class="bg-surface border border-outline rounded-lg p-3 shadow-sm flex-1 flex flex-col justify-center min-h-0">
+
+            <div class="grid grid-cols-5 gap-1.5 mb-3">
+                <!-- Row 1 -->
+                <div
+                    class="h-8 rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
+                    01</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
+                    02</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-[#fef08a] text-[#854d0e] flex items-center justify-center text-[10px] font-semibold border border-[#eab308]/20">
+                    03</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
+                    04</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-error-container text-on-error-container flex items-center justify-center text-[10px] font-semibold border border-error/20">
+                    05</div>
+                <!-- Row 2 -->
+                <div
+                    class="h-8 rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
+                    06</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
+                    07</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-[#fef08a] text-[#854d0e] flex items-center justify-center text-[10px] font-semibold border border-[#eab308]/20">
+                    08</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
+                    09</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-surface-variant text-on-surface-variant flex items-center justify-center text-[10px] font-semibold border border-outline">
+                    10</div>
+            </div>
+            <!-- Legend -->
+            <div class="flex flex-wrap justify-between pt-2 border-t border-outline text-[10px]">
+                <div class="flex items-center gap-1">
+                    <div class="w-2.5 h-2.5 rounded-full bg-secondary-fixed border border-secondary/20"></div>
+                    <span class="text-on-surface-variant">Compliant</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <div class="w-2.5 h-2.5 rounded-full bg-[#fef08a] border border-[#eab308]/20"></div>
+                    <span class="text-on-surface-variant">Warning</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <div class="w-2.5 h-2.5 rounded-full bg-error-container border border-error/20"></div>
+                    <span class="text-on-surface-variant">Critical</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <div class="w-2.5 h-2.5 rounded-full bg-surface-variant border border-outline"></div>
+                    <span class="text-on-surface-variant">Offline</span>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- BottomNavBar -->
+    <nav
+        class="flex-none w-full flex justify-around items-center px-2 py-1.5 bg-surface border-t border-outline shadow-[0_-1px_3px_0_rgba(0,0,0,0.05)] z-50 md:hidden pb-safe">
+        <!-- Tab 1: Weather (Inactive) -->
+        <button
+            class="flex flex-col items-center justify-center text-outline px-4 py-1 hover:text-primary-container active:scale-95 transition-transform duration-150">
+            <span class="material-symbols-outlined text-[20px]">cloud</span>
+            <span class="text-[9px] font-semibold uppercase tracking-wider mt-0.5">Weather</span>
+        </button>
+        <!-- Tab 2: Devices (Inactive) -->
+        <button
+            class="flex flex-col items-center justify-center text-outline px-4 py-1 hover:text-primary-container active:scale-95 transition-transform duration-150">
+            <span class="material-symbols-outlined text-[20px]">sensors</span>
+            <span class="text-[9px] font-semibold uppercase tracking-wider mt-0.5">Devices</span>
+        </button>
+        <!-- Tab 3: AI Chat (Inactive) -->
+        <button
+            class="flex flex-col items-center justify-center text-outline px-4 py-1 hover:text-primary-container active:scale-95 transition-transform duration-150">
+            <span class="material-symbols-outlined text-[20px]">psychology</span>
+            <span class="text-[9px] font-semibold uppercase tracking-wider mt-0.5">AI Chat</span>
+        </button>
+        <!-- Tab 4: Halal (Active) -->
+        <button
+            class="flex flex-col items-center justify-center text-primary-container bg-primary-fixed rounded-lg px-6 py-1 active:scale-95 transition-transform duration-150">
+            <span class="material-symbols-outlined text-[20px]"
+                style="font-variation-settings: &quot;FILL&quot; 1;">verified</span>
+            <span class="text-[9px] font-semibold uppercase tracking-wider mt-0.5">Halal</span>
+        </button>
+    </nav>
+    <style>
+        /* Safe area padding for newer iOS devices */
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 0.5rem);
+        }
+    </style>
+
+
+</body>
+
+</html>

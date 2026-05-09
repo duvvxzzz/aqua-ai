@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Traceability Center - Batch #EXP-203</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#007243",
+                        "surface-tint": "#1960a3",
+                        "on-tertiary-fixed-variant": "#930013",
+                        "on-secondary-fixed": "#002110",
+                        "tertiary-fixed-dim": "#ffb3ad",
+                        "on-primary-fixed-variant": "#004881",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#d3e4ff",
+                        "on-background": "#191c20",
+                        "on-tertiary-fixed": "#410004",
+                        "surface-container-low": "#f2f3fa",
+                        "inverse-on-surface": "#eff0f7",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#006d40",
+                        "surface-variant": "#e1e2e8",
+                        "primary": "#005394",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#414750",
+                        "tertiary": "#a70819",
+                        "surface-bright": "#f8f9ff",
+                        "surface-dim": "#d9dae0",
+                        "secondary-container": "#8ef5b5",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001c38",
+                        "surface": "#f8f9ff",
+                        "on-surface": "#191c20",
+                        "outline": "#727782",
+                        "surface-container-highest": "#e1e2e8",
+                        "background": "#f8f9ff",
+                        "surface-container": "#ededf4",
+                        "outline-variant": "#c1c7d2",
+                        "tertiary-container": "#ca2a2e",
+                        "on-secondary-fixed-variant": "#00522f",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#ffdad7",
+                        "on-primary-container": "#e1ecff",
+                        "inverse-surface": "#2e3035",
+                        "secondary-fixed-dim": "#74db9d",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#a2c9ff",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#2b6cb0",
+                        "on-tertiary-container": "#ffe6e3",
+                        "primary-fixed-dim": "#a2c9ff",
+                        "surface-container-high": "#e7e8ee",
+                        "secondary-fixed": "#91f8b8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "1rem",
+                        "container-padding": "1.5rem",
+                        "xs": "0.25rem",
+                        "sm": "0.5rem",
+                        "xl": "2rem",
+                        "base": "4px",
+                        "lg": "1.5rem",
+                        "md": "1rem"
+                    },
+                    "fontFamily": {
+                        "body-md": [
+                            "Inter"
+                        ],
+                        "display-xl": [
+                            "Inter"
+                        ],
+                        "label-sm": [
+                            "Inter"
+                        ],
+                        "headline-md": [
+                            "Inter"
+                        ],
+                        "headline-lg": [
+                            "Inter"
+                        ],
+                        "body-lg": [
+                            "Inter"
+                        ]
+                    },
+                    "fontSize": {
+                        "body-md": [
+                            "14px",
+                            {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "display-xl": [
+                            "48px",
+                            {
+                                "lineHeight": "1.1",
+                                "fontWeight": "700"
+                            }
+                        ],
+                        "label-sm": [
+                            "12px",
+                            {
+                                "lineHeight": "1",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "headline-md": [
+                            "20px",
+                            {
+                                "lineHeight": "1.3",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "headline-lg": [
+                            "30px",
+                            {
+                                "lineHeight": "1.2",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "body-lg": [
+                            "16px",
+                            {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                            }
+                        ]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background font-body-md min-h-screen pb-24">
+    <!-- TopAppBar -->
+    <header
+        class="bg-surface border-b border-outline-variant docked full-width top w-full px-container-padding py-md flex justify-between items-center z-50 sticky top-0">
+        <div class="flex items-center gap-sm">
+            <button
+                class="text-on-surface-variant hover:bg-surface-container-low p-xs rounded-full transition-colors flex items-center justify-center">
+                <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+            </button>
+            <h1 class="text-headline-md font-headline-md font-bold text-primary">Traceability Center</h1>
+        </div>
+        <div class="flex items-center gap-xs">
+            <button
+                class="bg-surface-container text-on-surface-variant px-sm py-xs rounded-lg flex items-center gap-xs text-label-sm font-label-sm border border-outline-variant hover:bg-surface-container-high transition-colors">
+                <span class="material-symbols-outlined text-[16px]">water</span>
+                Pond 1 / Batch #EXP-203
+                <span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+            </button>
+        </div>
+    </header>
+    <main class="max-w-md mx-auto space-y-lg p-md overflow-hidden">
+        <!-- Batch Summary Card -->
+        <section
+            class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md shadow-[0_1px_3px_rgba(0,0,0,0.05)] relative overflow-hidden">
+            <div class="flex gap-md">
+                <div class="w-24 h-24 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
+                    <img alt="Fresh shrimp product in a high-tech facility" class="w-full h-full object-cover"
+                        data-alt="Close-up macro photography of fresh, raw shrimp neatly arranged. The lighting is bright, sterile, and professional, characteristic of a high-tech aquaculture processing facility. The color palette emphasizes the natural translucent white and orange tones of the shrimp against a clean, modern white background. The image feels pristine and highlights food safety and quality control."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDP8Uz1LaQgEGYxDt-OBd1kaQcZDjRSDtRiFinIMiYqwpKZ_2c83WmxpApg1lRniEhXgvJtdnVVTF4UNfVZOdIc6QOYquC2kwkGKLIZkXq55Erm7HItkz1GPSTIbFciWnO-M1fRJYoy-elufE5d3FSG0Q7bu4NRr638KFFf9od2YmC7fZk5ExevFVLck5zEH4fCoGnujIYtRw31tTjxt9ajVBUuKbOlJznxbqJGKKCon7mfFiOgXFK_ZSTJrJFa9vpMGqhK93-77mY5" />
+                </div>
+                <div class="flex-1 space-y-xs">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="text-body-lg font-body-lg font-bold text-on-surface">Batch #EXP-203</h2>
+                            <p class="text-label-sm font-label-sm text-on-surface-variant">Penaeus monodon (Black Tiger)
+                            </p>
+                        </div>
+                        <span
+                            class="bg-secondary-container text-on-secondary-container text-label-sm font-label-sm px-xs py-base rounded-full flex items-center gap-base border border-secondary">
+                            <span class="material-symbols-outlined text-[14px]">check_circle</span>
+                            Compliant
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-sm pt-xs">
+                        <div>
+                            <p class="text-label-sm font-label-sm text-on-surface-variant">Harvest Date</p>
+                            <p class="text-body-md font-body-md font-medium text-on-surface">Oct 24, 2023</p>
+                        </div>
+                        <div>
+                            <p class="text-label-sm font-label-sm text-on-surface-variant">Quantity</p>
+                            <p class="text-body-md font-body-md font-medium text-on-surface">4,800 kg</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-md pt-sm border-t border-outline-variant flex justify-between items-center">
+                <div class="flex items-center gap-sm">
+                    <div
+                        class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-label-sm">
+                        H
+                    </div>
+                    <div>
+                        <p class="text-label-sm font-label-sm text-on-surface-variant">Halal Integrity Score</p>
+                        <p class="text-body-md font-body-md font-bold text-primary">92/100</p>
+                    </div>
+                </div>
+                <button
+                    class="text-primary hover:bg-surface-container p-xs rounded-lg transition-colors flex items-center gap-xs text-label-sm font-label-sm">
+                    Details
+                    <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                </button>
+            </div>
+        </section>
+        <!-- Blockchain Verification -->
+        <section
+            class="bg-surface-container-lowest rounded-xl border border-outline-variant p-md shadow-[0_1px_3px_rgba(0,0,0,0.05)] border-l-4 border-l-secondary">
+            <div class="flex justify-between items-center mb-sm">
+                <h3 class="text-body-lg font-body-lg font-bold text-on-surface flex items-center gap-xs">
+                    <span class="material-symbols-outlined text-secondary">verified_user</span>
+                    Blockchain Verified
+                </h3>
+                <span class="text-label-sm font-label-sm text-on-surface-variant">Ethereum Network</span>
+            </div>
+            <div
+                class="space-y-xs bg-surface-container-low p-sm rounded-lg font-mono text-xs text-on-surface-variant break-all mb-sm">
+                <p><span class="font-bold text-on-surface">Hash:</span> 0x8f3c...b2e91d84a7c0</p>
+                <p><span class="font-bold text-on-surface">Block:</span> 18459201</p>
+                <p><span class="font-bold text-on-surface">Time:</span> 2023-10-24 14:30:00 UTC</p>
+            </div>
+            <button
+                class="w-full bg-surface-container text-primary font-label-sm text-label-sm py-sm rounded-lg hover:bg-surface-container-high transition-colors flex items-center justify-center gap-xs border border-outline-variant">
+                View on Blockchain Explorer
+                <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+            </button>
+        </section>
+        <!-- Lifecycle Timeline -->
+        <section>
+            <h3 class="text-headline-md font-headline-md font-bold text-on-surface mb-md">Lifecycle Stages</h3>
+            <div class="flex overflow-x-auto pb-sm snap-x hide-scrollbar gap-sm -mx-md px-md">
+                <!-- Stage 1 -->
+                <div
+                    class="snap-start w-64 flex-shrink-0 bg-surface-container-lowest border border-outline-variant rounded-xl p-sm shadow-[0_1px_3px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-xs mb-xs">
+                            <span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+                            <span class="text-label-sm font-label-sm text-on-surface-variant">Aug 01, 2023</span>
+                        </div>
+                        <h4 class="text-body-md font-body-md font-bold text-on-surface mb-xs">Pond Preparation</h4>
+                        <ul
+                            class="text-label-sm font-label-sm text-on-surface-variant space-y-base list-disc list-inside">
+                            <li>Drying &amp; Liming completed</li>
+                            <li>Water quality tested (pH 7.8)</li>
+                        </ul>
+                    </div>
+                    <div
+                        class="mt-sm pt-xs border-t border-outline-variant flex justify-between items-center text-secondary">
+                        <span class="text-label-sm font-label-sm font-bold">Completed</span>
+                        <span class="material-symbols-outlined text-[16px]">water</span>
+                    </div>
+                </div>
+                <!-- Stage 2 -->
+                <div
+                    class="snap-start w-64 flex-shrink-0 bg-surface-container-lowest border border-outline-variant rounded-xl p-sm shadow-[0_1px_3px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-xs mb-xs">
+                            <span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+                            <span class="text-label-sm font-label-sm text-on-surface-variant">Aug 15, 2023</span>
+                        </div>
+                        <h4 class="text-body-md font-body-md font-bold text-on-surface mb-xs">Seed Stocking</h4>
+                        <ul
+                            class="text-label-sm font-label-sm text-on-surface-variant space-y-base list-disc list-inside">
+                            <li>Source: AquaGen Hatchery</li>
+                            <li>Density: 80 PL/m2</li>
+                        </ul>
+                    </div>
+                    <div
+                        class="mt-sm pt-xs border-t border-outline-variant flex justify-between items-center text-secondary">
+                        <span class="text-label-sm font-label-sm font-bold">Completed</span>
+                        <span class="material-symbols-outlined text-[16px]">cruelty_free</span>
+                    </div>
+                </div>
+                <!-- Stage 3 (Active) -->
+                <div
+                    class="snap-start w-64 flex-shrink-0 bg-primary-container/10 border border-primary rounded-xl p-sm shadow-[0_1px_3px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-xs mb-xs">
+                            <span class="material-symbols-outlined text-primary text-[20px]">schedule</span>
+                            <span class="text-label-sm font-label-sm text-primary font-bold">Ongoing</span>
+                        </div>
+                        <h4 class="text-body-md font-body-md font-bold text-on-surface mb-xs">Feed &amp; Nutrition</h4>
+                        <ul
+                            class="text-label-sm font-label-sm text-on-surface-variant space-y-base list-disc list-inside">
+                            <li>Daily feeding: 4 times</li>
+                            <li>FCR tracking: 1.2 current</li>
+                        </ul>
+                    </div>
+                    <div
+                        class="mt-sm pt-xs border-t border-outline-variant flex justify-between items-center text-primary">
+                        <span class="text-label-sm font-label-sm font-bold">In Progress</span>
+                        <span class="material-symbols-outlined text-[16px]">set_meal</span>
+                    </div>
+                </div>
+                <!-- Stage 4 (Pending) -->
+                <div
+                    class="snap-start w-64 flex-shrink-0 bg-surface border border-outline-variant rounded-xl p-sm opacity-60 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-xs mb-xs">
+                            <span
+                                class="material-symbols-outlined text-outline text-[20px]">radio_button_unchecked</span>
+                            <span class="text-label-sm font-label-sm text-on-surface-variant">Pending</span>
+                        </div>
+                        <h4 class="text-body-md font-body-md font-bold text-on-surface mb-xs">Harvest</h4>
+                        <p class="text-label-sm font-label-sm text-on-surface-variant">Scheduled for Oct 24</p>
+                    </div>
+                    <div
+                        class="mt-sm pt-xs border-t border-outline-variant flex justify-between items-center text-outline">
+                        <span class="text-label-sm font-label-sm font-bold">Upcoming</span>
+                        <span class="material-symbols-outlined text-[16px]">agriculture</span>
+                    </div>
+                </div>
+            </div>
+            <style>
+                .hide-scrollbar::-webkit-scrollbar {
+                    display: none;
+                }
+
+                .hide-scrollbar {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+            </style>
+        </section>
+        <!-- Detailed Activity Log -->
+        <section>
+            <div class="flex justify-between items-end mb-sm">
+                <h3 class="text-headline-md font-headline-md font-bold text-on-surface">Activity Log</h3>
+                <button class="text-primary text-label-sm font-label-sm hover:underline">View All</button>
+            </div>
+            <div
+                class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+                <!-- Log Item 1 -->
+                <div
+                    class="p-sm border-b border-outline-variant flex gap-sm hover:bg-surface-container-low transition-colors">
+                    <div class="w-10 flex-shrink-0 flex flex-col items-center">
+                        <div
+                            class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[16px]">science</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start mb-base">
+                            <h4 class="text-body-md font-body-md font-bold text-on-surface truncate">Xử lý nước (Water
+                                Treatment)</h4>
+                            <span
+                                class="text-label-sm font-label-sm text-on-surface-variant whitespace-nowrap ml-sm">08:00
+                                AM</span>
+                        </div>
+                        <p class="text-label-sm font-label-sm text-on-surface-variant mb-xs">Phase: Pond Prep • By:
+                            Nguyen V.</p>
+                        <a class="inline-flex items-center gap-xs text-primary text-label-sm font-label-sm hover:underline"
+                            href="#">
+                            <span class="material-symbols-outlined text-[14px]">image</span>
+                            IMG_20250401_0800.jpg
+                        </a>
+                    </div>
+                </div>
+                <!-- Log Item 2 -->
+                <div
+                    class="p-sm border-b border-outline-variant flex gap-sm hover:bg-surface-container-low transition-colors">
+                    <div class="w-10 flex-shrink-0 flex flex-col items-center">
+                        <div
+                            class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[16px]">set_meal</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start mb-base">
+                            <h4 class="text-body-md font-body-md font-bold text-on-surface truncate">Thả giống (Seed
+                                Stocking)</h4>
+                            <span
+                                class="text-label-sm font-label-sm text-on-surface-variant whitespace-nowrap ml-sm">Yesterday</span>
+                        </div>
+                        <p class="text-label-sm font-label-sm text-on-surface-variant mb-xs">Phase: Stocking • By: Tran
+                            H.</p>
+                        <a class="inline-flex items-center gap-xs text-primary text-label-sm font-label-sm hover:underline"
+                            href="#">
+                            <span class="material-symbols-outlined text-[14px]">description</span>
+                            Delivery_Note_045.pdf
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Documents -->
+        <section>
+            <h3 class="text-headline-md font-headline-md font-bold text-on-surface mb-sm">Certificates &amp; Documents
+            </h3>
+            <div class="grid grid-cols-1 gap-sm">
+                <div
+                    class="bg-surface-container-lowest border border-outline-variant rounded-lg p-sm flex items-center justify-between hover:bg-surface-container-low transition-colors shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+                    <div class="flex items-center gap-sm">
+                        <div class="p-xs bg-error-container text-on-error-container rounded">
+                            <span class="material-symbols-outlined">picture_as_pdf</span>
+                        </div>
+                        <div>
+                            <p class="text-body-md font-body-md font-medium text-on-surface">Halal Certificate</p>
+                            <p class="text-label-sm font-label-sm text-on-surface-variant">2.4 MB • PDF</p>
+                        </div>
+                    </div>
+                    <button class="text-primary hover:bg-primary-container/20 p-xs rounded-full transition-colors">
+                        <span class="material-symbols-outlined">download</span>
+                    </button>
+                </div>
+                <div
+                    class="bg-surface-container-lowest border border-outline-variant rounded-lg p-sm flex items-center justify-between hover:bg-surface-container-low transition-colors shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+                    <div class="flex items-center gap-sm">
+                        <div class="p-xs bg-error-container text-on-error-container rounded">
+                            <span class="material-symbols-outlined">picture_as_pdf</span>
+                        </div>
+                        <div>
+                            <p class="text-body-md font-body-md font-medium text-on-surface">ASC Certification</p>
+                            <p class="text-label-sm font-label-sm text-on-surface-variant">1.8 MB • PDF</p>
+                        </div>
+                    </div>
+                    <button class="text-primary hover:bg-primary-container/20 p-xs rounded-full transition-colors">
+                        <span class="material-symbols-outlined">download</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Bottom Actions / Footer -->
+    <div
+        class="fixed bottom-0 left-0 w-full bg-surface border-t border-outline-variant p-sm flex gap-sm z-40 pb-safe shadow-[0_-4px_12px_rgba(0,0,0,0.05)] max-w-md mx-auto right-0">
+        <button
+            class="flex-1 bg-surface-container text-on-surface font-body-md text-body-md font-bold py-sm rounded-lg hover:bg-surface-container-high transition-colors flex items-center justify-center gap-xs border border-outline-variant">
+            <span class="material-symbols-outlined text-[20px]">share</span>
+            Share Link
+        </button>
+        <button
+            class="flex-1 bg-primary-container text-on-primary-container font-body-md text-body-md font-bold py-sm rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-xs shadow-sm">
+            <span class="material-symbols-outlined text-[20px]">download</span>
+            Export PDF
+        </button>
+    </div>
+</body>
+
+</html>

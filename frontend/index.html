@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html class="light" lang="en">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
   <title>Aqua-AI Mobile</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+
   <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -18,13 +20,13 @@
           colors: {
             "surface-container-low": "#f2f3fa", "error-container": "#ffdad6",
             "on-primary-fixed": "#001c38", "tertiary-fixed": "#ffdad7",
-            "surface-container-high": "#e7e8ee", "on-surface": "#191c20", 
-            "primary-container": "#2b6cb0", "on-error-container": "#93000a", 
-            "surface-container-highest": "#e1e2e8", "primary": "#005394", 
-            "surface-variant": "#e1e2e8", "secondary-container": "#8ef5b5", 
-            "surface-dim": "#d9dae0", "secondary": "#006d40", "outline": "#727782", 
-            "surface-container": "#ededf4", "surface": "#f8f9ff", "tertiary": "#a70819", 
-            "surface-container-lowest": "#ffffff", "background": "#f8f9ff", 
+            "surface-container-high": "#e7e8ee", "on-surface": "#191c20",
+            "primary-container": "#2b6cb0", "on-error-container": "#93000a",
+            "surface-container-highest": "#e1e2e8", "primary": "#005394",
+            "surface-variant": "#e1e2e8", "secondary-container": "#8ef5b5",
+            "surface-dim": "#d9dae0", "secondary": "#006d40", "outline": "#727782",
+            "surface-container": "#ededf4", "surface": "#f8f9ff", "tertiary": "#a70819",
+            "surface-container-lowest": "#ffffff", "background": "#f8f9ff",
             "on-surface-variant": "#414750", "error": "#ba1a1a", "outline-variant": "#c1c7d2",
             "on-primary": "#ffffff"
           },
@@ -33,518 +35,667 @@
       }
     }
   </script>
-  
+
   <style>
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
     /* Fix app to mobile size on desktop */
-    body { background-color: #e5e7eb; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-    #app-container { width: 100%; max-width: 430px; height: 100dvh; background: #f8f9ff; position: relative; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
-    
-    .tab-content { display: none; animation: fadeIn 0.2s ease; }
-    .tab-content.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-    
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .loading-pulse { animation: pulse 1.5s infinite; color: #727782; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-    .storm-pulse { animation: storm 2s infinite; }
-    @keyframes storm { 0%, 100% { transform: scale(1); opacity: 1;} 50% { transform: scale(1.2); opacity: 0.5;} }
-    
-    .chart-container { position: relative; height: 220px; width: 100%; }
-    .mobile-nav-item.active { color: #005394; }
-    .markdown-content ul { list-style-type: disc; padding-left: 1.5rem; margin: 0.5rem 0; }
-    
-    .device-card { transition: all 0.2s ease; }
-    .device-card:active { transform: scale(0.99); }
-    .signal-bars span { display: inline-block; width: 2px; margin: 0 1px; background: currentColor; border-radius: 1px; }
-    .signal-bars span:nth-child(1) { height: 3px; }
-    .signal-bars span:nth-child(2) { height: 6px; }
-    .signal-bars span:nth-child(3) { height: 9px; }
-    .signal-bars span:nth-child(4) { height: 12px; }
+    body {
+      background-color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #app-container {
+      width: 100%;
+      max-width: 430px;
+      height: 100dvh;
+      background: #f8f9ff;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .loading-pulse {
+      animation: pulse 1.5s infinite;
+      color: #727782;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    .storm-pulse {
+      animation: storm 2s infinite;
+    }
+
+    @keyframes storm {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.2);
+        opacity: 0.5;
+      }
+    }
+
+    .chart-container {
+      position: relative;
+      height: 220px;
+      width: 100%;
+    }
+
+    .mobile-nav-item.active {
+      color: #005394;
+    }
+
+    .markdown-content ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+      margin: 0.5rem 0;
+    }
+
+    .device-card {
+      transition: all 0.2s ease;
+    }
+
+    .device-card:active {
+      transform: scale(0.99);
+    }
+
+    .signal-bars span {
+      display: inline-block;
+      width: 2px;
+      margin: 0 1px;
+      background: currentColor;
+      border-radius: 1px;
+    }
+
+    .signal-bars span:nth-child(1) {
+      height: 3px;
+    }
+
+    .signal-bars span:nth-child(2) {
+      height: 6px;
+    }
+
+    .signal-bars span:nth-child(3) {
+      height: 9px;
+    }
+
+    .signal-bars span:nth-child(4) {
+      height: 12px;
+    }
   </style>
 </head>
 
 <body>
 
-<div id="app-container">
-  
-  <header class="bg-surface-container-lowest border-b border-surface-variant z-30 px-4 py-3 flex items-center justify-between shrink-0">
-    <div class="flex items-center gap-2">
-      <span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 1;">water_drop</span>
-      <h1 id="pageTitle" class="font-headline-md text-on-surface text-lg font-bold tracking-tight">Weather</h1>
+  <div id="app-container">
+
+    <header
+      class="bg-surface-container-lowest border-b border-surface-variant z-30 px-4 py-3 flex items-center justify-between shrink-0">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary text-[24px]"
+          style="font-variation-settings: 'FILL' 1;">water_drop</span>
+        <h1 id="pageTitle" class="font-headline-md text-on-surface text-lg font-bold tracking-tight">Weather</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <select id="globalPondSelector" class="hidden">
+          <option value="pond1">Pond 1</option>
+          <option value="pond2">Pond 2</option>
+        </select>
+        <button id="notifBtn"
+          class="relative p-1 rounded-full bg-surface-container text-on-surface-variant transition-transform active:scale-90">
+          <span class="material-symbols-outlined text-[20px]">notifications</span>
+          <span id="notifDot" class="hidden absolute top-0 right-0 w-2 h-2 bg-error rounded-full storm-pulse"></span>
+        </button>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto overflow-x-hidden p-4 relative pb-20">
+
+      <section id="tab-weather" class="tab-content active space-y-6">
+        <div class="relative flex gap-2">
+          <input id="weatherSearch"
+            class="w-full pl-10 pr-3 py-3 border border-outline-variant rounded-full text-sm bg-white shadow-sm outline-none"
+            placeholder="Hanoi, Vietnam" value="Hanoi, Vietnam" />
+          <span class="material-symbols-outlined absolute left-3 top-3 text-outline">search</span>
+        </div>
+
+        <div class="flex flex-col items-center justify-center pt-2">
+          <h2 class="text-2xl font-bold text-on-surface" id="hero-location">Đang kết nối...</h2>
+          <div class="flex items-center space-x-4 my-3 text-primary">
+            <span id="hero-icon" class="material-symbols-outlined text-[80px] font-light">hourglass_empty</span>
+            <div class="text-on-surface">
+              <div class="text-[64px] font-bold leading-none tracking-tight" id="hero-temp">--°C</div>
+            </div>
+          </div>
+          <p class="text-sm font-medium text-on-surface-variant mt-1" id="hero-desc">Đang tải dữ liệu</p>
+          <div class="flex flex-wrap justify-center gap-2 mt-4" id="w-badges"></div>
+        </div>
+
+        <div class="mt-8">
+          <h3 class="font-bold text-on-surface mb-4 text-lg">Current Conditions</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <div
+              class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
+              <div class="flex justify-between items-start">
+                <span class="material-symbols-outlined text-outline">humidity_percentage</span>
+                <span class="material-symbols-outlined text-error text-[16px]">arrow_upward</span>
+              </div>
+              <div class="mt-4">
+                <p class="text-[11px] font-bold text-outline mb-0.5">Humidity</p>
+                <p class="text-3xl font-bold text-on-surface" id="stat-humidity">--%</p>
+              </div>
+            </div>
+            <div
+              class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
+              <div class="flex justify-between items-start">
+                <span class="material-symbols-outlined text-outline">waves</span>
+                <span class="material-symbols-outlined text-secondary text-[16px]">arrow_downward</span>
+              </div>
+              <div class="mt-4">
+                <p class="text-[11px] font-bold text-outline mb-0.5">Tide</p>
+                <p class="text-3xl font-bold text-on-surface" id="stat-tide">--m</p>
+              </div>
+            </div>
+            <div
+              class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
+              <div class="flex justify-between items-start">
+                <span class="material-symbols-outlined text-outline">light_mode</span>
+                <span class="w-2 h-2 rounded-full bg-error mt-1" id="stat-uv-dot"></span>
+              </div>
+              <div class="mt-4">
+                <p class="text-[11px] font-bold text-outline mb-0.5">UV Index</p>
+                <p class="text-2xl font-bold text-on-surface" id="stat-uv">--</p>
+              </div>
+            </div>
+            <div
+              class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
+              <div class="flex justify-between items-start">
+                <span class="material-symbols-outlined text-outline">compress</span>
+                <span class="material-symbols-outlined text-outline text-[16px]">remove</span>
+              </div>
+              <div class="mt-4">
+                <p class="text-[11px] font-bold text-outline mb-0.5">Pressure</p>
+                <p class="text-2xl font-bold text-on-surface" id="stat-pressure">-- hPa</p>
+              </div>
+            </div>
+            <div
+              class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
+              <div class="flex justify-between items-start">
+                <span class="material-symbols-outlined text-outline">cloud</span>
+              </div>
+              <div class="mt-4">
+                <p class="text-[11px] font-bold text-outline mb-0.5">Cloud Cover</p>
+                <p class="text-3xl font-bold text-on-surface" id="stat-cloud">--%</p>
+              </div>
+            </div>
+            <div
+              class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
+              <div class="flex justify-between items-start">
+                <span class="material-symbols-outlined text-outline">water_drop</span>
+              </div>
+              <div class="mt-4">
+                <p class="text-[11px] font-bold text-outline mb-0.5">Dew Point</p>
+                <p class="text-3xl font-bold text-on-surface" id="stat-dew">--°C</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8">
+          <h3 class="font-bold text-on-surface mb-4 text-lg">5-Day Forecast</h3>
+          <div class="flex overflow-x-auto pb-4 gap-3 snap-x no-scrollbar" id="forecast-row">
+            <div class="min-w-[100px] h-[120px] bg-surface-container-highest rounded-2xl animate-pulse"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-devices" class="tab-content space-y-6">
+        <div
+          class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="font-bold text-sm text-on-surface flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-[18px]">water_drop</span>
+              Real-time Water Quality
+            </h2>
+            <span class="text-[10px] text-on-surface-variant font-bold">Updated: Just now</span>
+          </div>
+          <div class="grid grid-cols-2 gap-3" id="pro-water-quality">
+            <div class="col-span-2 text-center text-sm text-outline loading-pulse py-4">Đang tải dữ liệu cảm biến...
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+          <h2 class="font-bold text-sm text-on-surface mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-[18px]">experiment</span>
+            Chemical Stats
+          </h2>
+          <div class="flex flex-col gap-2" id="pro-chemical-stats"></div>
+        </div>
+
+        <div
+          class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="font-bold text-sm text-on-surface flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-[18px]">timeline</span>
+              Sensor History (24h)
+            </h2>
+            <select id="metricSelect"
+              class="bg-surface border border-outline-variant rounded-md pl-2 pr-6 py-1.5 text-[10px] outline-none font-bold text-on-surface cursor-pointer">
+              <option value="temperature" selected>Temperature</option>
+              <option value="ph">pH Level</option>
+              <option value="salinity">Salinity</option>
+            </select>
+          </div>
+
+          <div class="flex gap-4 mb-2" id="chart-stats">
+            <div class="text-left">
+              <p class="text-[10px] text-on-surface-variant font-bold">High</p>
+              <p class="font-bold text-sm text-on-surface" id="chart-high">--</p>
+            </div>
+            <div class="text-left">
+              <p class="text-[10px] text-on-surface-variant font-bold">Avg</p>
+              <p class="font-bold text-sm text-primary" id="chart-avg">--</p>
+            </div>
+            <div class="text-left">
+              <p class="text-[10px] text-on-surface-variant font-bold">Low</p>
+              <p class="font-bold text-sm text-on-surface" id="chart-low">--</p>
+            </div>
+          </div>
+
+          <div class="chart-container mt-2">
+            <canvas id="historyChart"></canvas>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div
+            class="bg-surface-container-lowest border border-surface-variant rounded-xl p-3 text-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-center">
+            <p class="text-[10px] text-outline font-bold">DEVICE BATTERY</p>
+            <div class="flex items-center justify-center gap-1 mt-1">
+              <span class="material-symbols-outlined text-[18px]" id="pro-batt-icon">battery_full</span>
+              <p id="pro-battery" class="text-lg font-bold">--%</p>
+            </div>
+          </div>
+          <div
+            class="bg-surface-container-lowest border border-surface-variant rounded-xl p-3 text-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-center">
+            <p class="text-[10px] text-outline font-bold">SIGNAL STRENGTH</p>
+            <p id="pro-signal" class="text-lg font-bold mt-1 text-primary">--%</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-chat" class="tab-content">
+        <div id="messagesWrapper" class="space-y-4 pb-4"></div>
+      </section>
+      <section id="tab-notifications" class="tab-content space-y-4">
+
+        <div
+          class="flex items-center gap-2 bg-white border border-outline-variant rounded-full p-2 shadow-sm focus-within:border-primary transition-all">
+          <span class="material-symbols-outlined text-outline ml-2 text-[20px]">search</span>
+          <input class="w-full bg-transparent border-none focus:ring-0 text-sm outline-none"
+            placeholder="Search alerts..." type="text" />
+        </div>
+
+        <div
+          class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col gap-3 shadow-sm relative overflow-hidden">
+          <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-600"></div>
+          <div class="flex gap-3">
+            <div class="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[20px]"
+                style="font-variation-settings: 'FILL' 1;">warning</span>
+            </div>
+            <div class="flex-1">
+              <div class="flex justify-between items-start">
+                <h3 class="font-bold text-sm text-on-surface">Aerator Power Alert</h3>
+                <span class="text-[10px] text-outline-variant">5 mins ago</span>
+              </div>
+              <p class="text-xs text-on-surface-variant mt-1">Sudden voltage drop detected at the main aerator. System
+                has automatically engaged backup battery.</p>
+            </div>
+          </div>
+          <div class="flex gap-2 ml-12 mt-1">
+            <button class="bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-lg flex-1">Check Power</button>
+            <button
+              class="bg-transparent text-primary border border-primary text-xs font-bold px-3 py-1.5 rounded-lg flex-1">Mute</button>
+          </div>
+        </div>
+
+        <div
+          class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col gap-3 shadow-sm relative overflow-hidden">
+          <div class="absolute left-0 top-0 bottom-0 w-1 bg-orange-500"></div>
+          <div class="flex gap-3">
+            <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[20px]"
+                style="font-variation-settings: 'FILL' 1;">science</span>
+            </div>
+            <div class="flex-1">
+              <div class="flex justify-between items-start">
+                <h3 class="font-bold text-sm text-on-surface">pH Minor Deviation</h3>
+                <span class="text-[10px] text-outline-variant">15 mins ago</span>
+              </div>
+              <p class="text-xs text-on-surface-variant mt-1">Slight pH fluctuation detected following recent rainfall.
+                AI is actively monitoring the trend.</p>
+            </div>
+          </div>
+          <div class="ml-12 mt-1">
+            <button
+              class="bg-transparent text-primary border border-primary text-xs font-bold px-3 py-1.5 rounded-lg w-full">View
+              Analytics</button>
+          </div>
+        </div>
+
+        <div
+          class="bg-white border border-outline-variant rounded-xl p-4 flex gap-3 shadow-sm relative overflow-hidden">
+          <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px]">restaurant</span>
+          </div>
+          <div class="flex-1">
+            <div class="flex justify-between items-start">
+              <h3 class="font-bold text-sm text-on-surface">Auto-Feeding Executed</h3>
+              <span class="text-[10px] text-outline-variant">1 hour ago</span>
+            </div>
+            <p class="text-xs text-on-surface-variant mt-1">Morning automated feeding cycle completed successfully. 250g
+              of feed dispensed.</p>
+          </div>
+        </div>
+
+        <div
+          class="bg-white border border-outline-variant rounded-xl p-4 flex gap-3 shadow-sm relative overflow-hidden">
+          <div class="w-10 h-10 rounded-full bg-green-100 text-green-700 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px]"
+              style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+          <div class="flex-1">
+            <div class="flex justify-between items-start">
+              <h3 class="font-bold text-sm text-on-surface">Sensor Calibration</h3>
+              <span class="text-[10px] text-outline-variant">2 hours ago</span>
+            </div>
+            <p class="text-xs text-on-surface-variant mt-1">Main sensor cluster successfully recalibrated. Real-time
+              telemetry is syncing normally.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <div id="chatInputArea"
+      class="hidden absolute bottom-16 left-0 w-full bg-white border-t border-surface-variant p-3 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+      <form id="chatForm" class="flex items-center bg-surface-container rounded-full px-3 py-1">
+        <input id="messageInput" class="flex-1 bg-transparent border-none focus:ring-0 text-sm py-2 outline-none"
+          placeholder="Ask Aqua-AI..." autocomplete="off" />
+        <button type="submit" id="sendBtn" class="text-primary p-1 disabled:opacity-50"><span
+            class="material-symbols-outlined">send</span></button>
+      </form>
     </div>
-    <div class="flex items-center gap-2">
-      <select id="globalPondSelector" class="hidden">
-        <option value="pond1">Pond 1</option>
-        <option value="pond2">Pond 2</option>
-      </select>
-      <button id="notifBtn" class="relative p-1 rounded-full bg-surface-container text-on-surface-variant transition-transform active:scale-90">
-        <span class="material-symbols-outlined text-[20px]">notifications</span>
-        <span id="notifDot" class="hidden absolute top-0 right-0 w-2 h-2 bg-error rounded-full storm-pulse"></span>
+
+    <nav
+      class="absolute bottom-0 left-0 w-full bg-white border-t border-surface-variant z-50 flex justify-around items-center h-16 shrink-0">
+      <button data-tab="weather" class="mobile-nav-item flex flex-col items-center gap-1 active w-16">
+        <span class="material-symbols-outlined text-[24px]">cloud</span>
+        <span class="text-[10px] font-bold">Weather</span>
       </button>
-    </div>
-  </header>
-  
-  <main class="flex-1 overflow-y-auto overflow-x-hidden p-4 relative pb-20">
-    
-    <section id="tab-weather" class="tab-content active space-y-6">
-      <div class="relative flex gap-2">
-        <input id="weatherSearch" class="w-full pl-10 pr-3 py-3 border border-outline-variant rounded-full text-sm bg-white shadow-sm outline-none" placeholder="Hanoi, Vietnam" value="Hanoi, Vietnam"/>
-        <span class="material-symbols-outlined absolute left-3 top-3 text-outline">search</span>
-      </div>
+      <button data-tab="devices" class="mobile-nav-item flex flex-col items-center gap-1 w-16 text-on-surface-variant">
+        <span class="material-symbols-outlined text-[24px]">sensors</span>
+        <span class="text-[10px] font-bold">Devices</span>
+      </button>
+      <button data-tab="chat" class="mobile-nav-item flex flex-col items-center gap-1 w-16 text-on-surface-variant">
+        <span class="material-symbols-outlined text-[24px]">smart_toy</span>
+        <span class="text-[10px] font-bold">AI Chat</span>
+      </button>
+    </nav>
 
-      <div class="flex flex-col items-center justify-center pt-2">
-        <h2 class="text-2xl font-bold text-on-surface" id="hero-location">Đang kết nối...</h2>
-        <div class="flex items-center space-x-4 my-3 text-primary">
-          <span id="hero-icon" class="material-symbols-outlined text-[80px] font-light">hourglass_empty</span>
-          <div class="text-on-surface">
-            <div class="text-[64px] font-bold leading-none tracking-tight" id="hero-temp">--°C</div>
-          </div>
-        </div>
-        <p class="text-sm font-medium text-on-surface-variant mt-1" id="hero-desc">Đang tải dữ liệu</p>
-        <div class="flex flex-wrap justify-center gap-2 mt-4" id="w-badges"></div>
-      </div>
-
-      <div class="mt-8">
-        <h3 class="font-bold text-on-surface mb-4 text-lg">Current Conditions</h3>
-        <div class="grid grid-cols-2 gap-3">
-          <div class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
-            <div class="flex justify-between items-start">
-              <span class="material-symbols-outlined text-outline">humidity_percentage</span>
-              <span class="material-symbols-outlined text-error text-[16px]">arrow_upward</span>
-            </div>
-            <div class="mt-4">
-              <p class="text-[11px] font-bold text-outline mb-0.5">Humidity</p>
-              <p class="text-3xl font-bold text-on-surface" id="stat-humidity">--%</p>
-            </div>
-          </div>
-          <div class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
-            <div class="flex justify-between items-start">
-              <span class="material-symbols-outlined text-outline">waves</span>
-              <span class="material-symbols-outlined text-secondary text-[16px]">arrow_downward</span>
-            </div>
-            <div class="mt-4">
-              <p class="text-[11px] font-bold text-outline mb-0.5">Tide</p>
-              <p class="text-3xl font-bold text-on-surface" id="stat-tide">--m</p>
-            </div>
-          </div>
-          <div class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
-            <div class="flex justify-between items-start">
-              <span class="material-symbols-outlined text-outline">light_mode</span>
-              <span class="w-2 h-2 rounded-full bg-error mt-1" id="stat-uv-dot"></span>
-            </div>
-            <div class="mt-4">
-              <p class="text-[11px] font-bold text-outline mb-0.5">UV Index</p>
-              <p class="text-2xl font-bold text-on-surface" id="stat-uv">--</p>
-            </div>
-          </div>
-          <div class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
-            <div class="flex justify-between items-start">
-              <span class="material-symbols-outlined text-outline">compress</span>
-              <span class="material-symbols-outlined text-outline text-[16px]">remove</span>
-            </div>
-            <div class="mt-4">
-              <p class="text-[11px] font-bold text-outline mb-0.5">Pressure</p>
-              <p class="text-2xl font-bold text-on-surface" id="stat-pressure">-- hPa</p>
-            </div>
-          </div>
-          <div class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
-            <div class="flex justify-between items-start">
-              <span class="material-symbols-outlined text-outline">cloud</span>
-            </div>
-            <div class="mt-4">
-              <p class="text-[11px] font-bold text-outline mb-0.5">Cloud Cover</p>
-              <p class="text-3xl font-bold text-on-surface" id="stat-cloud">--%</p>
-            </div>
-          </div>
-          <div class="bg-white border border-surface-variant rounded-2xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[110px]">
-            <div class="flex justify-between items-start">
-              <span class="material-symbols-outlined text-outline">water_drop</span>
-            </div>
-            <div class="mt-4">
-              <p class="text-[11px] font-bold text-outline mb-0.5">Dew Point</p>
-              <p class="text-3xl font-bold text-on-surface" id="stat-dew">--°C</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-8">
-        <h3 class="font-bold text-on-surface mb-4 text-lg">5-Day Forecast</h3>
-        <div class="flex overflow-x-auto pb-4 gap-3 snap-x no-scrollbar" id="forecast-row">
-           <div class="min-w-[100px] h-[120px] bg-surface-container-highest rounded-2xl animate-pulse"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="tab-devices" class="tab-content space-y-6">
-      <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="font-bold text-sm text-on-surface flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary text-[18px]">water_drop</span>
-            Real-time Water Quality
-          </h2>
-          <span class="text-[10px] text-on-surface-variant font-bold">Updated: Just now</span>
-        </div>
-        <div class="grid grid-cols-2 gap-3" id="pro-water-quality">
-          <div class="col-span-2 text-center text-sm text-outline loading-pulse py-4">Đang tải dữ liệu cảm biến...</div>
-        </div>
-      </div>
-
-      <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-        <h2 class="font-bold text-sm text-on-surface mb-4 flex items-center gap-2">
-          <span class="material-symbols-outlined text-primary text-[18px]">experiment</span>
-          Chemical Stats
-        </h2>
-        <div class="flex flex-col gap-2" id="pro-chemical-stats"></div>
-      </div>
-
-      <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="font-bold text-sm text-on-surface flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary text-[18px]">timeline</span>
-            Sensor History (24h)
-          </h2>
-          <select id="metricSelect" class="bg-surface border border-outline-variant rounded-md pl-2 pr-6 py-1.5 text-[10px] outline-none font-bold text-on-surface cursor-pointer">
-            <option value="temperature" selected>Temperature</option>
-            <option value="ph">pH Level</option>
-            <option value="salinity">Salinity</option>
-          </select>
-        </div>
-        
-        <div class="flex gap-4 mb-2" id="chart-stats">
-          <div class="text-left">
-            <p class="text-[10px] text-on-surface-variant font-bold">High</p>
-            <p class="font-bold text-sm text-on-surface" id="chart-high">--</p>
-          </div>
-          <div class="text-left">
-            <p class="text-[10px] text-on-surface-variant font-bold">Avg</p>
-            <p class="font-bold text-sm text-primary" id="chart-avg">--</p>
-          </div>
-          <div class="text-left">
-            <p class="text-[10px] text-on-surface-variant font-bold">Low</p>
-            <p class="font-bold text-sm text-on-surface" id="chart-low">--</p>
-          </div>
-        </div>
-
-        <div class="chart-container mt-2">
-          <canvas id="historyChart"></canvas>
-        </div>
-      </div>
-      
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-3 text-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-center">
-          <p class="text-[10px] text-outline font-bold">DEVICE BATTERY</p>
-          <div class="flex items-center justify-center gap-1 mt-1">
-            <span class="material-symbols-outlined text-[18px]" id="pro-batt-icon">battery_full</span>
-            <p id="pro-battery" class="text-lg font-bold">--%</p>
-          </div>
-        </div>
-        <div class="bg-surface-container-lowest border border-surface-variant rounded-xl p-3 text-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-center">
-          <p class="text-[10px] text-outline font-bold">SIGNAL STRENGTH</p>
-          <p id="pro-signal" class="text-lg font-bold mt-1 text-primary">--%</p>
-        </div>
-      </div>
-    </section>
-
-<section id="tab-chat" class="tab-content">
-  <div id="messagesWrapper" class="space-y-4 pb-4"></div>
-</section>
-<section id="tab-notifications" class="tab-content space-y-4">
-      
-      <div class="flex items-center gap-2 bg-white border border-outline-variant rounded-full p-2 shadow-sm focus-within:border-primary transition-all">
-        <span class="material-symbols-outlined text-outline ml-2 text-[20px]">search</span>
-        <input class="w-full bg-transparent border-none focus:ring-0 text-sm outline-none" placeholder="Search alerts..." type="text"/>
-      </div>
-
-      <div class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col gap-3 shadow-sm relative overflow-hidden">
-        <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-600"></div>
-        <div class="flex gap-3">
-          <div class="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">warning</span>
-          </div>
-          <div class="flex-1">
-            <div class="flex justify-between items-start">
-              <h3 class="font-bold text-sm text-on-surface">Aerator Power Alert</h3>
-              <span class="text-[10px] text-outline-variant">5 mins ago</span>
-            </div>
-            <p class="text-xs text-on-surface-variant mt-1">Sudden voltage drop detected at the main aerator. System has automatically engaged backup battery.</p>
-          </div>
-        </div>
-        <div class="flex gap-2 ml-12 mt-1">
-          <button class="bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-lg flex-1">Check Power</button>
-          <button class="bg-transparent text-primary border border-primary text-xs font-bold px-3 py-1.5 rounded-lg flex-1">Mute</button>
-        </div>
-      </div>
-
-      <div class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col gap-3 shadow-sm relative overflow-hidden">
-        <div class="absolute left-0 top-0 bottom-0 w-1 bg-orange-500"></div>
-        <div class="flex gap-3">
-          <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">science</span>
-          </div>
-          <div class="flex-1">
-            <div class="flex justify-between items-start">
-              <h3 class="font-bold text-sm text-on-surface">pH Minor Deviation</h3>
-              <span class="text-[10px] text-outline-variant">15 mins ago</span>
-            </div>
-            <p class="text-xs text-on-surface-variant mt-1">Slight pH fluctuation detected following recent rainfall. AI is actively monitoring the trend.</p>
-          </div>
-        </div>
-        <div class="ml-12 mt-1">
-          <button class="bg-transparent text-primary border border-primary text-xs font-bold px-3 py-1.5 rounded-lg w-full">View Analytics</button>
-        </div>
-      </div>
-
-      <div class="bg-white border border-outline-variant rounded-xl p-4 flex gap-3 shadow-sm relative overflow-hidden">
-        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
-          <span class="material-symbols-outlined text-[20px]">restaurant</span>
-        </div>
-        <div class="flex-1">
-          <div class="flex justify-between items-start">
-            <h3 class="font-bold text-sm text-on-surface">Auto-Feeding Executed</h3>
-            <span class="text-[10px] text-outline-variant">1 hour ago</span>
-          </div>
-          <p class="text-xs text-on-surface-variant mt-1">Morning automated feeding cycle completed successfully. 250g of feed dispensed.</p>
-        </div>
-      </div>
-
-      <div class="bg-white border border-outline-variant rounded-xl p-4 flex gap-3 shadow-sm relative overflow-hidden">
-        <div class="w-10 h-10 rounded-full bg-green-100 text-green-700 flex items-center justify-center shrink-0">
-          <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-        </div>
-        <div class="flex-1">
-          <div class="flex justify-between items-start">
-            <h3 class="font-bold text-sm text-on-surface">Sensor Calibration</h3>
-            <span class="text-[10px] text-outline-variant">2 hours ago</span>
-          </div>
-          <p class="text-xs text-on-surface-variant mt-1">Main sensor cluster successfully recalibrated. Real-time telemetry is syncing normally.</p>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <div id="chatInputArea" class="hidden absolute bottom-16 left-0 w-full bg-white border-t border-surface-variant p-3 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
-    <form id="chatForm" class="flex items-center bg-surface-container rounded-full px-3 py-1">
-      <input id="messageInput" class="flex-1 bg-transparent border-none focus:ring-0 text-sm py-2 outline-none" placeholder="Ask Aqua-AI..." autocomplete="off"/>
-      <button type="submit" id="sendBtn" class="text-primary p-1 disabled:opacity-50"><span class="material-symbols-outlined">send</span></button>
-    </form>
   </div>
 
-  <nav class="absolute bottom-0 left-0 w-full bg-white border-t border-surface-variant z-50 flex justify-around items-center h-16 shrink-0">
-    <button data-tab="weather" class="mobile-nav-item flex flex-col items-center gap-1 active w-16">
-      <span class="material-symbols-outlined text-[24px]">cloud</span>
-      <span class="text-[10px] font-bold">Weather</span>
-    </button>
-    <button data-tab="devices" class="mobile-nav-item flex flex-col items-center gap-1 w-16 text-on-surface-variant">
-      <span class="material-symbols-outlined text-[24px]">sensors</span>
-      <span class="text-[10px] font-bold">Devices</span>
-    </button>
-    <button data-tab="chat" class="mobile-nav-item flex flex-col items-center gap-1 w-16 text-on-surface-variant">
-      <span class="material-symbols-outlined text-[24px]">smart_toy</span>
-      <span class="text-[10px] font-bold">AI Chat</span>
-    </button>
-  </nav>
+  <script>
+    const API_BASE = 'https://aqua-ai-1.onrender.com';
+    let currentTab = 'weather';
+    let historyChart = null;
+    let chatHistory = [];
+    let isTyping = false;
 
-</div>
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => document.querySelectorAll(sel);
 
-<script>
-const API_BASE = 'https://aqua-ai-1.onrender.com';
-let currentTab = 'weather';
-let historyChart = null;
-let chatHistory = [];
-let isTyping = false;
+    const FALLBACK_W = {
+      location: "Hanoi, Vietnam", temperature: 31, feels_like: 34,
+      humidity: 84, description: "Cloudy, high humidity",
+      wind_speed: 18, wind_dir: "SE", rainfall_today: 12, visibility: 8,
+      tide_height: 1.2, uv_index: 8, pressure: 1008, cloud_cover: 75, dew_point: 26,
+      updated_at: new Date().toISOString(),
+      forecast: [
+        { day: "Today", icon: "cloud", temp: 31, rain_prob: 40 },
+        { day: "Tomorrow", icon: "rainy", temp: 29, rain_prob: 70 },
+        { day: "Wed", icon: "thunderstorm", temp: 28, rain_prob: 85 },
+        { day: "Thu", icon: "partly_cloudy_day", temp: 32, rain_prob: 25 },
+        { day: "Fri", icon: "clear_day", temp: 34, rain_prob: 10 }
+      ]
+    };
+    const FALLBACK_R = { risk_score: 62, level: "Medium", color: "#f59e0b", message: "Risk level medium due to weather", actions: ["Reduce feeding by 20%", "Check salinity"], storm_warning: false };
 
-const $ = sel => document.querySelector(sel);
-const $$ = sel => document.querySelectorAll(sel);
+    // === ĐIỀU HƯỚNG TỔNG QUÁT ===
+    function switchTab(tabId) {
+      currentTab = tabId;
 
-const FALLBACK_W = { 
-  location: "Hanoi, Vietnam", temperature: 31, feels_like: 34, 
-  humidity: 84, description: "Cloudy, high humidity", 
-  wind_speed: 18, wind_dir: "SE", rainfall_today: 12, visibility: 8,
-  tide_height: 1.2, uv_index: 8, pressure: 1008, cloud_cover: 75, dew_point: 26,
-  updated_at: new Date().toISOString(), 
-  forecast: [
-    {day: "Today", icon: "cloud", temp: 31, rain_prob: 40},
-    {day: "Tomorrow", icon: "rainy", temp: 29, rain_prob: 70},
-    {day: "Wed", icon: "thunderstorm", temp: 28, rain_prob: 85},
-    {day: "Thu", icon: "partly_cloudy_day", temp: 32, rain_prob: 25},
-    {day: "Fri", icon: "clear_day", temp: 34, rain_prob: 10}
-  ] 
-};
-const FALLBACK_R = { risk_score: 62, level: "Medium", color: "#f59e0b", message: "Risk level medium due to weather", actions: ["Reduce feeding by 20%", "Check salinity"], storm_warning: false };
+      $$('.mobile-nav-item').forEach(b => {
+        if (b.dataset.tab === tabId) {
+          b.classList.add('active', 'text-primary');
+          b.classList.remove('text-on-surface-variant');
+        } else {
+          b.classList.remove('active', 'text-primary');
+          b.classList.add('text-on-surface-variant');
+        }
+      });
 
-// === ĐIỀU HƯỚNG TỔNG QUÁT ===
-function switchTab(tabId) {
-    currentTab = tabId;
-    
-    $$('.mobile-nav-item').forEach(b => {
-      if (b.dataset.tab === tabId) {
-        b.classList.add('active', 'text-primary');
-        b.classList.remove('text-on-surface-variant');
-      } else {
-        b.classList.remove('active', 'text-primary');
-        b.classList.add('text-on-surface-variant');
-      }
-    });
-    
-    $$('.tab-content').forEach(c => {
+      $$('.tab-content').forEach(c => {
         c.classList.remove('active');
-        c.style.display = 'none'; 
-    });
-    
-    const targetTab = $(`#tab-${tabId}`);
-    if (targetTab) {
+        c.style.display = 'none';
+      });
+
+      const targetTab = $(`#tab-${tabId}`);
+      if (targetTab) {
         targetTab.classList.add('active');
         // Sửa lại chỉ dùng block, không dùng flex nữa
-        targetTab.style.display = 'block'; 
+        targetTab.style.display = 'block';
+      }
+
+      const titles = { weather: 'Weather', devices: 'Devices', chat: 'AI Assistant', notifications: 'Alerts' };
+      $('#pageTitle').textContent = titles[tabId];
+
+      const mainEl = document.querySelector('main');
+      if (tabId === 'chat') {
+        $('#chatInputArea').classList.remove('hidden');
+        mainEl.classList.remove('pb-20');
+        mainEl.classList.add('pb-36'); // Nới đáy thẻ main để tin nhắn không bị che
+        if ($('#messagesWrapper').children.length === 0) initChat();
+        setTimeout(() => { mainEl.scrollTop = mainEl.scrollHeight; }, 10);
+      } else {
+        $('#chatInputArea').classList.add('hidden');
+        mainEl.classList.remove('pb-36');
+        mainEl.classList.add('pb-20'); // Trả lại chiều cao đáy bình thường
+      }
     }
-    
-    const titles = { weather: 'Weather', devices: 'Devices', chat: 'AI Assistant', notifications: 'Alerts' };
-    $('#pageTitle').textContent = titles[tabId];
-    
-    const mainEl = document.querySelector('main');
-    if(tabId === 'chat') {
-      $('#chatInputArea').classList.remove('hidden');
-      mainEl.classList.remove('pb-20');
-      mainEl.classList.add('pb-36'); // Nới đáy thẻ main để tin nhắn không bị che
-      if ($('#messagesWrapper').children.length === 0) initChat();
-      setTimeout(() => { mainEl.scrollTop = mainEl.scrollHeight; }, 10);
-    } else {
-      $('#chatInputArea').classList.add('hidden');
-      mainEl.classList.remove('pb-36');
-      mainEl.classList.add('pb-20'); // Trả lại chiều cao đáy bình thường
+
+    $$('.mobile-nav-item').forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    $('#notifBtn').addEventListener('click', () => {
+      $('#notifDot').classList.add('hidden');
+      switchTab('notifications');
+    });
+
+    $('#notifBtn').addEventListener('click', () => {
+      $('#notifDot').classList.add('hidden');
+      switchTab('notifications');
+    });
+
+
+    function uvLabel(v) {
+      if (v <= 2) return { l: "Low", c: "#22c55e" };
+      if (v <= 5) return { l: "Moderate", c: "#f59e0b" };
+      if (v <= 7) return { l: "High", c: "#f97316" };
+      if (v <= 10) return { l: "Very High", c: "#ef4444" };
+      return { l: "Extreme", c: "#7c3aed" };
     }
-}
 
-$$('.mobile-nav-item').forEach(btn => {
-  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
-});
+    function getMaterialIcon(condition) {
+      const lower = (condition || '').toLowerCase();
+      if (lower.includes('rain') || lower.includes('mưa')) return 'rainy';
+      if (lower.includes('cloud') || lower.includes('mây')) return 'cloud';
+      if (lower.includes('storm') || lower.includes('bão')) return 'thunderstorm';
+      if (lower.includes('clear') || lower.includes('trong')) return 'clear_day';
+      if (lower.includes('sun') || lower.includes('nắng')) return 'sunny';
+      return 'partly_cloudy_day';
+    }
 
-$('#notifBtn').addEventListener('click', () => {
-  $('#notifDot').classList.add('hidden'); 
-  switchTab('notifications');
-});
+    function renderWeather(d) {
+      if (!d) return;
 
-$('#notifBtn').addEventListener('click', () => {
-  $('#notifDot').classList.add('hidden'); 
-  switchTab('notifications');
-});
+      if ($('#hero-location')) $('#hero-location').textContent = d.location || '--';
+      if ($('#hero-temp')) $('#hero-temp').textContent = (d.temperature !== undefined ? d.temperature : '--') + "°C";
+      if ($('#hero-desc')) $('#hero-desc').textContent = d.description || '--';
+      if ($('#hero-icon')) $('#hero-icon').textContent = getMaterialIcon(d.icon || d.description);
 
-
-function uvLabel(v) {
-  if (v <= 2) return { l: "Low", c: "#22c55e" };
-  if (v <= 5) return { l: "Moderate", c: "#f59e0b" };
-  if (v <= 7) return { l: "High", c: "#f97316" };
-  if (v <= 10) return { l: "Very High", c: "#ef4444" };
-  return { l: "Extreme", c: "#7c3aed" };
-}
-
-function getMaterialIcon(condition) {
-  const lower = (condition || '').toLowerCase();
-  if (lower.includes('rain') || lower.includes('mưa')) return 'rainy';
-  if (lower.includes('cloud') || lower.includes('mây')) return 'cloud';
-  if (lower.includes('storm') || lower.includes('bão')) return 'thunderstorm';
-  if (lower.includes('clear') || lower.includes('trong')) return 'clear_day';
-  if (lower.includes('sun') || lower.includes('nắng')) return 'sunny';
-  return 'partly_cloudy_day'; 
-}
-
-function renderWeather(d) {
-  if (!d) return;
-
-  if ($('#hero-location')) $('#hero-location').textContent = d.location || '--';
-  if ($('#hero-temp')) $('#hero-temp').textContent = (d.temperature !== undefined ? d.temperature : '--') + "°C";
-  if ($('#hero-desc')) $('#hero-desc').textContent = d.description || '--';
-  if ($('#hero-icon')) $('#hero-icon').textContent = getMaterialIcon(d.icon || d.description);
-
-  if ($('#w-badges')) {
-    $('#w-badges').innerHTML = `
+      if ($('#w-badges')) {
+        $('#w-badges').innerHTML = `
       <div class="flex items-center gap-1 bg-surface-container-low border border-surface-variant px-3 py-1.5 rounded-full text-[11px] font-bold text-outline"><span class="material-symbols-outlined text-[14px] text-primary">water_drop</span> ${d.humidity ?? '--'}%</div>
       <div class="flex items-center gap-1 bg-surface-container-low border border-surface-variant px-3 py-1.5 rounded-full text-[11px] font-bold text-outline"><span class="material-symbols-outlined text-[14px] text-primary">air</span> ${d.wind_speed ?? '--'} km/h ${d.wind_dir || ''}</div>
       <div class="flex items-center gap-1 bg-surface-container-low border border-surface-variant px-3 py-1.5 rounded-full text-[11px] font-bold text-outline"><span class="material-symbols-outlined text-[14px] text-primary">rainy</span> ${d.rainfall_today ?? '--'}mm</div>
       <div class="flex items-center gap-1 bg-surface-container-low border border-surface-variant px-3 py-1.5 rounded-full text-[11px] font-bold text-outline"><span class="material-symbols-outlined text-[14px] text-primary">visibility</span> ${d.visibility ?? '--'}km</div>
     `;
-  }
+      }
 
-  if ($('#stat-humidity')) $('#stat-humidity').textContent = (d.humidity !== undefined ? d.humidity : '--') + "%";
-  if ($('#stat-tide')) $('#stat-tide').textContent = (d.tide_height !== undefined ? d.tide_height : '--') + "m";
-  
-  if ($('#stat-uv')) {
-    const uvVal = d.uv_index || 0;
-    const uv = uvLabel(uvVal);
-    $('#stat-uv').textContent = d.uv_index !== undefined ? `${uvVal} ${uv.l}` : '--';
-    if ($('#stat-uv-dot')) $('#stat-uv-dot').style.backgroundColor = uv.c;
-  }
-  
-  if ($('#stat-pressure')) $('#stat-pressure').textContent = (d.pressure !== undefined ? d.pressure : '--') + " hPa";
-  if ($('#stat-cloud')) $('#stat-cloud').textContent = (d.cloud_cover !== undefined ? d.cloud_cover : '--') + "%";
-  if ($('#stat-dew')) $('#stat-dew').textContent = (d.dew_point !== undefined ? d.dew_point : '--') + "°C";
+      if ($('#stat-humidity')) $('#stat-humidity').textContent = (d.humidity !== undefined ? d.humidity : '--') + "%";
+      if ($('#stat-tide')) $('#stat-tide').textContent = (d.tide_height !== undefined ? d.tide_height : '--') + "m";
 
-  if ($('#forecast-row') && d.forecast && Array.isArray(d.forecast)) {
-    $('#forecast-row').innerHTML = d.forecast.map(f => `
+      if ($('#stat-uv')) {
+        const uvVal = d.uv_index || 0;
+        const uv = uvLabel(uvVal);
+        $('#stat-uv').textContent = d.uv_index !== undefined ? `${uvVal} ${uv.l}` : '--';
+        if ($('#stat-uv-dot')) $('#stat-uv-dot').style.backgroundColor = uv.c;
+      }
+
+      if ($('#stat-pressure')) $('#stat-pressure').textContent = (d.pressure !== undefined ? d.pressure : '--') + " hPa";
+      if ($('#stat-cloud')) $('#stat-cloud').textContent = (d.cloud_cover !== undefined ? d.cloud_cover : '--') + "%";
+      if ($('#stat-dew')) $('#stat-dew').textContent = (d.dew_point !== undefined ? d.dew_point : '--') + "°C";
+
+      if ($('#forecast-row') && d.forecast && Array.isArray(d.forecast)) {
+        $('#forecast-row').innerHTML = d.forecast.map(f => `
       <div class="min-w-[105px] bg-white border border-surface-variant rounded-2xl p-4 flex flex-col items-center shadow-[0_2px_8px_rgba(0,0,0,0.04)] snap-center">
         <span class="text-xs text-outline font-bold mb-2">${f.day || '-'}</span>
         <span class="material-symbols-outlined text-[32px] text-primary mb-3">${getMaterialIcon(f.icon || f.description)}</span>
         <div class="text-sm font-bold text-on-surface">${f.temp ?? '-'}° <span class="text-outline font-normal ml-1">${f.temp !== undefined ? f.temp - 5 : '-'}°</span></div>
       </div>
     `).join("");
-  }
-}
-
-async function loadWeather(loc = 'Hanoi') {
-  try {
-    const wRes = await fetch(`${API_BASE}/api/weather?location=${encodeURIComponent(loc)}`);
-    
-    if (wRes.status === 404) {
-      $('#hero-location').textContent = 'Không tìm thấy thành phố';
-      $('#hero-desc').textContent = 'Vui lòng kiểm tra lại chính tả';
-      $('#hero-temp').textContent = '--';
-      
-      if ($('#w-badges')) $('#w-badges').innerHTML = '';
-      if ($('#stat-humidity')) $('#stat-humidity').textContent = '--';
-      if ($('#stat-tide')) $('#stat-tide').textContent = '--';
-      if ($('#stat-pressure')) $('#stat-pressure').textContent = '--';
-      if ($('#stat-cloud')) $('#stat-cloud').textContent = '--';
-      if ($('#stat-dew')) $('#stat-dew').textContent = '--';
-      if ($('#stat-uv')) $('#stat-uv').textContent = '--';
-      
-      return;
+      }
     }
-    
-    if (wRes.status === 500) {
-      $('#hero-desc').textContent = 'Lỗi máy chủ thời tiết';
-      return;
+
+    async function loadWeather(loc = 'Hanoi') {
+      try {
+        const wRes = await fetch(`${API_BASE}/api/weather?location=${encodeURIComponent(loc)}`);
+
+        if (wRes.status === 404) {
+          $('#hero-location').textContent = 'Không tìm thấy thành phố';
+          $('#hero-desc').textContent = 'Vui lòng kiểm tra lại chính tả';
+          $('#hero-temp').textContent = '--';
+
+          if ($('#w-badges')) $('#w-badges').innerHTML = '';
+          if ($('#stat-humidity')) $('#stat-humidity').textContent = '--';
+          if ($('#stat-tide')) $('#stat-tide').textContent = '--';
+          if ($('#stat-pressure')) $('#stat-pressure').textContent = '--';
+          if ($('#stat-cloud')) $('#stat-cloud').textContent = '--';
+          if ($('#stat-dew')) $('#stat-dew').textContent = '--';
+          if ($('#stat-uv')) $('#stat-uv').textContent = '--';
+
+          return;
+        }
+
+        if (wRes.status === 500) {
+          $('#hero-desc').textContent = 'Lỗi máy chủ thời tiết';
+          return;
+        }
+
+        if (!wRes.ok) throw new Error(`API returned status ${wRes.status}`);
+
+        const rRes = await fetch(`${API_BASE}/api/weather-risk?location=${encodeURIComponent(loc)}`);
+
+        renderWeather(await wRes.json());
+      } catch (e) {
+        console.warn("Network error or backend down, using fallback data:", e.message);
+        renderWeather({ ...FALLBACK_W, location: loc + " (Local)" });
+      }
     }
-    
-    if (!wRes.ok) throw new Error(`API returned status ${wRes.status}`);
-    
-    const rRes = await fetch(`${API_BASE}/api/weather-risk?location=${encodeURIComponent(loc)}`);
-    
-    renderWeather(await wRes.json());
-  } catch (e) {
-    console.warn("Network error or backend down, using fallback data:", e.message);
-    renderWeather({ ...FALLBACK_W, location: loc + " (Local)" });
-  }
-}
 
-function getBatteryColor(level) {
-  if (level >= 80) return 'text-secondary';
-  if (level >= 40) return 'text-tertiary';
-  return 'text-error';
-}
+    function getBatteryColor(level) {
+      if (level >= 80) return 'text-secondary';
+      if (level >= 40) return 'text-tertiary';
+      return 'text-error';
+    }
 
-function renderProWaterQuality(data) {
-  const isOffline = data.status === 'offline';
-  
-  const salPct = Math.min(100, Math.max(0, ((data.salinity || 0) / 30) * 100));
-  const doPct = Math.min(100, Math.max(0, ((data.do || 0) / 10) * 100));
-  const phPct = Math.min(100, Math.max(0, ((data.ph || 0) / 14) * 100));
-  const tempPct = Math.min(100, Math.max(0, ((data.temperature || 0) / 40) * 100));
+    function renderProWaterQuality(data) {
+      const isOffline = data.status === 'offline';
 
-  return `
+      const salPct = Math.min(100, Math.max(0, ((data.salinity || 0) / 30) * 100));
+      const doPct = Math.min(100, Math.max(0, ((data.do || 0) / 10) * 100));
+      const phPct = Math.min(100, Math.max(0, ((data.ph || 0) / 14) * 100));
+      const tempPct = Math.min(100, Math.max(0, ((data.temperature || 0) / 40) * 100));
+
+      return `
     <div class="border border-outline-variant rounded-xl p-3 bg-surface flex flex-col justify-between">
       <div class="flex justify-between items-start mb-2">
         <span class="font-bold text-xs text-on-surface-variant">Salinity</span>
@@ -624,10 +775,10 @@ function renderProWaterQuality(data) {
       </div>
     </div>
   `;
-}
+    }
 
-function renderProChemicals(data) {
-  return `
+    function renderProChemicals(data) {
+      return `
     <div class="flex justify-between items-center p-3 rounded-xl border border-outline-variant bg-surface">
       <div>
         <p class="text-[10px] font-bold text-on-surface-variant mb-0.5">Ammonia (NH3)</p>
@@ -669,91 +820,91 @@ function renderProChemicals(data) {
       <span class="material-symbols-outlined text-error bg-error-container p-1.5 rounded-full text-sm">warning</span>
     </div>
   `;
-}
-
-async function loadDevices() {
-  const pond = $('#globalPondSelector').value;
-  try {
-    const res = await fetch(`${API_BASE}/api/device/sensor-data?pond=${pond}`);
-    if(!res.ok) throw new Error();
-    
-    const data = await res.json();
-    
-    $('#pro-water-quality').innerHTML = renderProWaterQuality(data);
-    $('#pro-chemical-stats').innerHTML = renderProChemicals(data);
-    
-    const batt = data.battery || 85;
-    $('#pro-battery').textContent = batt + '%';
-    $('#pro-battery').className = `text-lg font-bold ${getBatteryColor(batt)}`;
-    $('#pro-batt-icon').className = `material-symbols-outlined text-[18px] ${getBatteryColor(batt)}`;
-    $('#pro-batt-icon').textContent = batt >= 80 ? 'battery_full' : batt >= 40 ? 'battery_5_bar' : 'battery_alert';
-    
-    $('#pro-signal').textContent = (data.signal || 90) + '%';
-    
-    loadChart(pond);
-  } catch (e) {
-    $('#pro-water-quality').innerHTML = `<div class="col-span-2 text-center text-sm text-error py-4">Lỗi kết nối API. Vui lòng thử lại.</div>`;
-  }
-}
-
-async function loadChart(pond) {
-  const metric = $('#metricSelect').value;
-  try {
-    const res = await fetch(`${API_BASE}/api/device/history?pond=${pond}&metric=${metric}&hours=24`);
-    const data = await res.json();
-    if (historyChart) historyChart.destroy();
-    
-    const labels = data.data.map(d => d.time);
-    const values = data.data.map(d => d.value);
-    
-    if (values.length > 0) {
-      const maxVal = Math.max(...values).toFixed(1);
-      const minVal = Math.min(...values).toFixed(1);
-      const avgVal = (values.reduce((a, b) => a + b, 0) / values.length).toFixed(1);
-      
-      if ($('#chart-high')) $('#chart-high').textContent = maxVal;
-      if ($('#chart-low')) $('#chart-low').textContent = minVal;
-      if ($('#chart-avg')) $('#chart-avg').textContent = avgVal;
     }
-    
-    historyChart = new Chart($('#historyChart').getContext('2d'), {
-      type: 'line',
-      data: { 
-        labels, 
-        datasets: [{ 
-          label: metric, 
-          data: values, 
-          borderColor: '#005394', 
-          backgroundColor: 'rgba(43, 108, 176, 0.1)', 
-          fill: true, 
-          tension: 0.4, 
-          pointRadius: 0,
-          borderWidth: 3
-        }] 
-      },
-      options: { 
-        responsive: true, 
-        maintainAspectRatio: false, 
-        plugins: { legend: { display: false } }, 
-        scales: { 
-          x: { display: false },
-          y: { 
-            display: true, 
-            position: 'left',
-            grid: { color: 'rgba(0,0,0,0.05)' },
-            border: { display: false },
-            ticks: { font: { size: 10 }, color: '#727782' }
-          } 
-        } 
-      }
-    });
-  } catch(e) {}
-}
 
-// Hàm in tin nhắn tức thì (dùng cho User)
-function appendMsg(sender, text) {
-  const isUser = sender === 'User';
-  const html = `
+    async function loadDevices() {
+      const pond = $('#globalPondSelector').value;
+      try {
+        const res = await fetch(`${API_BASE}/api/device/sensor-data?pond=${pond}`);
+        if (!res.ok) throw new Error();
+
+        const data = await res.json();
+
+        $('#pro-water-quality').innerHTML = renderProWaterQuality(data);
+        $('#pro-chemical-stats').innerHTML = renderProChemicals(data);
+
+        const batt = data.battery || 85;
+        $('#pro-battery').textContent = batt + '%';
+        $('#pro-battery').className = `text-lg font-bold ${getBatteryColor(batt)}`;
+        $('#pro-batt-icon').className = `material-symbols-outlined text-[18px] ${getBatteryColor(batt)}`;
+        $('#pro-batt-icon').textContent = batt >= 80 ? 'battery_full' : batt >= 40 ? 'battery_5_bar' : 'battery_alert';
+
+        $('#pro-signal').textContent = (data.signal || 90) + '%';
+
+        loadChart(pond);
+      } catch (e) {
+        $('#pro-water-quality').innerHTML = `<div class="col-span-2 text-center text-sm text-error py-4">Lỗi kết nối API. Vui lòng thử lại.</div>`;
+      }
+    }
+
+    async function loadChart(pond) {
+      const metric = $('#metricSelect').value;
+      try {
+        const res = await fetch(`${API_BASE}/api/device/history?pond=${pond}&metric=${metric}&hours=24`);
+        const data = await res.json();
+        if (historyChart) historyChart.destroy();
+
+        const labels = data.data.map(d => d.time);
+        const values = data.data.map(d => d.value);
+
+        if (values.length > 0) {
+          const maxVal = Math.max(...values).toFixed(1);
+          const minVal = Math.min(...values).toFixed(1);
+          const avgVal = (values.reduce((a, b) => a + b, 0) / values.length).toFixed(1);
+
+          if ($('#chart-high')) $('#chart-high').textContent = maxVal;
+          if ($('#chart-low')) $('#chart-low').textContent = minVal;
+          if ($('#chart-avg')) $('#chart-avg').textContent = avgVal;
+        }
+
+        historyChart = new Chart($('#historyChart').getContext('2d'), {
+          type: 'line',
+          data: {
+            labels,
+            datasets: [{
+              label: metric,
+              data: values,
+              borderColor: '#005394',
+              backgroundColor: 'rgba(43, 108, 176, 0.1)',
+              fill: true,
+              tension: 0.4,
+              pointRadius: 0,
+              borderWidth: 3
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { display: false },
+              y: {
+                display: true,
+                position: 'left',
+                grid: { color: 'rgba(0,0,0,0.05)' },
+                border: { display: false },
+                ticks: { font: { size: 10 }, color: '#727782' }
+              }
+            }
+          }
+        });
+      } catch (e) { }
+    }
+
+    // Hàm in tin nhắn tức thì (dùng cho User)
+    function appendMsg(sender, text) {
+      const isUser = sender === 'User';
+      const html = `
     <div class="flex gap-2 ${isUser ? 'flex-row-reverse' : ''} message-enter">
       <div class="w-8 h-8 rounded-full flex shrink-0 items-center justify-center ${isUser ? 'bg-surface-variant' : 'bg-primary text-white'}">
         <span class="material-symbols-outlined text-[16px]">${isUser ? 'person' : 'smart_toy'}</span>
@@ -763,15 +914,15 @@ function appendMsg(sender, text) {
       </div>
     </div>
   `;
-  $('#messagesWrapper').insertAdjacentHTML('beforeend', html);
-  const mainEl = document.querySelector('main');
-mainEl.scrollTop = mainEl.scrollHeight;
-}
+      $('#messagesWrapper').insertAdjacentHTML('beforeend', html);
+      const mainEl = document.querySelector('main');
+      mainEl.scrollTop = mainEl.scrollHeight;
+    }
 
-// HIỆU ỨNG GÕ CHỮ CHO AI
-function appendDynamicAIMsg(text) {
-  const msgId = 'ai-msg-' + Date.now();
-  const html = `
+    // HIỆU ỨNG GÕ CHỮ CHO AI
+    function appendDynamicAIMsg(text) {
+      const msgId = 'ai-msg-' + Date.now();
+      const html = `
     <div class="flex gap-2 message-enter">
       <div class="w-8 h-8 rounded-full flex shrink-0 items-center justify-center bg-primary text-white">
         <span class="material-symbols-outlined text-[16px]">smart_toy</span>
@@ -780,42 +931,42 @@ function appendDynamicAIMsg(text) {
       </div>
     </div>
   `;
-  $('#messagesWrapper').insertAdjacentHTML('beforeend', html);
-  
-  const bubble = document.getElementById(msgId);
-  let i = 0;
-  const charsPerFrame = 2; // Tốc độ gõ: Tăng số này lên nếu muốn gõ nhanh hơn
-  
-  const typingInterval = setInterval(() => {
-    i += charsPerFrame;
-    bubble.innerHTML = marked.parse(text.substring(0, i));
-    const mainEl = document.querySelector('main');
-mainEl.scrollTop = mainEl.scrollHeight;
-    
-    if (i >= text.length) {
-      clearInterval(typingInterval);
-      bubble.innerHTML = marked.parse(text); // Chốt hạ nội dung cuối cùng
+      $('#messagesWrapper').insertAdjacentHTML('beforeend', html);
+
+      const bubble = document.getElementById(msgId);
+      let i = 0;
+      const charsPerFrame = 2; // Tốc độ gõ: Tăng số này lên nếu muốn gõ nhanh hơn
+
+      const typingInterval = setInterval(() => {
+        i += charsPerFrame;
+        bubble.innerHTML = marked.parse(text.substring(0, i));
+        const mainEl = document.querySelector('main');
+        mainEl.scrollTop = mainEl.scrollHeight;
+
+        if (i >= text.length) {
+          clearInterval(typingInterval);
+          bubble.innerHTML = marked.parse(text); // Chốt hạ nội dung cuối cùng
+        }
+      }, 15);
     }
-  }, 15);
-}
 
-function initChat() {
-  appendMsg('AI', "**Hello!** Aqua-AI system is online. How can I assist you today?");
-}
+    function initChat() {
+      appendMsg('AI', "**Hello!** Aqua-AI system is online. How can I assist you today?");
+    }
 
-$('#chatForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const input = $('#messageInput');
-  const msg = input.value.trim();
-  if(!msg) return;
-  
-  // 1. Hiển thị tin nhắn User
-  input.value = '';
-  appendMsg('User', msg);
-  
-  // 2. Hiện bong bóng "AI đang suy nghĩ..." (Lượn sóng)
-  const typingId = 'typing-' + Date.now();
-  const typingHtml = `
+    $('#chatForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = $('#messageInput');
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      // 1. Hiển thị tin nhắn User
+      input.value = '';
+      appendMsg('User', msg);
+
+      // 2. Hiện bong bóng "AI đang suy nghĩ..." (Lượn sóng)
+      const typingId = 'typing-' + Date.now();
+      const typingHtml = `
     <div id="${typingId}" class="flex gap-2 message-enter">
       <div class="w-8 h-8 rounded-full flex shrink-0 items-center justify-center bg-primary text-white">
         <span class="material-symbols-outlined text-[16px]">smart_toy</span>
@@ -827,38 +978,38 @@ $('#chatForm').addEventListener('submit', async (e) => {
       </div>
     </div>
   `;
-  $('#messagesWrapper').insertAdjacentHTML('beforeend', typingHtml);
-  const mainEl = document.querySelector('main');
-mainEl.scrollTop = mainEl.scrollHeight;
-  
-  // 3. Gọi API
-  try {
-    const res = await fetch(`${API_BASE}/api/chat`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: msg, pond: $('#globalPondSelector').value, history: chatHistory })
-    });
-    const data = await res.json();
-    
-    // 4. Tắt bong bóng lượn sóng
-    const typingEl = document.getElementById(typingId);
-    if (typingEl) typingEl.remove();
-    
-    // 5. Chạy hiệu ứng AI gõ từng chữ
-    appendDynamicAIMsg(data.reply || data.response);
-    
-    chatHistory.push({role: 'user', content: msg}, {role: 'assistant', content: data.reply});
-  } catch(e) {
-    const typingEl = document.getElementById(typingId);
-    if (typingEl) typingEl.remove();
-    appendMsg('AI', "⚠️ Lỗi kết nối đến máy chủ AI. Xin thử lại sau.");
-  }
-});
+      $('#messagesWrapper').insertAdjacentHTML('beforeend', typingHtml);
+      const mainEl = document.querySelector('main');
+      mainEl.scrollTop = mainEl.scrollHeight;
 
-// Toast Notification Helper
-function showToast(title, message, icon = 'info') {
-  const toast = document.createElement('div');
-  toast.className = 'fixed bottom-20 left-4 right-4 bg-surface-container border border-outline-variant rounded-lg px-4 py-3 shadow-lg z-50 animate-fade-in';
-  toast.innerHTML = `
+      // 3. Gọi API
+      try {
+        const res = await fetch(`${API_BASE}/api/chat`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg, pond: $('#globalPondSelector').value, history: chatHistory })
+        });
+        const data = await res.json();
+
+        // 4. Tắt bong bóng lượn sóng
+        const typingEl = document.getElementById(typingId);
+        if (typingEl) typingEl.remove();
+
+        // 5. Chạy hiệu ứng AI gõ từng chữ
+        appendDynamicAIMsg(data.reply || data.response);
+
+        chatHistory.push({ role: 'user', content: msg }, { role: 'assistant', content: data.reply });
+      } catch (e) {
+        const typingEl = document.getElementById(typingId);
+        if (typingEl) typingEl.remove();
+        appendMsg('AI', "⚠️ Lỗi kết nối đến máy chủ AI. Xin thử lại sau.");
+      }
+    });
+
+    // Toast Notification Helper
+    function showToast(title, message, icon = 'info') {
+      const toast = document.createElement('div');
+      toast.className = 'fixed bottom-20 left-4 right-4 bg-surface-container border border-outline-variant rounded-lg px-4 py-3 shadow-lg z-50 animate-fade-in';
+      toast.innerHTML = `
     <div class="flex items-start gap-2">
       <span class="material-symbols-outlined text-primary mt-0.5">${icon}</span>
       <div>
@@ -867,16 +1018,17 @@ function showToast(title, message, icon = 'info') {
       </div>
     </div>
   `;
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 3000);
-}
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
 
-$('#weatherSearch').addEventListener('keydown', (e) => { if (e.key === 'Enter') loadWeather(e.target.value); });
-$('#metricSelect').addEventListener('change', () => loadChart($('#globalPondSelector').value));
-$('#globalPondSelector').addEventListener('change', () => { loadDevices(); if(currentTab === 'weather') loadWeather(); });
+    $('#weatherSearch').addEventListener('keydown', (e) => { if (e.key === 'Enter') loadWeather(e.target.value); });
+    $('#metricSelect').addEventListener('change', () => loadChart($('#globalPondSelector').value));
+    $('#globalPondSelector').addEventListener('change', () => { loadDevices(); if (currentTab === 'weather') loadWeather(); });
 
-loadWeather();
-loadDevices();
-</script>
+    loadWeather();
+    loadDevices();
+  </script>
 </body>
+
 </html>

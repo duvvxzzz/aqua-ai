@@ -469,7 +469,7 @@
                   style="font-variation-settings: &quot;FILL&quot; 1;">set_meal</span>
                 <span class="text-[9px] font-semibold text-center leading-tight">2. Active</span>
               </button>
-              <button
+              <button onclick="switchTab('export')"
                 class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-surface hover:bg-surface-container-low transition-colors">
                 <span class="material-symbols-outlined text-on-surface-variant text-[16px]">local_shipping</span>
                 <span class="text-[9px] font-semibold text-center leading-tight">3. Export</span>
@@ -1678,6 +1678,299 @@
         </div>
       </section>
 
+      <section id="tab-export" class="tab-content flex flex-col min-h-full" style="display: none;">
+        <div class="space-y-6 flex-1 pb-4">
+          <!-- Top Metrics Row -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <!-- Readiness Score -->
+            <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 flex flex-col justify-between shadow-sm">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-secondary fill">verified_user</span>
+                <span class="text-label-sm font-label-sm text-on-surface-variant uppercase">Export Readiness</span>
+              </div>
+              <div>
+                <span class="text-headline-lg font-headline-lg text-secondary">91</span>
+                <span class="text-body-md font-body-md text-on-surface-variant">/100</span>
+              </div>
+              <div class="mt-2 text-label-sm font-label-sm text-secondary bg-secondary-container/20 w-fit px-2 py-1 rounded">READY</div>
+            </div>
+            <!-- Batch Ready -->
+            <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 flex flex-col justify-between shadow-sm">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-primary-container fill">inventory</span>
+                <span class="text-label-sm font-label-sm text-on-surface-variant uppercase">Batch Ready</span>
+              </div>
+              <div>
+                <span class="text-headline-lg font-headline-lg text-primary-container">2</span>
+              </div>
+              <div class="mt-2 text-label-sm font-label-sm text-on-surface-variant">Out of 3</div>
+            </div>
+            <!-- Pending Batches -->
+            <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 flex flex-col justify-between shadow-sm">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-[#d97706] fill">warning</span>
+                <span class="text-label-sm font-label-sm text-on-surface-variant uppercase">Pending Batches</span>
+              </div>
+              <div>
+                <span class="text-headline-lg font-headline-lg text-[#d97706]">1</span>
+              </div>
+              <div class="mt-2 text-label-sm font-label-sm text-on-surface-variant">Requires Attention</div>
+            </div>
+            <!-- Destination & Date -->
+            <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 flex flex-col justify-between shadow-sm">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-symbols-outlined text-secondary fill">flight_takeoff</span>
+                <span class="text-label-sm font-label-sm text-on-surface-variant uppercase">Destination &amp; Date</span>
+              </div>
+              <div>
+                <div class="text-headline-md font-headline-md">UAE (GCC)</div>
+                <div class="text-body-md font-body-md text-on-surface-variant mt-1">25/05/2025</div>
+              </div>
+              <div class="mt-2 text-label-sm font-label-sm text-on-surface-variant">Est. Shipment Date</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column: Checklist & Summary -->
+            <div class="lg:col-span-1 space-y-6">
+              <!-- Harvest Validation Checklist -->
+              <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-5 shadow-sm">
+                <h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest mb-4 border-b border-surface-container-high pb-2">Harvest Validation Checklist</h3>
+                <ul class="space-y-3">
+                  <li class="flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-body-md font-body-md">
+                      <span class="material-symbols-outlined text-secondary text-sm">check</span>
+                      Water Quality Stable
+                    </div>
+                    <span class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
+                  </li>
+                  <li class="flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-body-md font-body-md">
+                      <span class="material-symbols-outlined text-secondary text-sm">check</span>
+                      Withdrawal Period Complete
+                    </div>
+                    <span class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
+                  </li>
+                  <li class="flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-body-md font-body-md">
+                      <span class="material-symbols-outlined text-secondary text-sm">check</span>
+                      No Antibiotic Residue
+                    </div>
+                    <span class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
+                  </li>
+                  <li class="flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-body-md font-body-md">
+                      <span class="material-symbols-outlined text-secondary text-sm">check</span>
+                      Feed Compliance Verified
+                    </div>
+                    <span class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
+                  </li>
+                  <li class="flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-body-md font-body-md">
+                      <span class="material-symbols-outlined text-secondary text-sm">check</span>
+                      Disease Free
+                    </div>
+                    <span class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
+                  </li>
+                  <li class="flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-body-md font-body-md">
+                      <span class="material-symbols-outlined text-secondary text-sm">check</span>
+                      Traceability Complete
+                    </div>
+                    <span class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
+                  </li>
+                  <li class="flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-body-md font-body-md">
+                      <span class="material-symbols-outlined text-secondary text-sm">check</span>
+                      Halal Integrity Score &gt; 80
+                    </div>
+                    <span class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
+                  </li>
+                </ul>
+                <div class="mt-4 pt-3 border-t border-surface-container-high flex justify-between items-center">
+                  <span class="text-label-sm font-label-sm font-bold">Conclusion</span>
+                  <span class="text-label-sm font-label-sm text-secondary bg-secondary-container/30 px-3 py-1.5 rounded-full font-bold">EXPORT READY</span>
+                </div>
+              </div>
+              <!-- Export Compliance Summary (Radar Placeholder) -->
+              <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-5 shadow-sm flex flex-col h-64">
+                <h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest mb-4 border-b border-surface-container-high pb-2">Export Compliance Summary</h3>
+                <div class="flex-grow flex items-center justify-center relative">
+                  <!-- Simplified Radar Chart Visual -->
+                  <div class="absolute inset-0 flex items-center justify-center opacity-10">
+                    <svg class="w-full h-full max-w-[200px]" viewBox="0 0 100 100">
+                      <polygon fill="none" points="50,5 95,30 95,70 50,95 5,70 5,30" stroke="currentColor" stroke-width="1"></polygon>
+                      <polygon fill="none" points="50,25 75,40 75,60 50,75 25,60 25,40" stroke="currentColor" stroke-width="1"></polygon>
+                    </svg>
+                  </div>
+                  <div class="text-center z-10">
+                    <div class="text-primary-container font-bold text-lg mb-1">Standard Met</div>
+                    <div class="text-xs text-on-surface-variant">Halal, HACCP, VASEP</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Middle Column: Batch Info & Certificates -->
+            <div class="lg:col-span-1 space-y-6">
+              <!-- Batch Information -->
+              <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-5 shadow-sm">
+                <h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest mb-4 border-b border-surface-container-high pb-2">Batch Information</h3>
+                <div class="space-y-4">
+                  <div class="flex justify-between items-center border-b border-surface-container-low pb-2">
+                    <span class="text-body-md font-body-md text-on-surface-variant">Batch ID</span>
+                    <span class="text-body-md font-body-md font-bold">EXP-203</span>
+                  </div>
+                  <div class="flex justify-between items-center border-b border-surface-container-low pb-2">
+                    <span class="text-body-md font-body-md text-on-surface-variant">Pond</span>
+                    <span class="text-body-md font-body-md font-bold">Pond 03</span>
+                  </div>
+                  <div class="flex justify-between items-center border-b border-surface-container-low pb-2">
+                    <span class="text-body-md font-body-md text-on-surface-variant">Species</span>
+                    <span class="text-body-md font-body-md font-bold">Black Tiger Shrimp</span>
+                  </div>
+                  <div class="flex justify-between items-center border-b border-surface-container-low pb-2">
+                    <span class="text-body-md font-body-md text-on-surface-variant">Est. Quantity</span>
+                    <span class="text-body-md font-body-md font-bold">4,800 kg</span>
+                  </div>
+                  <div class="flex justify-between items-center border-b border-surface-container-low pb-2">
+                    <span class="text-body-md font-body-md text-on-surface-variant">Est. Harvest Date</span>
+                    <span class="text-body-md font-body-md font-bold">20/05/2025</span>
+                  </div>
+                  <div class="flex justify-between items-center border-b border-surface-container-low pb-2">
+                    <span class="text-body-md font-body-md text-on-surface-variant">Harvest Method</span>
+                    <span class="text-body-md font-body-md font-bold">Tỉa (Selective)</span>
+                  </div>
+                  <div class="flex justify-between items-center border-b border-surface-container-low pb-2">
+                    <span class="text-body-md font-body-md text-on-surface-variant">Avg. Size</span>
+                    <span class="text-body-md font-body-md font-bold">22 pcs/kg</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-body-md font-body-md text-on-surface-variant">Halal Integrity Score</span>
+                    <span class="text-body-md font-body-md font-bold text-secondary">92 / 100</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Digital Certificates -->
+              <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-5 shadow-sm">
+                <h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest mb-4 border-b border-surface-container-high pb-2">Digital Certificates</h3>
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between border-b border-surface-container-low pb-3">
+                    <div class="flex items-center gap-3">
+                      <div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary-container text-sm">verified</span>
+                      </div>
+                      <div>
+                        <div class="text-body-md font-body-md font-bold">Halal Certificate</div>
+                        <div class="text-xs text-on-surface-variant">Valid until: 12/12/2025</div>
+                      </div>
+                    </div>
+                    <span class="text-xs text-secondary font-bold bg-secondary-container/20 px-2 py-1 rounded">Verified</span>
+                  </div>
+                  <div class="flex items-center justify-between border-b border-surface-container-low pb-3">
+                    <div class="flex items-center gap-3">
+                      <div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary-container text-sm">workspace_premium</span>
+                      </div>
+                      <div>
+                        <div class="text-body-md font-body-md font-bold">ASC Certificate</div>
+                        <div class="text-xs text-on-surface-variant">Valid until: 30/11/2025</div>
+                      </div>
+                    </div>
+                    <span class="text-xs text-secondary font-bold bg-secondary-container/20 px-2 py-1 rounded">Verified</span>
+                  </div>
+                  <div class="flex items-center justify-between border-b border-surface-container-low pb-3">
+                    <div class="flex items-center gap-3">
+                      <div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary-container text-sm">fact_check</span>
+                      </div>
+                      <div>
+                        <div class="text-body-md font-body-md font-bold">HACCP Certificate</div>
+                        <div class="text-xs text-on-surface-variant">Valid until: 10/10/2025</div>
+                      </div>
+                    </div>
+                    <span class="text-xs text-secondary font-bold bg-secondary-container/20 px-2 py-1 rounded">Verified</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary-container text-sm">assignment_turned_in</span>
+                      </div>
+                      <div>
+                        <div class="text-body-md font-body-md font-bold">VASEP Certificate</div>
+                        <div class="text-xs text-on-surface-variant">Valid until: 15/09/2025</div>
+                      </div>
+                    </div>
+                    <span class="text-xs text-secondary font-bold bg-secondary-container/20 px-2 py-1 rounded">Verified</span>
+                  </div>
+                </div>
+                <button class="w-full mt-4 py-2 border border-primary text-primary rounded-lg text-label-sm font-label-sm uppercase hover:bg-primary-container/5 transition-colors">
+                  View All Certificates
+                </button>
+              </div>
+            </div>
+            <!-- Right Column: QR Code & Shipment -->
+            <div class="lg:col-span-1 space-y-6">
+              <!-- Batch QR Code -->
+              <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-5 shadow-sm text-center">
+                <h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest mb-4 border-b border-surface-container-high pb-2 text-left">Batch QR Code</h3>
+                <div class="bg-white p-4 inline-block rounded-xl border border-outline-variant mb-4">
+                  <!-- Simulated QR Code Grid -->
+                  <div class="w-40 h-40 grid grid-cols-5 grid-rows-5 gap-1 p-1 bg-white">
+                    <div class="bg-black col-span-2 row-span-2"></div>
+                    <div class="bg-white col-span-1 row-span-2"></div>
+                    <div class="bg-black col-span-2 row-span-2"></div>
+                    <div class="bg-white col-span-5 row-span-1 flex items-center justify-center">
+                      <div class="w-full h-1 bg-black"></div>
+                    </div>
+                    <div class="bg-black col-span-2 row-span-2"></div>
+                    <div class="bg-white col-span-1 row-span-2 flex items-center justify-center">
+                      <div class="w-4 h-4 bg-primary-container rounded-sm"></div>
+                    </div>
+                    <div class="bg-black col-span-1 row-span-1"></div>
+                    <div class="bg-white col-span-1 row-span-1"></div>
+                    <div class="bg-white col-span-1 row-span-1"></div>
+                    <div class="bg-black col-span-1 row-span-1"></div>
+                  </div>
+                </div>
+                <p class="text-body-md font-body-md text-on-surface-variant mb-4">Scan to view full journey of the batch.</p>
+                <button class="w-full py-2 bg-primary-container text-on-primary rounded-lg text-label-sm font-label-sm uppercase hover:bg-primary transition-colors flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-sm">download</span>
+                  Download QR Code
+                </button>
+              </div>
+              <!-- Shipment Plan -->
+              <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-5 shadow-sm">
+                <h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest mb-4 border-b border-surface-container-high pb-2">Shipment Plan</h3>
+                <div class="space-y-4">
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <span class="text-xs text-on-surface-variant uppercase tracking-wider block mb-1">Destination</span>
+                      <span class="text-body-md font-body-md font-bold">UAE (GCC)</span>
+                    </div>
+                    <div>
+                      <span class="text-xs text-on-surface-variant uppercase tracking-wider block mb-1">Transport Method</span>
+                      <span class="text-body-md font-body-md font-bold">Air Freight</span>
+                    </div>
+                    <div>
+                      <span class="text-xs text-on-surface-variant uppercase tracking-wider block mb-1">Est. Arrival Date</span>
+                      <span class="text-body-md font-body-md font-bold">25/05/2025</span>
+                    </div>
+                    <div>
+                      <span class="text-xs text-on-surface-variant uppercase tracking-wider block mb-1">Carrier</span>
+                      <span class="text-body-md font-body-md font-bold">Emirates Cargo</span>
+                    </div>
+                  </div>
+                  <div class="mt-4 pt-4 border-t border-surface-container-low">
+                    <div class="flex items-center gap-2 text-primary-container">
+                      <span class="material-symbols-outlined text-sm">schedule</span>
+                      <span class="text-label-sm font-label-sm uppercase">Shipment Scheduled</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <div id="chatInputArea"
@@ -1769,7 +2062,7 @@
         targetTab.style.display = 'block';
       }
 
-      const titles = { weather: 'Weather', devices: 'Devices', chat: 'AI Assistant', notifications: 'Alerts', halal: 'Halal Certification', traceability: 'Traceability', preparation: 'Preparation Phase', active: 'Active Farming' };
+      const titles = { weather: 'Weather', devices: 'Devices', chat: 'AI Assistant', notifications: 'Alerts', halal: 'Halal Certification', traceability: 'Traceability', preparation: 'Preparation Phase', active: 'Active Farming', export: 'Export Phase' };
       $('#pageTitle').textContent = titles[tabId];
 
       const mainEl = document.querySelector('main');

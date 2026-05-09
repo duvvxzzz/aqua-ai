@@ -463,7 +463,7 @@
                 <span class="material-symbols-outlined text-on-surface-variant text-[16px]">agriculture</span>
                 <span class="text-[9px] font-semibold text-center leading-tight">1. Preparation</span>
               </button>
-              <button
+              <button onclick="switchTab('active')"
                 class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border-2 border-primary bg-primary-fixed/30 text-on-primary-fixed transition-colors shadow-sm">
                 <span class="material-symbols-outlined text-[16px]"
                   style="font-variation-settings: &quot;FILL&quot; 1;">set_meal</span>
@@ -540,385 +540,769 @@
 
       <section id="tab-preparation" class="tab-content flex flex-col min-h-full">
         <div class="space-y-6 flex-1 pb-4">
-<!-- Phase Summary -->
-<section>
-<h2 class="text-label-sm font-label-sm text-on-surface-variant uppercase mb-3">Preparation Phase Summary</h2>
-<div class="flex overflow-x-auto space-x-4 hide-scrollbar pb-2">
-<!-- Card 1 -->
-<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
-<h3 class="text-xs text-on-surface-variant font-medium mb-1">Pond Readiness</h3>
-<div class="flex items-baseline gap-1 mb-2">
-<span class="text-2xl font-bold text-on-surface">89</span>
-<span class="text-xs text-on-surface-variant">/100</span>
-</div>
-<div class="flex items-center text-secondary text-xs font-medium gap-1">
-<span class="material-symbols-outlined text-[14px]">check_circle</span>
-                        Good
+          <!-- Phase Summary -->
+          <section>
+            <h2 class="text-label-sm font-label-sm text-on-surface-variant uppercase mb-3">Preparation Phase Summary
+            </h2>
+            <div class="flex overflow-x-auto space-x-4 hide-scrollbar pb-2">
+              <!-- Card 1 -->
+              <div
+                class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
+                <h3 class="text-xs text-on-surface-variant font-medium mb-1">Pond Readiness</h3>
+                <div class="flex items-baseline gap-1 mb-2">
+                  <span class="text-2xl font-bold text-on-surface">89</span>
+                  <span class="text-xs text-on-surface-variant">/100</span>
+                </div>
+                <div class="flex items-center text-secondary text-xs font-medium gap-1">
+                  <span class="material-symbols-outlined text-[14px]">check_circle</span>
+                  Good
+                </div>
+                <!-- Sparkline Mock -->
+                <div class="w-full h-6 mt-2 relative">
+                  <svg class="w-full h-full stroke-secondary fill-none stroke-2" viewBox="0 0 100 20">
+                    <path d="M0 15 L20 12 L40 18 L60 8 L80 10 L100 2"></path>
+                  </svg>
+                </div>
+              </div>
+              <!-- Card 2 -->
+              <div
+                class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
+                <h3 class="text-xs text-on-surface-variant font-medium mb-1">Water Quality</h3>
+                <div class="flex items-center gap-1 mb-2 mt-1">
+                  <span class="material-symbols-outlined text-secondary">water_drop</span>
+                  <span class="text-lg font-bold text-on-surface">Good</span>
+                </div>
+                <div class="flex items-center text-on-surface-variant text-xs font-medium gap-1">
+                  <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                  Stable
+                </div>
+                <!-- Sparkline Mock -->
+                <div class="w-full h-6 mt-2 relative">
+                  <svg class="w-full h-full stroke-secondary fill-none stroke-2" viewBox="0 0 100 20">
+                    <path d="M0 10 L20 12 L40 8 L60 10 L80 9 L100 11"></path>
+                  </svg>
+                </div>
+              </div>
+              <!-- Card 3 -->
+              <div
+                class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
+                <h3 class="text-xs text-on-surface-variant font-medium mb-1">Feed Plan</h3>
+                <div class="flex items-center gap-1 mb-2 mt-1">
+                  <span class="material-symbols-outlined text-secondary">verified</span>
+                  <span class="text-lg font-bold text-secondary">Verified</span>
+                </div>
+                <div class="flex items-center text-on-surface-variant text-xs font-medium gap-1">
+                  <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                  Approved
+                </div>
+                <!-- Sparkline Mock -->
+                <div class="w-full h-6 mt-2 relative">
+                  <svg class="w-full h-full stroke-secondary fill-none stroke-2" viewBox="0 0 100 20">
+                    <path d="M0 18 L20 15 L40 10 L60 12 L80 5 L100 2"></path>
+                  </svg>
+                </div>
+              </div>
+              <!-- Card 4 -->
+              <div
+                class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
+                <h3 class="text-xs text-on-surface-variant font-medium mb-1">Input Compliance</h3>
+                <div class="flex items-baseline gap-1 mb-2">
+                  <span class="text-2xl font-bold text-on-surface">95%</span>
+                </div>
+                <div class="flex items-center text-secondary text-xs font-medium gap-1">
+                  <span class="material-symbols-outlined text-[14px]">check_circle</span>
+                  Compliant
+                </div>
+                <!-- Sparkline Mock -->
+                <div class="w-full h-6 mt-2 relative">
+                  <svg class="w-full h-full stroke-secondary fill-none stroke-2" viewBox="0 0 100 20">
+                    <path d="M0 20 L20 18 L40 12 L60 14 L80 6 L100 4"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- Tasks & Checklist -->
+          <section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
+            <div class="flex justify-between items-end mb-4 border-b border-outline-variant pb-2">
+              <h2 class="text-label-sm font-label-sm text-on-surface-variant uppercase">Tasks &amp; Checklist</h2>
+              <span class="text-xs font-medium text-secondary">15 / 18 hoàn thành</span>
+            </div>
+            <div class="w-full bg-surface-container-high rounded-full h-1.5 mb-4">
+              <div class="bg-secondary h-1.5 rounded-full" style="width: 83%"></div>
+            </div>
+            <ul class="space-y-3">
+              <li class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
+                  <span class="text-sm text-on-surface">Vệ sinh ao</span>
+                </div>
+                <span class="material-symbols-outlined text-secondary text-sm">check</span>
+              </li>
+              <li class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
+                  <span class="text-sm text-on-surface">Kiểm tra nguồn nước</span>
+                </div>
+                <span class="material-symbols-outlined text-secondary text-sm">check</span>
+              </li>
+              <li class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
+                  <span class="text-sm text-on-surface">Xử lý đáy ao</span>
+                </div>
+                <span class="material-symbols-outlined text-secondary text-sm">check</span>
+              </li>
+              <li class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
+                  <span class="text-sm text-on-surface">Kiểm tra thức ăn &amp; đầu vào</span>
+                </div>
+                <span class="material-symbols-outlined text-secondary text-sm">check</span>
+              </li>
+              <li class="flex items-center justify-between opacity-50">
+                <div class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
+                  <span class="text-sm text-on-surface">Kiểm tra hệ thống sục khí</span>
+                </div>
+              </li>
+            </ul>
+            <div class="mt-4 text-right">
+              <a class="text-xs text-primary font-medium hover:underline flex items-center justify-end gap-1" href="#">
+                Xem tất cả checklist <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+              </a>
+            </div>
+          </section>
+          <!-- Water Quality Baseline -->
+          <section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
+            <div class="flex justify-between items-end mb-4 border-b border-outline-variant pb-2">
+              <h2 class="text-label-sm font-label-sm text-on-surface-variant uppercase">Water Quality Baseline</h2>
+            </div>
+            <div class="overflow-x-auto hide-scrollbar">
+              <table class="w-full text-left text-sm whitespace-nowrap min-w-[280px]">
+                <thead>
+                  <tr class="text-on-surface-variant border-b border-outline-variant">
+                    <th class="py-2 font-medium">Parameter</th>
+                    <th class="py-2 font-medium">Value</th>
+                    <th class="py-2 font-medium text-right">Status</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant">
+                  <tr>
+                    <td class="py-2 text-on-surface">pH</td>
+                    <td class="py-2 font-medium">7.8</td>
+                    <td class="py-2 text-right"><span
+                        class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase">Optimal</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 text-on-surface">Salinity (ppt)</td>
+                    <td class="py-2 font-medium">15</td>
+                    <td class="py-2 text-right"><span
+                        class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase">Optimal</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 text-on-surface">Temperature (°C)</td>
+                    <td class="py-2 font-medium">29</td>
+                    <td class="py-2 text-right"><span
+                        class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase">Optimal</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 text-on-surface">DO (mg/L)</td>
+                    <td class="py-2 font-medium">6.2</td>
+                    <td class="py-2 text-right"><span
+                        class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase">Optimal</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 text-on-surface">NH3 (mg/L)</td>
+                    <td class="py-2 font-medium">&lt; 0.1</td>
+                    <td class="py-2 text-right"><span
+                        class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase">Pass</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="py-2 text-on-surface">NO2 (mg/L)</td>
+                    <td class="py-2 font-medium">&lt; 0.05</td>
+                    <td class="py-2 text-right"><span
+                        class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase">Pass</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <!-- Feed & Input Management -->
+          <section class="space-y-4">
+            <h2 class="text-label-sm font-label-sm text-on-surface-variant uppercase">Feed &amp; Input Management</h2>
+            <!-- Planned Feed Usage -->
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
+              <h3 class="text-xs font-medium text-on-surface-variant mb-4 uppercase">Planned Feed Usage</h3>
+              <div class="overflow-x-auto hide-scrollbar">
+                <table class="w-full text-left text-sm whitespace-nowrap min-w-[340px]">
+                  <thead>
+                    <tr class="text-on-surface-variant border-b border-outline-variant">
+                      <th class="py-2 font-medium">Feed Name</th>
+                      <th class="py-2 font-medium">Supplier</th>
+                      <th class="py-2 font-medium">Type</th>
+                      <th class="py-2 font-medium text-right">Schedule</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-outline-variant">
+                    <tr>
+                      <td class="py-2 text-on-surface font-medium">Starter 1</td>
+                      <td class="py-2 text-on-surface-variant">-</td>
+                      <td class="py-2 text-on-surface">Crumble</td>
+                      <td class="py-2 text-right">Day 1-15</td>
+                    </tr>
+                    <tr>
+                      <td class="py-2 text-on-surface font-medium">Grower A</td>
+                      <td class="py-2 text-on-surface-variant">-</td>
+                      <td class="py-2 text-on-surface">Pellet</td>
+                      <td class="py-2 text-right">Day 16-45</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- Nutrition Donut Chart Mock -->
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
+              <h3 class="text-xs font-medium text-on-surface-variant mb-4">PHÂN BỔ DINH DƯỠNG DỰ KIẾN</h3>
+              <div class="flex items-center justify-center gap-6">
+                <div
+                  class="relative w-24 h-24 rounded-full border-8 border-surface-container-highest flex items-center justify-center">
+                  <!-- CSS Donut approximation -->
+                  <div class="absolute inset-0 rounded-full border-8 border-primary"
+                    style="clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%, 50% 50%);"></div>
+                  <div class="absolute inset-0 rounded-full border-8 border-[#38bdf8]"
+                    style="clip-path: polygon(0 0, 50% 0, 50% 50%, 0 50%);"></div>
+                  <div class="absolute inset-0 rounded-full border-8 border-secondary"
+                    style="clip-path: polygon(0 50%, 50% 50%, 50% 100%, 0 100%);"></div>
+                  <div class="text-center">
+                    <span class="block text-[10px] text-on-surface-variant">Tổng dinh dưỡng</span>
+                    <span class="block text-[10px] font-bold">cân đối</span>
+                  </div>
+                </div>
+                <div class="space-y-1">
+                  <div class="flex items-center justify-between gap-4 text-xs">
+                    <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary"></span> Protein
                     </div>
-<!-- Sparkline Mock -->
-<div class="w-full h-6 mt-2 relative">
-<svg class="w-full h-full stroke-secondary fill-none stroke-2" viewBox="0 0 100 20">
-<path d="M0 15 L20 12 L40 18 L60 8 L80 10 L100 2"></path>
-</svg>
-</div>
-</div>
-<!-- Card 2 -->
-<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
-<h3 class="text-xs text-on-surface-variant font-medium mb-1">Water Quality</h3>
-<div class="flex items-center gap-1 mb-2 mt-1">
-<span class="material-symbols-outlined text-secondary">water_drop</span>
-<span class="text-lg font-bold text-on-surface">Good</span>
-</div>
-<div class="flex items-center text-on-surface-variant text-xs font-medium gap-1">
-<span class="w-2 h-2 rounded-full bg-secondary"></span>
-                        Stable
+                    <span class="font-medium">35%</span>
+                  </div>
+                  <div class="flex items-center justify-between gap-4 text-xs">
+                    <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#38bdf8]"></span> Lipid
                     </div>
-<!-- Sparkline Mock -->
-<div class="w-full h-6 mt-2 relative">
-<svg class="w-full h-full stroke-secondary fill-none stroke-2" viewBox="0 0 100 20">
-<path d="M0 10 L20 12 L40 8 L60 10 L80 9 L100 11"></path>
-</svg>
-</div>
-</div>
-<!-- Card 3 -->
-<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
-<h3 class="text-xs text-on-surface-variant font-medium mb-1">Feed Plan</h3>
-<div class="flex items-center gap-1 mb-2 mt-1">
-<span class="material-symbols-outlined text-secondary">verified</span>
-<span class="text-lg font-bold text-secondary">Verified</span>
-</div>
-<div class="flex items-center text-on-surface-variant text-xs font-medium gap-1">
-<span class="w-2 h-2 rounded-full bg-secondary"></span>
-                        Approved
+                    <span class="font-medium">8%</span>
+                  </div>
+                  <div class="flex items-center justify-between gap-4 text-xs">
+                    <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary"></span>
+                      Carbohydrate</div>
+                    <span class="font-medium">30%</span>
+                  </div>
+                  <div class="flex items-center justify-between gap-4 text-xs">
+                    <div class="flex items-center gap-1"><span
+                        class="w-2 h-2 rounded-full bg-surface-container-highest"></span> Khác</div>
+                    <span class="font-medium">27%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Feeding Schedule List -->
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
+              <h3 class="text-xs font-medium text-on-surface-variant mb-4">LỊCH CHO ĂN DỰ KIẾN</h3>
+              <div class="space-y-3">
+                <div class="flex justify-between items-center text-sm border-b border-outline-variant pb-2">
+                  <div>
+                    <span class="block font-medium text-on-surface">Ngày 1 - 15</span>
+                    <span class="text-xs text-on-surface-variant">4 lần/ngày</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="block text-on-surface">8 - 10%</span>
+                    <span class="text-xs text-on-surface-variant">Thức ăn mịn</span>
+                  </div>
+                </div>
+                <div class="flex justify-between items-center text-sm border-b border-outline-variant pb-2">
+                  <div>
+                    <span class="block font-medium text-on-surface">Ngày 16 - 30</span>
+                    <span class="text-xs text-on-surface-variant">4 lần/ngày</span>
+                  </div>
+                  <div class="text-right">
+                    <span class="block text-on-surface">6 - 8%</span>
+                    <span class="text-xs text-on-surface-variant">Tăng trưởng</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-4 text-right">
+                <a class="text-xs text-primary font-medium hover:underline flex items-center justify-end gap-1"
+                  href="#">
+                  Xem lịch chi tiết <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+          </section>
+          <!-- Supplier Verification -->
+          <section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
+            <div class="flex justify-between items-end mb-4 border-b border-outline-variant pb-2">
+              <h2 class="text-label-sm font-label-sm text-on-surface-variant uppercase">Supplier Verification</h2>
+            </div>
+            <ul class="space-y-4">
+              <li class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded bg-primary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary">factory</span>
+                  </div>
+                  <div>
+                    <span class="block text-sm font-medium text-on-surface">Grobest Vietnam</span>
+                    <span class="block text-xs text-on-surface-variant">Feed Supplier</span>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end">
+                  <span
+                    class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase flex items-center gap-1"><span
+                      class="material-symbols-outlined text-[12px]">verified</span> Verified</span>
+                </div>
+              </li>
+              <li class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded bg-primary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary">science</span>
+                  </div>
+                  <div>
+                    <span class="block text-sm font-medium text-on-surface">BioPlus Co., Ltd</span>
+                    <span class="block text-xs text-on-surface-variant">Probiotics</span>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end">
+                  <span
+                    class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase flex items-center gap-1"><span
+                      class="material-symbols-outlined text-[12px]">verified</span> Verified</span>
+                </div>
+              </li>
+              <li class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded bg-primary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary">water_drop</span>
+                  </div>
+                  <div>
+                    <span class="block text-sm font-medium text-on-surface">AquaChem VN</span>
+                    <span class="block text-xs text-on-surface-variant">Minerals</span>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end">
+                  <span
+                    class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase flex items-center gap-1"><span
+                      class="material-symbols-outlined text-[12px]">verified</span> Verified</span>
+                </div>
+              </li>
+              <li class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded bg-primary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary">set_meal</span>
+                  </div>
+                  <div>
+                    <span class="block text-sm font-medium text-on-surface">Local Hatchery</span>
+                    <span class="block text-xs text-on-surface-variant">Postlarvae (PL)</span>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end">
+                  <span
+                    class="px-2 py-1 bg-surface-container-highest text-on-surface-variant rounded-full text-[10px] font-bold uppercase flex items-center gap-1"><span
+                      class="material-symbols-outlined text-[12px]">pending</span> Pending</span>
+                </div>
+              </li>
+            </ul>
+          </section>
+          <!-- Pond Overview Map -->
+          <section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
+            <div class="flex justify-between items-end mb-4 border-b border-outline-variant pb-2">
+              <h2 class="text-label-sm font-label-sm text-on-surface-variant uppercase">Pond Preparation Overview</h2>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
+              <!-- Pond Tiles -->
+              <div
+                class="bg-secondary-container text-on-secondary-container rounded p-2 text-center flex flex-col justify-center h-16 border border-secondary">
+                <span class="text-[10px] font-medium opacity-80">Pond 01</span>
+                <span class="text-lg font-bold">92</span>
+              </div>
+              <div
+                class="bg-secondary-container text-on-secondary-container rounded p-2 text-center flex flex-col justify-center h-16 border border-secondary">
+                <span class="text-[10px] font-medium opacity-80">Pond 02</span>
+                <span class="text-lg font-bold">90</span>
+              </div>
+              <div
+                class="bg-[#fef08a] text-[#854d0e] rounded p-2 text-center flex flex-col justify-center h-16 border border-[#eab308]">
+                <span class="text-[10px] font-medium opacity-80">Pond 03</span>
+                <span class="text-lg font-bold">78</span>
+              </div>
+              <div
+                class="bg-secondary-container text-on-secondary-container rounded p-2 text-center flex flex-col justify-center h-16 border border-secondary">
+                <span class="text-[10px] font-medium opacity-80">Pond 04</span>
+                <span class="text-lg font-bold">94</span>
+              </div>
+              <div
+                class="bg-error-container text-on-error-container rounded p-2 text-center flex flex-col justify-center h-16 border border-error">
+                <span class="text-[10px] font-medium opacity-80">Pond 05</span>
+                <span class="text-lg font-bold">65</span>
+              </div>
+              <div
+                class="bg-surface-container-highest text-on-surface-variant rounded p-2 text-center flex flex-col justify-center h-16 border border-outline-variant">
+                <span class="text-[10px] font-medium opacity-80">Pond 06</span>
+                <span class="text-lg font-bold">N/A</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-3 text-[10px] text-on-surface-variant">
+              <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary"></span> Excellent (≥
+                90)</div>
+              <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#38bdf8]"></span> Good (70 -
+                89)</div>
+              <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#eab308]"></span> Warning (50 -
+                69)</div>
+              <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-error"></span> Critical (&lt;
+                50)</div>
+            </div>
+          </section>
+        </div>
+      </section>
+      <section id="tab-active" class="tab-content flex flex-col min-h-full">
+        <div class="space-y-6 flex-1 pb-4">
+          <!-- Bento Grid Container -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <!-- Real-Time Water Quality -->
+            <section
+              class="col-span-1 md:col-span-8 bg-surface-container-lowest rounded-xl border border-outline-variant p-4 card-shadow flex flex-col h-[400px]">
+              <div class="flex justify-between items-center mb-4">
+                <h2 class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider">REAL-TIME WATER QUALITY
+                  <span class="text-on-surface-variant normal-case tracking-normal ml-2">(POND 03)</span></h2>
+                <div class="flex gap-2">
+                  <button
+                    class="px-3 py-1 text-[11px] font-bold rounded bg-surface-container-high text-on-surface border border-outline-variant">24h
+                    <span class="material-symbols-outlined text-[14px] align-middle">expand_more</span></button>
+                  <button
+                    class="px-3 py-1 text-[11px] font-medium rounded text-on-surface-variant border border-outline-variant/30 hover:bg-surface-container">7
+                    ngày</button>
+                  <button
+                    class="px-3 py-1 text-[11px] font-medium rounded text-on-surface-variant border border-outline-variant/30 hover:bg-surface-container">30
+                    ngày</button>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-x-6 gap-y-2 mb-6 text-[11px] font-medium text-on-surface-variant">
+                <div class="flex items-center gap-2"><span
+                    class="w-3 h-3 rounded-full bg-blue-500 flex items-center justify-center"><span
+                      class="w-1.5 h-1.5 rounded-full bg-white"></span></span> DO (mg/L)</div>
+                <div class="flex items-center gap-2"><span
+                    class="w-3 h-3 rounded-full bg-green-500 flex items-center justify-center"><span
+                      class="w-1.5 h-1.5 rounded-full bg-white"></span></span> pH</div>
+                <div class="flex items-center gap-2"><span
+                    class="w-3 h-3 rounded-full bg-orange-400 flex items-center justify-center"><span
+                      class="w-1.5 h-1.5 rounded-full bg-white"></span></span> NH3 (mg/L)</div>
+                <div class="flex items-center gap-2"><span
+                    class="w-3 h-3 rounded-full bg-purple-600 flex items-center justify-center"><span
+                      class="w-1.5 h-1.5 rounded-full bg-white"></span></span> Nhiệt độ (°C)</div>
+                <div class="flex items-center gap-2"><span
+                    class="w-3 h-3 rounded-full bg-gray-400 flex items-center justify-center"><span
+                      class="w-1.5 h-1.5 rounded-full bg-white"></span></span> Độ mặn (ppt)</div>
+              </div>
+              <div class="flex-grow relative mt-2">
+                <!-- Grid Lines -->
+                <div class="absolute inset-0 flex flex-col justify-between">
+                  <div class="border-t border-outline-variant/20 w-full flex items-center"><span
+                      class="text-[10px] -ml-6 text-on-surface-variant">10</span></div>
+                  <div class="border-t border-outline-variant/20 w-full flex items-center"><span
+                      class="text-[10px] -ml-6 text-on-surface-variant">8</span></div>
+                  <div class="border-t border-outline-variant/20 w-full flex items-center"><span
+                      class="text-[10px] -ml-6 text-on-surface-variant">6</span></div>
+                  <div class="border-t border-outline-variant/20 w-full flex items-center"><span
+                      class="text-[10px] -ml-6 text-on-surface-variant">4</span></div>
+                  <div class="border-t border-outline-variant/20 w-full flex items-center"><span
+                      class="text-[10px] -ml-6 text-on-surface-variant">2</span></div>
+                  <div class="border-t border-outline-variant/20 w-full flex items-center"><span
+                      class="text-[10px] -ml-6 text-on-surface-variant">0</span></div>
+                </div>
+                <!-- Alert Area Highlight -->
+                <div
+                  class="absolute top-0 bottom-0 right-0 w-[20%] bg-error-container/20 border-l border-dashed border-error z-0">
+                </div>
+                <!-- Data Visualization (SVG Chart) -->
+                <svg class="absolute inset-0 w-full h-full overflow-visible" preserveAspectRatio="none"
+                  viewBox="0 0 100 100">
+                  <!-- DO (Blue) -->
+                  <path d="M0,20 L10,18 L20,15 L30,12 L40,15 L50,18 L60,15 L70,20 L80,25 L90,20 L100,18" fill="none"
+                    stroke="#3b82f6" stroke-width="1"></path>
+                  <g fill="#3b82f6">
+                    <circle cx="0" cy="20" r="0.8"></circle>
+                    <circle cx="20" cy="15" r="0.8"></circle>
+                    <circle cx="40" cy="15" r="0.8"></circle>
+                    <circle cx="60" cy="15" r="0.8"></circle>
+                    <circle cx="80" cy="25" r="0.8"></circle>
+                    <circle cx="100" cy="18" r="0.8"></circle>
+                  </g>
+                  <!-- pH (Green) -->
+                  <path d="M0,40 L10,38 L20,35 L30,42 L40,45 L50,40 L60,35 L70,38 L80,45 L90,50 L100,42" fill="none"
+                    stroke="#22c55e" stroke-width="1"></path>
+                  <g fill="#22c55e">
+                    <circle cx="0" cy="40" r="0.8"></circle>
+                    <circle cx="20" cy="35" r="0.8"></circle>
+                    <circle cx="40" cy="45" r="0.8"></circle>
+                    <circle cx="60" cy="35" r="0.8"></circle>
+                    <circle cx="80" cy="45" r="0.8"></circle>
+                    <circle cx="100" cy="42" r="0.8"></circle>
+                  </g>
+                  <!-- NH3 (Orange) -->
+                  <path d="M0,60 L10,55 L20,52 L30,55 L40,62 L50,60 L60,58 L70,55 L80,68 L90,75 L100,65" fill="none"
+                    stroke="#fb923c" stroke-width="1"></path>
+                  <g fill="#fb923c">
+                    <circle cx="0" cy="60" r="0.8"></circle>
+                    <circle cx="20" cy="52" r="0.8"></circle>
+                    <circle cx="40" cy="62" r="0.8"></circle>
+                    <circle cx="60" cy="58" r="0.8"></circle>
+                    <circle cx="80" cy="68" r="0.8"></circle>
+                    <circle cx="100" cy="65" r="0.8"></circle>
+                  </g>
+                  <!-- Temp (Purple) -->
+                  <path d="M0,75 L10,72 L20,68 L30,65 L40,78 L50,75 L60,72 L70,75 L80,75 L90,82 L100,80" fill="none"
+                    stroke="#9333ea" stroke-width="1"></path>
+                  <g fill="#9333ea">
+                    <circle cx="0" cy="75" r="0.8"></circle>
+                    <circle cx="20" cy="68" r="0.8"></circle>
+                    <circle cx="40" cy="78" r="0.8"></circle>
+                    <circle cx="60" cy="72" r="0.8"></circle>
+                    <circle cx="80" cy="75" r="0.8"></circle>
+                    <circle cx="100" cy="80" r="0.8"></circle>
+                  </g>
+                </svg>
+                <!-- Critical Alert Overlay -->
+                <div class="absolute top-0 right-[20%] h-full z-10">
+                  <div class="relative flex flex-col items-center">
+                    <div
+                      class="bg-error text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg -mt-10 mb-2 whitespace-nowrap text-center">
+                      Cảnh báo<br />10:15 AM
                     </div>
-<!-- Sparkline Mock -->
-<div class="w-full h-6 mt-2 relative">
-<svg class="w-full h-full stroke-secondary fill-none stroke-2" viewBox="0 0 100 20">
-<path d="M0 18 L20 15 L40 10 L60 12 L80 5 L100 2"></path>
-</svg>
-</div>
-</div>
-<!-- Card 4 -->
-<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
-<h3 class="text-xs text-on-surface-variant font-medium mb-1">Input Compliance</h3>
-<div class="flex items-baseline gap-1 mb-2">
-<span class="text-2xl font-bold text-on-surface">95%</span>
-</div>
-<div class="flex items-center text-secondary text-xs font-medium gap-1">
-<span class="material-symbols-outlined text-[14px]">check_circle</span>
-                        Compliant
+                  </div>
+                </div>
+                <!-- X-Axis Labels -->
+                <div
+                  class="absolute bottom-[-32px] w-full flex justify-between text-[11px] text-on-surface-variant font-medium">
+                  <span>00:00</span>
+                  <span>04:00</span>
+                  <span>08:00</span>
+                  <span>12:00</span>
+                  <span>16:00</span>
+                  <span>20:00</span>
+                  <span>24:00</span>
+                </div>
+              </div>
+            </section>
+            <!-- AI Farming Advisor & Halal Compliance Stack -->
+            <div class="col-span-1 md:col-span-4 flex flex-col gap-6">
+              <!-- AI Farming Advisor -->
+              <section
+                class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 card-shadow flex-1">
+                <div class="flex items-center gap-2 mb-4">
+                  <span class="material-symbols-outlined text-purple-600">smart_toy</span>
+                  <h2
+                    class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider text-purple-700 font-bold">
+                    AI FARMING ADVISOR</h2>
+                </div>
+                <p class="text-xs text-on-surface-variant mb-2">Phân tích 10:30 AM</p>
+                <p class="text-sm font-medium mb-1">Ai nhận định:</p>
+                <p class="text-sm text-on-surface-variant mb-4">NH3 có xu hướng tăng nhẹ trong 12 giờ tới.</p>
+                <p class="text-sm font-medium mb-1">Đề xuất:</p>
+                <ul class="list-disc pl-5 text-sm text-on-surface-variant space-y-1 mb-4">
+                  <li>Tăng cường sục khí</li>
+                  <li>Giảm 10% lượng thức ăn</li>
+                  <li>Kiểm tra hệ thống lọc</li>
+                </ul>
+                <div class="flex items-center gap-2 mb-4">
+                  <span class="text-sm">Rủi ro dự báo:</span>
+                  <span class="bg-orange-100 text-orange-800 text-xs font-bold px-2 py-0.5 rounded">Trung bình</span>
+                </div>
+                <button
+                  class="w-full py-2 border border-outline-variant rounded-lg text-sm font-medium text-primary hover:bg-surface-container transition-colors">
+                  Xem chi tiết
+                </button>
+              </section>
+              <!-- Halal Compliance Status -->
+              <section class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 card-shadow">
+                <h2 class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider mb-4">HALAL COMPLIANCE
+                  STATUS</h2>
+                <div class="space-y-3">
+                  <div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+                    <div class="flex items-center gap-2">
+                      <span class="material-symbols-outlined text-green-600 text-sm">check_circle</span>
+                      <span class="text-sm">Water Quality</span>
                     </div>
-<!-- Sparkline Mock -->
-<div class="w-full h-6 mt-2 relative">
-<svg class="w-full h-full stroke-secondary fill-none stroke-2" viewBox="0 0 100 20">
-<path d="M0 20 L20 18 L40 12 L60 14 L80 6 L100 4"></path>
-</svg>
-</div>
-</div>
-</div>
-</section>
-<!-- Tasks & Checklist -->
-<section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
-<div class="flex justify-between items-end mb-4 border-b border-outline-variant pb-2">
-<h2 class="text-label-sm font-label-sm text-on-surface-variant uppercase">Tasks &amp; Checklist</h2>
-<span class="text-xs font-medium text-secondary">15 / 18 hoàn thành</span>
-</div>
-<div class="w-full bg-surface-container-high rounded-full h-1.5 mb-4">
-<div class="bg-secondary h-1.5 rounded-full" style="width: 83%"></div>
-</div>
-<ul class="space-y-3">
-<li class="flex items-center justify-between">
-<div class="flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
-<span class="text-sm text-on-surface">Vệ sinh ao</span>
-</div>
-<span class="material-symbols-outlined text-secondary text-sm">check</span>
-</li>
-<li class="flex items-center justify-between">
-<div class="flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
-<span class="text-sm text-on-surface">Kiểm tra nguồn nước</span>
-</div>
-<span class="material-symbols-outlined text-secondary text-sm">check</span>
-</li>
-<li class="flex items-center justify-between">
-<div class="flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
-<span class="text-sm text-on-surface">Xử lý đáy ao</span>
-</div>
-<span class="material-symbols-outlined text-secondary text-sm">check</span>
-</li>
-<li class="flex items-center justify-between">
-<div class="flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
-<span class="text-sm text-on-surface">Kiểm tra thức ăn &amp; đầu vào</span>
-</div>
-<span class="material-symbols-outlined text-secondary text-sm">check</span>
-</li>
-<li class="flex items-center justify-between opacity-50">
-<div class="flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
-<span class="text-sm text-on-surface">Kiểm tra hệ thống sục khí</span>
-</div>
-</li>
-</ul>
-<div class="mt-4 text-right">
-<a class="text-xs text-primary font-medium hover:underline flex items-center justify-end gap-1" href="#">
-                    Xem tất cả checklist <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
-</a>
-</div>
-</section>
-<!-- Water Quality Baseline -->
-<section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
-<div class="flex justify-between items-end mb-4 border-b border-outline-variant pb-2">
-<h2 class="text-label-sm font-label-sm text-on-surface-variant uppercase">Water Quality Baseline</h2>
-</div>
-<div class="overflow-x-auto hide-scrollbar">
-<table class="w-full text-left text-sm whitespace-nowrap min-w-[280px]">
-<thead>
-<tr class="text-on-surface-variant border-b border-outline-variant">
-<th class="py-2 font-medium">Parameter</th>
-<th class="py-2 font-medium">Value</th>
-<th class="py-2 font-medium text-right">Status</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-outline-variant">
-<tr>
-<td class="py-2 text-on-surface">pH</td>
-<td class="py-2 font-medium">7.8</td>
-<td class="py-2 text-right"><span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase">Optimal</span></td>
-</tr>
-<tr>
-<td class="py-2 text-on-surface">Salinity (ppt)</td>
-<td class="py-2 font-medium">15</td>
-<td class="py-2 text-right"><span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase">Optimal</span></td>
-</tr>
-<tr>
-<td class="py-2 text-on-surface">Temperature (°C)</td>
-<td class="py-2 font-medium">29</td>
-<td class="py-2 text-right"><span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase">Optimal</span></td>
-</tr>
-<tr>
-<td class="py-2 text-on-surface">DO (mg/L)</td>
-<td class="py-2 font-medium">6.2</td>
-<td class="py-2 text-right"><span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase">Optimal</span></td>
-</tr>
-<tr>
-<td class="py-2 text-on-surface">NH3 (mg/L)</td>
-<td class="py-2 font-medium">&lt; 0.1</td>
-<td class="py-2 text-right"><span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase">Pass</span></td>
-</tr>
-<tr>
-<td class="py-2 text-on-surface">NO2 (mg/L)</td>
-<td class="py-2 font-medium">&lt; 0.05</td>
-<td class="py-2 text-right"><span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase">Pass</span></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<!-- Feed & Input Management -->
-<section class="space-y-4">
-<h2 class="text-label-sm font-label-sm text-on-surface-variant uppercase">Feed &amp; Input Management</h2>
-<!-- Planned Feed Usage -->
-<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
-<h3 class="text-xs font-medium text-on-surface-variant mb-4 uppercase">Planned Feed Usage</h3>
-<div class="overflow-x-auto hide-scrollbar">
-<table class="w-full text-left text-sm whitespace-nowrap min-w-[340px]">
-<thead>
-<tr class="text-on-surface-variant border-b border-outline-variant">
-<th class="py-2 font-medium">Feed Name</th>
-<th class="py-2 font-medium">Supplier</th>
-<th class="py-2 font-medium">Type</th>
-<th class="py-2 font-medium text-right">Schedule</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-outline-variant">
-<tr>
-<td class="py-2 text-on-surface font-medium">Starter 1</td>
-<td class="py-2 text-on-surface-variant">-</td>
-<td class="py-2 text-on-surface">Crumble</td>
-<td class="py-2 text-right">Day 1-15</td>
-</tr>
-<tr>
-<td class="py-2 text-on-surface font-medium">Grower A</td>
-<td class="py-2 text-on-surface-variant">-</td>
-<td class="py-2 text-on-surface">Pellet</td>
-<td class="py-2 text-right">Day 16-45</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<!-- Nutrition Donut Chart Mock -->
-<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
-<h3 class="text-xs font-medium text-on-surface-variant mb-4">PHÂN BỔ DINH DƯỠNG DỰ KIẾN</h3>
-<div class="flex items-center justify-center gap-6">
-<div class="relative w-24 h-24 rounded-full border-8 border-surface-container-highest flex items-center justify-center">
-<!-- CSS Donut approximation -->
-<div class="absolute inset-0 rounded-full border-8 border-primary" style="clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%, 50% 50%);"></div>
-<div class="absolute inset-0 rounded-full border-8 border-[#38bdf8]" style="clip-path: polygon(0 0, 50% 0, 50% 50%, 0 50%);"></div>
-<div class="absolute inset-0 rounded-full border-8 border-secondary" style="clip-path: polygon(0 50%, 50% 50%, 50% 100%, 0 100%);"></div>
-<div class="text-center">
-<span class="block text-[10px] text-on-surface-variant">Tổng dinh dưỡng</span>
-<span class="block text-[10px] font-bold">cân đối</span>
-</div>
-</div>
-<div class="space-y-1">
-<div class="flex items-center justify-between gap-4 text-xs">
-<div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary"></span> Protein</div>
-<span class="font-medium">35%</span>
-</div>
-<div class="flex items-center justify-between gap-4 text-xs">
-<div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#38bdf8]"></span> Lipid</div>
-<span class="font-medium">8%</span>
-</div>
-<div class="flex items-center justify-between gap-4 text-xs">
-<div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary"></span> Carbohydrate</div>
-<span class="font-medium">30%</span>
-</div>
-<div class="flex items-center justify-between gap-4 text-xs">
-<div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-surface-container-highest"></span> Khác</div>
-<span class="font-medium">27%</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Feeding Schedule List -->
-<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
-<h3 class="text-xs font-medium text-on-surface-variant mb-4">LỊCH CHO ĂN DỰ KIẾN</h3>
-<div class="space-y-3">
-<div class="flex justify-between items-center text-sm border-b border-outline-variant pb-2">
-<div>
-<span class="block font-medium text-on-surface">Ngày 1 - 15</span>
-<span class="text-xs text-on-surface-variant">4 lần/ngày</span>
-</div>
-<div class="text-right">
-<span class="block text-on-surface">8 - 10%</span>
-<span class="text-xs text-on-surface-variant">Thức ăn mịn</span>
-</div>
-</div>
-<div class="flex justify-between items-center text-sm border-b border-outline-variant pb-2">
-<div>
-<span class="block font-medium text-on-surface">Ngày 16 - 30</span>
-<span class="text-xs text-on-surface-variant">4 lần/ngày</span>
-</div>
-<div class="text-right">
-<span class="block text-on-surface">6 - 8%</span>
-<span class="text-xs text-on-surface-variant">Tăng trưởng</span>
-</div>
-</div>
-</div>
-<div class="mt-4 text-right">
-<a class="text-xs text-primary font-medium hover:underline flex items-center justify-end gap-1" href="#">
-                        Xem lịch chi tiết <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
-</a>
-</div>
-</div>
-</section>
-<!-- Supplier Verification -->
-<section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
-<div class="flex justify-between items-end mb-4 border-b border-outline-variant pb-2">
-<h2 class="text-label-sm font-label-sm text-on-surface-variant uppercase">Supplier Verification</h2>
-</div>
-<ul class="space-y-4">
-<li class="flex items-center justify-between">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded bg-primary-container/10 flex items-center justify-center">
-<span class="material-symbols-outlined text-primary">factory</span>
-</div>
-<div>
-<span class="block text-sm font-medium text-on-surface">Grobest Vietnam</span>
-<span class="block text-xs text-on-surface-variant">Feed Supplier</span>
-</div>
-</div>
-<div class="flex flex-col items-end">
-<span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">verified</span> Verified</span>
-</div>
-</li>
-<li class="flex items-center justify-between">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded bg-primary-container/10 flex items-center justify-center">
-<span class="material-symbols-outlined text-primary">science</span>
-</div>
-<div>
-<span class="block text-sm font-medium text-on-surface">BioPlus Co., Ltd</span>
-<span class="block text-xs text-on-surface-variant">Probiotics</span>
-</div>
-</div>
-<div class="flex flex-col items-end">
-<span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">verified</span> Verified</span>
-</div>
-</li>
-<li class="flex items-center justify-between">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded bg-primary-container/10 flex items-center justify-center">
-<span class="material-symbols-outlined text-primary">water_drop</span>
-</div>
-<div>
-<span class="block text-sm font-medium text-on-surface">AquaChem VN</span>
-<span class="block text-xs text-on-surface-variant">Minerals</span>
-</div>
-</div>
-<div class="flex flex-col items-end">
-<span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">verified</span> Verified</span>
-</div>
-</li>
-<li class="flex items-center justify-between">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded bg-primary-container/10 flex items-center justify-center">
-<span class="material-symbols-outlined text-primary">set_meal</span>
-</div>
-<div>
-<span class="block text-sm font-medium text-on-surface">Local Hatchery</span>
-<span class="block text-xs text-on-surface-variant">Postlarvae (PL)</span>
-</div>
-</div>
-<div class="flex flex-col items-end">
-<span class="px-2 py-1 bg-surface-container-highest text-on-surface-variant rounded-full text-[10px] font-bold uppercase flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">pending</span> Pending</span>
-</div>
-</li>
-</ul>
-</section>
-<!-- Pond Overview Map -->
-<section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
-<div class="flex justify-between items-end mb-4 border-b border-outline-variant pb-2">
-<h2 class="text-label-sm font-label-sm text-on-surface-variant uppercase">Pond Preparation Overview</h2>
-</div>
-<div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
-<!-- Pond Tiles -->
-<div class="bg-secondary-container text-on-secondary-container rounded p-2 text-center flex flex-col justify-center h-16 border border-secondary">
-<span class="text-[10px] font-medium opacity-80">Pond 01</span>
-<span class="text-lg font-bold">92</span>
-</div>
-<div class="bg-secondary-container text-on-secondary-container rounded p-2 text-center flex flex-col justify-center h-16 border border-secondary">
-<span class="text-[10px] font-medium opacity-80">Pond 02</span>
-<span class="text-lg font-bold">90</span>
-</div>
-<div class="bg-[#fef08a] text-[#854d0e] rounded p-2 text-center flex flex-col justify-center h-16 border border-[#eab308]">
-<span class="text-[10px] font-medium opacity-80">Pond 03</span>
-<span class="text-lg font-bold">78</span>
-</div>
-<div class="bg-secondary-container text-on-secondary-container rounded p-2 text-center flex flex-col justify-center h-16 border border-secondary">
-<span class="text-[10px] font-medium opacity-80">Pond 04</span>
-<span class="text-lg font-bold">94</span>
-</div>
-<div class="bg-error-container text-on-error-container rounded p-2 text-center flex flex-col justify-center h-16 border border-error">
-<span class="text-[10px] font-medium opacity-80">Pond 05</span>
-<span class="text-lg font-bold">65</span>
-</div>
-<div class="bg-surface-container-highest text-on-surface-variant rounded p-2 text-center flex flex-col justify-center h-16 border border-outline-variant">
-<span class="text-[10px] font-medium opacity-80">Pond 06</span>
-<span class="text-lg font-bold">N/A</span>
-</div>
-</div>
-<div class="flex flex-wrap gap-3 text-[10px] text-on-surface-variant">
-<div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary"></span> Excellent (≥ 90)</div>
-<div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#38bdf8]"></span> Good (70 - 89)</div>
-<div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#eab308]"></span> Warning (50 - 69)</div>
-<div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-error"></span> Critical (&lt; 50)</div>
-</div>
-</section>
+                    <span class="text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded">Compliant</span>
+                  </div>
+                  <div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+                    <div class="flex items-center gap-2">
+                      <span class="material-symbols-outlined text-green-600 text-sm">eco</span>
+                      <span class="text-sm">Feed Management</span>
+                    </div>
+                    <span class="text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded">Compliant</span>
+                  </div>
+                  <div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+                    <div class="flex items-center gap-2">
+                      <span class="material-symbols-outlined text-orange-500 text-sm">warning</span>
+                      <span class="text-sm font-medium">Treatment &amp; Medication</span>
+                    </div>
+                    <span class="text-xs text-orange-800 bg-orange-100 px-2 py-0.5 rounded font-medium">Warning</span>
+                  </div>
+                  <div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+                    <div class="flex items-center gap-2">
+                      <span class="material-symbols-outlined text-green-600 text-sm">shield</span>
+                      <span class="text-sm">Biosecurity</span>
+                    </div>
+                    <span class="text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded">Compliant</span>
+                  </div>
+                </div>
+              </section>
+            </div>
+            <!-- Feed Management -->
+            <section
+              class="col-span-1 md:col-span-6 bg-surface-container-lowest rounded-xl border border-outline-variant p-4 card-shadow overflow-x-auto">
+              <h2 class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider mb-4">FEED MANAGEMENT</h2>
+              <div class="flex justify-between text-sm mb-4">
+                <span>Hôm nay: <span class="font-bold">140 kg</span></span>
+                <span class="text-on-surface-variant">70% kế hoạch</span>
+              </div>
+              <!-- Progress bar -->
+              <div class="w-full bg-surface-container h-2 rounded-full mb-4">
+                <div class="bg-primary h-2 rounded-full" style="width: 70%"></div>
+              </div>
+              <table class="w-full text-left text-sm whitespace-nowrap">
+                <thead>
+                  <tr class="text-on-surface-variant border-b border-outline-variant/50">
+                    <th class="pb-2 font-normal">Thời gian</th>
+                    <th class="pb-2 font-normal">Loại thức ăn</th>
+                    <th class="pb-2 font-normal">Số lượng</th>
+                    <th class="pb-2 font-normal">Người thực hiện</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant/20">
+                  <tr>
+                    <td class="py-3">06:00</td>
+                    <td class="py-3">Pro-Grow</td>
+                    <td class="py-3">40 kg</td>
+                    <td class="py-3">Tran Van B</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3">12:00</td>
+                    <td class="py-3">Pro-Finish</td>
+                    <td class="py-3">50 kg</td>
+                    <td class="py-3">Tran Van B</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 text-on-surface-variant">18:00</td>
+                    <td class="py-3 text-on-surface-variant">Pro-Grow</td>
+                    <td class="py-3 text-on-surface-variant">50 kg</td>
+                    <td class="py-3 text-on-surface-variant">Tran Van B</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="mt-4">
+                <a class="text-primary text-sm font-medium hover:underline" href="#">Xem lịch sử cho ăn</a>
+              </div>
+            </section>
+            <!-- Treatment & Medication Log -->
+            <section
+              class="col-span-1 md:col-span-6 bg-surface-container-lowest rounded-xl border border-outline-variant p-4 card-shadow overflow-x-auto">
+              <h2 class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider mb-4">TREATMENT &amp;
+                MEDICATION LOG</h2>
+              <table class="w-full text-left text-sm whitespace-nowrap">
+                <thead>
+                  <tr class="text-on-surface-variant border-b border-outline-variant/50">
+                    <th class="pb-2 font-normal">Ngày</th>
+                    <th class="pb-2 font-normal">Loại</th>
+                    <th class="pb-2 font-normal">Mục đích</th>
+                    <th class="pb-2 font-normal">Liều lượng</th>
+                    <th class="pb-2 font-normal">Thời gian cách ly</th>
+                    <th class="pb-2 font-normal">Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant/20">
+                  <tr>
+                    <td class="py-3">12/05</td>
+                    <td class="py-3">Probiotic Aqua</td>
+                    <td class="py-3">Cân bằng hệ vi sinh</td>
+                    <td class="py-3">1 kg/1000 m³</td>
+                    <td class="py-3">-</td>
+                    <td class="py-3"><span
+                        class="text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded">Completed</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-3">10/05</td>
+                    <td class="py-3">Mineral Mix</td>
+                    <td class="py-3">Bổ sung khoáng</td>
+                    <td class="py-3">2 kg/1000 m³</td>
+                    <td class="py-3">-</td>
+                    <td class="py-3"><span
+                        class="text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded">Completed</span></td>
+                  </tr>
+                  <tr>
+                    <td class="py-3">03/05</td>
+                    <td class="py-3 font-medium">Oxytetracycline</td>
+                    <td class="py-3">Điều trị bệnh</td>
+                    <td class="py-3">10 g/100 kg</td>
+                    <td class="py-3 text-error">12 ngày</td>
+                    <td class="py-3"><span class="text-xs text-orange-800 bg-orange-100 px-2 py-0.5 rounded">In
+                        withdrawal</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+            <!-- Health & Biosecurity -->
+            <section
+              class="col-span-1 md:col-span-12 bg-surface-container-lowest rounded-xl border border-outline-variant p-4 card-shadow">
+              <h2 class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider mb-4 hidden md:block">
+                HEALTH &amp; BIOSECURITY</h2>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                    <span class="material-symbols-outlined">health_and_safety</span>
+                  </div>
+                  <div>
+                    <p class="text-xs text-on-surface-variant hidden md:block">Tình trạng</p>
+                    <p class="text-sm font-bold text-green-700">Tốt</p>
+                    <p class="text-xs text-on-surface-variant">Tỷ lệ sống: 92%</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+                    <span class="material-symbols-outlined">coronavirus</span>
+                  </div>
+                  <div>
+                    <p class="text-xs text-on-surface-variant hidden md:block">Bệnh hiện tại</p>
+                    <p class="text-sm font-bold">Không có</p>
+                    <p class="text-xs text-on-surface-variant">No active disease</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                    <span class="material-symbols-outlined">event</span>
+                  </div>
+                  <div>
+                    <p class="text-xs text-on-surface-variant hidden md:block">Kiểm tra gần nhất</p>
+                    <p class="text-sm font-bold">13/05/2025</p>
+                    <p class="text-xs text-on-surface-variant">Bởi: Dr. Hai</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                    <span class="material-symbols-outlined">security</span>
+                  </div>
+                  <div>
+                    <p class="text-xs text-on-surface-variant hidden md:block">Biosecurity Score</p>
+                    <p class="text-sm font-bold text-green-700">96 <span
+                        class="text-xs font-normal text-on-surface-variant">/100</span></p>
+                    <p class="text-xs text-on-surface-variant">Rất tốt</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
         </div>
       </section>
       <section id="tab-traceability" class="tab-content flex flex-col min-h-full">
@@ -1384,7 +1768,7 @@
         targetTab.style.display = 'block';
       }
 
-      const titles = { weather: 'Weather', devices: 'Devices', chat: 'AI Assistant', notifications: 'Alerts', halal: 'Halal Certification', traceability: 'Traceability', preparation: 'Preparation Phase' };
+      const titles = { weather: 'Weather', devices: 'Devices', chat: 'AI Assistant', notifications: 'Alerts', halal: 'Halal Certification', traceability: 'Traceability', preparation: 'Preparation Phase', active: 'Active Farming' };
       $('#pageTitle').textContent = titles[tabId];
 
       const mainEl = document.querySelector('main');

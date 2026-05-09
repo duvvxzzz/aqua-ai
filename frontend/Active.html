@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Active Farming Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e1e2e8",
+                        "surface-container": "#ededf4",
+                        "on-primary-fixed": "#001c38",
+                        "tertiary-fixed-dim": "#ffb3ad",
+                        "on-tertiary-container": "#ffe6e3",
+                        "inverse-on-surface": "#eff0f7",
+                        "inverse-surface": "#2e3035",
+                        "secondary": "#006d40",
+                        "on-secondary-container": "#007243",
+                        "on-primary-fixed-variant": "#004881",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f8f9ff",
+                        "tertiary-fixed": "#ffdad7",
+                        "secondary-container": "#8ef5b5",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#d9dae0",
+                        "on-surface": "#191c20",
+                        "surface": "#f8f9ff",
+                        "primary-container": "#2b6cb0",
+                        "surface-container-low": "#f2f3fa",
+                        "outline": "#727782",
+                        "on-tertiary-fixed": "#410004",
+                        "on-secondary-fixed-variant": "#00522f",
+                        "secondary-fixed-dim": "#74db9d",
+                        "primary-fixed-dim": "#a2c9ff",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#ca2a2e",
+                        "on-background": "#191c20",
+                        "background": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#930013",
+                        "on-primary-container": "#e1ecff",
+                        "surface-tint": "#1960a3",
+                        "outline-variant": "#c1c7d2",
+                        "on-surface-variant": "#414750",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#002110",
+                        "secondary-fixed": "#91f8b8",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#a70819",
+                        "surface-container-highest": "#e1e2e8",
+                        "surface-container-high": "#e7e8ee",
+                        "inverse-primary": "#a2c9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#d3e4ff",
+                        "primary": "#005394",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "0.25rem",
+                        "xl": "2rem",
+                        "sm": "0.5rem",
+                        "base": "4px",
+                        "container-padding": "1.5rem",
+                        "md": "1rem",
+                        "lg": "1.5rem",
+                        "gutter": "1rem"
+                    },
+                    "fontFamily": {
+                        "headline-lg": [
+                            "Inter"
+                        ],
+                        "body-lg": [
+                            "Inter"
+                        ],
+                        "headline-md": [
+                            "Inter"
+                        ],
+                        "body-md": [
+                            "Inter"
+                        ],
+                        "label-sm": [
+                            "Inter"
+                        ],
+                        "display-xl": [
+                            "Inter"
+                        ]
+                    },
+                    "fontSize": {
+                        "headline-lg": [
+                            "30px",
+                            {
+                                "lineHeight": "1.2",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "body-lg": [
+                            "16px",
+                            {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "headline-md": [
+                            "20px",
+                            {
+                                "lineHeight": "1.3",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "body-md": [
+                            "14px",
+                            {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "label-sm": [
+                            "12px",
+                            {
+                                "lineHeight": "1",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "display-xl": [
+                            "48px",
+                            {
+                                "lineHeight": "1.1",
+                                "fontWeight": "700"
+                            }
+                        ]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f8f9ff;
+            color: #191c20;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card-shadow {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background pb-20 md:pb-0">
+    <!-- TopAppBar -->
+    <header
+        class="bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline docked full-width top w-full z-40 sticky top-0 hidden md:flex flex justify-between items-center px-container-padding py-md">
+        <div class="flex items-center gap-sm">
+            <div
+                class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs">
+                A</div>
+            <h1 class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">Active Farming
+            </h1>
+        </div>
+        <div class="flex items-center gap-md">
+            <nav class="hidden md:flex items-center gap-lg">
+                <a class="text-on-surface-variant dark:text-surface-variant text-label-sm font-label-sm hover:bg-surface-container-low dark:hover:bg-surface-container-highest px-2 py-1 rounded transition-colors duration-150"
+                    href="#">Overview</a>
+                <a class="text-on-surface-variant dark:text-surface-variant text-label-sm font-label-sm hover:bg-surface-container-low dark:hover:bg-surface-container-highest px-2 py-1 rounded transition-colors duration-150"
+                    href="#">Preparation</a>
+                <a class="text-primary dark:text-primary-fixed border-b-2 border-primary text-label-sm font-label-sm hover:bg-surface-container-low dark:hover:bg-surface-container-highest px-2 py-1 transition-colors duration-150"
+                    href="#">Inventory</a>
+                <a class="text-on-surface-variant dark:text-surface-variant text-label-sm font-label-sm hover:bg-surface-container-low dark:hover:bg-surface-container-highest px-2 py-1 rounded transition-colors duration-150"
+                    href="#">Analysis</a>
+            </nav>
+            <button
+                class="w-10 h-10 rounded-full hover:bg-surface-container-low flex items-center justify-center transition-colors">
+                <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+            </button>
+        </div>
+    </header>
+    <!-- Mobile TopAppBar (Simplified for demonstration) -->
+    <header
+        class="md:hidden bg-surface border-b border-outline-variant w-full sticky top-0 z-40 flex justify-between items-center px-md py-sm">
+        <h1 class="text-headline-md font-headline-md font-bold text-primary">Active Farming</h1>
+        <button
+            class="w-10 h-10 rounded-full hover:bg-surface-container-low flex items-center justify-center transition-colors">
+            <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+        </button>
+    </header>
+    <main class="p-4 md:p-container-padding max-w-7xl mx-auto space-y-6">
+        <!-- Bento Grid Container -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <!-- Real-Time Water Quality -->
+            <section
+                class="col-span-1 md:col-span-8 bg-surface-container-lowest rounded-xl border border-outline-variant p-4 card-shadow flex flex-col h-[400px]">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider">REAL-TIME WATER
+                        QUALITY <span class="text-on-surface-variant normal-case tracking-normal ml-2">(POND 03)</span>
+                    </h2>
+                    <div class="flex gap-2">
+                        <button
+                            class="px-3 py-1 text-[11px] font-bold rounded bg-surface-container-high text-on-surface border border-outline-variant">24h
+                            <span class="material-symbols-outlined text-[14px] align-middle">expand_more</span></button>
+                        <button
+                            class="px-3 py-1 text-[11px] font-medium rounded text-on-surface-variant border border-outline-variant/30 hover:bg-surface-container">7
+                            ngày</button>
+                        <button
+                            class="px-3 py-1 text-[11px] font-medium rounded text-on-surface-variant border border-outline-variant/30 hover:bg-surface-container">30
+                            ngày</button>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-x-6 gap-y-2 mb-6 text-[11px] font-medium text-on-surface-variant">
+                    <div class="flex items-center gap-2"><span
+                            class="w-3 h-3 rounded-full bg-blue-500 flex items-center justify-center"><span
+                                class="w-1.5 h-1.5 rounded-full bg-white"></span></span> DO (mg/L)</div>
+                    <div class="flex items-center gap-2"><span
+                            class="w-3 h-3 rounded-full bg-green-500 flex items-center justify-center"><span
+                                class="w-1.5 h-1.5 rounded-full bg-white"></span></span> pH</div>
+                    <div class="flex items-center gap-2"><span
+                            class="w-3 h-3 rounded-full bg-orange-400 flex items-center justify-center"><span
+                                class="w-1.5 h-1.5 rounded-full bg-white"></span></span> NH3 (mg/L)</div>
+                    <div class="flex items-center gap-2"><span
+                            class="w-3 h-3 rounded-full bg-purple-600 flex items-center justify-center"><span
+                                class="w-1.5 h-1.5 rounded-full bg-white"></span></span> Nhiệt độ (°C)</div>
+                    <div class="flex items-center gap-2"><span
+                            class="w-3 h-3 rounded-full bg-gray-400 flex items-center justify-center"><span
+                                class="w-1.5 h-1.5 rounded-full bg-white"></span></span> Độ mặn (ppt)</div>
+                </div>
+                <div class="flex-grow relative mt-2">
+                    <!-- Grid Lines -->
+                    <div class="absolute inset-0 flex flex-col justify-between">
+                        <div class="border-t border-outline-variant/20 w-full flex items-center"><span
+                                class="text-[10px] -ml-6 text-on-surface-variant">10</span></div>
+                        <div class="border-t border-outline-variant/20 w-full flex items-center"><span
+                                class="text-[10px] -ml-6 text-on-surface-variant">8</span></div>
+                        <div class="border-t border-outline-variant/20 w-full flex items-center"><span
+                                class="text-[10px] -ml-6 text-on-surface-variant">6</span></div>
+                        <div class="border-t border-outline-variant/20 w-full flex items-center"><span
+                                class="text-[10px] -ml-6 text-on-surface-variant">4</span></div>
+                        <div class="border-t border-outline-variant/20 w-full flex items-center"><span
+                                class="text-[10px] -ml-6 text-on-surface-variant">2</span></div>
+                        <div class="border-t border-outline-variant/20 w-full flex items-center"><span
+                                class="text-[10px] -ml-6 text-on-surface-variant">0</span></div>
+                    </div>
+                    <!-- Alert Area Highlight -->
+                    <div
+                        class="absolute top-0 bottom-0 right-0 w-[20%] bg-error-container/20 border-l border-dashed border-error z-0">
+                    </div>
+                    <!-- Data Visualization (SVG Chart) -->
+                    <svg class="absolute inset-0 w-full h-full overflow-visible" preserveaspectratio="none"
+                        viewbox="0 0 100 100">
+                        <!-- DO (Blue) -->
+                        <path d="M0,20 L10,18 L20,15 L30,12 L40,15 L50,18 L60,15 L70,20 L80,25 L90,20 L100,18"
+                            fill="none" stroke="#3b82f6" stroke-width="1"></path>
+                        <g fill="#3b82f6">
+                            <circle cx="0" cy="20" r="0.8"></circle>
+                            <circle cx="20" cy="15" r="0.8"></circle>
+                            <circle cx="40" cy="15" r="0.8"></circle>
+                            <circle cx="60" cy="15" r="0.8"></circle>
+                            <circle cx="80" cy="25" r="0.8"></circle>
+                            <circle cx="100" cy="18" r="0.8"></circle>
+                        </g>
+                        <!-- pH (Green) -->
+                        <path d="M0,40 L10,38 L20,35 L30,42 L40,45 L50,40 L60,35 L70,38 L80,45 L90,50 L100,42"
+                            fill="none" stroke="#22c55e" stroke-width="1"></path>
+                        <g fill="#22c55e">
+                            <circle cx="0" cy="40" r="0.8"></circle>
+                            <circle cx="20" cy="35" r="0.8"></circle>
+                            <circle cx="40" cy="45" r="0.8"></circle>
+                            <circle cx="60" cy="35" r="0.8"></circle>
+                            <circle cx="80" cy="45" r="0.8"></circle>
+                            <circle cx="100" cy="42" r="0.8"></circle>
+                        </g>
+                        <!-- NH3 (Orange) -->
+                        <path d="M0,60 L10,55 L20,52 L30,55 L40,62 L50,60 L60,58 L70,55 L80,68 L90,75 L100,65"
+                            fill="none" stroke="#fb923c" stroke-width="1"></path>
+                        <g fill="#fb923c">
+                            <circle cx="0" cy="60" r="0.8"></circle>
+                            <circle cx="20" cy="52" r="0.8"></circle>
+                            <circle cx="40" cy="62" r="0.8"></circle>
+                            <circle cx="60" cy="58" r="0.8"></circle>
+                            <circle cx="80" cy="68" r="0.8"></circle>
+                            <circle cx="100" cy="65" r="0.8"></circle>
+                        </g>
+                        <!-- Temp (Purple) -->
+                        <path d="M0,75 L10,72 L20,68 L30,65 L40,78 L50,75 L60,72 L70,75 L80,75 L90,82 L100,80"
+                            fill="none" stroke="#9333ea" stroke-width="1"></path>
+                        <g fill="#9333ea">
+                            <circle cx="0" cy="75" r="0.8"></circle>
+                            <circle cx="20" cy="68" r="0.8"></circle>
+                            <circle cx="40" cy="78" r="0.8"></circle>
+                            <circle cx="60" cy="72" r="0.8"></circle>
+                            <circle cx="80" cy="75" r="0.8"></circle>
+                            <circle cx="100" cy="80" r="0.8"></circle>
+                        </g>
+                    </svg>
+                    <!-- Critical Alert Overlay -->
+                    <div class="absolute top-0 right-[20%] h-full z-10">
+                        <div class="relative flex flex-col items-center">
+                            <div
+                                class="bg-error text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg -mt-10 mb-2 whitespace-nowrap text-center">
+                                Cảnh báo<br />10:15 AM
+                            </div>
+                        </div>
+                    </div>
+                    <!-- X-Axis Labels -->
+                    <div
+                        class="absolute bottom-[-32px] w-full flex justify-between text-[11px] text-on-surface-variant font-medium">
+                        <span>00:00</span>
+                        <span>04:00</span>
+                        <span>08:00</span>
+                        <span>12:00</span>
+                        <span>16:00</span>
+                        <span>20:00</span>
+                        <span>24:00</span>
+                    </div>
+                </div>
+            </section>
+            <!-- AI Farming Advisor & Halal Compliance Stack -->
+            <div class="col-span-1 md:col-span-4 flex flex-col gap-6">
+                <!-- AI Farming Advisor -->
+                <section
+                    class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 card-shadow flex-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="material-symbols-outlined text-purple-600">smart_toy</span>
+                        <h2
+                            class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider text-purple-700 font-bold">
+                            AI FARMING ADVISOR</h2>
+                    </div>
+                    <p class="text-xs text-on-surface-variant mb-2">Phân tích 10:30 AM</p>
+                    <p class="text-sm font-medium mb-1">Ai nhận định:</p>
+                    <p class="text-sm text-on-surface-variant mb-4">NH3 có xu hướng tăng nhẹ trong 12 giờ tới.</p>
+                    <p class="text-sm font-medium mb-1">Đề xuất:</p>
+                    <ul class="list-disc pl-5 text-sm text-on-surface-variant space-y-1 mb-4">
+                        <li>Tăng cường sục khí</li>
+                        <li>Giảm 10% lượng thức ăn</li>
+                        <li>Kiểm tra hệ thống lọc</li>
+                    </ul>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-sm">Rủi ro dự báo:</span>
+                        <span class="bg-orange-100 text-orange-800 text-xs font-bold px-2 py-0.5 rounded">Trung
+                            bình</span>
+                    </div>
+                    <button
+                        class="w-full py-2 border border-outline-variant rounded-lg text-sm font-medium text-primary hover:bg-surface-container transition-colors">
+                        Xem chi tiết
+                    </button>
+                </section>
+                <!-- Halal Compliance Status -->
+                <section class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 card-shadow">
+                    <h2 class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider mb-4">HALAL
+                        COMPLIANCE STATUS</h2>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-green-600 text-sm">check_circle</span>
+                                <span class="text-sm">Water Quality</span>
+                            </div>
+                            <span class="text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded">Compliant</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-green-600 text-sm">eco</span>
+                                <span class="text-sm">Feed Management</span>
+                            </div>
+                            <span class="text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded">Compliant</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-orange-500 text-sm">warning</span>
+                                <span class="text-sm font-medium">Treatment &amp; Medication</span>
+                            </div>
+                            <span
+                                class="text-xs text-orange-800 bg-orange-100 px-2 py-0.5 rounded font-medium">Warning</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-green-600 text-sm">shield</span>
+                                <span class="text-sm">Biosecurity</span>
+                            </div>
+                            <span class="text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded">Compliant</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <!-- Feed Management -->
+            <section
+                class="col-span-1 md:col-span-6 bg-surface-container-lowest rounded-xl border border-outline-variant p-4 card-shadow overflow-x-auto">
+                <h2 class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider mb-4">FEED MANAGEMENT
+                </h2>
+                <div class="flex justify-between text-sm mb-4">
+                    <span>Hôm nay: <span class="font-bold">140 kg</span></span>
+                    <span class="text-on-surface-variant">70% kế hoạch</span>
+                </div>
+                <!-- Progress bar -->
+                <div class="w-full bg-surface-container h-2 rounded-full mb-4">
+                    <div class="bg-primary h-2 rounded-full" style="width: 70%"></div>
+                </div>
+                <table class="w-full text-left text-sm whitespace-nowrap">
+                    <thead>
+                        <tr class="text-on-surface-variant border-b border-outline-variant/50">
+                            <th class="pb-2 font-normal">Thời gian</th>
+                            <th class="pb-2 font-normal">Loại thức ăn</th>
+                            <th class="pb-2 font-normal">Số lượng</th>
+                            <th class="pb-2 font-normal">Người thực hiện</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-outline-variant/20">
+                        <tr>
+                            <td class="py-3">06:00</td>
+                            <td class="py-3">Pro-Grow</td>
+                            <td class="py-3">40 kg</td>
+                            <td class="py-3">Tran Van B</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3">12:00</td>
+                            <td class="py-3">Pro-Finish</td>
+                            <td class="py-3">50 kg</td>
+                            <td class="py-3">Tran Van B</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-on-surface-variant">18:00</td>
+                            <td class="py-3 text-on-surface-variant">Pro-Grow</td>
+                            <td class="py-3 text-on-surface-variant">50 kg</td>
+                            <td class="py-3 text-on-surface-variant">Tran Van B</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="mt-4">
+                    <a class="text-primary text-sm font-medium hover:underline" href="#">Xem lịch sử cho ăn</a>
+                </div>
+            </section>
+            <!-- Treatment & Medication Log -->
+            <section
+                class="col-span-1 md:col-span-6 bg-surface-container-lowest rounded-xl border border-outline-variant p-4 card-shadow overflow-x-auto">
+                <h2 class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider mb-4">TREATMENT &amp;
+                    MEDICATION LOG</h2>
+                <table class="w-full text-left text-sm whitespace-nowrap">
+                    <thead>
+                        <tr class="text-on-surface-variant border-b border-outline-variant/50">
+                            <th class="pb-2 font-normal">Ngày</th>
+                            <th class="pb-2 font-normal">Loại</th>
+                            <th class="pb-2 font-normal">Mục đích</th>
+                            <th class="pb-2 font-normal">Liều lượng</th>
+                            <th class="pb-2 font-normal">Thời gian cách ly</th>
+                            <th class="pb-2 font-normal">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-outline-variant/20">
+                        <tr>
+                            <td class="py-3">12/05</td>
+                            <td class="py-3">Probiotic Aqua</td>
+                            <td class="py-3">Cân bằng hệ vi sinh</td>
+                            <td class="py-3">1 kg/1000 m³</td>
+                            <td class="py-3">-</td>
+                            <td class="py-3"><span
+                                    class="text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td class="py-3">10/05</td>
+                            <td class="py-3">Mineral Mix</td>
+                            <td class="py-3">Bổ sung khoáng</td>
+                            <td class="py-3">2 kg/1000 m³</td>
+                            <td class="py-3">-</td>
+                            <td class="py-3"><span
+                                    class="text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td class="py-3">03/05</td>
+                            <td class="py-3 font-medium">Oxytetracycline</td>
+                            <td class="py-3">Điều trị bệnh</td>
+                            <td class="py-3">10 g/100 kg</td>
+                            <td class="py-3 text-error">12 ngày</td>
+                            <td class="py-3"><span class="text-xs text-orange-800 bg-orange-100 px-2 py-0.5 rounded">In
+                                    withdrawal</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <!-- Health & Biosecurity -->
+            <section
+                class="col-span-1 md:col-span-12 bg-surface-container-lowest rounded-xl border border-outline-variant p-4 card-shadow">
+                <h2 class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider mb-4 hidden md:block">
+                    HEALTH &amp; BIOSECURITY</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                            <span class="material-symbols-outlined">health_and_safety</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-on-surface-variant hidden md:block">Tình trạng</p>
+                            <p class="text-sm font-bold text-green-700">Tốt</p>
+                            <p class="text-xs text-on-surface-variant">Tỷ lệ sống: 92%</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+                            <span class="material-symbols-outlined">coronavirus</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-on-surface-variant hidden md:block">Bệnh hiện tại</p>
+                            <p class="text-sm font-bold">Không có</p>
+                            <p class="text-xs text-on-surface-variant">No active disease</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                            <span class="material-symbols-outlined">event</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-on-surface-variant hidden md:block">Kiểm tra gần nhất</p>
+                            <p class="text-sm font-bold">13/05/2025</p>
+                            <p class="text-xs text-on-surface-variant">Bởi: Dr. Hai</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                            <span class="material-symbols-outlined">security</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-on-surface-variant hidden md:block">Biosecurity Score</p>
+                            <p class="text-sm font-bold text-green-700">96 <span
+                                    class="text-xs font-normal text-on-surface-variant">/100</span></p>
+                            <p class="text-xs text-on-surface-variant">Rất tốt</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <!-- BottomNavBar -->
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface dark:bg-inverse-surface py-xs px-md border-t border-outline-variant shadow-sm">
+        <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:text-primary transition-colors"
+            href="#">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="text-[10px] font-medium mt-1">Overview</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:text-primary transition-colors"
+            href="#">
+            <span class="material-symbols-outlined">architecture</span>
+            <span class="text-[10px] font-medium mt-1">Preparation</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim bg-primary-container/10 rounded-xl px-4 py-1 tap:scale-95 transition-transform"
+            href="#">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span class="text-[10px] font-medium mt-1">Inventory</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:text-primary transition-colors"
+            href="#">
+            <span class="material-symbols-outlined">analytics</span>
+            <span class="text-[10px] font-medium mt-1">Analysis</span>
+        </a>
+    </nav>
+</body>
+
+</html>

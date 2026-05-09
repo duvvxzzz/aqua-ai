@@ -1254,49 +1254,53 @@
             <!-- Health & Biosecurity -->
             <section
               class="col-span-1 md:col-span-12 bg-surface-container-lowest rounded-xl border border-outline-variant p-4 card-shadow">
-              <h2 class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider mb-4 hidden md:block">
+              <h2 class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider mb-4">
                 HEALTH &amp; BIOSECURITY</h2>
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-                    <span class="material-symbols-outlined">health_and_safety</span>
+              <div class="grid grid-cols-2 gap-3">
+                <!-- Health Status -->
+                <div class="flex items-center gap-2.5 bg-green-50/50 rounded-lg p-2.5 border border-green-200/50">
+                  <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-green-600 text-[18px]">health_and_safety</span>
                   </div>
-                  <div>
-                    <p class="text-xs text-on-surface-variant hidden md:block">Tình trạng</p>
+                  <div class="min-w-0">
+                    <p class="text-[10px] text-on-surface-variant">Tình trạng</p>
                     <p class="text-sm font-bold text-green-700">Tốt</p>
-                    <p class="text-xs text-on-surface-variant">Tỷ lệ sống: 92%</p>
+                    <p class="text-[10px] text-on-surface-variant">Sống: 92%</p>
                   </div>
                 </div>
-                <div class="flex items-center gap-3">
-                  <div
-                    class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
-                    <span class="material-symbols-outlined">coronavirus</span>
+                <!-- Disease Status -->
+                <div
+                  class="flex items-center gap-2.5 bg-surface-container-low/50 rounded-lg p-2.5 border border-outline-variant/50">
+                  <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-on-surface-variant text-[18px]">coronavirus</span>
                   </div>
-                  <div>
-                    <p class="text-xs text-on-surface-variant hidden md:block">Bệnh hiện tại</p>
+                  <div class="min-w-0">
+                    <p class="text-[10px] text-on-surface-variant">Bệnh hiện tại</p>
                     <p class="text-sm font-bold">Không có</p>
-                    <p class="text-xs text-on-surface-variant">No active disease</p>
+                    <p class="text-[10px] text-on-surface-variant">No disease</p>
                   </div>
                 </div>
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-                    <span class="material-symbols-outlined">event</span>
+                <!-- Last Inspection -->
+                <div class="flex items-center gap-2.5 bg-blue-50/50 rounded-lg p-2.5 border border-blue-200/50">
+                  <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-blue-600 text-[18px]">event</span>
                   </div>
-                  <div>
-                    <p class="text-xs text-on-surface-variant hidden md:block">Kiểm tra gần nhất</p>
+                  <div class="min-w-0">
+                    <p class="text-[10px] text-on-surface-variant">Kiểm tra</p>
                     <p class="text-sm font-bold">13/05/2025</p>
-                    <p class="text-xs text-on-surface-variant">Bởi: Dr. Hai</p>
+                    <p class="text-[10px] text-on-surface-variant">Dr. Hai</p>
                   </div>
                 </div>
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-                    <span class="material-symbols-outlined">security</span>
+                <!-- Biosecurity Score -->
+                <div class="flex items-center gap-2.5 bg-green-50/50 rounded-lg p-2.5 border border-green-200/50">
+                  <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-green-600 text-[18px]">security</span>
                   </div>
-                  <div>
-                    <p class="text-xs text-on-surface-variant hidden md:block">Biosecurity Score</p>
-                    <p class="text-sm font-bold text-green-700">96 <span
-                        class="text-xs font-normal text-on-surface-variant">/100</span></p>
-                    <p class="text-xs text-on-surface-variant">Rất tốt</p>
+                  <div class="min-w-0">
+                    <p class="text-[10px] text-on-surface-variant">Biosecurity</p>
+                    <p class="text-sm font-bold text-green-700">96<span
+                        class="text-[10px] font-normal text-on-surface-variant"> /100</span></p>
+                    <p class="text-[10px] text-on-surface-variant">Rất tốt</p>
                   </div>
                 </div>
               </div>
@@ -1687,13 +1691,15 @@
               <div class="flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-secondary text-[18px]"
                   style="font-variation-settings: 'FILL' 1;">verified_user</span>
-                <span class="text-[10px] font-semibold text-on-surface-variant uppercase leading-tight">Export Readiness</span>
+                <span class="text-[10px] font-semibold text-on-surface-variant uppercase leading-tight">Export
+                  Readiness</span>
               </div>
               <div>
                 <span class="text-2xl font-bold text-secondary">91</span>
                 <span class="text-xs text-on-surface-variant">/100</span>
               </div>
-              <div class="text-[10px] font-semibold text-secondary bg-secondary-container/20 w-fit px-2 py-0.5 rounded">READY</div>
+              <div class="text-[10px] font-semibold text-secondary bg-secondary-container/20 w-fit px-2 py-0.5 rounded">
+                READY</div>
             </div>
             <!-- Batch Ready -->
             <div
@@ -1701,7 +1707,8 @@
               <div class="flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-primary-container text-[18px]"
                   style="font-variation-settings: 'FILL' 1;">inventory</span>
-                <span class="text-[10px] font-semibold text-on-surface-variant uppercase leading-tight">Batch Ready</span>
+                <span class="text-[10px] font-semibold text-on-surface-variant uppercase leading-tight">Batch
+                  Ready</span>
               </div>
               <div>
                 <span class="text-2xl font-bold text-primary-container">2</span>
@@ -1714,7 +1721,8 @@
               <div class="flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-[#d97706] text-[18px]"
                   style="font-variation-settings: 'FILL' 1;">warning</span>
-                <span class="text-[10px] font-semibold text-on-surface-variant uppercase leading-tight">Pending Batches</span>
+                <span class="text-[10px] font-semibold text-on-surface-variant uppercase leading-tight">Pending
+                  Batches</span>
               </div>
               <div>
                 <span class="text-2xl font-bold text-[#d97706]">1</span>
@@ -1727,7 +1735,8 @@
               <div class="flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-secondary text-[18px]"
                   style="font-variation-settings: 'FILL' 1;">flight_takeoff</span>
-                <span class="text-[10px] font-semibold text-on-surface-variant uppercase leading-tight">Destination &amp; Date</span>
+                <span class="text-[10px] font-semibold text-on-surface-variant uppercase leading-tight">Destination
+                  &amp; Date</span>
               </div>
               <div>
                 <div class="text-sm font-bold leading-snug">UAE (GCC)</div>

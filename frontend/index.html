@@ -18,16 +18,52 @@
       theme: {
         extend: {
           colors: {
-            "surface-container-low": "#f2f3fa", "error-container": "#ffdad6",
-            "on-primary-fixed": "#001c38", "tertiary-fixed": "#ffdad7",
-            "surface-container-high": "#e7e8ee", "on-surface": "#191c20",
-            "primary-container": "#2b6cb0", "on-error-container": "#93000a",
-            "surface-container-highest": "#e1e2e8", "primary": "#005394",
-            "surface-variant": "#e1e2e8", "secondary-container": "#8ef5b5",
-            "surface-dim": "#d9dae0", "secondary": "#006d40", "outline": "#727782",
-            "surface-container": "#ededf4", "surface": "#f8f9ff", "tertiary": "#a70819",
-            "surface-container-lowest": "#ffffff", "background": "#f8f9ff",
-            "on-surface-variant": "#414750", "error": "#ba1a1a", "outline-variant": "#c1c7d2",
+            "surface-bright": "#f8f9ff",
+            "inverse-on-surface": "#eff0f7",
+            "on-error-container": "#93000a",
+            "secondary": "#006d40",
+            "background": "#f8f9ff",
+            "on-secondary": "#ffffff",
+            "inverse-surface": "#2e3035",
+            "tertiary": "#a70819",
+            "on-tertiary-container": "#ffe6e3",
+            "surface-tint": "#1960a3",
+            "on-secondary-fixed": "#002110",
+            "surface-variant": "#e1e2e8",
+            "on-primary-fixed": "#001c38",
+            "error-container": "#ffdad6",
+            "tertiary-container": "#ca2a2e",
+            "surface-container-low": "#f2f3fa",
+            "surface-container-high": "#e7e8ee",
+            "on-primary-fixed-variant": "#004881",
+            "on-surface-variant": "#414750",
+            "outline-variant": "#c1c7d2",
+            "on-primary-container": "#e1ecff",
+            "surface": "#ffffff",
+            "surface-container-highest": "#e1e2e8",
+            "on-secondary-fixed-variant": "#00522f",
+            "primary-fixed-dim": "#a2c9ff",
+            "on-secondary-container": "#007243",
+            "tertiary-fixed": "#ffdad7",
+            "primary": "#1E3A8A",
+            "on-surface": "#1E3A8A",
+            "on-background": "#1E3A8A",
+            "on-tertiary-fixed": "#410004",
+            "on-error": "#ffffff",
+            "error": "#ba1a1a",
+            "secondary-fixed-dim": "#74db9d",
+            "secondary-fixed": "#91f8b8",
+            "inverse-primary": "#a2c9ff",
+            "outline": "#E2E8F0",
+            "primary-fixed": "#d3e4ff",
+            "surface-container": "#ededf4",
+            "on-tertiary": "#ffffff",
+            "on-tertiary-fixed-variant": "#930013",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed-dim": "#ffb3ad",
+            "secondary-container": "#8ef5b5",
+            "primary-container": "#2b6cb0",
+            "surface-dim": "#d9dae0",
             "on-primary": "#ffffff"
           },
           fontFamily: { "body-md": ["Inter", "sans-serif"], "headline-md": ["Inter", "sans-serif"] }
@@ -379,71 +415,149 @@
         </div>
       </section>
 
-      <section id="tab-halal" class="tab-content space-y-6">
-        <div
-          class="bg-gradient-to-br from-green-500 to-emerald-700 rounded-2xl p-5 text-white shadow-lg relative overflow-hidden">
-          <div class="absolute top-0 right-0 opacity-10 transform translate-x-4 -translate-y-4">
-            <span class="material-symbols-outlined text-[120px]">verified</span>
-          </div>
-          <div class="flex items-center gap-3 mb-4 relative z-10">
-            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-md">
-              <span class="material-symbols-outlined text-[28px] text-white">workspace_premium</span>
+      <section id="tab-halal" class="tab-content grid gap-3">
+        <!-- Overview Metrics -->
+        <section class="grid grid-cols-2 gap-2">
+            <!-- Halal Integrity Score -->
+            <div class="bg-surface border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm">
+                <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Halal Integrity
+                </p>
+                <div class="mt-1 flex items-end justify-between">
+                    <span class="text-xl font-bold leading-none">92<span
+                            class="text-xs font-normal text-on-surface-variant">/100</span></span>
+                </div>
+                <div class="mt-1.5 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
+                    <div class="h-full bg-secondary w-[92%]"></div>
+                </div>
             </div>
-            <div>
-              <h2 class="font-bold text-lg leading-tight">Halal Certified</h2>
-              <p class="text-xs text-green-100">Status: Active</p>
+            <!-- Export Readiness -->
+            <div class="bg-surface border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm">
+                <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Export Readiness
+                </p>
+                <div class="mt-1 flex items-center h-full">
+                    <span
+                        class="inline-flex items-center gap-1 text-[10px] font-semibold bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full">
+                        <span class="material-symbols-outlined text-[12px]">check_circle</span> READY
+                    </span>
+                </div>
+                <div class="mt-1.5 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
+                    <div class="h-full bg-primary-container w-full"></div>
+                </div>
             </div>
-          </div>
-          <div class="grid grid-cols-2 gap-4 mt-6 relative z-10">
-            <div class="bg-black/10 rounded-xl p-3 backdrop-blur-sm">
-              <p class="text-[10px] text-green-100 uppercase tracking-wider font-semibold">Valid Until</p>
-              <p class="font-bold text-sm mt-1">Dec 2026</p>
+            <!-- Ponds Compliant -->
+            <div class="bg-surface border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm">
+                <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Ponds Compliant
+                </p>
+                <div class="mt-1 flex items-end justify-between">
+                    <span class="text-lg font-bold leading-none">8<span
+                            class="text-xs font-normal text-on-surface-variant">/10</span></span>
+                </div>
+                <div class="mt-1.5 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
+                    <div class="h-full bg-[#8b5cf6] w-[80%]"></div>
+                </div>
             </div>
-            <div class="bg-black/10 rounded-xl p-3 backdrop-blur-sm">
-              <p class="text-[10px] text-green-100 uppercase tracking-wider font-semibold">Cert No.</p>
-              <p class="font-bold text-sm mt-1">HL-8492-VN</p>
+            <!-- Active Risks -->
+            <div
+                class="bg-surface border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm bg-error-container/20">
+                <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Active Risks</p>
+                <div class="mt-1 flex items-center gap-1.5">
+                    <span class="text-xl font-bold leading-none text-tertiary-container">2</span>
+                    <span class="material-symbols-outlined text-tertiary-container text-[18px]"
+                        style="font-variation-settings: &quot;FILL&quot; 1;">warning</span>
+                </div>
             </div>
-          </div>
-        </div>
+            <!-- Certificate Health -->
+            <div
+                class="bg-surface border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm col-span-2">
+                <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Certificate Health
+                </p>
+                <div class="mt-1 flex items-center justify-between">
+                    <span class="text-lg font-bold leading-none">7</span>
+                    <p class="text-[10px] font-semibold text-[#0d9488]">Expiring in 30 days</p>
+                </div>
+            </div>
+        </section>
+        <!-- Farming Process Tabs -->
+        <section>
+            <h2 class="text-sm font-semibold mb-2">Farming Process</h2>
+            <div class="flex w-full gap-2 justify-between">
+                <button
+                    class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-surface hover:bg-surface-container-low transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant text-[16px]">agriculture</span>
+                    <span class="text-[9px] font-semibold text-center leading-tight">1. Prep</span>
+                </button>
+                <button
+                    class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border-2 border-primary bg-primary-fixed/30 text-on-primary-fixed transition-colors shadow-sm">
+                    <span class="material-symbols-outlined text-[16px]"
+                        style="font-variation-settings: &quot;FILL&quot; 1;">set_meal</span>
+                    <span class="text-[9px] font-semibold text-center leading-tight">2. Active</span>
+                </button>
+                <button
+                    class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-surface hover:bg-surface-container-low transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant text-[16px]">local_shipping</span>
+                    <span class="text-[9px] font-semibold text-center leading-tight">3. Harvest</span>
+                </button>
+            </div>
+        </section>
+        <!-- Risk Heatmap -->
+        <h2 class="text-sm font-semibold mb-2">Halal Risk Map</h2>
+        <section
+            class="bg-surface border border-outline rounded-lg p-3 shadow-sm flex-1 flex flex-col justify-center min-h-0">
 
-        <div
-          class="bg-surface-container-lowest rounded-xl border border-outline-variant p-4 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-          <h3 class="font-bold text-sm text-on-surface mb-4 flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary text-[18px]">checklist</span>
-            Compliance Checklist
-          </h3>
-          <div class="space-y-3">
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center shrink-0">
-                <span class="material-symbols-outlined text-[16px]">done</span>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm font-bold text-on-surface">Feed Verification</p>
-                <p class="text-[10px] text-on-surface-variant">100% plant-based & halal certified feed</p>
-              </div>
+            <div class="grid grid-cols-5 gap-1.5 mb-3">
+                <!-- Row 1 -->
+                <div
+                    class="h-8 rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
+                    01</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
+                    02</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-[#fef08a] text-[#854d0e] flex items-center justify-center text-[10px] font-semibold border border-[#eab308]/20">
+                    03</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
+                    04</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-error-container text-on-error-container flex items-center justify-center text-[10px] font-semibold border border-error/20">
+                    05</div>
+                <!-- Row 2 -->
+                <div
+                    class="h-8 rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
+                    06</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
+                    07</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-[#fef08a] text-[#854d0e] flex items-center justify-center text-[10px] font-semibold border border-[#eab308]/20">
+                    08</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
+                    09</div>
+                <div
+                    class="h-8 rounded md:rounded-lg bg-surface-variant text-on-surface-variant flex items-center justify-center text-[10px] font-semibold border border-outline">
+                    10</div>
             </div>
-            <div class="w-full h-[1px] bg-surface-variant"></div>
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center shrink-0">
-                <span class="material-symbols-outlined text-[16px]">done</span>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm font-bold text-on-surface">Water Quality</p>
-                <p class="text-[10px] text-on-surface-variant">Zero cross-contamination risk detected</p>
-              </div>
+            <!-- Legend -->
+            <div class="flex flex-wrap justify-between pt-2 border-t border-outline text-[10px]">
+                <div class="flex items-center gap-1">
+                    <div class="w-2.5 h-2.5 rounded-full bg-secondary-fixed border border-secondary/20"></div>
+                    <span class="text-on-surface-variant">Compliant</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <div class="w-2.5 h-2.5 rounded-full bg-[#fef08a] border border-[#eab308]/20"></div>
+                    <span class="text-on-surface-variant">Warning</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <div class="w-2.5 h-2.5 rounded-full bg-error-container border border-error/20"></div>
+                    <span class="text-on-surface-variant">Critical</span>
+                </div>
+                <div class="flex items-center gap-1">
+                    <div class="w-2.5 h-2.5 rounded-full bg-surface-variant border border-outline"></div>
+                    <span class="text-on-surface-variant">Offline</span>
+                </div>
             </div>
-            <div class="w-full h-[1px] bg-surface-variant"></div>
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center shrink-0">
-                <span class="material-symbols-outlined text-[16px]">done</span>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm font-bold text-on-surface">Handling Procedures</p>
-                <p class="text-[10px] text-on-surface-variant">Compliant with Islamic guidelines</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        </section>
       </section>
 
       <section id="tab-traceability" class="tab-content space-y-6">

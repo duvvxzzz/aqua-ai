@@ -396,7 +396,7 @@
           <!-- Overview Metrics -->
           <section class="grid grid-cols-2 gap-2">
             <!-- Halal Integrity Score -->
-            <div class="bg-surface border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm">
+            <div class="bg-white border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm">
               <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Halal Integrity
               </p>
               <div class="mt-1 flex items-end justify-between">
@@ -408,7 +408,7 @@
               </div>
             </div>
             <!-- Export Readiness -->
-            <div class="bg-surface border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm">
+            <div class="bg-white border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm">
               <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Export Readiness
               </p>
               <div class="mt-1 flex items-center h-full">
@@ -422,7 +422,7 @@
               </div>
             </div>
             <!-- Ponds Compliant -->
-            <div class="bg-surface border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm">
+            <div class="bg-white border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm">
               <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Ponds Compliant
               </p>
               <div class="mt-1 flex items-end justify-between">
@@ -435,7 +435,7 @@
             </div>
             <!-- Active Risks -->
             <div
-              class="bg-surface border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm bg-error-container/20">
+              class="bg-white border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm bg-error-container/20">
               <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Active Risks</p>
               <div class="mt-1 flex items-center gap-1.5">
                 <span class="text-xl font-bold leading-none text-tertiary-container">2</span>
@@ -445,7 +445,7 @@
             </div>
             <!-- Certificate Health -->
             <div
-              class="bg-surface border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm col-span-2">
+              class="bg-white border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm col-span-2">
               <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Certificate Health
               </p>
               <div class="mt-1 flex items-center justify-between">
@@ -464,9 +464,8 @@
                 <span class="text-[9px] font-semibold text-center leading-tight">1. Preparation</span>
               </button>
               <button onclick="switchTab('active')"
-                class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border-2 border-primary bg-primary-fixed/30 text-on-primary-fixed transition-colors shadow-sm">
-                <span class="material-symbols-outlined text-[16px]"
-                  style="font-variation-settings: &quot;FILL&quot; 1;">set_meal</span>
+                class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-surface hover:bg-surface-container-low transition-colors">
+                <span class="material-symbols-outlined text-on-surface-variant text-[16px]">set_meal</span>
                 <span class="text-[9px] font-semibold text-center leading-tight">2. Active</span>
               </button>
               <button onclick="switchTab('export')"
@@ -479,7 +478,7 @@
 
           <!-- Risk Heatmap -->
           <h2 class="text-sm font-semibold mb-2 mt-2">Halal Risk Map</h2>
-          <section class="bg-surface border border-outline rounded-lg p-3 shadow-sm flex-1 flex flex-col min-h-0">
+          <section class="bg-white border border-outline rounded-lg p-3 shadow-sm flex-1 flex flex-col min-h-0">
 
             <div class="grid grid-cols-5 grid-rows-2 gap-2 mb-3 flex-1 min-h-[80px] w-full h-full">
               <!-- Row 1 -->
@@ -1681,7 +1680,7 @@
       <section id="tab-export" class="tab-content flex flex-col min-h-full" style="display: none;">
         <div class="space-y-6 flex-1 pb-4">
           <!-- Top Metrics Row (horizontally scrollable) -->
-          <div class="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 hide-scrollbar snap-x snap-mandatory">
+          <div class="flex gap-3 overflow-x-auto pb-2 hide-scrollbar snap-x snap-mandatory">
             <!-- Readiness Score -->
             <div
               class="bg-surface-container-lowest rounded-xl border border-outline-variant p-3 flex flex-col justify-between shadow-sm shrink-0 w-[140px] h-[140px] snap-start">

@@ -381,8 +381,8 @@
         </div>
       </section>
 
-      <section id="tab-halal" class="tab-content" style="display: none;">
-        <div class="grid gap-3">
+      <section id="tab-halal" class="tab-content h-full" style="display: none;">
+        <div class="flex flex-col gap-3 h-full">
         <!-- Overview Metrics -->
         <section class="grid grid-cols-2 gap-2">
             <!-- Halal Integrity Score -->
@@ -444,30 +444,8 @@
                 </div>
             </div>
         </section>
-        <!-- Farming Process Tabs -->
-        <section>
-            <h2 class="text-sm font-semibold mb-2">Farming Process</h2>
-            <div class="flex w-full gap-2 justify-between">
-                <button
-                    class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-surface hover:bg-surface-container-low transition-colors">
-                    <span class="material-symbols-outlined text-on-surface-variant text-[16px]">agriculture</span>
-                    <span class="text-[9px] font-semibold text-center leading-tight">1. Prep</span>
-                </button>
-                <button
-                    class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border-2 border-primary bg-primary-fixed/30 text-on-primary-fixed transition-colors shadow-sm">
-                    <span class="material-symbols-outlined text-[16px]"
-                        style="font-variation-settings: &quot;FILL&quot; 1;">set_meal</span>
-                    <span class="text-[9px] font-semibold text-center leading-tight">2. Active</span>
-                </button>
-                <button
-                    class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-surface hover:bg-surface-container-low transition-colors">
-                    <span class="material-symbols-outlined text-on-surface-variant text-[16px]">local_shipping</span>
-                    <span class="text-[9px] font-semibold text-center leading-tight">3. Harvest</span>
-                </button>
-            </div>
-        </section>
         <!-- Risk Heatmap -->
-        <h2 class="text-sm font-semibold mb-2">Halal Risk Map</h2>
+        <h2 class="text-sm font-semibold mb-2 mt-2">Halal Risk Map</h2>
         <section
             class="bg-surface border border-outline rounded-lg p-3 shadow-sm flex-1 flex flex-col justify-center min-h-0">
 
@@ -523,6 +501,29 @@
                     <div class="w-2.5 h-2.5 rounded-full bg-surface-variant border border-outline"></div>
                     <span class="text-on-surface-variant">Offline</span>
                 </div>
+            </div>
+        </section>
+        
+        <!-- Farming Process Tabs -->
+        <section class="mt-auto pt-2">
+            <h2 class="text-sm font-semibold mb-2">Farming Process</h2>
+            <div class="flex w-full gap-2 justify-between">
+                <button
+                    class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-surface hover:bg-surface-container-low transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant text-[16px]">agriculture</span>
+                    <span class="text-[9px] font-semibold text-center leading-tight">1. Prep</span>
+                </button>
+                <button
+                    class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border-2 border-primary bg-primary-fixed/30 text-on-primary-fixed transition-colors shadow-sm">
+                    <span class="material-symbols-outlined text-[16px]"
+                        style="font-variation-settings: &quot;FILL&quot; 1;">set_meal</span>
+                    <span class="text-[9px] font-semibold text-center leading-tight">2. Active</span>
+                </button>
+                <button
+                    class="flex-1 flex flex-col items-center justify-center gap-1 p-1.5 rounded-lg border border-outline bg-surface hover:bg-surface-container-low transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant text-[16px]">local_shipping</span>
+                    <span class="text-[9px] font-semibold text-center leading-tight">3. Harvest</span>
+                </button>
             </div>
         </section>
         </div>

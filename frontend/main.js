@@ -1187,7 +1187,7 @@ function renderExportDashboard(data) {
     { label: "Feed Compliance Verified", passed: isFeedCompliant, failMsg: "Review Needed" },
     { label: "Disease Free", passed: true, failMsg: "" },
     { label: "Traceability Complete", passed: true, failMsg: "" },
-    { label: `Halal Integrity Score > 80 (Current: ${halalScore})`, passed: isHalalPassed, failMsg: "Score Too Low" }
+    { label: `Halal Integrity Score > 80 <div class="text-[10px] opacity-70 font-normal leading-tight">(Current: ${halalScore})</div>`, passed: isHalalPassed, failMsg: "Score Too Low" }
   ];
 
   // 3. Readiness Score Calculation
@@ -1236,21 +1236,21 @@ function renderExportDashboard(data) {
   checklistContainer.innerHTML = checklist.map(item => {
     if (item.passed) {
       return `
-        <li class="flex items-center justify-between">
-          <div class="flex items-center gap-2 text-body-md font-body-md">
-            <span class="material-symbols-outlined text-secondary text-sm">check</span>
-            ${item.label}
+        <li class="flex items-start justify-between">
+          <div class="flex items-start gap-2 text-body-md font-body-md">
+            <span class="material-symbols-outlined text-secondary text-sm mt-0.5">check</span>
+            <div class="flex-1">${item.label}</div>
           </div>
-          <span class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
+          <span class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded shrink-0">Passed</span>
         </li>`;
     } else {
       return `
-        <li class="flex items-center justify-between">
-          <div class="flex items-center gap-2 text-body-md font-body-md text-on-surface-variant">
-            <span class="material-symbols-outlined text-error text-sm">close</span>
-            ${item.label}
+        <li class="flex items-start justify-between">
+          <div class="flex items-start gap-2 text-body-md font-body-md text-on-surface-variant">
+            <span class="material-symbols-outlined text-error text-sm mt-0.5">close</span>
+            <div class="flex-1">${item.label}</div>
           </div>
-          <span class="text-label-sm font-label-sm text-error bg-error-container/20 px-2 py-1 rounded font-semibold">${item.failMsg}</span>
+          <span class="text-label-sm font-label-sm text-error bg-error-container/20 px-2 py-1 rounded font-semibold shrink-0">${item.failMsg}</span>
         </li>`;
     }
   }).join('');

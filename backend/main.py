@@ -1,3 +1,47 @@
+from typing import Optional
+
+# Yêu cầu cho AI FARMING ADVISOR
+class AdvisorRequest(BaseModel):
+    sensor_context: Optional[dict] = {}
+
+# API tư vấn AI FARMING ADVISOR
+@app.post("/api/advisor")
+async def advisor(req: AdvisorRequest):
+    ctx = req.sensor_context or {}
+    sensor_summary = f"""
+pH nước: {ctx.get('ph', 'N/A')} ({ctx.get('ph_status', '')})\nOxy hòa tan (DO): {ctx.get('do', 'N/A')} mg/L ({ctx.get('do_status', '')})\nNhiệt độ nước: {ctx.get('temperature', 'N/A')}°C ({ctx.get('temp_status', '')})\nĐộ mặn: {ctx.get('salinity', 'N/A')} ppt ({ctx.get('salinity_status', '')})\nAmonia (NH3): {ctx.get('nh3', 'N/A')} mg/L\nNO2: {ctx.get('no2', 'N/A')} mg/L\nĐộ kiềm: {ctx.get('alkalinity', 'N/A')} mg/L\nH2S: {ctx.get('h2s', 'N/A')} mg/L\n"""
+    system_prompt = f"""Bạn là AI FARMING ADVISOR, chuyên gia phân tích dữ liệu ao nuôi. Hãy dựa vào dữ liệu cảm biến sau để:\n- Đưa ra nhận định ngắn gọn về xu hướng các chỉ số (ví dụ: NH3 tăng nhẹ, pH ổn định...)\n- Đề xuất 2-3 hành động cụ thể\n- Dự báo rủi ro tổng thể (thấp/trung bình/cao)\nTrả về kết quả dưới dạng JSON với 3 trường: 'nhan_dinh', 'de_xuat' (mảng), 'rui_ro'.\n\nDỮ LIỆU CẢM BIẾN:\n{sensor_summary}\n"""
+    gemini_history = [
+        {"role": "user", "parts": [{"text": "Phân tích dữ liệu ao và trả về JSON như hướng dẫn trên."}]}
+    ]
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GOOGLE_API_KEY}",
+                headers={"Content-Type": "application/json"},
+                json={
+                    "system_instruction": {"parts": [{"text": system_prompt}]},
+                    "contents": gemini_history,
+                    "generationConfig": {"temperature": 0.7, "maxOutputTokens": 800}
+                }, timeout=30.0
+            )
+            res_data = response.json()
+            print(f"📦 DỮ LIỆU GỐC ADVISOR: {res_data}")
+            try:
+                import re, json as pyjson
+                text = res_data["candidates"][0]["content"]["parts"][0]["text"]
+                match = re.search(r'\{.*\}', text, re.DOTALL)
+                if match:
+                    advisor_json = pyjson.loads(match.group(0))
+                    return advisor_json
+                else:
+                    return {"error": "Không tìm thấy JSON hợp lệ trong phản hồi AI."}
+            except Exception as e:
+                print(f"🔥 LỖI ADVISOR: {str(e)}")
+                return {"error": "AI không trả về dữ liệu hợp lệ."}
+    except Exception as e:
+        print(f"🔥 LỖI ADVISOR: {str(e)}")
+        return {"error": "Không thể kết nối Gemini."}
 from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel

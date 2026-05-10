@@ -55,14 +55,13 @@ function switchTab(tabId) {
   const mainEl = document.querySelector('main');
   if (tabId === 'chat') {
     $('#chatInputArea').classList.remove('hidden');
-    mainEl.classList.remove('pb-20');
-    mainEl.classList.add('pb-36'); // Nới đáy thẻ main để tin nhắn không bị che
+    mainEl.classList.replace('pb-20', 'pb-36');
     if ($('#messagesWrapper').children.length === 0) initChat();
     setTimeout(() => { mainEl.scrollTop = mainEl.scrollHeight; }, 10);
   } else {
     $('#chatInputArea').classList.add('hidden');
-    mainEl.classList.remove('pb-36');
-    mainEl.classList.add('pb-20'); // Trả lại chiều cao đáy bình thường
+    mainEl.classList.replace('pb-36', 'pb-20');
+    if (tabId === 'weather') loadAdvisor();
   }
 }
 
@@ -536,6 +535,81 @@ function initChat() {
   appendMsg('AI', "**Hello!** Aqua-AI system is online. How can I assist you today?");
 }
 
+function getSensorContext() {
+  const d = (typeof mockData !== 'undefined' && mockData.dynamic) ? mockData.dynamic : null;
+  if (!d) return {};
+
+  const w = d.unifiedWater;
+  const prep = d.preparation;
+  const getPHStatus = (v) => parseFloat(v) < 7.5 ? 'THẤP - DƯỚI MỨC AN TOÀN' : parseFloat(v) > 8.5 ? 'CAO - TRÊN MỨC AN TOÀN' : 'An toàn';
+  const getDOStatus = (v) => parseFloat(v) < 5 ? 'THIẾU OXY NGHIÊM TRỌNG' : 'Đủ oxy';
+  const getTempStatus = (v) => parseFloat(v) < 28 ? 'Hơi thấp' : parseFloat(v) > 32 ? 'Hơi cao' : 'Lý tưởng';
+  const getSalStatus = (v) => parseFloat(v) < 15 ? 'Thấp' : parseFloat(v) > 25 ? 'Cao' : 'Ổn định';
+
+  return {
+    ph: w.ph, ph_status: getPHStatus(w.ph),
+    do: w.do, do_status: getDOStatus(w.do),
+    temperature: w.temperature, temp_status: getTempStatus(w.temperature),
+    salinity: w.salinity, salinity_status: getSalStatus(w.salinity),
+    nh3: w.nh3, no2: w.no2, alkalinity: w.alkalinity, h2s: w.h2s,
+    water_quality_label: prep.waterQuality.label,
+    water_quality_advice: prep.waterQuality.advice,
+    readiness_status: prep.readiness.status,
+    tasks_completed: prep.tasksCompleted,
+    tasks_total: prep.tasksTotal,
+    feed_label: prep.feedPlan.label,
+    feed_advice: prep.feedPlan.advice,
+    baseline_params: prep.baselineParameters.map(p => `${p.name}: ${p.value} (${p.status})`).join(', ')
+  };
+}
+
+async function loadAdvisor() {
+  const timeEl = $('#advisor-time');
+  const analysisEl = $('#advisor-analysis');
+  const recommendationsEl = $('#advisor-recommendations');
+  const riskEl = $('#advisor-risk-level');
+
+  if (!timeEl || !analysisEl) return;
+
+  try {
+    const sensorContext = getSensorContext();
+    const res = await fetch(`${API_BASE}/api/advisor`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sensor_context: sensorContext })
+    });
+
+    if (!res.ok) throw new Error('Advisor API failed');
+    const data = await res.json();
+
+    timeEl.textContent = `Phân tích ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    analysisEl.textContent = data.analysis || 'Không có nhận định.';
+    
+    if (data.recommendations && data.recommendations.length > 0) {
+      recommendationsEl.innerHTML = data.recommendations.map(r => `<li>${r}</li>`).join('');
+    } else {
+      recommendationsEl.innerHTML = '<li>Không có đề xuất cụ thể.</li>';
+    }
+
+    if (riskEl) {
+      riskEl.textContent = data.risk_level || 'Bình thường';
+      // Cập nhật màu sắc dựa trên rủi ro
+      const risk = (data.risk_level || '').toLowerCase();
+      riskEl.className = 'text-xs font-bold px-2 py-0.5 rounded';
+      if (risk.includes('cao') || risk.includes('high') || risk.includes('nguy hiểm')) {
+        riskEl.classList.add('bg-error-container', 'text-on-error-container');
+      } else if (risk.includes('trung bình') || risk.includes('medium') || risk.includes('cảnh báo')) {
+        riskEl.classList.add('bg-orange-100', 'text-orange-800');
+      } else {
+        riskEl.classList.add('bg-green-100', 'text-green-800');
+      }
+    }
+  } catch (e) {
+    console.error('Advisor error:', e);
+    analysisEl.textContent = '⚠️ Lỗi khi tải nhận định từ AI.';
+  }
+}
+
 $('#chatForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const input = $('#messageInput');
@@ -566,34 +640,7 @@ $('#chatForm').addEventListener('submit', async (e) => {
 
   // 3. Gọi backend /api/chat — backend giữ API key an toàn, gọi Gemini server-side
   try {
-    // Build sensor context from live mockData to send to backend
-    const d = (typeof mockData !== 'undefined' && mockData.dynamic) ? mockData.dynamic : null;
-    let sensorContext = {};
-
-    if (d) {
-      const w = d.unifiedWater;
-      const prep = d.preparation;
-      const getPHStatus = (v) => parseFloat(v) < 7.5 ? 'THẤP - DƯỚI MỨC AN TOÀN' : parseFloat(v) > 8.5 ? 'CAO - TRÊN MỨC AN TOÀN' : 'An toàn';
-      const getDOStatus = (v) => parseFloat(v) < 5 ? 'THIẾU OXY NGHIÊM TRỌNG' : 'Đủ oxy';
-      const getTempStatus = (v) => parseFloat(v) < 28 ? 'Hơi thấp' : parseFloat(v) > 32 ? 'Hơi cao' : 'Lý tưởng';
-      const getSalStatus = (v) => parseFloat(v) < 15 ? 'Thấp' : parseFloat(v) > 25 ? 'Cao' : 'Ổn định';
-
-      sensorContext = {
-        ph: w.ph, ph_status: getPHStatus(w.ph),
-        do: w.do, do_status: getDOStatus(w.do),
-        temperature: w.temperature, temp_status: getTempStatus(w.temperature),
-        salinity: w.salinity, salinity_status: getSalStatus(w.salinity),
-        nh3: w.nh3, no2: w.no2, alkalinity: w.alkalinity, h2s: w.h2s,
-        water_quality_label: prep.waterQuality.label,
-        water_quality_advice: prep.waterQuality.advice,
-        readiness_status: prep.readiness.status,
-        tasks_completed: prep.tasksCompleted,
-        tasks_total: prep.tasksTotal,
-        feed_label: prep.feedPlan.label,
-        feed_advice: prep.feedPlan.advice,
-        baseline_params: prep.baselineParameters.map(p => `${p.name}: ${p.value} (${p.status})`).join(', ')
-      };
-    }
+    const sensorContext = getSensorContext();
 
     // DEBUG: Log the URL before making the request
     const chatApiUrl = `${API_BASE}/api/chat`;
@@ -946,6 +993,7 @@ function renderPreparationDashboard(data) {
 // Init
 loadWeather();
 loadDevices();
+loadAdvisor();
 
 if (typeof mockData !== 'undefined' && mockData.dynamic) {
   renderHalalDashboard(mockData.dynamic.halal);

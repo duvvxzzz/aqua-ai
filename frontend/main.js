@@ -560,7 +560,7 @@ function renderHalalDashboard(data) {
   $('#halal-active-risks').textContent = data.activeRisks;
   
   $('#halal-cert-health').textContent = data.certHealth;
-  $('#halal-cert-expiry').textContent = \`Expiring in \${data.daysToExpire} days\`;
+  $('#halal-cert-expiry').textContent = `Expiring in ${data.daysToExpire} days`;
 }
 
 function renderHalalRiskMap(ponds) {
@@ -581,7 +581,7 @@ function renderHalalRiskMap(ponds) {
       classes += 'bg-surface-variant text-on-surface-variant border-outline';
     }
     
-    container.innerHTML += \`<div class="\${classes}">\${pond.id}</div>\`;
+    container.innerHTML += `<div class="${classes}">${pond.id}</div>`;
   });
 }
 
@@ -609,23 +609,23 @@ function renderNotifications(alerts) {
       iconColorClass = 'bg-blue-100 text-blue-700';
     }
     
-    const alertHTML = \`
+    const alertHTML = `
       <div class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col gap-3 shadow-sm relative overflow-hidden">
-        <div class="absolute left-0 top-0 bottom-0 w-1 \${colorClass}"></div>
+        <div class="absolute left-0 top-0 bottom-0 w-1 ${colorClass}"></div>
         <div class="flex gap-3">
-          <div class="w-10 h-10 rounded-full \${iconColorClass} flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">\${alert.icon}</span>
+          <div class="w-10 h-10 rounded-full ${iconColorClass} flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">${alert.icon}</span>
           </div>
           <div class="flex-1">
             <div class="flex justify-between items-start">
-              <h3 class="font-bold text-sm text-on-surface">\${alert.title}</h3>
-              <span class="text-[10px] text-outline-variant">\${alert.time}</span>
+              <h3 class="font-bold text-sm text-on-surface">${alert.title}</h3>
+              <span class="text-[10px] text-outline-variant">${alert.time}</span>
             </div>
-            <p class="text-xs text-on-surface-variant mt-1">\${alert.desc}</p>
+            <p class="text-xs text-on-surface-variant mt-1">${alert.desc}</p>
           </div>
         </div>
       </div>
-    \`;
+    `;
     container.innerHTML += alertHTML;
   });
 }

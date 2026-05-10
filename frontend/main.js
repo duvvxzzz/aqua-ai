@@ -767,9 +767,9 @@ function renderPreparationDashboard(data) {
     $('#prep-water-detail-container').className = 'flex items-center text-[#f59e0b] text-xs font-medium gap-1';
     $('#prep-water-dot').className = 'w-2 h-2 rounded-full bg-[#f59e0b]';
   } else {
-    $('#prep-water-status').className = 'text-lg font-bold text-on-surface';
+    $('#prep-water-status').className = 'text-lg font-bold text-secondary';
     $('#prep-water-icon').className = 'material-symbols-outlined text-secondary';
-    $('#prep-water-detail-container').className = 'flex items-center text-on-surface-variant text-xs font-medium gap-1';
+    $('#prep-water-detail-container').className = 'flex items-center text-secondary text-xs font-medium gap-1';
     $('#prep-water-dot').className = 'w-2 h-2 rounded-full bg-secondary';
   }
 
@@ -791,7 +791,7 @@ function renderPreparationDashboard(data) {
   } else {
     $('#prep-feed-status').className = 'text-lg font-bold text-secondary';
     $('#prep-feed-icon').className = 'material-symbols-outlined text-secondary';
-    $('#prep-feed-detail-container').className = 'flex items-center text-on-surface-variant text-xs font-medium gap-1';
+    $('#prep-feed-detail-container').className = 'flex items-center text-secondary text-xs font-medium gap-1';
     $('#prep-feed-dot').className = 'w-2 h-2 rounded-full bg-secondary';
   }
 

@@ -170,19 +170,26 @@ Khi có thông số bất thường, hãy đưa ra khuyến nghị CỤ THỂ d�
     gemini_history = [{"role": "user" if msg.get("role") == "user" else "model", "parts": [{"text": msg.get("content", "")}]} for msg in req.history]
     gemini_history.append({"role": "user", "parts": [{"text": req.message}]})
 
-    async with httpx.AsyncClient() as client:
-        response = await client.post(
-            f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GOOGLE_API_KEY}",
-            headers={"Content-Type": "application/json"},
-            json={
-                "system_instruction": {"parts": [{"text": system_prompt}]},
-                "contents": gemini_history,
-                "generationConfig": {"temperature": 0.7, "maxOutputTokens": 600}
-            }, timeout=30.0
-        )
-        res_data = response.json()
-        try: return {"reply": res_data["candidates"][0]["content"]["parts"][0]["text"]}
-        except: return {"reply": "⚠️ Lỗi: Máy chủ AI không phản hồi. Vui lòng thử lại."}
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GOOGLE_API_KEY}",
+                headers={"Content-Type": "application/json"},
+                json={
+                    "system_instruction": {"parts": [{"text": system_prompt}]},
+                    "contents": gemini_history,
+                    "generationConfig": {"temperature": 0.7, "maxOutputTokens": 600}
+                }, timeout=30.0
+            )
+            res_data = response.json()
+            try:
+                return {"reply": res_data["candidates"][0]["content"]["parts"][0]["text"]}
+            except Exception as e:
+                print(f"🔥 LỖI TỪ GEMINI LÀ: {str(e)}")
+                return {"reply": "⚠️ Lỗi: Máy chủ AI không phản hồi. Vui lòng thử lại."}
+    except Exception as e:
+        print(f"🔥 LỖI TỪ GEMINI LÀ: {str(e)}")
+        return {"reply": "⚠️ Lỗi: Máy chủ AI không phản hồi. Vui lòng thử lại."}
 
 import uvicorn
 if __name__ == "__main__":

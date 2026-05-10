@@ -178,12 +178,37 @@ function getBatteryColor(level) {
 }
 
 function renderProWaterQuality(data) {
-  const isOffline = data.status === 'offline';
+  const getSalinityLogic = (val) => {
+    if (val === undefined || val === null) return { color: 'text-on-surface', label: '--' };
+    if (val < 15) return { color: 'text-error', label: 'Low' };
+    if (val > 25) return { color: 'text-error', label: 'High' };
+    return { color: 'text-secondary', label: 'Optimal' };
+  };
 
-  const salPct = Math.min(100, Math.max(0, ((data.salinity || 0) / 30) * 100));
-  const doPct = Math.min(100, Math.max(0, ((data.do || 0) / 10) * 100));
-  const phPct = Math.min(100, Math.max(0, ((data.ph || 0) / 14) * 100));
-  const tempPct = Math.min(100, Math.max(0, ((data.temperature || 0) / 40) * 100));
+  const getDOLogic = (val) => {
+    if (val === undefined || val === null) return { color: 'text-on-surface', label: '--' };
+    if (val < 5) return { color: 'text-error', label: 'Low' };
+    return { color: 'text-secondary', label: 'Good' };
+  };
+
+  const getPHLogic = (val) => {
+    if (val === undefined || val === null) return { color: 'text-on-surface', label: '--' };
+    if (val < 7.5) return { color: 'text-error', label: 'Low' };
+    if (val > 8.5) return { color: 'text-error', label: 'High' };
+    return { color: 'text-secondary', label: 'Stable' };
+  };
+
+  const getTempLogic = (val) => {
+    if (val === undefined || val === null) return { color: 'text-on-surface', label: '--' };
+    if (val < 28) return { color: 'text-error', label: 'Low' };
+    if (val > 32) return { color: 'text-error', label: 'High' };
+    return { color: 'text-secondary', label: 'Normal' };
+  };
+
+  const sal = getSalinityLogic(data.salinity);
+  const doL = getDOLogic(data.do);
+  const phL = getPHLogic(data.ph);
+  const tempL = getTempLogic(data.temperature);
 
   return `
 <div class="border border-outline-variant rounded-xl p-3 bg-surface flex flex-col justify-between">
@@ -192,16 +217,13 @@ function renderProWaterQuality(data) {
     <span class="material-symbols-outlined text-on-surface-variant text-[16px]">science</span>
   </div>
   <div class="flex items-baseline gap-1 mb-2">
-    <span class="text-2xl font-bold text-on-surface tracking-tight">${data.salinity ?? '--'}</span>
+    <span class="text-2xl font-bold ${sal.color} tracking-tight">${data.salinity ?? '--'}</span>
     <span class="text-[10px] font-bold text-on-surface-variant">ppt</span>
   </div>
   <div class="mt-auto">
-    <div class="flex justify-between text-[9px] text-on-surface-variant mb-1 font-bold">
+    <div class="flex justify-between text-[9px] text-on-surface-variant font-bold">
       <span>15-25 ppt</span>
-      <span class="text-secondary">Optimal</span>
-    </div>
-    <div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
-      <div class="bg-primary h-full rounded-full" style="width: ${salPct}%"></div>
+      <span class="${sal.color}">${sal.label}</span>
     </div>
   </div>
 </div>
@@ -212,16 +234,13 @@ function renderProWaterQuality(data) {
     <span class="material-symbols-outlined text-on-surface-variant text-[16px]">air</span>
   </div>
   <div class="flex items-baseline gap-1 mb-2">
-    <span class="text-2xl font-bold ${data.do < 5 ? 'text-error' : 'text-on-surface'} tracking-tight">${data.do ?? '--'}</span>
+    <span class="text-2xl font-bold ${doL.color} tracking-tight">${data.do ?? '--'}</span>
     <span class="text-[10px] font-bold text-on-surface-variant">mg/L</span>
   </div>
   <div class="mt-auto">
-    <div class="flex justify-between text-[9px] text-on-surface-variant mb-1 font-bold">
+    <div class="flex justify-between text-[9px] text-on-surface-variant font-bold">
       <span>>5.0 mg/L</span>
-      <span class="${data.do < 5 ? 'text-error' : 'text-secondary'}">${data.do < 5 ? 'Low' : 'Good'}</span>
-    </div>
-    <div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
-      <div class="${data.do < 5 ? 'bg-error' : 'bg-secondary'} h-full rounded-full" style="width: ${doPct}%"></div>
+      <span class="${doL.color}">${doL.label}</span>
     </div>
   </div>
 </div>
@@ -232,15 +251,12 @@ function renderProWaterQuality(data) {
     <span class="material-symbols-outlined text-on-surface-variant text-[16px]">opacity</span>
   </div>
   <div class="flex items-baseline gap-1 mb-2">
-    <span class="text-2xl font-bold ${data.ph < 7.5 || data.ph > 8.5 ? 'text-error' : 'text-on-surface'} tracking-tight">${data.ph ?? '--'}</span>
+    <span class="text-2xl font-bold ${phL.color} tracking-tight">${data.ph ?? '--'}</span>
   </div>
   <div class="mt-auto">
-    <div class="flex justify-between text-[9px] text-on-surface-variant mb-1 font-bold">
+    <div class="flex justify-between text-[9px] text-on-surface-variant font-bold">
       <span>7.5-8.5</span>
-      <span class="text-primary-container">Stable</span>
-    </div>
-    <div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
-      <div class="bg-primary-container h-full rounded-full" style="width: ${phPct}%"></div>
+      <span class="${phL.color}">${phL.label}</span>
     </div>
   </div>
 </div>
@@ -251,16 +267,13 @@ function renderProWaterQuality(data) {
     <span class="material-symbols-outlined text-on-surface-variant text-[16px]">thermostat</span>
   </div>
   <div class="flex items-baseline gap-1 mb-2">
-    <span class="text-2xl font-bold text-on-surface tracking-tight">${data.temperature ?? '--'}</span>
+    <span class="text-2xl font-bold ${tempL.color} tracking-tight">${data.temperature ?? '--'}</span>
     <span class="text-[10px] font-bold text-on-surface-variant">°C</span>
   </div>
   <div class="mt-auto">
-    <div class="flex justify-between text-[9px] text-on-surface-variant mb-1 font-bold">
+    <div class="flex justify-between text-[9px] text-on-surface-variant font-bold">
       <span>28-32 °C</span>
-      <span class="text-on-surface-variant">Normal</span>
-    </div>
-    <div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
-      <div class="bg-primary-fixed-dim h-full rounded-full" style="width: ${tempPct}%"></div>
+      <span class="${tempL.color}">${tempL.label}</span>
     </div>
   </div>
 </div>

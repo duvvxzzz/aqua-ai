@@ -1099,13 +1099,22 @@ function renderActiveHalalCompliance(data) {
   const container = $('#active-halal-compliance-list');
   if (!container) return;
 
-  // 1. Water Quality Logic (Inherited from Preparation Data)
-  const waterStatus = data.preparation.waterQuality.status; 
+  // 1. SYNC WATER QUALITY LOGIC DIRECTLY FROM RAW SENSOR DATA
+  const w = data.unifiedWater.raw;
+  let isWaterCritical = false;
+  let isWaterWarning = false;
+
+  // Unified Thresholds (Sync with Chemical Stats & AI logic)
+  if (w.nh3 >= 0.5 || w.no2 >= 0.2 || w.h2s >= 0.05 || w.do < 3.0 || w.ph < 7.0 || w.ph > 9.0) {
+    isWaterCritical = true;
+  } else if (w.nh3 >= 0.1 || w.no2 >= 0.05 || w.h2s >= 0.01 || w.do < 5.0 || w.ph < 7.5 || w.ph > 8.5 || w.alkalinity < 80 || w.alkalinity > 200) {
+    isWaterWarning = true;
+  }
+
   let waterUI = { icon: 'check_circle', iconColor: 'text-secondary', badge: 'text-secondary bg-secondary-container/20', text: 'Compliant' };
-  
-  if (waterStatus === 'critical') {
+  if (isWaterCritical) {
     waterUI = { icon: 'error', iconColor: 'text-error', badge: 'text-error bg-error-container/20', text: 'Critical' };
-  } else if (waterStatus === 'warning') {
+  } else if (isWaterWarning) {
     waterUI = { icon: 'warning', iconColor: 'text-[#d97706]', badge: 'text-[#854d0e] bg-[#fef08a]', text: 'Warning' };
   }
 
@@ -1116,13 +1125,13 @@ function renderActiveHalalCompliance(data) {
     feedUI = { icon: 'warning', iconColor: 'text-[#d97706]', badge: 'text-[#854d0e] bg-[#fef08a]', text: 'Review Needed' };
   }
 
-  // 3. Treatment & Medication Logic (Based on active alerts)
+  // 3. Treatment & Medication Logic
   const hasRiskAlert = data.alerts.some(a => a.type === 'critical' || a.type === 'warning');
   let medUI = hasRiskAlert 
     ? { icon: 'warning', iconColor: 'text-[#d97706]', badge: 'text-[#854d0e] bg-[#fef08a]', text: 'Warning' }
     : { icon: 'check_circle', iconColor: 'text-secondary', badge: 'text-secondary bg-secondary-container/20', text: 'Compliant' };
 
-  // 4. Biosecurity Logic (Linked to Halal Integrity Score)
+  // 4. Biosecurity (Based on total Halal Score)
   let bioUI = data.halal.integrityScore < 80
     ? { icon: 'warning', iconColor: 'text-error', badge: 'text-error bg-error-container/20', text: 'At Risk' }
     : { icon: 'shield', iconColor: 'text-secondary', badge: 'text-secondary bg-secondary-container/20', text: 'Compliant' };

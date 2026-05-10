@@ -178,7 +178,7 @@ Khi có thông số bất thường, hãy đưa ra khuyến nghị CỤ THỂ d�
                 json={
                     "system_instruction": {"parts": [{"text": system_prompt}]},
                     "contents": gemini_history,
-                    "generationConfig": {"temperature": 0.7, "maxOutputTokens": 600}
+                    "generationConfig": {"temperature": 0.7, "maxOutputTokens": 1000}
                 }, timeout=30.0
             )
             res_data = response.json()

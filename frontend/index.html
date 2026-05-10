@@ -378,8 +378,8 @@
             <div class="flex overflow-x-auto space-x-4 hide-scrollbar pb-2">
               <!-- Card 1 -->
               <div
-                class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
-                <h3 class="text-xs text-on-surface-variant font-medium mb-1">Pond Readiness</h3>
+                class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 w-[148px] h-[148px] flex-shrink-0 shadow-sm flex flex-col">
+                <h3 class="text-xs text-on-surface-variant font-medium mb-1 truncate">Pond Readiness</h3>
                 <div class="flex items-baseline gap-1 mb-2">
                   <span id="prep-readiness-score" class="text-2xl font-bold text-on-surface">89</span>
                   <span class="text-xs text-on-surface-variant">/100</span>
@@ -388,48 +388,48 @@
                   <span id="prep-readiness-icon" class="material-symbols-outlined text-[14px]">check_circle</span>
                   <span id="prep-readiness-status">Good</span>
                 </div>
-                <p id="prep-readiness-advice" class="text-[10px] text-on-surface-variant mt-2 leading-tight font-medium"></p>
+                <p id="prep-readiness-advice" class="text-[10px] text-on-surface-variant mt-auto leading-tight font-medium whitespace-normal line-clamp-3"></p>
               </div>
               <!-- Card 2 -->
               <div
-                class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
-                <h3 class="text-xs text-on-surface-variant font-medium mb-1">Water Quality</h3>
+                class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 w-[148px] h-[148px] flex-shrink-0 shadow-sm flex flex-col">
+                <h3 class="text-xs text-on-surface-variant font-medium mb-1 truncate">Water Quality</h3>
                 <div class="flex items-center gap-1 mb-2 mt-1">
                   <span id="prep-water-icon" class="material-symbols-outlined text-secondary">water_drop</span>
-                  <span id="prep-water-status" class="text-lg font-bold text-on-surface">Good</span>
+                  <span id="prep-water-status" class="text-lg font-bold text-on-surface truncate">Good</span>
                 </div>
                 <div id="prep-water-detail-container" class="flex items-center text-on-surface-variant text-xs font-medium gap-1">
-                  <span id="prep-water-dot" class="w-2 h-2 rounded-full bg-secondary"></span>
-                  <span id="prep-water-detail">Stable</span>
+                  <span id="prep-water-dot" class="w-2 h-2 rounded-full bg-secondary flex-shrink-0"></span>
+                  <span id="prep-water-detail" class="truncate">Stable</span>
                 </div>
-                <p id="prep-water-advice" class="text-[10px] text-on-surface-variant mt-2 leading-tight font-medium"></p>
+                <p id="prep-water-advice" class="text-[10px] text-on-surface-variant mt-auto leading-tight font-medium whitespace-normal line-clamp-3"></p>
               </div>
               <!-- Card 3 -->
               <div
-                class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
-                <h3 class="text-xs text-on-surface-variant font-medium mb-1">Feed Plan</h3>
+                class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 w-[148px] h-[148px] flex-shrink-0 shadow-sm flex flex-col">
+                <h3 class="text-xs text-on-surface-variant font-medium mb-1 truncate">Feed Plan</h3>
                 <div class="flex items-center gap-1 mb-2 mt-1">
                   <span id="prep-feed-icon" class="material-symbols-outlined text-secondary">verified</span>
-                  <span id="prep-feed-status" class="text-lg font-bold text-secondary">Verified</span>
+                  <span id="prep-feed-status" class="text-lg font-bold text-secondary truncate">Verified</span>
                 </div>
                 <div id="prep-feed-detail-container" class="flex items-center text-on-surface-variant text-xs font-medium gap-1">
-                  <span id="prep-feed-dot" class="w-2 h-2 rounded-full bg-secondary"></span>
-                  <span id="prep-feed-detail">Approved</span>
+                  <span id="prep-feed-dot" class="w-2 h-2 rounded-full bg-secondary flex-shrink-0"></span>
+                  <span id="prep-feed-detail" class="truncate">Approved</span>
                 </div>
-                <p id="prep-feed-advice" class="text-[10px] text-on-surface-variant mt-2 leading-tight font-medium"></p>
+                <p id="prep-feed-advice" class="text-[10px] text-on-surface-variant mt-auto leading-tight font-medium whitespace-normal line-clamp-3"></p>
               </div>
               <!-- Card 4 -->
               <div
-                class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
-                <h3 class="text-xs text-on-surface-variant font-medium mb-1">Input Compliance</h3>
+                class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 w-[148px] h-[148px] flex-shrink-0 shadow-sm flex flex-col">
+                <h3 class="text-xs text-on-surface-variant font-medium mb-1 truncate">Input Compliance</h3>
                 <div class="flex items-baseline gap-1 mb-2">
                   <span id="prep-input-score" class="text-2xl font-bold text-on-surface">95%</span>
                 </div>
                 <div id="prep-input-status-container" class="flex items-center text-secondary text-xs font-medium gap-1">
-                  <span id="prep-input-icon" class="material-symbols-outlined text-[14px]">check_circle</span>
-                  <span id="prep-input-status">Compliant</span>
+                  <span id="prep-input-icon" class="material-symbols-outlined text-[14px] flex-shrink-0">check_circle</span>
+                  <span id="prep-input-status" class="truncate">Compliant</span>
                 </div>
-                <p id="prep-input-advice" class="text-[10px] text-on-surface-variant mt-2 leading-tight font-medium"></p>
+                <p id="prep-input-advice" class="text-[10px] text-on-surface-variant mt-auto leading-tight font-medium whitespace-normal line-clamp-3"></p>
               </div>
             </div>
           </section>

@@ -127,36 +127,62 @@ class ChatRequest(BaseModel):
     message: str
     pond: str = "pond1"
     history: list = []
+    sensor_context: dict = {}
 
 @app.post("/api/chat")
 async def chat(req: ChatRequest):
-    sensor_data = get_sensor_data(req.pond)
-    
-    # [FIX QUAN TRỌNG]: Thêm chữ await vì hàm get_weather giờ đã lấy dữ liệu thật
+    # Use context sent from frontend if available, else fall back to sensor API
+    if req.sensor_context:
+        ctx = req.sensor_context
+        sensor_summary = f"""
+pH nước: {ctx.get('ph', 'N/A')} ({ctx.get('ph_status', '')})
+Oxy hòa tan (DO): {ctx.get('do', 'N/A')} mg/L ({ctx.get('do_status', '')})
+Nhiệt độ nước: {ctx.get('temperature', 'N/A')}°C ({ctx.get('temp_status', '')})
+Độ mặn: {ctx.get('salinity', 'N/A')} ppt ({ctx.get('salinity_status', '')})
+Amonia (NH3): {ctx.get('nh3', 'N/A')} mg/L
+NO2: {ctx.get('no2', 'N/A')} mg/L
+Độ kiềm: {ctx.get('alkalinity', 'N/A')} mg/L
+H2S: {ctx.get('h2s', 'N/A')} mg/L
+
+Đánh giá tổng thể:
+- Chất lượng nước: {ctx.get('water_quality_label', 'N/A')} - {ctx.get('water_quality_advice', '')}
+- Chuẩn bị ao: {ctx.get('readiness_status', 'N/A')} - Hoàn thành {ctx.get('tasks_completed', '?')}/{ctx.get('tasks_total', '?')} nhiệm vụ
+- Kế hoạch cho ăn: {ctx.get('feed_label', 'N/A')} - {ctx.get('feed_advice', '')}
+- Baseline chi tiết: {ctx.get('baseline_params', '')}"""
+    else:
+        sensor_data = get_sensor_data(req.pond)
+        sensor_summary = f"""pH: {sensor_data.get('ph')} | DO: {sensor_data.get('do')} mg/L | Nhiệt độ: {sensor_data.get('temperature')}°C | Độ mặn: {sensor_data.get('salinity')} ppt"""
+
     try:
         weather_data = await get_weather("Hanoi")
     except:
         weather_data = {"description": "N/A", "temperature": 31, "humidity": 84, "wind_speed": 10}
-        
-    # risk_data = get_disease_risk(req.pond)
-    system_prompt = f"""CURRENT ENVIRONMENT DATA:
-Salinity: {sensor_data.get('salinity')} ppt | pH: {sensor_data.get('ph')}
-Temp: {sensor_data.get('temperature')} °C | DO: {sensor_data.get('do')} mg/L
-Weather: {weather_data.get('description')} ({weather_data.get('temperature')}°C)
-You are AQUA-AI. ALWAYS respond in English only. Keep it concise."""
+
+    system_prompt = f"""Bạn là AQUA-AI, trợ lý chuyên gia nuôi tôm thông minh. Luôn trả lời bằng tiếng Việt, ngắn gọn, thực tế. Dùng markdown để trình bày đẹp.
+
+DỮ LIỆU CẢM BIẾN THỜI GIAN THỰC:
+{sensor_summary}
+
+Thời tiết hiện tại: {weather_data.get('description')} ({weather_data.get('temperature')}°C, độ ẩm {weather_data.get('humidity', 'N/A')}%)
+
+Khi có thông số bất thường, hãy đưa ra khuyến nghị CỤ THỂ dựa trên con số thực (ví dụ: "pH đang 6.8 thấp hơn ngưỡng an toàn 7.5, cần bổ sung vôi CaCO3..."). Không nói chung chung."""
 
     gemini_history = [{"role": "user" if msg.get("role") == "user" else "model", "parts": [{"text": msg.get("content", "")}]} for msg in req.history]
     gemini_history.append({"role": "user", "parts": [{"text": req.message}]})
 
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GOOGLE_API_KEY}",
+            f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GOOGLE_API_KEY}",
             headers={"Content-Type": "application/json"},
-            json={"system_instruction": {"parts": [{"text": system_prompt}]}, "contents": gemini_history}, timeout=30.0
+            json={
+                "system_instruction": {"parts": [{"text": system_prompt}]},
+                "contents": gemini_history,
+                "generationConfig": {"temperature": 0.7, "maxOutputTokens": 600}
+            }, timeout=30.0
         )
         res_data = response.json()
         try: return {"reply": res_data["candidates"][0]["content"]["parts"][0]["text"]}
-        except: return {"reply": "⚠️ Error: AI Server unreachable."}
+        except: return {"reply": "⚠️ Lỗi: Máy chủ AI không phản hồi. Vui lòng thử lại."}
 
 import uvicorn
 if __name__ == "__main__":

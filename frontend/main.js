@@ -564,53 +564,68 @@ $('#chatForm').addEventListener('submit', async (e) => {
   const mainEl = document.querySelector('main');
   mainEl.scrollTop = mainEl.scrollHeight;
 
-  // 3. Gọi API (Thay thế bằng Mock AI Offline)
+  // 3. Gọi backend /api/chat — backend giữ API key an toàn, gọi Gemini server-side
   try {
-    if (typeof mockData !== 'undefined' && mockData.dynamic) {
-      setTimeout(() => {
-        const typingEl = document.getElementById(typingId);
-        if (typingEl) typingEl.remove();
+    // Build sensor context from live mockData to send to backend
+    const d = (typeof mockData !== 'undefined' && mockData.dynamic) ? mockData.dynamic : null;
+    let sensorContext = {};
 
-        const msgLower = msg.toLowerCase();
-        let reply = "Xin lỗi, hiện tại tôi đang hoạt động ở chế độ Offline (Demo). Tôi có thể giúp bạn tra cứu nhanh về: **thông số nước**, **chuẩn bị ao**, hoặc **lịch cho ăn**.";
-        
-        if (msgLower.includes('chào') || msgLower.includes('hello') || msgLower.includes('hi')) {
-          reply = "Chào bạn! Trợ lý Aqua-AI luôn sẵn sàng hỗ trợ. Bạn muốn kiểm tra thông số nước, xem lịch cho ăn hay cập nhật tiến độ chuẩn bị ao?";
-        } else if (msgLower.includes('ph') || msgLower.includes('nước') || msgLower.includes('water') || msgLower.includes('oxy') || msgLower.includes('chất lượng')) {
-          reply = `Dựa trên dữ liệu cảm biến mới nhất:\n- **pH**: ${mockData.dynamic.unifiedWater.ph}\n- **Oxy hoà tan (DO)**: ${mockData.dynamic.unifiedWater.do} mg/L\n- **Nhiệt độ**: ${mockData.dynamic.unifiedWater.temperature}°C\n- **Độ mặn**: ${mockData.dynamic.unifiedWater.salinity} ppt\n\n**Đánh giá chung**: ${mockData.dynamic.preparation.waterQuality.label} - ${mockData.dynamic.preparation.waterQuality.advice}`;
-        } else if (msgLower.includes('thức ăn') || msgLower.includes('feed') || msgLower.includes('cho ăn') || msgLower.includes('dinh dưỡng')) {
-          const nut = mockData.dynamic.preparation.nutrition;
-          reply = `**Lịch cho ăn dự kiến**: ${mockData.dynamic.preparation.feedPlan.label} - ${mockData.dynamic.preparation.feedPlan.advice}.\n\n**Phân bổ dinh dưỡng**: Protein ${nut.protein}%, Lipid ${nut.lipid}%, Carbohydrate ${nut.carbohydrate}%.`;
-        } else if (msgLower.includes('chuẩn bị') || msgLower.includes('ao') || msgLower.includes('pond') || msgLower.includes('nhiệm vụ') || msgLower.includes('task')) {
-          reply = `**Tiến độ chuẩn bị ao**: Hoàn thành ${mockData.dynamic.preparation.tasksCompleted}/${mockData.dynamic.preparation.tasksTotal} nhiệm vụ.\n\n**Trạng thái**: ${mockData.dynamic.preparation.readiness.status} - ${mockData.dynamic.preparation.readiness.advice}`;
-        } else if (msgLower.includes('thời tiết') || msgLower.includes('nhiệt độ') || msgLower.includes('trời')) {
-          reply = `Nhiệt độ nước hiện tại là **${mockData.dynamic.unifiedWater.temperature}°C**. Hãy chú ý theo dõi dự báo thời tiết trên hệ thống để điều chỉnh quạt sục khí kịp thời nhé!`;
-        } else if (msgLower.includes('tốt không') || msgLower.includes('ổn không') || msgLower.includes('tình hình')) {
-           reply = `Trạng thái hiện tại:\n- **Chuẩn bị ao**: ${mockData.dynamic.preparation.readiness.status}\n- **Chất lượng nước**: ${mockData.dynamic.preparation.waterQuality.label}\n\n${mockData.dynamic.preparation.readiness.advice}`;
-        }
+    if (d) {
+      const w = d.unifiedWater;
+      const prep = d.preparation;
+      const getPHStatus = (v) => parseFloat(v) < 7.5 ? 'THẤP - DƯỚI MỨC AN TOÀN' : parseFloat(v) > 8.5 ? 'CAO - TRÊN MỨC AN TOÀN' : 'An toàn';
+      const getDOStatus = (v) => parseFloat(v) < 5 ? 'THIẾU OXY NGHIÊM TRỌNG' : 'Đủ oxy';
+      const getTempStatus = (v) => parseFloat(v) < 28 ? 'Hơi thấp' : parseFloat(v) > 32 ? 'Hơi cao' : 'Lý tưởng';
+      const getSalStatus = (v) => parseFloat(v) < 15 ? 'Thấp' : parseFloat(v) > 25 ? 'Cao' : 'Ổn định';
 
-        appendDynamicAIMsg(reply);
-        chatHistory.push({ role: 'user', content: msg }, { role: 'assistant', content: reply });
-      }, 1500);
+      sensorContext = {
+        ph: w.ph, ph_status: getPHStatus(w.ph),
+        do: w.do, do_status: getDOStatus(w.do),
+        temperature: w.temperature, temp_status: getTempStatus(w.temperature),
+        salinity: w.salinity, salinity_status: getSalStatus(w.salinity),
+        nh3: w.nh3, no2: w.no2, alkalinity: w.alkalinity, h2s: w.h2s,
+        water_quality_label: prep.waterQuality.label,
+        water_quality_advice: prep.waterQuality.advice,
+        readiness_status: prep.readiness.status,
+        tasks_completed: prep.tasksCompleted,
+        tasks_total: prep.tasksTotal,
+        feed_label: prep.feedPlan.label,
+        feed_advice: prep.feedPlan.advice,
+        baseline_params: prep.baselineParameters.map(p => `${p.name}: ${p.value} (${p.status})`).join(', ')
+      };
+    }
+
+    const res = await fetch(`${API_BASE}/api/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: msg,
+        pond: $('#globalPondSelector').value,
+        history: chatHistory,
+        sensor_context: sensorContext
+      })
+    });
+
+    const typingEl = document.getElementById(typingId);
+    if (typingEl) typingEl.remove();
+
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error('Backend error:', errText);
+      appendMsg('AI', '⚠️ Máy chủ AI đang bận. Vui lòng thử lại sau.');
       return;
     }
 
-    // Fallback if not using mockData (unlikely in MVP)
-    const res = await fetch(`${API_BASE}/api/chat`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: msg, pond: $('#globalPondSelector').value, history: chatHistory })
-    });
     const data = await res.json();
+    const reply = data.reply || '⚠️ Không nhận được phản hồi.';
+    appendDynamicAIMsg(reply);
+    chatHistory.push({ role: 'user', content: msg }, { role: 'assistant', content: reply });
 
-    const typingEl = document.getElementById(typingId);
-    if (typingEl) typingEl.remove();
-
-    appendDynamicAIMsg(data.reply || data.response);
-    chatHistory.push({ role: 'user', content: msg }, { role: 'assistant', content: data.reply });
   } catch (e) {
+    console.error('Chat error:', e);
     const typingEl = document.getElementById(typingId);
     if (typingEl) typingEl.remove();
-    appendMsg('AI', "⚠️ Lỗi kết nối đến máy chủ AI. Xin thử lại sau.");
+    appendMsg('AI', '⚠️ Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng.');
   }
 });
 

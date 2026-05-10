@@ -564,21 +564,48 @@ $('#chatForm').addEventListener('submit', async (e) => {
   const mainEl = document.querySelector('main');
   mainEl.scrollTop = mainEl.scrollHeight;
 
-  // 3. Gọi API
+  // 3. Gọi API (Thay thế bằng Mock AI Offline)
   try {
+    if (typeof mockData !== 'undefined' && mockData.dynamic) {
+      setTimeout(() => {
+        const typingEl = document.getElementById(typingId);
+        if (typingEl) typingEl.remove();
+
+        const msgLower = msg.toLowerCase();
+        let reply = "Xin lỗi, hiện tại tôi đang hoạt động ở chế độ Offline (Demo). Tôi có thể giúp bạn tra cứu nhanh về: **thông số nước**, **chuẩn bị ao**, hoặc **lịch cho ăn**.";
+        
+        if (msgLower.includes('chào') || msgLower.includes('hello') || msgLower.includes('hi')) {
+          reply = "Chào bạn! Trợ lý Aqua-AI luôn sẵn sàng hỗ trợ. Bạn muốn kiểm tra thông số nước, xem lịch cho ăn hay cập nhật tiến độ chuẩn bị ao?";
+        } else if (msgLower.includes('ph') || msgLower.includes('nước') || msgLower.includes('water') || msgLower.includes('oxy') || msgLower.includes('chất lượng')) {
+          reply = `Dựa trên dữ liệu cảm biến mới nhất:\n- **pH**: ${mockData.dynamic.unifiedWater.ph}\n- **Oxy hoà tan (DO)**: ${mockData.dynamic.unifiedWater.do} mg/L\n- **Nhiệt độ**: ${mockData.dynamic.unifiedWater.temperature}°C\n- **Độ mặn**: ${mockData.dynamic.unifiedWater.salinity} ppt\n\n**Đánh giá chung**: ${mockData.dynamic.preparation.waterQuality.label} - ${mockData.dynamic.preparation.waterQuality.advice}`;
+        } else if (msgLower.includes('thức ăn') || msgLower.includes('feed') || msgLower.includes('cho ăn') || msgLower.includes('dinh dưỡng')) {
+          const nut = mockData.dynamic.preparation.nutrition;
+          reply = `**Lịch cho ăn dự kiến**: ${mockData.dynamic.preparation.feedPlan.label} - ${mockData.dynamic.preparation.feedPlan.advice}.\n\n**Phân bổ dinh dưỡng**: Protein ${nut.protein}%, Lipid ${nut.lipid}%, Carbohydrate ${nut.carbohydrate}%.`;
+        } else if (msgLower.includes('chuẩn bị') || msgLower.includes('ao') || msgLower.includes('pond') || msgLower.includes('nhiệm vụ') || msgLower.includes('task')) {
+          reply = `**Tiến độ chuẩn bị ao**: Hoàn thành ${mockData.dynamic.preparation.tasksCompleted}/${mockData.dynamic.preparation.tasksTotal} nhiệm vụ.\n\n**Trạng thái**: ${mockData.dynamic.preparation.readiness.status} - ${mockData.dynamic.preparation.readiness.advice}`;
+        } else if (msgLower.includes('thời tiết') || msgLower.includes('nhiệt độ') || msgLower.includes('trời')) {
+          reply = `Nhiệt độ nước hiện tại là **${mockData.dynamic.unifiedWater.temperature}°C**. Hãy chú ý theo dõi dự báo thời tiết trên hệ thống để điều chỉnh quạt sục khí kịp thời nhé!`;
+        } else if (msgLower.includes('tốt không') || msgLower.includes('ổn không') || msgLower.includes('tình hình')) {
+           reply = `Trạng thái hiện tại:\n- **Chuẩn bị ao**: ${mockData.dynamic.preparation.readiness.status}\n- **Chất lượng nước**: ${mockData.dynamic.preparation.waterQuality.label}\n\n${mockData.dynamic.preparation.readiness.advice}`;
+        }
+
+        appendDynamicAIMsg(reply);
+        chatHistory.push({ role: 'user', content: msg }, { role: 'assistant', content: reply });
+      }, 1500);
+      return;
+    }
+
+    // Fallback if not using mockData (unlikely in MVP)
     const res = await fetch(`${API_BASE}/api/chat`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: msg, pond: $('#globalPondSelector').value, history: chatHistory })
     });
     const data = await res.json();
 
-    // 4. Tắt bong bóng lượn sóng
     const typingEl = document.getElementById(typingId);
     if (typingEl) typingEl.remove();
 
-    // 5. Chạy hiệu ứng AI gõ từng chữ
     appendDynamicAIMsg(data.reply || data.response);
-
     chatHistory.push({ role: 'user', content: msg }, { role: 'assistant', content: data.reply });
   } catch (e) {
     const typingEl = document.getElementById(typingId);

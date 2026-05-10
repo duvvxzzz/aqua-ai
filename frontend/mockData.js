@@ -164,6 +164,31 @@ mockData.generateDynamicSystemData = function () {
     }
   ];
 
+  // Generate contextual advice
+  let waterAdvice = "Chỉ số nước lý tưởng";
+  let waterAdviceColor = "text-secondary";
+  const criticalParam = baselineParameters.find(p => p.status === 'Critical');
+  const warningParam = baselineParameters.find(p => p.status === 'Warning');
+  
+  if (criticalParam) {
+    waterAdvice = `Khẩn cấp: Thông số ${criticalParam.name} ở mức nguy hiểm!`;
+    waterAdviceColor = "text-error";
+  } else if (warningParam) {
+    waterAdvice = `Chú ý: Cần điều chỉnh ${warningParam.name}`;
+    waterAdviceColor = "text-[#f59e0b]";
+  }
+
+  let readinessAdvice = "Ao đã hoàn toàn sẵn sàng";
+  let readinessAdviceColor = "text-secondary";
+  const incompleteTask = tasks.find(t => !t.completed);
+  if (incompleteTask) {
+    readinessAdvice = `Ưu tiên: Cần hoàn thành ${incompleteTask.name}`;
+    readinessAdviceColor = "text-[#f59e0b]";
+  }
+
+  let feedAdvice = feedPlan.status === 'warning' ? "Đợi phê duyệt" : "Sẵn sàng cho ăn";
+  let inputAdvice = inputComplianceStatus === 'Compliant' ? "Vật tư đạt chuẩn" : "Cần bổ sung kho";
+
   return {
     halal: {
       integrityScore,
@@ -174,10 +199,10 @@ mockData.generateDynamicSystemData = function () {
       riskMap
     },
     preparation: {
-      readiness: { score: prepReadinessScore, status: prepReadinessStatus },
-      waterQuality: waterQuality,
-      feedPlan: feedPlan,
-      inputCompliance: { score: inputComplianceScore, status: inputComplianceStatus },
+      readiness: { score: prepReadinessScore, status: prepReadinessStatus, advice: readinessAdvice, adviceColor: readinessAdviceColor },
+      waterQuality: { ...waterQuality, advice: waterAdvice, adviceColor: waterAdviceColor },
+      feedPlan: { ...feedPlan, advice: feedAdvice },
+      inputCompliance: { score: inputComplianceScore, status: inputComplianceStatus, advice: inputAdvice },
       tasks: tasks,
       tasksCompleted: completedTasksCount,
       tasksTotal: tasks.length,

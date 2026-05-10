@@ -595,7 +595,11 @@ $('#chatForm').addEventListener('submit', async (e) => {
       };
     }
 
-    const res = await fetch(`${API_BASE}/api/chat`, {
+    // DEBUG: Log the URL before making the request
+    const chatApiUrl = `${API_BASE}/api/chat`;
+    console.log("🚀 Chuẩn bị gọi API tới URL:", chatApiUrl);
+    
+    const res = await fetch(chatApiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -622,7 +626,10 @@ $('#chatForm').addEventListener('submit', async (e) => {
     chatHistory.push({ role: 'user', content: msg }, { role: 'assistant', content: reply });
 
   } catch (e) {
-    console.error('Chat error:', e);
+    // DEBUG: Expose the actual error
+    console.error("❌ LỖI THỰC SỰ LÀ ĐÂY:", e);
+    console.error("Chi tiết lỗi:", e.message, e.stack);
+    
     const typingEl = document.getElementById(typingId);
     if (typingEl) typingEl.remove();
     appendMsg('AI', '⚠️ Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng.');

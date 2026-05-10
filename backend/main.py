@@ -172,7 +172,7 @@ Khi có thông số bất thường, hãy đưa ra khuyến nghị CỤ THỂ d�
 
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GOOGLE_API_KEY}",
+            f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GOOGLE_API_KEY}",
             headers={"Content-Type": "application/json"},
             json={
                 "system_instruction": {"parts": [{"text": system_prompt}]},

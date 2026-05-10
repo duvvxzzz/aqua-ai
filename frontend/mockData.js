@@ -78,30 +78,6 @@ mockData.generateDynamicSystemData = function () {
   const shuffledAlerts = possibleAlerts.sort(() => 0.5 - Math.random());
   const alerts = shuffledAlerts.slice(0, numAlerts);
 
-  // Generate Preparation Data
-  const prepReadinessScore = Math.floor(Math.random() * 41) + 60; // 60 to 100
-  let prepReadinessStatus = 'Good';
-  if (prepReadinessScore < 75) prepReadinessStatus = 'Warning';
-  if (prepReadinessScore < 65) prepReadinessStatus = 'Critical';
-
-  const waterQualities = [
-    { label: 'Good', detail: 'Stable', status: 'compliant' },
-    { label: 'Warning', detail: 'Fluctuating', status: 'warning' },
-    { label: 'Poor', detail: 'Low pH', status: 'critical' },
-    { label: 'Good', detail: 'Optimal', status: 'compliant' },
-  ];
-  const waterQuality = waterQualities[Math.floor(Math.random() * waterQualities.length)];
-
-  const feedPlans = [
-    { label: 'Verified', detail: 'Approved', status: 'compliant' },
-    { label: 'Pending', detail: 'Review Needed', status: 'warning' }
-  ];
-  const feedPlan = feedPlans[Math.floor(Math.random() * feedPlans.length)];
-
-  const inputComplianceScore = Math.floor(Math.random() * 21) + 80; // 80 to 100
-  let inputComplianceStatus = 'Compliant';
-  if (inputComplianceScore < 90) inputComplianceStatus = 'Action Needed';
-
   const possibleTasks = [
     'Vệ sinh ao', 'Kiểm tra nguồn nước', 'Xử lý đáy ao', 'Kiểm tra thức ăn & đầu vào',
     'Kiểm tra hệ thống sục khí', 'Diệt khuẩn', 'Lắp đặt lưới che'
@@ -115,6 +91,30 @@ mockData.generateDynamicSystemData = function () {
   }));
 
   const completedTasksCount = tasks.filter(t => t.completed).length;
+
+  // Generate Preparation Data logically based on tasks
+  let prepReadinessStatus = 'Critical';
+  let prepReadinessScore = 0;
+  if (completedTasksCount === 5) {
+    prepReadinessStatus = 'Good';
+    prepReadinessScore = Math.floor(Math.random() * 11) + 90; // 90 to 100
+  } else if (completedTasksCount >= 3) {
+    prepReadinessStatus = 'Warning';
+    prepReadinessScore = Math.floor(Math.random() * 21) + 60; // 60 to 80
+  } else {
+    prepReadinessStatus = 'Critical';
+    prepReadinessScore = Math.floor(Math.random() * 31) + 20; // 20 to 50
+  }
+
+  const feedPlans = [
+    { label: 'Verified', detail: 'Approved', status: 'compliant' },
+    { label: 'Pending', detail: 'Review Needed', status: 'warning' }
+  ];
+  const feedPlan = feedPlans[Math.floor(Math.random() * feedPlans.length)];
+
+  const inputComplianceScore = Math.floor(Math.random() * 21) + 80; // 80 to 100
+  let inputComplianceStatus = 'Compliant';
+  if (inputComplianceScore < 90) inputComplianceStatus = 'Action Needed';
 
   // Generate Water Quality Baseline Parameters
   const randRange = (min, max) => (Math.random() * (max - min) + min);
@@ -164,17 +164,21 @@ mockData.generateDynamicSystemData = function () {
     }
   ];
 
-  // Generate contextual advice
+  // Water Quality Summary Logic logically based on baseline parameters
+  let waterQuality = { label: 'Good', detail: 'Stable', status: 'compliant' };
   let waterAdvice = "Chỉ số nước lý tưởng";
   let waterAdviceColor = "text-secondary";
-  const criticalParam = baselineParameters.find(p => p.status === 'Critical');
-  const warningParam = baselineParameters.find(p => p.status === 'Warning');
   
-  if (criticalParam) {
-    waterAdvice = `Khẩn cấp: Thông số ${criticalParam.name} ở mức nguy hiểm!`;
+  const criticalParams = baselineParameters.filter(p => p.status === 'Critical');
+  const warningParams = baselineParameters.filter(p => p.status === 'Warning');
+
+  if (criticalParams.length > 0) {
+    waterQuality = { label: 'Critical', detail: 'Unsafe Levels', status: 'critical' };
+    waterAdvice = `Khẩn cấp: Thông số ${criticalParams[0].name} ở mức nguy hiểm!`;
     waterAdviceColor = "text-error";
-  } else if (warningParam) {
-    waterAdvice = `Chú ý: Cần điều chỉnh ${warningParam.name}`;
+  } else if (warningParams.length > 0) {
+    waterQuality = { label: 'Warning', detail: 'Fluctuating', status: 'warning' };
+    waterAdvice = `Chú ý: Cần điều chỉnh ${warningParams[0].name}`;
     waterAdviceColor = "text-[#f59e0b]";
   }
 

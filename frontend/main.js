@@ -314,6 +314,40 @@ function renderProChemicals(data) {
 
 async function loadDevices() {
   const pond = $('#globalPondSelector').value;
+  
+  // Use unified mock data if available
+  if (typeof mockData !== 'undefined' && mockData.dynamic && mockData.dynamic.unifiedWater) {
+    const uw = mockData.dynamic.unifiedWater;
+    const data = {
+      salinity: uw.salinity,
+      do: uw.do,
+      ph: uw.ph,
+      temperature: uw.temperature,
+      ammonia: uw.nh3,
+      nitrite: uw.no2,
+      alkalinity: uw.alkalinity,
+      h2s: uw.h2s,
+      battery: 85,
+      signal: 90
+    };
+    
+    $('#pro-water-quality').innerHTML = renderProWaterQuality(data);
+    $('#pro-chemical-stats').innerHTML = renderProChemicals(data);
+
+    const batt = data.battery || 85;
+    $('#pro-battery').textContent = batt + '%';
+    $('#pro-battery').className = `text-lg font-bold ${getBatteryColor(batt)}`;
+    $('#pro-batt-icon').className = `material-symbols-outlined text-[18px] ${getBatteryColor(batt)}`;
+    $('#pro-batt-icon').textContent = batt >= 80 ? 'battery_full' : batt >= 40 ? 'battery_5_bar' : 'battery_alert';
+
+    $('#pro-signal').textContent = (data.signal || 90) + '%';
+    
+    // We update the SVG chart immediately with the unified data
+    updateSVGChartWithUnifiedData(uw);
+    
+    return;
+  }
+  
   try {
     const res = await fetch(`${API_BASE}/api/device/sensor-data?pond=${pond}`);
     if (!res.ok) throw new Error();
@@ -335,6 +369,48 @@ async function loadDevices() {
   } catch (e) {
     $('#pro-water-quality').innerHTML = `<div class="col-span-2 text-center text-sm text-error py-4">Lỗi kết nối API. Vui lòng thử lại.</div>`;
   }
+}
+
+function updateSVGChartWithUnifiedData(uw) {
+  // SVG Y-axis: 0 to 10 mapped to 100 to 0 (Y = 100 - val * 10)
+  const calcY = (val) => 100 - (val * 10);
+  
+  // Scale raw values to fit the 0-10 chart visual scale
+  const doY = calcY(uw.raw.do);
+  const phY = calcY(uw.raw.ph - 2); // Shift pH down slightly to fit chart
+  const nh3Y = calcY(uw.raw.nh3 * 10); // Scale NH3 up
+  const tempY = calcY((uw.raw.temperature - 25)); // Shift Temp down
+  
+  // Helper to update path
+  const updatePath = (id, newY) => {
+    const path = $(id);
+    if (path) {
+      const d = path.getAttribute('d');
+      // Replace the last coordinate L100,y with L100,newY
+      const newD = d.replace(/L100,[\d.]+$/, `L100,${newY.toFixed(1)}`);
+      path.setAttribute('d', newD);
+    }
+  };
+
+  // Helper to update circle
+  const updateCircle = (id, newY) => {
+    const circle = $(id);
+    if (circle) {
+      circle.setAttribute('cy', newY.toFixed(1));
+    }
+  };
+
+  updatePath('#svg-chart-do-path', doY);
+  updateCircle('#svg-chart-do-circle', doY);
+
+  updatePath('#svg-chart-ph-path', phY);
+  updateCircle('#svg-chart-ph-circle', phY);
+
+  updatePath('#svg-chart-nh3-path', nh3Y);
+  updateCircle('#svg-chart-nh3-circle', nh3Y);
+
+  updatePath('#svg-chart-temp-path', tempY);
+  updateCircle('#svg-chart-temp-circle', tempY);
 }
 
 async function loadChart(pond) {

@@ -208,6 +208,27 @@ mockData.generateDynamicSystemData = function () {
       tasksTotal: tasks.length,
       baselineParameters: baselineParameters
     },
+    unifiedWater: {
+      ph: phVal.toFixed(1),
+      salinity: Math.round(salVal),
+      temperature: Math.round(tempVal),
+      do: doVal.toFixed(1),
+      nh3: nh3Val < 0.1 ? '< 0.1' : nh3Val.toFixed(2),
+      no2: no2Val < 0.05 ? '< 0.05' : no2Val.toFixed(2),
+      alkalinity: Math.round(randRange(100, 150)),
+      h2s: (randRange(0, 0.05)).toFixed(3),
+      // Raw values for chart calculations if needed
+      raw: {
+        ph: phVal,
+        salinity: salVal,
+        temperature: tempVal,
+        do: doVal,
+        nh3: nh3Val,
+        no2: no2Val,
+        alkalinity: randRange(100, 150),
+        h2s: randRange(0, 0.05)
+      }
+    },
     alerts
   };
 };

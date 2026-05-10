@@ -1,4 +1,5 @@
 import os
+# pyrefly: ignore [missing-import]
 import httpx
 import math
 import random
@@ -9,6 +10,7 @@ from typing import Optional, List
 from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+# pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -25,239 +27,6 @@ app.add_middleware(
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
-
-ADVISOR_GEMINI_MODEL = os.getenv("ADVISOR_GEMINI_MODEL", "gemini-2.0-flash")
-
-
-def _parse_metric_float(val) -> Optional[float]:
-    """Parse sensor values like 7.8, '< 0.1', '0,05'."""
-    if val is None:
-        return None
-    if isinstance(val, (int, float)) and not isinstance(val, bool):
-        return float(val)
-    s = str(val).strip().replace(",", ".")
-    if not s or s.upper() == "N/A":
-        return None
-    if s.startswith("<"):
-        s = s[1:].strip()
-    try:
-        return float(s)
-    except ValueError:
-        return None
-
-
-def _build_expert_advisor_payload(ctx: dict) -> dict:
-    """
-    Fallback chuyên gia (quy tắc + ngữ cảnh) khi không gọi được Gemini hoặc model trả rỗng.
-    Luôn trả về nhận định và đề xuất cụ thể bằng tiếng Việt.
-    """
-    ctx = ctx or {}
-    ph = _parse_metric_float(ctx.get("ph"))
-    do = _parse_metric_float(ctx.get("do"))
-    temp = _parse_metric_float(ctx.get("temperature"))
-    sal = _parse_metric_float(ctx.get("salinity"))
-    nh3 = _parse_metric_float(ctx.get("nh3"))
-    no2 = _parse_metric_float(ctx.get("no2"))
-    alk = _parse_metric_float(ctx.get("alkalinity"))
-    h2s = _parse_metric_float(ctx.get("h2s"))
-
-    wq_label = ctx.get("water_quality_label") or ""
-    wq_advice = (ctx.get("water_quality_advice") or "").strip()
-    readiness = (ctx.get("readiness_status") or "").strip()
-    feed_adv = (ctx.get("feed_advice") or "").strip()
-
-    analysis_parts: List[str] = []
-    recommendations: List[str] = []
-    risk_score = 0  # 0 thấp, 1 TB, 2 cao
-
-    def note_risk(delta: int):
-        nonlocal risk_score
-        risk_score = max(risk_score, delta)
-
-    if ph is not None:
-        if ph < 7.5:
-            analysis_parts.append(
-                f"pH {ph:g} đang thấp so với vùng thuận lợi thường gặp (khoảng 7,5–8,5 cho tôm thẻ chân trắng); "
-                "quá trình nitrate hóa dễ bị hạn chế và tôm dễ stress khi cho ăn."
-            )
-            recommendations.append(
-                "Điều chỉnh pH từ từ: dùng vôi nước (CaCO₃) hoặc đá vôi theo chỉ định kỹ thuật địa phương; "
-                "đo lại pH và kiềm sau 24–48 giờ, tránh tăng đột ngột >0,3 đơn vị/ngày."
-            )
-            note_risk(1)
-        elif ph > 8.5:
-            analysis_parts.append(
-                f"pH {ph:g} cao; NH₃ dạng độc hại tăng theo pH, tăng nguy cơ ngộ độc ni tơ khi nồng độ tổng amoni còn trong ao."
-            )
-            recommendations.append(
-                "Giảm pH dần: kiểm soát tảo (che sáng một phần nếu tảo bùng), trao đổi nước có kiểm soát, "
-                "tránh bón quá liều vôi; theo dõi NH₃ sát."
-            )
-            note_risk(1)
-        else:
-            analysis_parts.append(f"pH {ph:g} nằm trong khoảng thường được xem là chấp nhận được cho nhiều hệ nuôi tôm.")
-
-    if do is not None:
-        if do < 3.5:
-            analysis_parts.append(
-                f"DO {do:g} mg/L rất thấp — nguy cơ thiếu ôxy cấp tính, tôm lên đầu, tổn thất nhanh sau vài giờ."
-            )
-            recommendations.append(
-                "Ưu tiên: bật toàn bộ sục khí quạt/khò, giảm lượng cho ăn 30–50% trong 24h, tránh xúc đáy gây tiêu thụ BOD."
-            )
-            note_risk(2)
-        elif do < 5:
-            analysis_parts.append(
-                f"DO {do:g} mg/L dưới ngưỡng an toàn thường dùng ban ngày (≥5 mg/L); cá thể có thể giảm ăn và yếu dần nếu kéo dài."
-            )
-            recommendations.append(
-                "Tăng thời gian sục khí đêm; rà soát mật độ nuôi và tảo; đo DO sáng sớm và chiều mỗi ngày."
-            )
-            note_risk(1)
-        else:
-            analysis_parts.append(f"DO {do:g} mg/L cho thấy khả năng cung cấp ôxy hiện tại đang đủ nếu duy trì sục khí ổn định.")
-
-    if temp is not None:
-        if temp < 26:
-            analysis_parts.append(f"Nhiệt độ {temp:g}°C hơi thấp — tôm có thể giảm tiêu hóa, FCR xấu nếu cho ăn quá tay.")
-            recommendations.append("Giảm khẩu phần 10–25% hoặc chuyển sang cho ăn theo bảng nhiệt độ thấp; tăng theo dõi phân đáy.")
-            note_risk(1)
-        elif temp > 32:
-            analysis_parts.append(
-                f"Nhiệt độ {temp:g}°C cao — tăng nhịp thở, tiêu hao ôxy và stress; tảo/cyanobacteria dễ bùng nổ."
-            )
-            recommendations.append("Tăng sục khí; che bớt nắng nếu cho phép; tránh cho ăn giữa trưa nắng gắt; đo DO thường xuyên hơn.")
-            note_risk(1)
-        else:
-            analysis_parts.append(f"Nhiệt độ {temp:g}°C thường phù hợp giai đoạn nuôi nhiệt đới nếu DO và chất lượng nước ổn định.")
-
-    if sal is not None:
-        if sal < 5:
-            analysis_parts.append("Độ mặn rất thấp — cần khớp với giống và giai đoạn; đột biến mặn gây sốc.")
-            recommendations.append("Mọi thay đổi mặn thực hiện chậm (≤2 ppt/ngày trừ khi quy trình cấp cứu có chỉ định khác).")
-            note_risk(1)
-        elif sal > 30:
-            analysis_parts.append("Độ mặn cao — kiểm tra nguồn nước, thoát nước ao và sức chịu đựng loài nuôi.")
-            note_risk(1)
-
-    if nh3 is not None:
-        if nh3 >= 0.5:
-            analysis_parts.append(f"NH₃ khoảng {nh3:g} mg/L ở mức nguy hiểm — ưu tiên xử lý ni tơ và giảm nguồn phát thải hữu cơ.")
-            recommendations.append(
-                "Hạn chế cho ăn; tăng sục khí; xem xét đổi nước có kiểm soát và sản phẩm xử lý amoni theo khuyến cáo thủy sản."
-            )
-            note_risk(2)
-        elif nh3 >= 0.1:
-            analysis_parts.append("NH₃ đang ở mức cần cảnh giác; kết hợp pH cao sẽ làm tăng phần NH₃ độc.")
-            recommendations.append("Đo lại NH₃ buổi sáng; tránh tăng pH đột ngột; giảm khẩu phần nếu có phân lắng nhiều.")
-            note_risk(1)
-
-    if no2 is not None and no2 >= 0.2:
-        analysis_parts.append(f"NO₂⁻ {no2:g} mg/L cao — hệ vi sinh chưa ổn định hoặc tải hữu cơ lớn.")
-        recommendations.append("Tăng sục khí; trao đổi nước vừa phải; tránh bón vi sinh trùng thời điểm nồng độ NO₂ đang cao nếu chưa có hướng dẫn.")
-        note_risk(2)
-    elif no2 is not None and no2 >= 0.05:
-        analysis_parts.append("NO₂⁻ ở mức cần theo dõi sát trong 48 giờ.")
-        note_risk(1)
-
-    if h2s is not None and h2s >= 0.01:
-        analysis_parts.append("H₂S có dấu hiệu — kiểm tra tầng đáy, chất hữu cơ lắng và vùng yếm khí.")
-        recommendations.append("Khuấy trộn nhẹ vùng đáy an toàn hoặc sục khí đáy; tránh gây trộn mạnh làm bung khí độc.")
-        note_risk(2)
-
-    if alk is not None and alk < 80:
-        analysis_parts.append("Độ kiềm thấp — buffer yếu, pH dễ biến động sau mưa hoặc khi tảo sụt.")
-        recommendations.append("Bổ sung kiềm (bicarbonate/đá vôi) theo quy trình; tránh thay đổi đột ngột.")
-        note_risk(1)
-
-    if wq_label or wq_advice:
-        analysis_parts.append(
-            f"Tóm tắt hệ thống: chất lượng nước {wq_label or '—'}. {wq_advice}".strip()
-        )
-    if readiness:
-        analysis_parts.append(f"Trạng thái chuẩn bị ao: {readiness} (nhiệm vụ {ctx.get('tasks_completed', '?')}/{ctx.get('tasks_total', '?')}).")
-    if feed_adv:
-        recommendations.append(f"Kế hoạch cho ăn: {feed_adv}")
-
-    if not analysis_parts:
-        analysis_parts.append(
-            "Dữ liệu cảm biến gửi lên chưa đủ chi tiết để phân tích định lượng; "
-            "trong thực tế vẫn nên coi đây là dịp rà soát vận hành hàng ngày."
-        )
-
-    if len(recommendations) < 3:
-        recommendations.extend(
-            [
-                "Duy trì nhật ký đo pH, DO, NH₃, NO₂ mỗi ngày (sáng + chiều) và ghi lại lượng cho ăn/trao đổi nước.",
-                "Ưu tiên sục khí liên tục đêm; kiểm tra định kỳ độ bùn đáy và ống thổi.",
-                "Khi thời tiết xấu (mưa, gió lớn): giảm cho ăn, kiểm tra mặn và pH sau mưa trước khi tăng lại khẩu phần.",
-            ]
-        )
-
-    risk_label = "Bình thường"
-    if risk_score >= 2:
-        risk_label = "Cao"
-    elif risk_score >= 1:
-        risk_label = "Trung bình"
-
-    return {
-        "analysis": " ".join(analysis_parts).strip(),
-        "recommendations": recommendations[:6],
-        "risk_level": risk_label,
-        "source": "rule_engine",
-    }
-
-
-def _normalize_advisor_json(data: dict, ctx: dict) -> dict:
-    """Đảm bảo luôn có nội dung chuyên gia; gộp với fallback nếu model lười viết."""
-    fb = _build_expert_advisor_payload(ctx)
-    analysis = (data.get("analysis") or "").strip()
-    recs = data.get("recommendations")
-    if not isinstance(recs, list):
-        recs = []
-    recs = [str(r).strip() for r in recs if str(r).strip()]
-    risk_raw = (data.get("risk_level") or "").strip()
-    risk_map = {
-        "thấp": "Bình thường",
-        "low": "Bình thường",
-        "normal": "Bình thường",
-    }
-    risk = risk_map.get(risk_raw.lower(), risk_raw) if risk_raw else fb["risk_level"]
-    if not risk:
-        risk = fb["risk_level"]
-
-    if len(analysis) < 80:
-        merged = f"{analysis} {fb['analysis']}".strip() if analysis else fb["analysis"]
-        analysis = merged.strip()
-
-    if len(recs) < 2:
-        recs = list(dict.fromkeys(recs + fb["recommendations"]))[:6]
-
-    out = {"analysis": analysis, "recommendations": recs, "risk_level": risk}
-    if data.get("source"):
-        out["source"] = data["source"]
-    return out
-
-
-def _parse_advisor_text_to_json(text: str) -> Optional[dict]:
-    if not text or not str(text).strip():
-        return None
-    raw = str(text).strip()
-    if raw.startswith("```"):
-        raw = re.sub(r"^```(?:json)?\s*", "", raw, flags=re.IGNORECASE)
-        raw = re.sub(r"\s*```$", "", raw)
-    try:
-        return pyjson.loads(raw)
-    except pyjson.JSONDecodeError:
-        pass
-    match = re.search(r"\{[\s\S]*\}", raw)
-    if match:
-        try:
-            return pyjson.loads(match.group(0))
-        except pyjson.JSONDecodeError:
-            return None
-    return None
-
 
 # Yêu cầu cho AI FARMING ADVISOR
 class AdvisorRequest(BaseModel):
@@ -276,131 +45,46 @@ Amonia (NH3): {ctx.get('nh3', 'N/A')} mg/L
 NO2: {ctx.get('no2', 'N/A')} mg/L
 Độ kiềm: {ctx.get('alkalinity', 'N/A')} mg/L
 H2S: {ctx.get('h2s', 'N/A')} mg/L
-Ngữ cảnh thêm — chất lượng nước: {ctx.get('water_quality_label', 'N/A')}. {ctx.get('water_quality_advice', '')}
-Chuẩn bị ao: {ctx.get('readiness_status', 'N/A')} (nhiệm vụ {ctx.get('tasks_completed', '?')}/{ctx.get('tasks_total', '?')}).
-Cho ăn: {ctx.get('feed_label', 'N/A')}. {ctx.get('feed_advice', '')}
-Baseline: {ctx.get('baseline_params', '')}
 """
-    system_prompt = f"""Bạn là kỹ sư thủy sản cấp cao (AI FARMING ADVISOR) với kinh nghiệm nuôi tôm thẻ chân trắng/tôm sú ở Việt Nam.
+    system_prompt = f"""Bạn là AI FARMING ADVISOR, chuyên gia phân tích dữ liệu ao nuôi. Hãy dựa vào dữ liệu cảm biến sau để:
+- Đưa ra nhận định ngắn gọn về xu hướng các chỉ số (ví dụ: NH3 tăng nhẹ, pH ổn định...)
+- Đề xuất 2-3 hành động cụ thể
+- Dự báo rủi ro tổng thể (thấp/trung bình/cao)
+Trả về kết quả dưới dạng JSON với 3 trường: 'analysis', 'recommendations' (mảng), 'risk_level'.
 
-Nhiệm vụ: đọc DỮ LIỆU dưới đây và viết tư vấn thực địa, có thể áp dụng ngay.
-
-QUY TẮC BẮT BUỘC (vi phạm là sai):
-1) Trường "analysis": tối thiểu 3–5 câu tiếng Việt; giải thích ý nghĩa sinh học/nguồn gốc rủi ro (stress, nitơ, ôxy đáy, tảo…), không dùng câu chung như "ổn định/mọi thứ tốt" nếu chưa lý giải bằng chỉ số.
-2) "recommendations": ít nhất 3 bullet hành động cụ thể (thời điểm đo lại, mức giảm thức ăn %, kiểm tra thiết bị…).
-3) "risk_level": chính xác một trong: "Bình thường", "Trung bình", "Cao" (dùng "Bình thường" thay cho mức rủi ro thấp).
-
-DỮ LIỆU AO:
+DỮ LIỆU CẢM BIẾN:
 {sensor_summary}
 """
-
-    user_turn = {"role": "user", "parts": [{"text": "Phân tích và trả lời ĐÚNG định dạng JSON theo schema (analysis, recommendations, risk_level)."}]}
-    gemini_history = [user_turn]
-
-    generation_json = {
-        "temperature": 0.35,
-        "maxOutputTokens": 1200,
-        "responseMimeType": "application/json",
-        "responseSchema": {
-            "type": "OBJECT",
-            "properties": {
-                "analysis": {"type": "STRING"},
-                "recommendations": {"type": "ARRAY", "items": {"type": "STRING"}},
-                "risk_level": {"type": "STRING"},
-            },
-            "required": ["analysis", "recommendations", "risk_level"],
-        },
-    }
-
-    fb_only = lambda: _build_expert_advisor_payload(ctx)
-
-    def finalize_from_gemini_body(res_body: dict) -> Optional[dict]:
-        candidates = res_body.get("candidates") or []
-        if not candidates:
-            return None
-        parts = (candidates[0].get("content") or {}).get("parts") or []
-        text = (parts[0].get("text") if parts else "") or ""
-        parsed = _parse_advisor_text_to_json(text)
-        if not isinstance(parsed, dict):
-            return None
-        parsed["source"] = "gemini"
-        normalized = _normalize_advisor_json(parsed, ctx)
-        normalized["source"] = "gemini"
-        return normalized
-
-    if not GOOGLE_API_KEY:
-        print("⚠️ ADVISOR: thiếu GOOGLE_API_KEY — dùng bộ luật chuyên gia cục bộ.")
-        out = fb_only()
-        out.pop("source", None)
-        return out
-
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{ADVISOR_GEMINI_MODEL}:generateContent?key={GOOGLE_API_KEY}"
-
-    payload_schema = {
-        "system_instruction": {"parts": [{"text": system_prompt}]},
-        "contents": gemini_history,
-        "generationConfig": generation_json,
-    }
-
-    plain_user = {
-        "role": "user",
-        "parts": [{
-            "text": (
-                "Trả về DUY NHẤT một object JSON thuần (không markdown), có khóa analysis (string ≥3 câu tiếng Việt), "
-                "recommendations (mảng ≥3 string), risk_level ('Bình thường'|'Trung bình'|'Cao'). Không có văn bản khác."
-            )
-        }],
-    }
-    payload_plain = {
-        "system_instruction": {"parts": [{"text": system_prompt}]},
-        "contents": [plain_user],
-        "generationConfig": {"temperature": 0.35, "maxOutputTokens": 1200},
-    }
-
+    gemini_history = [
+        {"role": "user", "parts": [{"text": "Phân tích dữ liệu ao và trả về JSON như hướng dẫn trên."}]}
+    ]
     try:
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                url,
+                f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GOOGLE_API_KEY}",
                 headers={"Content-Type": "application/json"},
-                json=payload_schema,
-                timeout=45.0,
+                json={
+                    "system_instruction": {"parts": [{"text": system_prompt}]},
+                    "contents": gemini_history,
+                    "generationConfig": {"temperature": 0.7, "maxOutputTokens": 800}
+                }, timeout=30.0
             )
             res_data = response.json()
-            print(f"📦 DỮ LIỆU GỐC ADVISOR (schema): {res_data}")
-
-            if response.status_code != 200 or res_data.get("error"):
-                print(f"⚠️ ADVISOR thử schema thất bại ({response.status_code}), thử lại không schema…")
-
-            ok = response.status_code == 200 and not res_data.get("error")
-            body = finalize_from_gemini_body(res_data) if ok else None
-            if body is None:
-                response2 = await client.post(
-                    url,
-                    headers={"Content-Type": "application/json"},
-                    json=payload_plain,
-                    timeout=45.0,
-                )
-                res_data2 = response2.json()
-                print(f"📦 DỮ LIỆU GỐC ADVISOR (plain): {res_data2}")
-                if response2.status_code != 200 or res_data2.get("error"):
-                    print(f"🔥 ADVISOR HTTP/lỗi API: {response2.status_code} {res_data2.get('error')}")
-                    out = fb_only()
-                    out.pop("source", None)
-                    return out
-                body = finalize_from_gemini_body(res_data2)
-
-            if body is None:
-                print("🔥 ADVISOR: không parse được JSON từ model.")
-                out = fb_only()
-                out.pop("source", None)
-                return out
-            return body
-
+            print(f"📦 DỮ LIỆU GỐC ADVISOR: {res_data}")
+            try:
+                text = res_data["candidates"][0]["content"]["parts"][0]["text"]
+                match = re.search(r'\{.*\}', text, re.DOTALL)
+                if match:
+                    advisor_json = pyjson.loads(match.group(0))
+                    return advisor_json
+                else:
+                    return {"error": "Không tìm thấy JSON hợp lệ trong phản hồi AI."}
+            except Exception as e:
+                print(f"🔥 LỖI ADVISOR: {str(e)}")
+                return {"error": "AI không trả về dữ liệu hợp lệ."}
     except Exception as e:
         print(f"🔥 LỖI ADVISOR: {str(e)}")
-        out = fb_only()
-        out.pop("source", None)
-        return out
+        return {"error": "Không thể kết nối Gemini."}
  
 
 def sine_wave(base, amp, t, period=24):

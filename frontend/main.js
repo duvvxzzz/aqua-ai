@@ -280,48 +280,108 @@ function renderProWaterQuality(data) {
 }
 
 function renderProChemicals(data) {
+  // Helper to determine UI state based on shrimp farming thresholds
+  const getStatusUI = (val, type) => {
+    const v = parseFloat(val);
+    if (isNaN(v)) {
+      return { valueColor: 'text-on-surface', containerClass: 'border-outline-variant bg-surface', icon: 'remove', iconClass: 'text-on-surface-variant bg-surface-container-high' };
+    }
+
+    let isCritical = false;
+    let isWarning = false;
+
+    // Threshold logic for specific chemicals
+    if (type === 'nh3') {
+      if (v >= 0.5) isCritical = true;
+      else if (v >= 0.1) isWarning = true;
+    } else if (type === 'no2') {
+      if (v >= 0.2) isCritical = true;
+      else if (v >= 0.05) isWarning = true;
+    } else if (type === 'alkalinity') {
+      // Ideal Alkalinity: 80 - 150 mg/L
+      if (v < 80 || v > 200) isWarning = true;
+    } else if (type === 'h2s') {
+      // H2S is highly toxic, very low thresholds
+      if (v >= 0.05) isCritical = true;
+      else if (v >= 0.01) isWarning = true;
+    }
+
+    if (isCritical) {
+      return {
+        valueColor: 'text-error',
+        containerClass: 'border-error-container bg-error-container/10',
+        icon: 'warning',
+        iconClass: 'text-error bg-error-container'
+      };
+    } else if (isWarning) {
+      return {
+        valueColor: 'text-[#d97706]', // Orange for warning
+        containerClass: 'border-[#fde047] bg-[#fef08a]/20',
+        icon: 'warning',
+        iconClass: 'text-[#b45309] bg-[#fef08a]'
+      };
+    } else {
+      // Optimal state
+      const themeColor = type === 'alkalinity' ? 'primary' : 'secondary';
+      return {
+        valueColor: 'text-on-surface',
+        containerClass: 'border-outline-variant bg-surface',
+        icon: 'check_circle',
+        iconClass: `text-${themeColor} bg-${themeColor}-container/30`
+      };
+    }
+  };
+
+  const nh3UI = getStatusUI(data.ammonia, 'nh3');
+  const no2UI = getStatusUI(data.nitrite, 'no2');
+  const alkUI = getStatusUI(data.alkalinity, 'alkalinity');
+  const h2sUI = getStatusUI(data.h2s, 'h2s');
+
   return `
-<div class="flex justify-between items-center p-3 rounded-xl border border-outline-variant bg-surface">
-  <div>
-    <p class="text-[10px] font-bold text-on-surface-variant mb-0.5">Ammonia (NH3)</p>
-    <div class="flex items-baseline gap-1">
-      <span class="font-bold text-lg text-on-surface">${data.ammonia ?? '--'}</span>
-      <span class="text-[10px] text-on-surface-variant">mg/L</span>
+  <div class="flex justify-between items-center p-3 rounded-xl border transition-colors ${nh3UI.containerClass}">
+    <div>
+      <p class="text-[10px] font-bold text-on-surface-variant mb-0.5">Ammonia (NH3)</p>
+      <div class="flex items-baseline gap-1">
+        <span class="font-bold text-lg ${nh3UI.valueColor}">${data.ammonia ?? '--'}</span>
+        <span class="text-[10px] text-on-surface-variant">mg/L</span>
+      </div>
     </div>
+    <span class="material-symbols-outlined p-1.5 rounded-full text-sm ${nh3UI.iconClass}">${nh3UI.icon}</span>
   </div>
-  <span class="material-symbols-outlined text-secondary bg-secondary-container/30 p-1.5 rounded-full text-sm">check_circle</span>
-</div>
-<div class="flex justify-between items-center p-3 rounded-xl border border-outline-variant bg-surface">
-  <div>
-    <p class="text-[10px] font-bold text-on-surface-variant mb-0.5">Nitrite (NO2)</p>
-    <div class="flex items-baseline gap-1">
-      <span class="font-bold text-lg text-on-surface">${data.nitrite ?? '--'}</span>
-      <span class="text-[10px] text-on-surface-variant">mg/L</span>
+
+  <div class="flex justify-between items-center p-3 rounded-xl border transition-colors ${no2UI.containerClass}">
+    <div>
+      <p class="text-[10px] font-bold text-on-surface-variant mb-0.5">Nitrite (NO2)</p>
+      <div class="flex items-baseline gap-1">
+        <span class="font-bold text-lg ${no2UI.valueColor}">${data.nitrite ?? '--'}</span>
+        <span class="text-[10px] text-on-surface-variant">mg/L</span>
+      </div>
     </div>
+    <span class="material-symbols-outlined p-1.5 rounded-full text-sm ${no2UI.iconClass}">${no2UI.icon}</span>
   </div>
-  <span class="material-symbols-outlined text-secondary bg-secondary-container/30 p-1.5 rounded-full text-sm">check_circle</span>
-</div>
-<div class="flex justify-between items-center p-3 rounded-xl border border-outline-variant bg-surface">
-  <div>
-    <p class="text-[10px] font-bold text-on-surface-variant mb-0.5">Alkalinity</p>
-    <div class="flex items-baseline gap-1">
-      <span class="font-bold text-lg text-on-surface">${data.alkalinity ?? '--'}</span>
-      <span class="text-[10px] text-on-surface-variant">mg/L</span>
+
+  <div class="flex justify-between items-center p-3 rounded-xl border transition-colors ${alkUI.containerClass}">
+    <div>
+      <p class="text-[10px] font-bold text-on-surface-variant mb-0.5">Alkalinity</p>
+      <div class="flex items-baseline gap-1">
+        <span class="font-bold text-lg ${alkUI.valueColor}">${data.alkalinity ?? '--'}</span>
+        <span class="text-[10px] text-on-surface-variant">mg/L</span>
+      </div>
     </div>
+    <span class="material-symbols-outlined p-1.5 rounded-full text-sm ${alkUI.iconClass}">${alkUI.icon}</span>
   </div>
-  <span class="material-symbols-outlined text-primary bg-primary-container/20 p-1.5 rounded-full text-sm">check_circle</span>
-</div>
-<div class="flex justify-between items-center p-3 rounded-xl border border-error-container bg-error-container/10">
-  <div>
-    <p class="text-[10px] font-bold text-on-surface-variant mb-0.5">H2S (Danger)</p>
-    <div class="flex items-baseline gap-1">
-      <span class="font-bold text-lg text-error">${data.h2s ?? '--'}</span>
-      <span class="text-[10px] text-on-surface-variant">mg/L</span>
+
+  <div class="flex justify-between items-center p-3 rounded-xl border transition-colors ${h2sUI.containerClass}">
+    <div>
+      <p class="text-[10px] font-bold text-on-surface-variant mb-0.5">H2S (Danger)</p>
+      <div class="flex items-baseline gap-1">
+        <span class="font-bold text-lg ${h2sUI.valueColor}">${data.h2s ?? '--'}</span>
+        <span class="text-[10px] text-on-surface-variant">mg/L</span>
+      </div>
     </div>
+    <span class="material-symbols-outlined p-1.5 rounded-full text-sm ${h2sUI.iconClass}">${h2sUI.icon}</span>
   </div>
-  <span class="material-symbols-outlined text-error bg-error-container p-1.5 rounded-full text-sm">warning</span>
-</div>
-`;
+  `;
 }
 
 async function loadDevices() {
@@ -1035,6 +1095,71 @@ function renderPreparationDashboard(data) {
   }
 }
 
+function renderActiveHalalCompliance(data) {
+  const container = $('#active-halal-compliance-list');
+  if (!container) return;
+
+  // 1. Water Quality Logic (Inherited from Preparation Data)
+  const waterStatus = data.preparation.waterQuality.status; 
+  let waterUI = { icon: 'check_circle', iconColor: 'text-secondary', badge: 'text-secondary bg-secondary-container/20', text: 'Compliant' };
+  
+  if (waterStatus === 'critical') {
+    waterUI = { icon: 'error', iconColor: 'text-error', badge: 'text-error bg-error-container/20', text: 'Critical' };
+  } else if (waterStatus === 'warning') {
+    waterUI = { icon: 'warning', iconColor: 'text-[#d97706]', badge: 'text-[#854d0e] bg-[#fef08a]', text: 'Warning' };
+  }
+
+  // 2. Feed Management Logic
+  const feedStatus = data.preparation.feedPlan.status;
+  let feedUI = { icon: 'eco', iconColor: 'text-secondary', badge: 'text-secondary bg-secondary-container/20', text: 'Compliant' };
+  if (feedStatus !== 'compliant') {
+    feedUI = { icon: 'warning', iconColor: 'text-[#d97706]', badge: 'text-[#854d0e] bg-[#fef08a]', text: 'Review Needed' };
+  }
+
+  // 3. Treatment & Medication Logic (Based on active alerts)
+  const hasRiskAlert = data.alerts.some(a => a.type === 'critical' || a.type === 'warning');
+  let medUI = hasRiskAlert 
+    ? { icon: 'warning', iconColor: 'text-[#d97706]', badge: 'text-[#854d0e] bg-[#fef08a]', text: 'Warning' }
+    : { icon: 'check_circle', iconColor: 'text-secondary', badge: 'text-secondary bg-secondary-container/20', text: 'Compliant' };
+
+  // 4. Biosecurity Logic (Linked to Halal Integrity Score)
+  let bioUI = data.halal.integrityScore < 80
+    ? { icon: 'warning', iconColor: 'text-error', badge: 'text-error bg-error-container/20', text: 'At Risk' }
+    : { icon: 'shield', iconColor: 'text-secondary', badge: 'text-secondary bg-secondary-container/20', text: 'Compliant' };
+
+  // 5. Render HTML
+  container.innerHTML = `
+    <div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+      <div class="flex items-center gap-2 text-on-surface">
+        <span class="material-symbols-outlined ${waterUI.iconColor} text-sm">${waterUI.icon}</span>
+        <span class="text-sm font-medium">Water Quality</span>
+      </div>
+      <span class="text-xs ${waterUI.badge} px-2 py-0.5 rounded font-semibold">${waterUI.text}</span>
+    </div>
+    <div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+      <div class="flex items-center gap-2 text-on-surface">
+        <span class="material-symbols-outlined ${feedUI.iconColor} text-sm">${feedUI.icon}</span>
+        <span class="text-sm font-medium">Feed Management</span>
+      </div>
+      <span class="text-xs ${feedUI.badge} px-2 py-0.5 rounded font-semibold">${feedUI.text}</span>
+    </div>
+    <div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+      <div class="flex items-center gap-2 text-on-surface">
+        <span class="material-symbols-outlined ${medUI.iconColor} text-sm">medication</span>
+        <span class="text-sm font-medium">Treatment & Medication</span>
+      </div>
+      <span class="text-xs ${medUI.badge} px-2 py-0.5 rounded font-semibold">${medUI.text}</span>
+    </div>
+    <div class="flex justify-between items-center">
+      <div class="flex items-center gap-2 text-on-surface">
+        <span class="material-symbols-outlined ${bioUI.iconColor} text-sm">${bioUI.icon}</span>
+        <span class="text-sm font-medium">Biosecurity</span>
+      </div>
+      <span class="text-xs ${bioUI.badge} px-2 py-0.5 rounded font-semibold">${bioUI.text}</span>
+    </div>
+  `;
+}
+
 function renderExportDashboard(data) {
   const scoreEl = $('#export-score-text');
   const statusBadge = $('#export-status-badge');
@@ -1142,6 +1267,7 @@ if (typeof mockData !== 'undefined' && mockData.dynamic) {
   renderNotifications(mockData.dynamic.alerts);
   renderPreparationDashboard(mockData.dynamic.preparation);
   renderExportDashboard(mockData.dynamic);
+  renderActiveHalalCompliance(mockData.dynamic);
 }
 
 // Render QR code after small delay to ensure DOM is ready

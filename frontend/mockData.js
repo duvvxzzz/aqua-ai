@@ -36,8 +36,8 @@ const mockData = {
 
 // Generate dynamic data for the system
 mockData.generateDynamicSystemData = function () {
-  // Random Halal Integrity Score (80-100)
-  const integrityScore = Math.floor(Math.random() * 21) + 80;
+  // Random Halal Integrity Score (40-100)
+  const integrityScore = Math.floor(Math.random() * 61) + 40;
 
   // Random Ponds Compliant (out of 10)
   const pondsCompliant = Math.floor(Math.random() * 4) + 7; // 7 to 10
@@ -82,7 +82,7 @@ mockData.generateDynamicSystemData = function () {
     'Clean pond', 'Check water source', 'Treat pond bottom', 'Check feed & inputs',
     'Check aeration system', 'Disinfection', 'Install shade net'
   ];
-  
+
   // Randomly select 5 tasks and assign them random status (true = completed, false = pending)
   const shuffledTasks = possibleTasks.sort(() => 0.5 - Math.random()).slice(0, 5);
   const tasks = shuffledTasks.map(taskName => ({
@@ -168,7 +168,7 @@ mockData.generateDynamicSystemData = function () {
   let waterQuality = { label: 'Good', detail: 'Stable', status: 'compliant' };
   let waterAdvice = "Ideal water parameters";
   let waterAdviceColor = "text-secondary";
-  
+
   const criticalParams = baselineParameters.filter(p => p.status === 'Critical');
   const warningParams = baselineParameters.filter(p => p.status === 'Warning');
 

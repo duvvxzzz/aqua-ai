@@ -381,17 +381,17 @@
                 class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
                 <h3 class="text-xs text-on-surface-variant font-medium mb-1">Pond Readiness</h3>
                 <div class="flex items-baseline gap-1 mb-2">
-                  <span class="text-2xl font-bold text-on-surface">89</span>
+                  <span id="prep-readiness-score" class="text-2xl font-bold text-on-surface">89</span>
                   <span class="text-xs text-on-surface-variant">/100</span>
                 </div>
-                <div class="flex items-center text-secondary text-xs font-medium gap-1">
-                  <span class="material-symbols-outlined text-[14px]">check_circle</span>
-                  Good
+                <div id="prep-readiness-status-container" class="flex items-center text-secondary text-xs font-medium gap-1">
+                  <span id="prep-readiness-icon" class="material-symbols-outlined text-[14px]">check_circle</span>
+                  <span id="prep-readiness-status">Good</span>
                 </div>
                 <!-- Sparkline Mock -->
                 <div class="w-full h-6 mt-2 relative">
-                  <svg class="w-full h-full stroke-secondary fill-none stroke-2" viewBox="0 0 100 20">
-                    <path d="M0 15 L20 12 L40 18 L60 8 L80 10 L100 2"></path>
+                  <svg class="w-full h-full fill-none stroke-2" viewBox="0 0 100 20">
+                    <path id="prep-readiness-sparkline" class="stroke-secondary" d="M0 15 L20 12 L40 18 L60 8 L80 10 L100 2"></path>
                   </svg>
                 </div>
               </div>
@@ -400,17 +400,17 @@
                 class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
                 <h3 class="text-xs text-on-surface-variant font-medium mb-1">Water Quality</h3>
                 <div class="flex items-center gap-1 mb-2 mt-1">
-                  <span class="material-symbols-outlined text-secondary">water_drop</span>
-                  <span class="text-lg font-bold text-on-surface">Good</span>
+                  <span id="prep-water-icon" class="material-symbols-outlined text-secondary">water_drop</span>
+                  <span id="prep-water-status" class="text-lg font-bold text-on-surface">Good</span>
                 </div>
-                <div class="flex items-center text-on-surface-variant text-xs font-medium gap-1">
-                  <span class="w-2 h-2 rounded-full bg-secondary"></span>
-                  Stable
+                <div id="prep-water-detail-container" class="flex items-center text-on-surface-variant text-xs font-medium gap-1">
+                  <span id="prep-water-dot" class="w-2 h-2 rounded-full bg-secondary"></span>
+                  <span id="prep-water-detail">Stable</span>
                 </div>
                 <!-- Sparkline Mock -->
                 <div class="w-full h-6 mt-2 relative">
-                  <svg class="w-full h-full stroke-secondary fill-none stroke-2" viewBox="0 0 100 20">
-                    <path d="M0 10 L20 12 L40 8 L60 10 L80 9 L100 11"></path>
+                  <svg class="w-full h-full fill-none stroke-2" viewBox="0 0 100 20">
+                    <path id="prep-water-sparkline" class="stroke-secondary" d="M0 10 L20 12 L40 8 L60 10 L80 9 L100 11"></path>
                   </svg>
                 </div>
               </div>
@@ -419,17 +419,17 @@
                 class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
                 <h3 class="text-xs text-on-surface-variant font-medium mb-1">Feed Plan</h3>
                 <div class="flex items-center gap-1 mb-2 mt-1">
-                  <span class="material-symbols-outlined text-secondary">verified</span>
-                  <span class="text-lg font-bold text-secondary">Verified</span>
+                  <span id="prep-feed-icon" class="material-symbols-outlined text-secondary">verified</span>
+                  <span id="prep-feed-status" class="text-lg font-bold text-secondary">Verified</span>
                 </div>
-                <div class="flex items-center text-on-surface-variant text-xs font-medium gap-1">
-                  <span class="w-2 h-2 rounded-full bg-secondary"></span>
-                  Approved
+                <div id="prep-feed-detail-container" class="flex items-center text-on-surface-variant text-xs font-medium gap-1">
+                  <span id="prep-feed-dot" class="w-2 h-2 rounded-full bg-secondary"></span>
+                  <span id="prep-feed-detail">Approved</span>
                 </div>
                 <!-- Sparkline Mock -->
                 <div class="w-full h-6 mt-2 relative">
-                  <svg class="w-full h-full stroke-secondary fill-none stroke-2" viewBox="0 0 100 20">
-                    <path d="M0 18 L20 15 L40 10 L60 12 L80 5 L100 2"></path>
+                  <svg class="w-full h-full fill-none stroke-2" viewBox="0 0 100 20">
+                    <path id="prep-feed-sparkline" class="stroke-secondary" d="M0 18 L20 15 L40 10 L60 12 L80 5 L100 2"></path>
                   </svg>
                 </div>
               </div>
@@ -438,16 +438,16 @@
                 class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 min-w-[140px] flex-shrink-0 shadow-sm">
                 <h3 class="text-xs text-on-surface-variant font-medium mb-1">Input Compliance</h3>
                 <div class="flex items-baseline gap-1 mb-2">
-                  <span class="text-2xl font-bold text-on-surface">95%</span>
+                  <span id="prep-input-score" class="text-2xl font-bold text-on-surface">95%</span>
                 </div>
-                <div class="flex items-center text-secondary text-xs font-medium gap-1">
-                  <span class="material-symbols-outlined text-[14px]">check_circle</span>
-                  Compliant
+                <div id="prep-input-status-container" class="flex items-center text-secondary text-xs font-medium gap-1">
+                  <span id="prep-input-icon" class="material-symbols-outlined text-[14px]">check_circle</span>
+                  <span id="prep-input-status">Compliant</span>
                 </div>
                 <!-- Sparkline Mock -->
                 <div class="w-full h-6 mt-2 relative">
-                  <svg class="w-full h-full stroke-secondary fill-none stroke-2" viewBox="0 0 100 20">
-                    <path d="M0 20 L20 18 L40 12 L60 14 L80 6 L100 4"></path>
+                  <svg class="w-full h-full fill-none stroke-2" viewBox="0 0 100 20">
+                    <path id="prep-input-sparkline" class="stroke-secondary" d="M0 20 L20 18 L40 12 L60 14 L80 6 L100 4"></path>
                   </svg>
                 </div>
               </div>
@@ -457,46 +457,13 @@
           <section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
             <div class="flex justify-between items-end mb-4 border-b border-outline-variant pb-2">
               <h2 class="text-label-sm font-label-sm text-on-surface-variant uppercase">Tasks &amp; Checklist</h2>
-              <span class="text-xs font-medium text-secondary">15 / 18 hoàn thành</span>
+              <span id="prep-tasks-progress-text" class="text-xs font-medium text-secondary">15 / 18 hoàn thành</span>
             </div>
             <div class="w-full bg-surface-container-high rounded-full h-1.5 mb-4">
-              <div class="bg-secondary h-1.5 rounded-full" style="width: 83%"></div>
+              <div id="prep-tasks-progress-bar" class="bg-secondary h-1.5 rounded-full transition-all duration-500" style="width: 83%"></div>
             </div>
-            <ul class="space-y-3">
-              <li class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
-                  <span class="text-sm text-on-surface">Vệ sinh ao</span>
-                </div>
-                <span class="material-symbols-outlined text-secondary text-sm">check</span>
-              </li>
-              <li class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
-                  <span class="text-sm text-on-surface">Kiểm tra nguồn nước</span>
-                </div>
-                <span class="material-symbols-outlined text-secondary text-sm">check</span>
-              </li>
-              <li class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
-                  <span class="text-sm text-on-surface">Xử lý đáy ao</span>
-                </div>
-                <span class="material-symbols-outlined text-secondary text-sm">check</span>
-              </li>
-              <li class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
-                  <span class="text-sm text-on-surface">Kiểm tra thức ăn &amp; đầu vào</span>
-                </div>
-                <span class="material-symbols-outlined text-secondary text-sm">check</span>
-              </li>
-              <li class="flex items-center justify-between opacity-50">
-                <div class="flex items-center gap-2">
-                  <span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
-                  <span class="text-sm text-on-surface">Kiểm tra hệ thống sục khí</span>
-                </div>
-              </li>
+            <ul id="prep-task-list" class="space-y-3">
+              <!-- Dynamic Tasks Generated Here -->
             </ul>
             <div class="mt-4 text-right">
               <a class="text-xs text-primary font-medium hover:underline flex items-center justify-end gap-1" href="#">

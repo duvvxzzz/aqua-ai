@@ -630,6 +630,114 @@ function renderNotifications(alerts) {
   });
 }
 
+function renderPreparationDashboard(data) {
+  if (!$('#prep-readiness-score')) return;
+  
+  // Pond Readiness
+  $('#prep-readiness-score').textContent = data.readiness.score;
+  $('#prep-readiness-status').textContent = data.readiness.status;
+  
+  if (data.readiness.status === 'Critical') {
+    $('#prep-readiness-status-container').className = 'flex items-center text-error text-xs font-medium gap-1';
+    $('#prep-readiness-icon').textContent = 'warning';
+    $('#prep-readiness-sparkline').className.baseVal = 'stroke-error';
+  } else if (data.readiness.status === 'Warning') {
+    $('#prep-readiness-status-container').className = 'flex items-center text-[#f59e0b] text-xs font-medium gap-1';
+    $('#prep-readiness-icon').textContent = 'warning';
+    $('#prep-readiness-sparkline').className.baseVal = 'stroke-[#f59e0b]';
+  } else {
+    $('#prep-readiness-status-container').className = 'flex items-center text-secondary text-xs font-medium gap-1';
+    $('#prep-readiness-icon').textContent = 'check_circle';
+    $('#prep-readiness-sparkline').className.baseVal = 'stroke-secondary';
+  }
+
+  // Water Quality
+  $('#prep-water-status').textContent = data.waterQuality.label;
+  $('#prep-water-detail').textContent = data.waterQuality.detail;
+  
+  if (data.waterQuality.status === 'critical') {
+    $('#prep-water-status').className = 'text-lg font-bold text-error';
+    $('#prep-water-icon').className = 'material-symbols-outlined text-error';
+    $('#prep-water-detail-container').className = 'flex items-center text-error text-xs font-medium gap-1';
+    $('#prep-water-dot').className = 'w-2 h-2 rounded-full bg-error';
+    $('#prep-water-sparkline').className.baseVal = 'stroke-error';
+  } else if (data.waterQuality.status === 'warning') {
+    $('#prep-water-status').className = 'text-lg font-bold text-[#f59e0b]';
+    $('#prep-water-icon').className = 'material-symbols-outlined text-[#f59e0b]';
+    $('#prep-water-detail-container').className = 'flex items-center text-[#f59e0b] text-xs font-medium gap-1';
+    $('#prep-water-dot').className = 'w-2 h-2 rounded-full bg-[#f59e0b]';
+    $('#prep-water-sparkline').className.baseVal = 'stroke-[#f59e0b]';
+  } else {
+    $('#prep-water-status').className = 'text-lg font-bold text-on-surface';
+    $('#prep-water-icon').className = 'material-symbols-outlined text-secondary';
+    $('#prep-water-detail-container').className = 'flex items-center text-on-surface-variant text-xs font-medium gap-1';
+    $('#prep-water-dot').className = 'w-2 h-2 rounded-full bg-secondary';
+    $('#prep-water-sparkline').className.baseVal = 'stroke-secondary';
+  }
+
+  // Feed Plan
+  $('#prep-feed-status').textContent = data.feedPlan.label;
+  $('#prep-feed-detail').textContent = data.feedPlan.detail;
+  
+  if (data.feedPlan.status === 'warning') {
+    $('#prep-feed-status').className = 'text-lg font-bold text-[#f59e0b]';
+    $('#prep-feed-icon').className = 'material-symbols-outlined text-[#f59e0b]';
+    $('#prep-feed-detail-container').className = 'flex items-center text-[#f59e0b] text-xs font-medium gap-1';
+    $('#prep-feed-dot').className = 'w-2 h-2 rounded-full bg-[#f59e0b]';
+    $('#prep-feed-sparkline').className.baseVal = 'stroke-[#f59e0b]';
+  } else {
+    $('#prep-feed-status').className = 'text-lg font-bold text-secondary';
+    $('#prep-feed-icon').className = 'material-symbols-outlined text-secondary';
+    $('#prep-feed-detail-container').className = 'flex items-center text-on-surface-variant text-xs font-medium gap-1';
+    $('#prep-feed-dot').className = 'w-2 h-2 rounded-full bg-secondary';
+    $('#prep-feed-sparkline').className.baseVal = 'stroke-secondary';
+  }
+
+  // Input Compliance
+  $('#prep-input-score').textContent = data.inputCompliance.score + '%';
+  $('#prep-input-status').textContent = data.inputCompliance.status;
+  
+  if (data.inputCompliance.status !== 'Compliant') {
+    $('#prep-input-status-container').className = 'flex items-center text-[#f59e0b] text-xs font-medium gap-1';
+    $('#prep-input-icon').textContent = 'warning';
+    $('#prep-input-sparkline').className.baseVal = 'stroke-[#f59e0b]';
+  } else {
+    $('#prep-input-status-container').className = 'flex items-center text-secondary text-xs font-medium gap-1';
+    $('#prep-input-icon').textContent = 'check_circle';
+    $('#prep-input-sparkline').className.baseVal = 'stroke-secondary';
+  }
+
+  // Tasks
+  $('#prep-tasks-progress-text').textContent = `${data.tasksCompleted} / ${data.tasksTotal} hoàn thành`;
+  $('#prep-tasks-progress-bar').style.width = (data.tasksCompleted / data.tasksTotal * 100) + '%';
+  
+  const tasksContainer = $('#prep-task-list');
+  tasksContainer.innerHTML = '';
+  
+  data.tasks.forEach(task => {
+    if (task.completed) {
+      tasksContainer.innerHTML += `
+        <li class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            <span class="text-sm text-on-surface">${task.name}</span>
+          </div>
+          <span class="material-symbols-outlined text-secondary text-sm">check</span>
+        </li>
+      `;
+    } else {
+      tasksContainer.innerHTML += `
+        <li class="flex items-center justify-between opacity-50">
+          <div class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
+            <span class="text-sm text-on-surface">${task.name}</span>
+          </div>
+        </li>
+      `;
+    }
+  });
+}
+
 // Init
 loadWeather();
 loadDevices();
@@ -638,6 +746,7 @@ if (typeof mockData !== 'undefined' && mockData.dynamic) {
   renderHalalDashboard(mockData.dynamic.halal);
   renderHalalRiskMap(mockData.dynamic.halal.riskMap);
   renderNotifications(mockData.dynamic.alerts);
+  renderPreparationDashboard(mockData.dynamic.preparation);
 }
 
 // Render QR code after small delay to ensure DOM is ready

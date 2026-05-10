@@ -78,6 +78,44 @@ mockData.generateDynamicSystemData = function () {
   const shuffledAlerts = possibleAlerts.sort(() => 0.5 - Math.random());
   const alerts = shuffledAlerts.slice(0, numAlerts);
 
+  // Generate Preparation Data
+  const prepReadinessScore = Math.floor(Math.random() * 41) + 60; // 60 to 100
+  let prepReadinessStatus = 'Good';
+  if (prepReadinessScore < 75) prepReadinessStatus = 'Warning';
+  if (prepReadinessScore < 65) prepReadinessStatus = 'Critical';
+
+  const waterQualities = [
+    { label: 'Good', detail: 'Stable', status: 'compliant' },
+    { label: 'Warning', detail: 'Fluctuating', status: 'warning' },
+    { label: 'Poor', detail: 'Low pH', status: 'critical' },
+    { label: 'Good', detail: 'Optimal', status: 'compliant' },
+  ];
+  const waterQuality = waterQualities[Math.floor(Math.random() * waterQualities.length)];
+
+  const feedPlans = [
+    { label: 'Verified', detail: 'Approved', status: 'compliant' },
+    { label: 'Pending', detail: 'Review Needed', status: 'warning' }
+  ];
+  const feedPlan = feedPlans[Math.floor(Math.random() * feedPlans.length)];
+
+  const inputComplianceScore = Math.floor(Math.random() * 21) + 80; // 80 to 100
+  let inputComplianceStatus = 'Compliant';
+  if (inputComplianceScore < 90) inputComplianceStatus = 'Action Needed';
+
+  const possibleTasks = [
+    'Vệ sinh ao', 'Kiểm tra nguồn nước', 'Xử lý đáy ao', 'Kiểm tra thức ăn & đầu vào',
+    'Kiểm tra hệ thống sục khí', 'Diệt khuẩn', 'Lắp đặt lưới che'
+  ];
+  
+  // Randomly select 5 tasks and assign them random status (true = completed, false = pending)
+  const shuffledTasks = possibleTasks.sort(() => 0.5 - Math.random()).slice(0, 5);
+  const tasks = shuffledTasks.map(taskName => ({
+    name: taskName,
+    completed: Math.random() > 0.3 // 70% chance of being completed
+  }));
+
+  const completedTasksCount = tasks.filter(t => t.completed).length;
+
   return {
     halal: {
       integrityScore,
@@ -86,6 +124,15 @@ mockData.generateDynamicSystemData = function () {
       certHealth,
       daysToExpire,
       riskMap
+    },
+    preparation: {
+      readiness: { score: prepReadinessScore, status: prepReadinessStatus },
+      waterQuality: waterQuality,
+      feedPlan: feedPlan,
+      inputCompliance: { score: inputComplianceScore, status: inputComplianceStatus },
+      tasks: tasks,
+      tasksCompleted: completedTasksCount,
+      tasksTotal: tasks.length
     },
     alerts
   };

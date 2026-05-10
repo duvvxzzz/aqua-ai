@@ -627,6 +627,9 @@ function renderNotifications(alerts) {
       </div>
     `;
     container.innerHTML += alertHTML;
+  });
+}
+
 function renderPreparationDashboard(data) {
   if (!$('#prep-readiness-score')) return;
   

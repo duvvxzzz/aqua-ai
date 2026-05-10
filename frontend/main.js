@@ -61,7 +61,7 @@ function switchTab(tabId) {
   } else {
     $('#chatInputArea').classList.add('hidden');
     mainEl.classList.replace('pb-36', 'pb-20');
-    if (tabId === 'weather') loadAdvisor();
+    if (tabId === 'weather' || tabId === 'active') updateAIFarmingAdvisor();
   }
 }
 
@@ -563,7 +563,7 @@ function getSensorContext() {
   };
 }
 
-async function loadAdvisor() {
+async function updateAIFarmingAdvisor() {
   const timeEl = $('#advisor-time');
   const analysisEl = $('#advisor-analysis');
   const recommendationsEl = $('#advisor-recommendations');
@@ -571,52 +571,119 @@ async function loadAdvisor() {
 
   if (!timeEl || !analysisEl) return;
 
-  try {
-    const sensorContext = getSensorContext();
-    const res = await fetch(`${API_BASE}/api/advisor`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sensor_context: sensorContext })
-    });
+  // 1. Update UI to "Loading"
+  timeEl.innerText = "Collecting sensor data...";
+  analysisEl.innerText = "AI is processing water parameters, please wait...";
+  recommendationsEl.innerHTML = '<li class="animate-pulse text-primary font-medium">Analyzing environment...</li>';
+  if (riskEl) {
+    riskEl.innerText = "---";
+    riskEl.className = "bg-surface-container-high text-on-surface-variant text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider";
+  }
 
-    if (!res.ok) throw new Error('Advisor API failed');
-    const data = await res.json();
+  // 2. Extract data from mockData
+  if (typeof mockData === 'undefined' || !mockData.dynamic) return;
+  const waterData = mockData.dynamic.unifiedWater.raw;
+  const activeAlerts = mockData.dynamic.alerts;
 
-    timeEl.textContent = `Analysis ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+  // Find the most critical alert for context
+  const criticalAlert = activeAlerts.find(a => a.type === 'critical' || a.type === 'warning');
+  const alertContext = criticalAlert ? `System Alert: ${criticalAlert.title} - ${criticalAlert.desc}` : 'No abnormal system alerts recorded.';
 
-    if (data.error) {
-      analysisEl.textContent = String(data.error);
-      recommendationsEl.innerHTML = '<li>Please check backend (Gemini API key / network connection) and reload page.</li>';
-      if (riskEl) {
-        riskEl.textContent = '—';
-        riskEl.className = 'text-xs font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-800';
+  // 3. Prompt Engineering
+  const promptPayload = `
+      You are an AI Aquaculture Expert. Please analyze the current water parameters of the pond (Black Tiger Shrimp/Penaeus monodon) and provide advice.
+      
+      [CURRENT PARAMETERS]
+      - Temperature: ${waterData.temperature.toFixed(1)} °C
+      - pH: ${waterData.ph.toFixed(1)}
+      - Salinity: ${waterData.salinity.toFixed(1)} ppt
+      - Dissolved Oxygen (DO): ${waterData.do.toFixed(1)} mg/L
+      - Ammonia (NH3): ${waterData.nh3.toFixed(2)} mg/L
+      - Nitrite (NO2): ${waterData.no2.toFixed(2)} mg/L
+      - ${alertContext}
+
+      [REQUIREMENTS]
+      1. Provide a brief analysis (max 2 sentences) of the current water status.
+      2. Suggest 2-3 practical corrective/maintenance actions (short and direct).
+      3. Evaluate the risk level (Low, Warning, Critical) and specify the badge color class (e.g., bg-error-container text-error).
+      
+      Return the result in the following JSON format, without any markdown or extra text:
+      {
+          "analysis": "...",
+          "recommendations": ["...", "..."],
+          "risk_level": "...",
+          "risk_color": "..."
       }
-      return;
-    }
+    `;
 
-    analysisEl.textContent = (data.analysis && String(data.analysis).trim()) || 'No assessment available.';
+  try {
+    // 4. API Call Placeholder (You can connect your FastAPI endpoint here)
+    /*
+    const response = await fetch(`${API_BASE}/api/advisor`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: promptPayload })
+    });
+    const data = await response.json();
+    */
 
-    if (data.recommendations && data.recommendations.length > 0) {
-      recommendationsEl.innerHTML = data.recommendations.map(r => `<li>${r}</li>`).join('');
+    // MOCK RESPONSE FOR UI TESTING
+    let simulatedResponse = {};
+    if (waterData.do < 4.0 || waterData.nh3 > 0.3) {
+      simulatedResponse = {
+        analysis: `Dissolved oxygen is low (${waterData.do.toFixed(1)} mg/L) and ammonia is rising. High risk of shrimp suffocation and toxicity.`,
+        recommendations: [
+          "Activate all aeration systems immediately",
+          "Skip the next feeding session",
+          "Prepare for 20% water exchange"
+        ],
+        risk_level: "Critical",
+        risk_color: "bg-error-container text-error"
+      };
+    } else if (waterData.temperature > 32 || waterData.ph > 8.5) {
+      simulatedResponse = {
+        analysis: `Temperature (${waterData.temperature.toFixed(1)}°C) and pH are high, potentially causing stress and increasing algae toxicity.`,
+        recommendations: [
+          "Deploy shade netting to reduce heat",
+          "Supplement feed with Vitamin C for immunity",
+          "Apply probiotics at night to manage algae"
+        ],
+        risk_level: "Warning",
+        risk_color: "bg-[#fef08a] text-[#854d0e]"
+      };
     } else {
-      recommendationsEl.innerHTML = '<li>No specific recommendations.</li>';
+      simulatedResponse = {
+        analysis: "Environmental parameters are within ideal ranges. Shrimp growth conditions are optimal.",
+        recommendations: [
+          "Maintain current feeding protocol",
+          "Periodically check pond bottom siphon",
+          "Continue routine AI monitoring"
+        ],
+        risk_level: "Optimal",
+        risk_color: "bg-secondary-container text-secondary"
+      };
     }
+
+    // Artificial delay for UX
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    // 5. Render to UI
+    const now = new Date();
+    timeEl.innerText = `Updated at: ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+    analysisEl.innerText = simulatedResponse.analysis;
+
+    const recsHTML = simulatedResponse.recommendations.map(rec => `<li>${rec}</li>`).join('');
+    recommendationsEl.innerHTML = recsHTML;
 
     if (riskEl) {
-      riskEl.textContent = data.risk_level || 'Normal';
-      const risk = (data.risk_level || '').toLowerCase();
-      riskEl.className = 'text-xs font-bold px-2 py-0.5 rounded';
-      if (risk.includes('cao') || risk.includes('high') || risk.includes('nguy hiểm') || risk.includes('dangerous')) {
-        riskEl.classList.add('bg-error-container', 'text-on-error-container');
-      } else if (risk.includes('trung bình') || risk.includes('medium') || risk.includes('cảnh báo') || risk.includes('warning')) {
-        riskEl.classList.add('bg-orange-100', 'text-orange-800');
-      } else {
-        riskEl.classList.add('bg-green-100', 'text-green-800');
-      }
+      riskEl.innerText = simulatedResponse.risk_level.toUpperCase();
+      riskEl.className = `text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${simulatedResponse.risk_color}`;
     }
-  } catch (e) {
-    console.error('Advisor error:', e);
-    analysisEl.textContent = '⚠️ Error loading AI assessment.';
+
+  } catch (error) {
+    console.error("AI Advisor Error:", error);
+    analysisEl.innerText = "Connection lost with AI module. Please try again later.";
+    recommendationsEl.innerHTML = "<li>N/A</li>";
   }
 }
 
@@ -1003,7 +1070,7 @@ function renderPreparationDashboard(data) {
 // Init
 loadWeather();
 loadDevices();
-loadAdvisor();
+updateAIFarmingAdvisor();
 
 if (typeof mockData !== 'undefined' && mockData.dynamic) {
   renderHalalDashboard(mockData.dynamic.halal);

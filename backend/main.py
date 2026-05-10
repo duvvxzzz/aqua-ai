@@ -66,7 +66,7 @@ SENSOR DATA:
                 json={
                     "system_instruction": {"parts": [{"text": system_prompt}]},
                     "contents": gemini_history,
-                    "generationConfig": {"temperature": 0.7, "maxOutputTokens": 800}
+                    "generationConfig": {"temperature": 0.7, "maxOutputTokens": 1024}
                 }, timeout=30.0
             )
             res_data = response.json()
@@ -246,7 +246,7 @@ When there are abnormal parameters, provide SPECIFIC recommendations based on ac
                 json={
                     "system_instruction": {"parts": [{"text": system_prompt}]},
                     "contents": gemini_history,
-                    "generationConfig": {"temperature": 0.7, "maxOutputTokens": 1000}
+                    "generationConfig": {"temperature": 0.7, "maxOutputTokens": 1500}
                 }, timeout=30.0
             )
             res_data = response.json()

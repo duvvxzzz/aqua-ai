@@ -1336,11 +1336,11 @@
                   Readiness</span>
               </div>
               <div>
-                <span class="text-2xl font-bold text-secondary">91</span>
+                <span id="export-score-text" class="text-2xl font-bold text-secondary">--</span>
                 <span class="text-xs text-on-surface-variant">/100</span>
               </div>
-              <div class="text-[10px] font-semibold text-secondary bg-secondary-container/20 w-fit px-2 py-0.5 rounded">
-                READY</div>
+              <div id="export-status-badge" class="text-[10px] font-semibold text-secondary bg-secondary-container/20 w-fit px-2 py-0.5 rounded uppercase">
+                LOADING</div>
             </div>
             <!-- Batch Ready -->
             <div
@@ -1392,69 +1392,13 @@
               <h3
                 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest mb-4 border-b border-surface-container-high pb-2">
                 Harvest Validation Checklist</h3>
-              <ul class="space-y-3">
-                <li class="flex items-center justify-between">
-                  <div class="flex items-center gap-2 text-body-md font-body-md">
-                    <span class="material-symbols-outlined text-secondary text-sm">check</span>
-                    Water Quality Stable
-                  </div>
-                  <span
-                    class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
-                </li>
-                <li class="flex items-center justify-between">
-                  <div class="flex items-center gap-2 text-body-md font-body-md">
-                    <span class="material-symbols-outlined text-secondary text-sm">check</span>
-                    Withdrawal Period Complete
-                  </div>
-                  <span
-                    class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
-                </li>
-                <li class="flex items-center justify-between">
-                  <div class="flex items-center gap-2 text-body-md font-body-md">
-                    <span class="material-symbols-outlined text-secondary text-sm">check</span>
-                    No Antibiotic Residue
-                  </div>
-                  <span
-                    class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
-                </li>
-                <li class="flex items-center justify-between">
-                  <div class="flex items-center gap-2 text-body-md font-body-md">
-                    <span class="material-symbols-outlined text-secondary text-sm">check</span>
-                    Feed Compliance Verified
-                  </div>
-                  <span
-                    class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
-                </li>
-                <li class="flex items-center justify-between">
-                  <div class="flex items-center gap-2 text-body-md font-body-md">
-                    <span class="material-symbols-outlined text-secondary text-sm">check</span>
-                    Disease Free
-                  </div>
-                  <span
-                    class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
-                </li>
-                <li class="flex items-center justify-between">
-                  <div class="flex items-center gap-2 text-body-md font-body-md">
-                    <span class="material-symbols-outlined text-secondary text-sm">check</span>
-                    Traceability Complete
-                  </div>
-                  <span
-                    class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
-                </li>
-                <li class="flex items-center justify-between">
-                  <div class="flex items-center gap-2 text-body-md font-body-md">
-                    <span class="material-symbols-outlined text-secondary text-sm">check</span>
-                    Halal Integrity Score &gt; 80
-                  </div>
-                  <span
-                    class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
-                </li>
+              <ul id="export-checklist-container" class="space-y-3">
+                <!-- Checklist items will be injected here -->
               </ul>
               <div class="mt-4 pt-3 border-t border-surface-container-high flex justify-between items-center">
                 <span class="text-label-sm font-label-sm font-bold">Conclusion</span>
-                <span
-                  class="text-label-sm font-label-sm text-secondary bg-secondary-container/30 px-3 py-1.5 rounded-full font-bold">EXPORT
-                  READY</span>
+                <span id="export-conclusion-badge"
+                  class="text-label-sm font-label-sm text-secondary bg-secondary-container/30 px-3 py-1.5 rounded-full font-bold uppercase">...</span>
               </div>
             </div>
             <!-- Export Compliance Summary (Radar Placeholder) -->

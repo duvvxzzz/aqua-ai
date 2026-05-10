@@ -1035,6 +1035,102 @@ function renderPreparationDashboard(data) {
   }
 }
 
+function renderExportDashboard(data) {
+  const scoreEl = $('#export-score-text');
+  const statusBadge = $('#export-status-badge');
+  const checklistContainer = $('#export-checklist-container');
+  const conclusionBadge = $('#export-conclusion-badge');
+
+  if (!scoreEl || !checklistContainer) return;
+
+  // 1. Cross-Phase Data Integration
+  // Water Quality: Fail if status is 'critical'
+  const isWaterStable = data.preparation.waterQuality.status !== 'critical';
+  
+  // Halal: Fail if score < 80
+  const halalScore = data.halal.integrityScore;
+  const isHalalPassed = halalScore >= 80;
+
+  // Feed Plan: Fail if status is not 'compliant'
+  const isFeedCompliant = data.preparation.feedPlan.status === 'compliant';
+
+  // 2. Dynamic Checklist Generation
+  const checklist = [
+    { label: "Water Quality Stable", passed: isWaterStable, failMsg: "Critical Params!" },
+    { label: "Withdrawal Period Complete", passed: true, failMsg: "" },
+    { label: "No Antibiotic Residue", passed: true, failMsg: "" },
+    { label: "Feed Compliance Verified", passed: isFeedCompliant, failMsg: "Review Needed" },
+    { label: "Disease Free", passed: true, failMsg: "" },
+    { label: "Traceability Complete", passed: true, failMsg: "" },
+    { label: `Halal Integrity Score > 80 (Current: ${halalScore})`, passed: isHalalPassed, failMsg: "Score Too Low" }
+  ];
+
+  // 3. Readiness Score Calculation
+  let totalScore = 100;
+  let failedCount = 0;
+
+  checklist.forEach(item => {
+    if (!item.passed) {
+      failedCount++;
+      if (item.label.includes('Water')) totalScore -= 25;
+      else if (item.label.includes('Halal')) totalScore -= 15;
+      else totalScore -= 10;
+    }
+  });
+
+  totalScore = Math.max(0, totalScore);
+
+  // 4. UI State & Theme Determination
+  let statusColor, statusText, badgeClasses;
+  
+  if (failedCount === 0) {
+    statusColor = 'text-secondary';
+    statusText = 'READY';
+    badgeClasses = 'bg-secondary-container/20 text-secondary';
+  } else if (failedCount <= 2 && isWaterStable) {
+    statusColor = 'text-[#d97706]'; // Orange/Warning
+    statusText = 'WARNING';
+    badgeClasses = 'bg-[#fef08a] text-[#854d0e]';
+  } else {
+    statusColor = 'text-error';
+    statusText = 'NOT READY';
+    badgeClasses = 'bg-error-container text-error';
+  }
+
+  // 5. DOM Updates
+  scoreEl.innerText = totalScore;
+  scoreEl.className = `text-2xl font-bold ${statusColor}`;
+  
+  statusBadge.className = `text-[10px] font-semibold w-fit px-2 py-0.5 rounded uppercase ${badgeClasses}`;
+  statusBadge.innerText = statusText;
+
+  conclusionBadge.className = `text-label-sm font-label-sm px-3 py-1.5 rounded-full font-bold uppercase ${badgeClasses}`;
+  conclusionBadge.innerText = statusText === 'READY' ? 'EXPORT READY' : 'ACTION REQUIRED';
+
+  // 6. Checklist Rendering
+  checklistContainer.innerHTML = checklist.map(item => {
+    if (item.passed) {
+      return `
+        <li class="flex items-center justify-between">
+          <div class="flex items-center gap-2 text-body-md font-body-md">
+            <span class="material-symbols-outlined text-secondary text-sm">check</span>
+            ${item.label}
+          </div>
+          <span class="text-label-sm font-label-sm text-secondary bg-secondary-container/20 px-2 py-1 rounded">Passed</span>
+        </li>`;
+    } else {
+      return `
+        <li class="flex items-center justify-between">
+          <div class="flex items-center gap-2 text-body-md font-body-md text-on-surface-variant">
+            <span class="material-symbols-outlined text-error text-sm">close</span>
+            ${item.label}
+          </div>
+          <span class="text-label-sm font-label-sm text-error bg-error-container/20 px-2 py-1 rounded font-semibold">${item.failMsg}</span>
+        </li>`;
+    }
+  }).join('');
+}
+
 // Init
 loadWeather();
 loadDevices();
@@ -1045,6 +1141,7 @@ if (typeof mockData !== 'undefined' && mockData.dynamic) {
   renderHalalRiskMap(mockData.dynamic.halal.riskMap);
   renderNotifications(mockData.dynamic.alerts);
   renderPreparationDashboard(mockData.dynamic.preparation);
+  renderExportDashboard(mockData.dynamic);
 }
 
 // Render QR code after small delay to ensure DOM is ready

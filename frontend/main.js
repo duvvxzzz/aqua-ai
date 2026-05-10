@@ -630,12 +630,43 @@ function renderNotifications(alerts) {
   });
 }
 
+function generateSparkline(status) {
+  status = status.toLowerCase();
+  const isCritical = status === 'critical' || status === 'action needed' || status === 'poor';
+  const isWarning = status === 'warning' || status === 'pending' || status === 'fluctuating';
+  
+  const points = [];
+  // SVG coordinates: 0 is top, 20 is bottom.
+  // Critical: Start high (low y), go down (y increases)
+  // Warning: Start middle, fluctuate
+  // Good: Start low (high y), go up (y decreases)
+  let currentY = isCritical ? 4 : (isWarning ? 10 : 16);
+  
+  for (let x = 0; x <= 100; x += 20) {
+    points.push(`${Math.round(x)} ${Math.round(currentY)}`);
+    
+    if (isCritical) {
+      currentY += Math.random() * 4 + 1; 
+      if (currentY > 19) currentY = 19;
+    } else if (isWarning) {
+      currentY += (Math.random() - 0.5) * 8; 
+      if (currentY < 2) currentY = 2;
+      if (currentY > 18) currentY = 18;
+    } else {
+      currentY -= Math.random() * 3 + 1; 
+      if (currentY < 2) currentY = 2;
+    }
+  }
+  return 'M' + points.join(' L');
+}
+
 function renderPreparationDashboard(data) {
   if (!$('#prep-readiness-score')) return;
   
   // Pond Readiness
   $('#prep-readiness-score').textContent = data.readiness.score;
   $('#prep-readiness-status').textContent = data.readiness.status;
+  $('#prep-readiness-sparkline').setAttribute('d', generateSparkline(data.readiness.status));
   
   if (data.readiness.status === 'Critical') {
     $('#prep-readiness-status-container').className = 'flex items-center text-error text-xs font-medium gap-1';
@@ -654,6 +685,7 @@ function renderPreparationDashboard(data) {
   // Water Quality
   $('#prep-water-status').textContent = data.waterQuality.label;
   $('#prep-water-detail').textContent = data.waterQuality.detail;
+  $('#prep-water-sparkline').setAttribute('d', generateSparkline(data.waterQuality.status));
   
   if (data.waterQuality.status === 'critical') {
     $('#prep-water-status').className = 'text-lg font-bold text-error';
@@ -678,6 +710,7 @@ function renderPreparationDashboard(data) {
   // Feed Plan
   $('#prep-feed-status').textContent = data.feedPlan.label;
   $('#prep-feed-detail').textContent = data.feedPlan.detail;
+  $('#prep-feed-sparkline').setAttribute('d', generateSparkline(data.feedPlan.status));
   
   if (data.feedPlan.status === 'warning') {
     $('#prep-feed-status').className = 'text-lg font-bold text-[#f59e0b]';
@@ -696,6 +729,7 @@ function renderPreparationDashboard(data) {
   // Input Compliance
   $('#prep-input-score').textContent = data.inputCompliance.score + '%';
   $('#prep-input-status').textContent = data.inputCompliance.status;
+  $('#prep-input-sparkline').setAttribute('d', generateSparkline(data.inputCompliance.status));
   
   if (data.inputCompliance.status !== 'Compliant') {
     $('#prep-input-status-container').className = 'flex items-center text-[#f59e0b] text-xs font-medium gap-1';

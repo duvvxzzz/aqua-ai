@@ -182,6 +182,7 @@ Khi có thông số bất thường, hãy đưa ra khuyến nghị CỤ THỂ d�
                 }, timeout=30.0
             )
             res_data = response.json()
+            print(f"📦 DỮ LIỆU GỐC TỪ GOOGLE TRẢ VỀ: {res_data}")
             try:
                 return {"reply": res_data["candidates"][0]["content"]["parts"][0]["text"]}
             except Exception as e:

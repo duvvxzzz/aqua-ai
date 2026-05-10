@@ -633,7 +633,7 @@ async function updateAIFarmingAdvisor() {
 
   // 1. Update UI to "Loading"
   timeEl.innerText = "Connecting to Artificial Intelligence...";
-  analysisEl.innerText = "Gemini is analyzing your pond data...";
+  analysisEl.innerText = "AI Assistant is analyzing your pond data...";
   recommendationsEl.innerHTML = '<li class="animate-pulse text-primary font-medium">Calculating solutions...</li>';
   if (riskEl) {
     riskEl.innerText = "---";
@@ -689,7 +689,7 @@ async function updateAIFarmingAdvisor() {
     if (!response.ok) throw new Error("API Backend not responding");
 
     const data = await response.json();
-    
+
     // Clean JSON string if AI wraps it in markdown blocks
     const cleanJsonString = data.reply.replace(/```json|```/g, "").trim();
     const aiResult = JSON.parse(cleanJsonString);
@@ -698,7 +698,7 @@ async function updateAIFarmingAdvisor() {
     const now = new Date();
     timeEl.innerText = `AI Updated: ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
     analysisEl.innerText = aiResult.analysis;
-    
+
     recommendationsEl.innerHTML = aiResult.recommendations
       .map(rec => `<li>${rec}</li>`)
       .join('');
@@ -710,7 +710,7 @@ async function updateAIFarmingAdvisor() {
 
   } catch (error) {
     console.error("AI Advisor Connection Error:", error);
-    analysisEl.innerText = "Error: Could not receive AI response. Please check API Key or Backend.";
+    analysisEl.innerText = "Error: Could not receive AI response.";
     recommendationsEl.innerHTML = "<li>Please check your network connection.</li>";
   }
 }
@@ -1127,7 +1127,7 @@ function renderActiveHalalCompliance(data) {
 
   // 3. Treatment & Medication Logic
   const hasRiskAlert = data.alerts.some(a => a.type === 'critical' || a.type === 'warning');
-  let medUI = hasRiskAlert 
+  let medUI = hasRiskAlert
     ? { icon: 'warning', iconColor: 'text-[#d97706]', badge: 'text-[#854d0e] bg-[#fef08a]', text: 'Warning' }
     : { icon: 'check_circle', iconColor: 'text-secondary', badge: 'text-secondary bg-secondary-container/20', text: 'Compliant' };
 
@@ -1180,7 +1180,7 @@ function renderExportDashboard(data) {
   // 1. Cross-Phase Data Integration
   // Water Quality: Fail if status is 'critical'
   const isWaterStable = data.preparation.waterQuality.status !== 'critical';
-  
+
   // Halal: Fail if score < 80
   const halalScore = data.halal.integrityScore;
   const isHalalPassed = halalScore >= 80;
@@ -1216,7 +1216,7 @@ function renderExportDashboard(data) {
 
   // 4. UI State & Theme Determination
   let statusColor, statusText, badgeClasses;
-  
+
   if (failedCount === 0) {
     statusColor = 'text-secondary';
     statusText = 'READY';
@@ -1234,7 +1234,7 @@ function renderExportDashboard(data) {
   // 5. DOM Updates
   scoreEl.innerText = totalScore;
   scoreEl.className = `text-2xl font-bold ${statusColor}`;
-  
+
   statusBadge.className = `text-[10px] font-semibold w-fit px-2 py-0.5 rounded uppercase ${badgeClasses}`;
   statusBadge.innerText = statusText;
 

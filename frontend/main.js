@@ -1,4 +1,4 @@
-const API_BASE = 'https://aqua-ai-duc.onrender.com';
+const API_BASE = 'https://aqua-ai-duc-egdi.onrender.com';
 let currentTab = 'weather';
 let historyChart = null;
 let chatHistory = [];

@@ -345,6 +345,9 @@ async function loadDevices() {
     // We update the SVG chart immediately with the unified data
     updateSVGChartWithUnifiedData(uw);
     
+    // Also load the history chart using fallback data in loadChart if API is down
+    loadChart(pond);
+    
     return;
   }
   

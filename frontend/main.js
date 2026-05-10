@@ -818,30 +818,50 @@ function renderPreparationDashboard(data) {
   $('#prep-tasks-progress-bar').style.width = (data.tasksCompleted / data.tasksTotal * 100) + '%';
   
   const tasksContainer = $('#prep-task-list');
-  tasksContainer.innerHTML = '';
-  
-  data.tasks.forEach(task => {
-    if (task.completed) {
-      tasksContainer.innerHTML += `
-        <li class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
+  if (tasksContainer && data.tasks) {
+    tasksContainer.innerHTML = '';
+    data.tasks.forEach(t => {
+      if (t.completed) {
+        tasksContainer.innerHTML += `
+          <li class="flex items-center gap-3">
             <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-            <span class="text-sm text-on-surface">${task.name}</span>
-          </div>
-          <span class="material-symbols-outlined text-secondary text-sm">check</span>
-        </li>
-      `;
-    } else {
-      tasksContainer.innerHTML += `
-        <li class="flex items-center justify-between opacity-50">
-          <div class="flex items-center gap-2">
+            <span class="text-on-surface text-sm font-medium flex-1">${t.name}</span>
+            <span class="material-symbols-outlined text-secondary text-sm">check</span>
+          </li>
+        `;
+      } else {
+        tasksContainer.innerHTML += `
+          <li class="flex items-center gap-3">
             <span class="w-1.5 h-1.5 rounded-full border border-outline-variant"></span>
-            <span class="text-sm text-on-surface">${task.name}</span>
-          </div>
-        </li>
-      `;
+            <span class="text-on-surface-variant text-sm flex-1">${t.name}</span>
+          </li>
+        `;
+      }
+    });
+  }
+
+  // Nutrition Chart
+  if (data.nutrition) {
+    const { protein, lipid, carbohydrate, other } = data.nutrition;
+    if ($('#nutrition-protein-text')) $('#nutrition-protein-text').textContent = protein + '%';
+    if ($('#nutrition-lipid-text')) $('#nutrition-lipid-text').textContent = lipid + '%';
+    if ($('#nutrition-carb-text')) $('#nutrition-carb-text').textContent = carbohydrate + '%';
+    if ($('#nutrition-other-text')) $('#nutrition-other-text').textContent = other + '%';
+
+    const donut = $('#nutrition-donut-chart');
+    if (donut) {
+      const pEnd = protein;
+      const lEnd = pEnd + lipid;
+      const cEnd = lEnd + carbohydrate;
+      
+      donut.style.background = `conic-gradient(
+        #005394 0% ${pEnd}%, 
+        #38bdf8 ${pEnd}% ${lEnd}%, 
+        #006d40 ${lEnd}% ${cEnd}%, 
+        #e1e2e8 ${cEnd}% 100%
+      )`;
     }
-  });
+  }
 
   // Water Quality Baseline Table
   const baselineTbody = $('#prep-water-baseline-tbody');

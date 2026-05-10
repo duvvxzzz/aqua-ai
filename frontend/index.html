@@ -508,40 +508,33 @@
             <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
               <h3 class="text-xs font-medium text-on-surface-variant mb-4">PHÂN BỔ DINH DƯỠNG DỰ KIẾN</h3>
               <div class="flex items-center justify-center gap-6">
-                <div
-                  class="relative w-24 h-24 rounded-full border-8 border-surface-container-highest flex items-center justify-center">
-                  <!-- CSS Donut approximation -->
-                  <div class="absolute inset-0 rounded-full border-8 border-primary"
-                    style="clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%, 50% 50%);"></div>
-                  <div class="absolute inset-0 rounded-full border-8 border-[#38bdf8]"
-                    style="clip-path: polygon(0 0, 50% 0, 50% 50%, 0 50%);"></div>
-                  <div class="absolute inset-0 rounded-full border-8 border-secondary"
-                    style="clip-path: polygon(0 50%, 50% 50%, 50% 100%, 0 100%);"></div>
-                  <div class="text-center">
-                    <span class="block text-[10px] text-on-surface-variant">Tổng dinh dưỡng</span>
-                    <span class="block text-[10px] font-bold">cân đối</span>
+                <div class="relative w-24 h-24 rounded-full flex items-center justify-center" id="nutrition-donut-chart">
+                  <!-- The donut inner circle -->
+                  <div class="absolute inset-[8px] bg-surface-container-lowest rounded-full z-10 flex flex-col items-center justify-center">
+                    <span class="block text-[10px] text-on-surface-variant text-center leading-tight">Tổng dinh<br/>dưỡng</span>
+                    <span class="block text-[10px] font-bold mt-0.5">cân đối</span>
                   </div>
                 </div>
-                <div class="space-y-1">
+                <div class="space-y-1 w-32">
                   <div class="flex items-center justify-between gap-4 text-xs">
                     <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary"></span> Protein
                     </div>
-                    <span class="font-medium">35%</span>
+                    <span class="font-medium" id="nutrition-protein-text">--%</span>
                   </div>
                   <div class="flex items-center justify-between gap-4 text-xs">
                     <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[#38bdf8]"></span> Lipid
                     </div>
-                    <span class="font-medium">8%</span>
+                    <span class="font-medium" id="nutrition-lipid-text">--%</span>
                   </div>
                   <div class="flex items-center justify-between gap-4 text-xs">
                     <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary"></span>
                       Carbohydrate</div>
-                    <span class="font-medium">30%</span>
+                    <span class="font-medium" id="nutrition-carb-text">--%</span>
                   </div>
                   <div class="flex items-center justify-between gap-4 text-xs">
                     <div class="flex items-center gap-1"><span
                         class="w-2 h-2 rounded-full bg-surface-container-highest"></span> Khác</div>
-                    <span class="font-medium">27%</span>
+                    <span class="font-medium" id="nutrition-other-text">--%</span>
                   </div>
                 </div>
               </div>

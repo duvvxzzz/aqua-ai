@@ -193,6 +193,12 @@ mockData.generateDynamicSystemData = function () {
   let feedAdvice = feedPlan.status === 'warning' ? "Đợi phê duyệt" : "Sẵn sàng cho ăn";
   let inputAdvice = inputComplianceStatus === 'Compliant' ? "Vật tư đạt chuẩn" : "Cần bổ sung kho";
 
+  // Generate random nutrition values
+  const n_protein = Math.floor(Math.random() * 11) + 30; // 30 - 40
+  const n_lipid = Math.floor(Math.random() * 6) + 5; // 5 - 10
+  const n_carb = Math.floor(Math.random() * 11) + 25; // 25 - 35
+  const n_other = 100 - n_protein - n_lipid - n_carb;
+
   return {
     halal: {
       integrityScore,
@@ -210,7 +216,13 @@ mockData.generateDynamicSystemData = function () {
       tasks: tasks,
       tasksCompleted: completedTasksCount,
       tasksTotal: tasks.length,
-      baselineParameters: baselineParameters
+      baselineParameters: baselineParameters,
+      nutrition: {
+        protein: n_protein,
+        lipid: n_lipid,
+        carbohydrate: n_carb,
+        other: n_other
+      }
     },
     unifiedWater: {
       ph: phVal.toFixed(1),

@@ -583,7 +583,18 @@ async function loadAdvisor() {
     const data = await res.json();
 
     timeEl.textContent = `Phân tích ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-    analysisEl.textContent = data.analysis || 'Không có nhận định.';
+
+    if (data.error) {
+      analysisEl.textContent = String(data.error);
+      recommendationsEl.innerHTML = '<li>Vui lòng kiểm tra backend (API key Gemini / kết nối mạng) và tải lại trang.</li>';
+      if (riskEl) {
+        riskEl.textContent = '—';
+        riskEl.className = 'text-xs font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-800';
+      }
+      return;
+    }
+
+    analysisEl.textContent = (data.analysis && String(data.analysis).trim()) || 'Không có nhận định.';
     
     if (data.recommendations && data.recommendations.length > 0) {
       recommendationsEl.innerHTML = data.recommendations.map(r => `<li>${r}</li>`).join('');
@@ -593,7 +604,6 @@ async function loadAdvisor() {
 
     if (riskEl) {
       riskEl.textContent = data.risk_level || 'Bình thường';
-      // Cập nhật màu sắc dựa trên rủi ro
       const risk = (data.risk_level || '').toLowerCase();
       riskEl.className = 'text-xs font-bold px-2 py-0.5 rounded';
       if (risk.includes('cao') || risk.includes('high') || risk.includes('nguy hiểm')) {

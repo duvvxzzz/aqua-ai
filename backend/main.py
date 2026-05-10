@@ -61,7 +61,7 @@ DỮ LIỆU CẢM BIẾN:
     try:
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GOOGLE_API_KEY}",
+                f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GOOGLE_API_KEY}",
                 headers={"Content-Type": "application/json"},
                 json={
                     "system_instruction": {"parts": [{"text": system_prompt}]},
@@ -71,6 +71,10 @@ DỮ LIỆU CẢM BIẾN:
             )
             res_data = response.json()
             print(f"📦 DỮ LIỆU GỐC ADVISOR: {res_data}")
+            
+            if "error" in res_data:
+                return {"error": f"Google API Error: {res_data['error'].get('message', 'Unknown error')}"}
+                
             try:
                 text = res_data["candidates"][0]["content"]["parts"][0]["text"]
                 match = re.search(r'\{.*\}', text, re.DOTALL)
@@ -78,13 +82,13 @@ DỮ LIỆU CẢM BIẾN:
                     advisor_json = pyjson.loads(match.group(0))
                     return advisor_json
                 else:
-                    return {"error": "Không tìm thấy JSON hợp lệ trong phản hồi AI."}
+                    return {"error": "AI trả về văn bản không chứa JSON."}
             except Exception as e:
-                print(f"🔥 LỖI ADVISOR: {str(e)}")
-                return {"error": "AI không trả về dữ liệu hợp lệ."}
+                print(f"🔥 LỖI PARSE ADVISOR: {str(e)}")
+                return {"error": f"Lỗi xử lý dữ liệu AI: {str(e)}"}
     except Exception as e:
-        print(f"🔥 LỖI ADVISOR: {str(e)}")
-        return {"error": "Không thể kết nối Gemini."}
+        print(f"🔥 LỖI KẾT NỐI ADVISOR: {str(e)}")
+        return {"error": f"Không thể kết nối Gemini: {str(e)}"}
  
 
 def sine_wave(base, amp, t, period=24):
@@ -237,7 +241,7 @@ Khi có thông số bất thường, hãy đưa ra khuyến nghị CỤ THỂ d�
     try:
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GOOGLE_API_KEY}",
+                f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GOOGLE_API_KEY}",
                 headers={"Content-Type": "application/json"},
                 json={
                     "system_instruction": {"parts": [{"text": system_prompt}]},
@@ -247,14 +251,18 @@ Khi có thông số bất thường, hãy đưa ra khuyến nghị CỤ THỂ d�
             )
             res_data = response.json()
             print(f"📦 DỮ LIỆU GỐC TỪ GOOGLE TRẢ VỀ: {res_data}")
+            
+            if "error" in res_data:
+                return {"reply": f"⚠️ Lỗi từ Google API: {res_data['error'].get('message', 'Unknown error')}"}
+                
             try:
                 return {"reply": res_data["candidates"][0]["content"]["parts"][0]["text"]}
             except Exception as e:
                 print(f"🔥 LỖI TỪ GEMINI LÀ: {str(e)}")
-                return {"reply": "⚠️ Lỗi: Máy chủ AI không phản hồi. Vui lòng thử lại."}
+                return {"reply": f"⚠️ Lỗi: AI không trả về nội dung. ({str(e)})"}
     except Exception as e:
         print(f"🔥 LỖI TỪ GEMINI LÀ: {str(e)}")
-        return {"reply": "⚠️ Lỗi: Máy chủ AI không phản hồi. Vui lòng thử lại."}
+        return {"reply": f"⚠️ Lỗi kết nối: {str(e)}"}
 
 import uvicorn
 if __name__ == "__main__":

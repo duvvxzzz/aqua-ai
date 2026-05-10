@@ -736,6 +736,27 @@ function renderPreparationDashboard(data) {
       `;
     }
   });
+
+  // Water Quality Baseline Table
+  const baselineTbody = $('#prep-water-baseline-tbody');
+  if (baselineTbody && data.baselineParameters) {
+    baselineTbody.innerHTML = '';
+    data.baselineParameters.forEach(param => {
+      let statusClass = 'bg-secondary-container text-on-secondary-container';
+      if (param.status === 'Critical') statusClass = 'bg-error text-white';
+      else if (param.status === 'Warning') statusClass = 'bg-[#fef08a] text-[#854d0e]';
+      
+      baselineTbody.innerHTML += `
+        <tr>
+          <td class="py-2 text-on-surface">${param.name}</td>
+          <td class="py-2 font-medium">${param.value}</td>
+          <td class="py-2 text-right">
+            <span class="px-2 py-1 ${statusClass} rounded-full text-[10px] font-bold uppercase">${param.status}</span>
+          </td>
+        </tr>
+      `;
+    });
+  }
 }
 
 // Init

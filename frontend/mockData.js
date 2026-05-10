@@ -116,6 +116,54 @@ mockData.generateDynamicSystemData = function () {
 
   const completedTasksCount = tasks.filter(t => t.completed).length;
 
+  // Generate Water Quality Baseline Parameters
+  const randRange = (min, max) => (Math.random() * (max - min) + min);
+  const getStatus = (val, thresholds) => {
+    if (val < thresholds.criticalLow || val > thresholds.criticalHigh) return 'Critical';
+    if (val < thresholds.warningLow || val > thresholds.warningHigh) return 'Warning';
+    return thresholds.isPassFail ? 'Pass' : 'Optimal';
+  };
+
+  const phVal = randRange(6.5, 9.5);
+  const salVal = randRange(0, 40);
+  const tempVal = randRange(23, 36);
+  const doVal = randRange(2, 8);
+  const nh3Val = randRange(0, 1.0);
+  const no2Val = randRange(0, 0.5);
+
+  const baselineParameters = [
+    {
+      name: 'pH',
+      value: phVal.toFixed(1),
+      status: getStatus(phVal, { criticalLow: 7.0, warningLow: 7.5, warningHigh: 8.5, criticalHigh: 9.0, isPassFail: false })
+    },
+    {
+      name: 'Salinity (ppt)',
+      value: Math.round(salVal),
+      status: getStatus(salVal, { criticalLow: 5, warningLow: 10, warningHigh: 25, criticalHigh: 35, isPassFail: false })
+    },
+    {
+      name: 'Temperature (°C)',
+      value: Math.round(tempVal),
+      status: getStatus(tempVal, { criticalLow: 25, warningLow: 28, warningHigh: 32, criticalHigh: 34, isPassFail: false })
+    },
+    {
+      name: 'DO (mg/L)',
+      value: doVal.toFixed(1),
+      status: getStatus(doVal, { criticalLow: 3.0, warningLow: 5.0, warningHigh: 999, criticalHigh: 999, isPassFail: false })
+    },
+    {
+      name: 'NH3 (mg/L)',
+      value: nh3Val < 0.1 ? '< 0.1' : nh3Val.toFixed(2),
+      status: getStatus(nh3Val, { criticalLow: -1, warningLow: -1, warningHigh: 0.1, criticalHigh: 0.5, isPassFail: true })
+    },
+    {
+      name: 'NO2 (mg/L)',
+      value: no2Val < 0.05 ? '< 0.05' : no2Val.toFixed(2),
+      status: getStatus(no2Val, { criticalLow: -1, warningLow: -1, warningHigh: 0.05, criticalHigh: 0.2, isPassFail: true })
+    }
+  ];
+
   return {
     halal: {
       integrityScore,
@@ -132,7 +180,8 @@ mockData.generateDynamicSystemData = function () {
       inputCompliance: { score: inputComplianceScore, status: inputComplianceStatus },
       tasks: tasks,
       tasksCompleted: completedTasksCount,
-      tasksTotal: tasks.length
+      tasksTotal: tasks.length,
+      baselineParameters: baselineParameters
     },
     alerts
   };

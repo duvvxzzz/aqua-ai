@@ -84,11 +84,11 @@ function uvLabel(v) {
 
 function getMaterialIcon(condition) {
   const lower = (condition || '').toLowerCase();
-  if (lower.includes('rain') || lower.includes('mưa')) return 'rainy';
-  if (lower.includes('cloud') || lower.includes('mây')) return 'cloud';
-  if (lower.includes('storm') || lower.includes('bão')) return 'thunderstorm';
-  if (lower.includes('clear') || lower.includes('trong')) return 'clear_day';
-  if (lower.includes('sun') || lower.includes('nắng')) return 'sunny';
+  if (lower.includes('rain')) return 'rainy';
+  if (lower.includes('cloud')) return 'cloud';
+  if (lower.includes('storm')) return 'thunderstorm';
+  if (lower.includes('clear')) return 'clear_day';
+  if (lower.includes('sun')) return 'sunny';
   return 'partly_cloudy_day';
 }
 
@@ -139,8 +139,8 @@ async function loadWeather(loc = 'Hanoi') {
     const wRes = await fetch(`${API_BASE}/api/weather?location=${encodeURIComponent(loc)}`);
 
     if (wRes.status === 404) {
-      $('#hero-location').textContent = 'Không tìm thấy thành phố';
-      $('#hero-desc').textContent = 'Vui lòng kiểm tra lại chính tả';
+      $('#hero-location').textContent = 'City not found';
+      $('#hero-desc').textContent = 'Please check the spelling';
       $('#hero-temp').textContent = '--';
 
       if ($('#w-badges')) $('#w-badges').innerHTML = '';
@@ -155,7 +155,7 @@ async function loadWeather(loc = 'Hanoi') {
     }
 
     if (wRes.status === 500) {
-      $('#hero-desc').textContent = 'Lỗi máy chủ thời tiết';
+      $('#hero-desc').textContent = 'Weather server error';
       return;
     }
 
@@ -382,7 +382,7 @@ async function loadDevices() {
 
     loadChart(pond);
   } catch (e) {
-    $('#pro-water-quality').innerHTML = `<div class="col-span-2 text-center text-sm text-error py-4">Lỗi kết nối API. Vui lòng thử lại.</div>`;
+    $('#pro-water-quality').innerHTML = `<div class="col-span-2 text-center text-sm text-error py-4">API connection error. Please try again.</div>`;
   }
 }
 
@@ -541,10 +541,10 @@ function getSensorContext() {
 
   const w = d.unifiedWater;
   const prep = d.preparation;
-  const getPHStatus = (v) => parseFloat(v) < 7.5 ? 'THẤP - DƯỚI MỨC AN TOÀN' : parseFloat(v) > 8.5 ? 'CAO - TRÊN MỨC AN TOÀN' : 'An toàn';
-  const getDOStatus = (v) => parseFloat(v) < 5 ? 'THIẾU OXY NGHIÊM TRỌNG' : 'Đủ oxy';
-  const getTempStatus = (v) => parseFloat(v) < 28 ? 'Hơi thấp' : parseFloat(v) > 32 ? 'Hơi cao' : 'Lý tưởng';
-  const getSalStatus = (v) => parseFloat(v) < 15 ? 'Thấp' : parseFloat(v) > 25 ? 'Cao' : 'Ổn định';
+  const getPHStatus = (v) => parseFloat(v) < 7.5 ? 'LOW - BELOW SAFE LEVEL' : parseFloat(v) > 8.5 ? 'HIGH - ABOVE SAFE LEVEL' : 'Safe';
+  const getDOStatus = (v) => parseFloat(v) < 5 ? 'SEVERE OXYGEN DEFICIENCY' : 'Sufficient oxygen';
+  const getTempStatus = (v) => parseFloat(v) < 28 ? 'Slightly low' : parseFloat(v) > 32 ? 'Slightly high' : 'Ideal';
+  const getSalStatus = (v) => parseFloat(v) < 15 ? 'Low' : parseFloat(v) > 25 ? 'High' : 'Stable';
 
   return {
     ph: w.ph, ph_status: getPHStatus(w.ph),
@@ -582,11 +582,11 @@ async function loadAdvisor() {
     if (!res.ok) throw new Error('Advisor API failed');
     const data = await res.json();
 
-    timeEl.textContent = `Phân tích ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    timeEl.textContent = `Analysis ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
 
     if (data.error) {
       analysisEl.textContent = String(data.error);
-      recommendationsEl.innerHTML = '<li>Vui lòng kiểm tra backend (API key Gemini / kết nối mạng) và tải lại trang.</li>';
+      recommendationsEl.innerHTML = '<li>Please check backend (Gemini API key / network connection) and reload page.</li>';
       if (riskEl) {
         riskEl.textContent = '—';
         riskEl.className = 'text-xs font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-800';
@@ -594,21 +594,21 @@ async function loadAdvisor() {
       return;
     }
 
-    analysisEl.textContent = (data.analysis && String(data.analysis).trim()) || 'Không có nhận định.';
+    analysisEl.textContent = (data.analysis && String(data.analysis).trim()) || 'No assessment available.';
 
     if (data.recommendations && data.recommendations.length > 0) {
       recommendationsEl.innerHTML = data.recommendations.map(r => `<li>${r}</li>`).join('');
     } else {
-      recommendationsEl.innerHTML = '<li>Không có đề xuất cụ thể.</li>';
+      recommendationsEl.innerHTML = '<li>No specific recommendations.</li>';
     }
 
     if (riskEl) {
-      riskEl.textContent = data.risk_level || 'Bình thường';
+      riskEl.textContent = data.risk_level || 'Normal';
       const risk = (data.risk_level || '').toLowerCase();
       riskEl.className = 'text-xs font-bold px-2 py-0.5 rounded';
-      if (risk.includes('cao') || risk.includes('high') || risk.includes('nguy hiểm')) {
+      if (risk.includes('cao') || risk.includes('high') || risk.includes('nguy hiểm') || risk.includes('dangerous')) {
         riskEl.classList.add('bg-error-container', 'text-on-error-container');
-      } else if (risk.includes('trung bình') || risk.includes('medium') || risk.includes('cảnh báo')) {
+      } else if (risk.includes('trung bình') || risk.includes('medium') || risk.includes('cảnh báo') || risk.includes('warning')) {
         riskEl.classList.add('bg-orange-100', 'text-orange-800');
       } else {
         riskEl.classList.add('bg-green-100', 'text-green-800');
@@ -616,7 +616,7 @@ async function loadAdvisor() {
     }
   } catch (e) {
     console.error('Advisor error:', e);
-    analysisEl.textContent = '⚠️ Lỗi khi tải nhận định từ AI.';
+    analysisEl.textContent = '⚠️ Error loading AI assessment.';
   }
 }
 
@@ -654,7 +654,7 @@ $('#chatForm').addEventListener('submit', async (e) => {
 
     // DEBUG: Log the URL before making the request
     const chatApiUrl = `${API_BASE}/api/chat`;
-    console.log("🚀 Chuẩn bị gọi API tới URL:", chatApiUrl);
+    console.log("🚀 Preparing API call to URL:", chatApiUrl);
 
     const res = await fetch(chatApiUrl, {
       method: 'POST',
@@ -673,23 +673,23 @@ $('#chatForm').addEventListener('submit', async (e) => {
     if (!res.ok) {
       const errText = await res.text();
       console.error('Backend error:', errText);
-      appendMsg('AI', '⚠️ Máy chủ AI đang bận. Vui lòng thử lại sau.');
+      appendMsg('AI', '⚠️ AI server busy. Please try again later.');
       return;
     }
 
     const data = await res.json();
-    const reply = data.reply || '⚠️ Không nhận được phản hồi.';
+    const reply = data.reply || '⚠️ No response received.';
     appendDynamicAIMsg(reply);
     chatHistory.push({ role: 'user', content: msg }, { role: 'assistant', content: reply });
 
   } catch (e) {
     // DEBUG: Expose the actual error
-    console.error("❌ LỖI THỰC SỰ LÀ ĐÂY:", e);
-    console.error("Chi tiết lỗi:", e.message, e.stack);
+    console.error("❌ ACTUAL ERROR HERE:", e);
+    console.error("Error details:", e.message, e.stack);
 
     const typingEl = document.getElementById(typingId);
     if (typingEl) typingEl.remove();
-    appendMsg('AI', '⚠️ Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng.');
+    appendMsg('AI', '⚠️ Cannot connect to server. Please check your internet connection.');
   }
 });
 
@@ -920,7 +920,7 @@ function renderPreparationDashboard(data) {
   }
 
   // Tasks
-  $('#prep-tasks-progress-text').textContent = `${data.tasksCompleted} / ${data.tasksTotal} hoàn thành`;
+  $('#prep-tasks-progress-text').textContent = `${data.tasksCompleted} / ${data.tasksTotal} completed`;
   $('#prep-tasks-progress-bar').style.width = (data.tasksCompleted / data.tasksTotal * 100) + '%';
 
   const tasksContainer = $('#prep-task-list');

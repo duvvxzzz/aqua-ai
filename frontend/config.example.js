@@ -1,6 +1,6 @@
 // frontend/config.example.js
-// ✅ FILE NÀY ĐƯỢC COMMIT — Dùng làm mẫu
-// Sao chép file này thành config.js và điền API key thật vào
+// ✅ THIS FILE IS COMMITTED — Used as a template
+// Copy this file to config.js and enter your real API key
 
 window.APP_CONFIG = {
   GEMINI_API_KEY: 'YOUR_GEMINI_API_KEY_HERE',

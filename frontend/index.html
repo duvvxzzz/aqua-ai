@@ -86,14 +86,14 @@
         </div>
 
         <div class="flex flex-col items-center justify-center pt-2">
-          <h2 class="text-2xl font-bold text-on-surface" id="hero-location">Đang kết nối...</h2>
+          <h2 class="text-2xl font-bold text-on-surface" id="hero-location">Connecting...</h2>
           <div class="flex items-center space-x-4 my-3 text-primary">
             <span id="hero-icon" class="material-symbols-outlined text-[80px] font-light">hourglass_empty</span>
             <div class="text-on-surface">
               <div class="text-[64px] font-bold leading-none tracking-tight" id="hero-temp">--°C</div>
             </div>
           </div>
-          <p class="text-sm font-medium text-on-surface-variant mt-1" id="hero-desc">Đang tải dữ liệu</p>
+          <p class="text-sm font-medium text-on-surface-variant mt-1" id="hero-desc">Loading data...</p>
           <div class="flex flex-wrap justify-center gap-2 mt-4" id="w-badges"></div>
         </div>
 
@@ -186,7 +186,7 @@
             <span class="text-[10px] text-on-surface-variant font-bold">Updated: Just now</span>
           </div>
           <div class="grid grid-cols-2 gap-3" id="pro-water-quality">
-            <div class="col-span-2 text-center text-sm text-outline loading-pulse py-4">Đang tải dữ liệu cảm biến...
+            <div class="col-span-2 text-center text-sm text-outline loading-pulse py-4">Loading sensor data...
             </div>
           </div>
         </div>
@@ -435,7 +435,7 @@
           <section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
             <div class="flex justify-between items-end mb-4 border-b border-outline-variant pb-2">
               <h2 class="text-label-sm font-label-sm text-on-surface-variant uppercase">Tasks &amp; Checklist</h2>
-              <span id="prep-tasks-progress-text" class="text-xs font-medium text-secondary">15 / 18 hoàn thành</span>
+              <span id="prep-tasks-progress-text" class="text-xs font-medium text-secondary">15 / 18 completed</span>
             </div>
             <div class="w-full bg-surface-container-high rounded-full h-1.5 mb-4">
               <div id="prep-tasks-progress-bar" class="bg-secondary h-1.5 rounded-full transition-all duration-500" style="width: 83%"></div>
@@ -445,7 +445,7 @@
             </ul>
             <div class="mt-4 text-right">
               <a class="text-xs text-primary font-medium hover:underline flex items-center justify-end gap-1" href="#">
-                Xem tất cả checklist <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                View all checklists <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
               </a>
             </div>
           </section>
@@ -504,13 +504,13 @@
             </div>
             <!-- Nutrition Donut Chart Mock -->
             <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
-              <h3 class="text-xs font-medium text-on-surface-variant mb-4">PHÂN BỔ DINH DƯỠNG DỰ KIẾN</h3>
+              <h3 class="text-xs font-medium text-on-surface-variant mb-4">EXPECTED NUTRITIONAL DISTRIBUTION</h3>
               <div class="flex items-center justify-center gap-6">
                 <div class="relative w-24 h-24 rounded-full flex items-center justify-center" id="nutrition-donut-chart">
                   <!-- The donut inner circle -->
                   <div class="absolute inset-[8px] bg-surface-container-lowest rounded-full z-10 flex flex-col items-center justify-center">
-                    <span class="block text-[10px] text-on-surface-variant text-center leading-tight">Tổng dinh<br/>dưỡng</span>
-                    <span class="block text-[10px] font-bold mt-0.5">cân đối</span>
+                    <span class="block text-[10px] text-on-surface-variant text-center leading-tight">Total<br/>nutrition</span>
+                    <span class="block text-[10px] font-bold mt-0.5">balanced</span>
                   </div>
                 </div>
                 <div class="space-y-1 w-32">
@@ -531,7 +531,7 @@
                   </div>
                   <div class="flex items-center justify-between gap-4 text-xs">
                     <div class="flex items-center gap-1"><span
-                        class="w-2 h-2 rounded-full bg-surface-container-highest"></span> Khác</div>
+                        class="w-2 h-2 rounded-full bg-surface-container-highest"></span> Other</div>
                     <span class="font-medium" id="nutrition-other-text">--%</span>
                   </div>
                 </div>
@@ -539,33 +539,29 @@
             </div>
             <!-- Feeding Schedule List -->
             <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 shadow-sm">
-              <h3 class="text-xs font-medium text-on-surface-variant mb-4">LỊCH CHO ĂN DỰ KIẾN</h3>
+              <h3 class="text-xs font-medium text-on-surface-variant mb-4">EXPECTED FEEDING SCHEDULE</h3>
               <div class="space-y-3">
                 <div class="flex justify-between items-center text-sm border-b border-outline-variant pb-2">
-                  <div>
-                    <span class="block font-medium text-on-surface">Ngày 1 - 15</span>
-                    <span class="text-xs text-on-surface-variant">4 lần/ngày</span>
-                  </div>
                   <div class="text-right">
                     <span class="block text-on-surface">8 - 10%</span>
-                    <span class="text-xs text-on-surface-variant">Thức ăn mịn</span>
+                    <span class="text-xs text-on-surface-variant">Fine feed</span>
                   </div>
                 </div>
                 <div class="flex justify-between items-center text-sm border-b border-outline-variant pb-2">
                   <div>
-                    <span class="block font-medium text-on-surface">Ngày 16 - 30</span>
-                    <span class="text-xs text-on-surface-variant">4 lần/ngày</span>
+                    <span class="block font-medium text-on-surface">Day 16 - 30</span>
+                    <span class="text-xs text-on-surface-variant">4 times/day</span>
                   </div>
                   <div class="text-right">
                     <span class="block text-on-surface">6 - 8%</span>
-                    <span class="text-xs text-on-surface-variant">Tăng trưởng</span>
+                    <span class="text-xs text-on-surface-variant">Growth</span>
                   </div>
                 </div>
               </div>
               <div class="mt-4 text-right">
                 <a class="text-xs text-primary font-medium hover:underline flex items-center justify-end gap-1"
                   href="#">
-                  Xem lịch chi tiết <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                  View detailed schedule <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
                 </a>
               </div>
             </div>
@@ -711,10 +707,10 @@
                     <span class="material-symbols-outlined text-[14px] align-middle">expand_more</span></button>
                   <button
                     class="px-3 py-1 text-[11px] font-medium rounded text-on-surface-variant border border-outline-variant/30 hover:bg-surface-container">7
-                    ngày</button>
+                    days</button>
                   <button
                     class="px-3 py-1 text-[11px] font-medium rounded text-on-surface-variant border border-outline-variant/30 hover:bg-surface-container">30
-                    ngày</button>
+                    days</button>
                 </div>
               </div>
               <div class="flex flex-wrap gap-x-6 gap-y-2 mb-6 text-[11px] font-medium text-on-surface-variant">
@@ -729,10 +725,10 @@
                       class="w-1.5 h-1.5 rounded-full bg-white"></span></span> NH3 (mg/L)</div>
                 <div class="flex items-center gap-2"><span
                     class="w-3 h-3 rounded-full bg-purple-600 flex items-center justify-center"><span
-                      class="w-1.5 h-1.5 rounded-full bg-white"></span></span> Nhiệt độ (°C)</div>
+                      class="w-1.5 h-1.5 rounded-full bg-white"></span></span> Temperature (°C)</div>
                 <div class="flex items-center gap-2"><span
                     class="w-3 h-3 rounded-full bg-gray-400 flex items-center justify-center"><span
-                      class="w-1.5 h-1.5 rounded-full bg-white"></span></span> Độ mặn (ppt)</div>
+                      class="w-1.5 h-1.5 rounded-full bg-white"></span></span> Salinity (ppt)</div>
               </div>
               <div class="flex-grow relative mt-2">
                 <!-- Grid Lines -->
@@ -807,7 +803,7 @@
                   <div class="relative flex flex-col items-center">
                     <div
                       class="bg-error text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg -mt-10 mb-2 whitespace-nowrap text-center">
-                      Cảnh báo<br />10:15 AM
+                      Warning<br />10:15 AM
                     </div>
                   </div>
                 </div>
@@ -833,20 +829,20 @@
                   class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider text-purple-700 font-bold">
                   AI FARMING ADVISOR</h2>
               </div>
-              <p id="advisor-time" class="text-xs text-on-surface-variant mb-2">Đang phân tích...</p>
-              <p class="text-sm font-medium mb-1">Ai nhận định:</p>
-              <p id="advisor-analysis" class="text-sm text-on-surface-variant mb-4">Đang tải nhận định từ AI...</p>
-              <p class="text-sm font-medium mb-1">Đề xuất:</p>
+              <p id="advisor-time" class="text-xs text-on-surface-variant mb-2">Analyzing...</p>
+              <p class="text-sm font-medium mb-1">AI Assessment:</p>
+              <p id="advisor-analysis" class="text-sm text-on-surface-variant mb-4">Loading AI assessment...</p>
+              <p class="text-sm font-medium mb-1">Recommendations:</p>
               <ul id="advisor-recommendations" class="list-disc pl-5 text-sm text-on-surface-variant space-y-1 mb-4">
-                <li>Đang cập nhật...</li>
+                <li>Updating...</li>
               </ul>
               <div class="flex items-center gap-2 mb-4">
-                <span class="text-sm">Rủi ro dự báo:</span>
+                <span class="text-sm">Forecasted Risk:</span>
                 <span id="advisor-risk-level" class="bg-gray-100 text-gray-800 text-xs font-bold px-2 py-0.5 rounded">...</span>
               </div>
               <button
                 class="w-full py-2 border border-outline-variant rounded-lg text-sm font-medium text-primary hover:bg-surface-container transition-colors">
-                Xem chi tiết
+                View details
               </button>
             </section>
             <!-- Halal Compliance Status -->
@@ -890,8 +886,8 @@
               class="col-span-1 md:col-span-12 bg-surface-container-lowest rounded-xl border border-outline-variant p-4 card-shadow overflow-x-auto">
               <h2 class="text-label-sm font-label-sm text-on-surface uppercase tracking-wider mb-4">FEED MANAGEMENT</h2>
               <div class="flex justify-between text-sm mb-4">
-                <span>Hôm nay: <span class="font-bold">140 kg</span></span>
-                <span class="text-on-surface-variant">70% kế hoạch</span>
+                <span>Today: <span class="font-bold">140 kg</span></span>
+                <span class="text-on-surface-variant">70% of plan</span>
               </div>
               <!-- Progress bar -->
               <div class="w-full bg-surface-container h-2 rounded-full mb-4">
@@ -900,10 +896,10 @@
               <table class="w-full text-left text-sm whitespace-nowrap">
                 <thead>
                   <tr class="text-on-surface-variant border-b border-outline-variant/50">
-                    <th class="pb-2 font-normal">Thời gian</th>
-                    <th class="pb-2 font-normal">Loại thức ăn</th>
-                    <th class="pb-2 font-normal">Số lượng</th>
-                    <th class="pb-2 font-normal">Người thực hiện</th>
+                    <th class="pb-2 font-normal">Time</th>
+                    <th class="pb-2 font-normal">Feed Type</th>
+                    <th class="pb-2 font-normal">Quantity</th>
+                    <th class="pb-2 font-normal">Performed By</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-outline-variant/20">
@@ -928,7 +924,7 @@
                 </tbody>
               </table>
               <div class="mt-4">
-                <a class="text-primary text-sm font-medium hover:underline" href="#">Xem lịch sử cho ăn</a>
+                <a class="text-primary text-sm font-medium hover:underline" href="#">View feeding history</a>
               </div>
             </section>
             <!-- Treatment & Medication Log -->
@@ -939,19 +935,19 @@
               <table class="w-full text-left text-sm whitespace-nowrap">
                 <thead>
                   <tr class="text-on-surface-variant border-b border-outline-variant/50">
-                    <th class="pb-2 font-normal">Ngày</th>
-                    <th class="pb-2 font-normal">Loại</th>
-                    <th class="pb-2 font-normal">Mục đích</th>
-                    <th class="pb-2 font-normal">Liều lượng</th>
-                    <th class="pb-2 font-normal">Thời gian cách ly</th>
-                    <th class="pb-2 font-normal">Trạng thái</th>
+                    <th class="pb-2 font-normal">Date</th>
+                    <th class="pb-2 font-normal">Type</th>
+                    <th class="pb-2 font-normal">Purpose</th>
+                    <th class="pb-2 font-normal">Dosage</th>
+                    <th class="pb-2 font-normal">Withdrawal Period</th>
+                    <th class="pb-2 font-normal">Status</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-outline-variant/20">
                   <tr>
                     <td class="py-3">12/05</td>
                     <td class="py-3">Probiotic Aqua</td>
-                    <td class="py-3">Cân bằng hệ vi sinh</td>
+                    <td class="py-3">Microbial balance</td>
                     <td class="py-3">1 kg/1000 m³</td>
                     <td class="py-3">-</td>
                     <td class="py-3"><span
@@ -960,7 +956,7 @@
                   <tr>
                     <td class="py-3">10/05</td>
                     <td class="py-3">Mineral Mix</td>
-                    <td class="py-3">Bổ sung khoáng</td>
+                    <td class="py-3">Mineral supplement</td>
                     <td class="py-3">2 kg/1000 m³</td>
                     <td class="py-3">-</td>
                     <td class="py-3"><span
@@ -969,9 +965,9 @@
                   <tr>
                     <td class="py-3">03/05</td>
                     <td class="py-3 font-medium">Oxytetracycline</td>
-                    <td class="py-3">Điều trị bệnh</td>
+                    <td class="py-3">Disease treatment</td>
                     <td class="py-3">10 g/100 kg</td>
-                    <td class="py-3 text-error">12 ngày</td>
+                    <td class="py-3 text-error">12 days</td>
                     <td class="py-3"><span class="text-xs text-orange-800 bg-orange-100 px-2 py-0.5 rounded">In
                         withdrawal</span></td>
                   </tr>
@@ -990,9 +986,9 @@
                     <span class="material-symbols-outlined text-green-600 text-[18px]">health_and_safety</span>
                   </div>
                   <div class="min-w-0">
-                    <p class="text-[10px] text-on-surface-variant">Tình trạng</p>
-                    <p class="text-sm font-bold text-green-700">Tốt</p>
-                    <p class="text-[10px] text-on-surface-variant">Sống: 92%</p>
+                    <p class="text-[10px] text-on-surface-variant">Status</p>
+                    <p class="text-sm font-bold text-green-700">Good</p>
+                    <p class="text-[10px] text-on-surface-variant">Survival: 92%</p>
                   </div>
                 </div>
                 <!-- Disease Status -->
@@ -1002,8 +998,8 @@
                     <span class="material-symbols-outlined text-on-surface-variant text-[18px]">coronavirus</span>
                   </div>
                   <div class="min-w-0">
-                    <p class="text-[10px] text-on-surface-variant">Bệnh hiện tại</p>
-                    <p class="text-sm font-bold">Không có</p>
+                    <p class="text-[10px] text-on-surface-variant">Current disease</p>
+                    <p class="text-sm font-bold">None</p>
                     <p class="text-[10px] text-on-surface-variant">No disease</p>
                   </div>
                 </div>
@@ -1013,7 +1009,7 @@
                     <span class="material-symbols-outlined text-blue-600 text-[18px]">event</span>
                   </div>
                   <div class="min-w-0">
-                    <p class="text-[10px] text-on-surface-variant">Kiểm tra</p>
+                    <p class="text-[10px] text-on-surface-variant">Inspection</p>
                     <p class="text-sm font-bold">13/05/2025</p>
                     <p class="text-[10px] text-on-surface-variant">Dr. Hai</p>
                   </div>
@@ -1027,7 +1023,7 @@
                     <p class="text-[10px] text-on-surface-variant">Biosecurity</p>
                     <p class="text-sm font-bold text-green-700">96<span
                         class="text-[10px] font-normal text-on-surface-variant"> /100</span></p>
-                    <p class="text-[10px] text-on-surface-variant">Rất tốt</p>
+                    <p class="text-[10px] text-on-surface-variant">Excellent</p>
                   </div>
                 </div>
               </div>
@@ -1221,8 +1217,8 @@
                 </div>
                 <div class="flex-1 min-w-0">
                   <div class="flex justify-between items-start mb-base">
-                    <h4 class="text-body-md font-body-md font-bold text-on-surface truncate">Xử lý nước (Water
-                      Treatment)</h4>
+                    <h4 class="text-body-md font-body-md font-bold text-on-surface truncate">Water
+                      Treatment</h4>
                     <span class="text-label-sm font-label-sm text-on-surface-variant whitespace-nowrap ml-sm">08:00
                       AM</span>
                   </div>
@@ -1246,8 +1242,8 @@
                 </div>
                 <div class="flex-1 min-w-0">
                   <div class="flex justify-between items-start mb-base">
-                    <h4 class="text-body-md font-body-md font-bold text-on-surface truncate">Thả giống (Seed
-                      Stocking)</h4>
+                    <h4 class="text-body-md font-body-md font-bold text-on-surface truncate">Seed
+                      Stocking</h4>
                     <span
                       class="text-label-sm font-label-sm text-on-surface-variant whitespace-nowrap ml-sm">Yesterday</span>
                   </div>
@@ -1512,7 +1508,7 @@
                 </div>
                 <div class="flex justify-between items-center border-b border-surface-container-low pb-2">
                   <span class="text-body-md font-body-md text-on-surface-variant">Harvest Method</span>
-                  <span class="text-body-md font-body-md font-bold">Tỉa (Selective)</span>
+                  <span class="text-body-md font-body-md font-bold">Selective Harvest</span>
                 </div>
                 <div class="flex justify-between items-center border-b border-surface-container-low pb-2">
                   <span class="text-body-md font-body-md text-on-surface-variant">Avg. Size</span>

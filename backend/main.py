@@ -37,26 +37,26 @@ class AdvisorRequest(BaseModel):
 async def advisor(req: AdvisorRequest):
     ctx = req.sensor_context or {}
     sensor_summary = f"""
-pH nước: {ctx.get('ph', 'N/A')} ({ctx.get('ph_status', '')})
-Oxy hòa tan (DO): {ctx.get('do', 'N/A')} mg/L ({ctx.get('do_status', '')})
-Nhiệt độ nước: {ctx.get('temperature', 'N/A')}°C ({ctx.get('temp_status', '')})
-Độ mặn: {ctx.get('salinity', 'N/A')} ppt ({ctx.get('salinity_status', '')})
+Water pH: {ctx.get('ph', 'N/A')} ({ctx.get('ph_status', '')})
+Dissolved Oxygen (DO): {ctx.get('do', 'N/A')} mg/L ({ctx.get('do_status', '')})
+Water Temperature: {ctx.get('temperature', 'N/A')}°C ({ctx.get('temp_status', '')})
+Salinity: {ctx.get('salinity', 'N/A')} ppt ({ctx.get('salinity_status', '')})
 Amonia (NH3): {ctx.get('nh3', 'N/A')} mg/L
 NO2: {ctx.get('no2', 'N/A')} mg/L
-Độ kiềm: {ctx.get('alkalinity', 'N/A')} mg/L
+Alkalinity: {ctx.get('alkalinity', 'N/A')} mg/L
 H2S: {ctx.get('h2s', 'N/A')} mg/L
 """
-    system_prompt = f"""Bạn là AI FARMING ADVISOR, chuyên gia phân tích dữ liệu ao nuôi. Hãy dựa vào dữ liệu cảm biến sau để:
-- Đưa ra nhận định ngắn gọn về xu hướng các chỉ số (ví dụ: NH3 tăng nhẹ, pH ổn định...)
-- Đề xuất 2-3 hành động cụ thể
-- Dự báo rủi ro tổng thể (thấp/trung bình/cao)
-Trả về kết quả dưới dạng JSON với 3 trường: 'analysis', 'recommendations' (mảng), 'risk_level'.
+    system_prompt = f"""You are the AI FARMING ADVISOR, an expert in pond data analysis. Based on the following sensor data:
+- Provide a brief assessment of the trends (e.g., NH3 slightly increasing, pH stable...)
+- Recommend 2-3 specific actions
+- Forecast the overall risk (low/medium/high)
+Return the result as JSON with 3 fields: 'analysis', 'recommendations' (array), 'risk_level'.
 
-DỮ LIỆU CẢM BIẾN:
+SENSOR DATA:
 {sensor_summary}
 """
     gemini_history = [
-        {"role": "user", "parts": [{"text": "Phân tích dữ liệu ao và trả về JSON như hướng dẫn trên."}]}
+        {"role": "user", "parts": [{"text": "Analyze the pond data and return JSON as instructed above."}]}
     ]
     try:
         async with httpx.AsyncClient() as client:
@@ -70,7 +70,7 @@ DỮ LIỆU CẢM BIẾN:
                 }, timeout=30.0
             )
             res_data = response.json()
-            print(f"📦 DỮ LIỆU GỐC ADVISOR: {res_data}")
+            print(f"📦 RAW ADVISOR DATA: {res_data}")
             
             if "error" in res_data:
                 return {"error": f"Google API Error: {res_data['error'].get('message', 'Unknown error')}"}
@@ -82,13 +82,13 @@ DỮ LIỆU CẢM BIẾN:
                     advisor_json = pyjson.loads(match.group(0))
                     return advisor_json
                 else:
-                    return {"error": "AI trả về văn bản không chứa JSON."}
+                    return {"error": "AI returned text without JSON."}
             except Exception as e:
-                print(f"🔥 LỖI PARSE ADVISOR: {str(e)}")
-                return {"error": f"Lỗi xử lý dữ liệu AI: {str(e)}"}
+                print(f"🔥 ADVISOR PARSE ERROR: {str(e)}")
+                return {"error": f"AI data processing error: {str(e)}"}
     except Exception as e:
-        print(f"🔥 LỖI KẾT NỐI ADVISOR: {str(e)}")
-        return {"error": f"Không thể kết nối Gemini: {str(e)}"}
+        print(f"🔥 ADVISOR CONNECTION ERROR: {str(e)}")
+        return {"error": f"Cannot connect to Gemini: {str(e)}"}
  
 
 def sine_wave(base, amp, t, period=24):
@@ -168,7 +168,7 @@ async def get_weather(location: str = Query("Hanoi")):
 
 # Các API Cũ giữ nguyên
 @app.get("/api/weather-risk")
-def get_weather_risk(location: str = Query("Cà Mau")):
+def get_weather_risk(location: str = Query("Ca Mau")):
     score = random.randint(45, 80)
     level = "Low" if score < 40 else "Medium" if score < 70 else "High"
     color = "#22c55e" if score < 40 else "#f59e0b" if score < 70 else "#ef4444"
@@ -203,37 +203,37 @@ async def chat(req: ChatRequest):
     if req.sensor_context:
         ctx = req.sensor_context
         sensor_summary = f"""
-pH nước: {ctx.get('ph', 'N/A')} ({ctx.get('ph_status', '')})
-Oxy hòa tan (DO): {ctx.get('do', 'N/A')} mg/L ({ctx.get('do_status', '')})
-Nhiệt độ nước: {ctx.get('temperature', 'N/A')}°C ({ctx.get('temp_status', '')})
-Độ mặn: {ctx.get('salinity', 'N/A')} ppt ({ctx.get('salinity_status', '')})
-Amonia (NH3): {ctx.get('nh3', 'N/A')} mg/L
+Water pH: {ctx.get('ph', 'N/A')} ({ctx.get('ph_status', '')})
+Dissolved Oxygen (DO): {ctx.get('do', 'N/A')} mg/L ({ctx.get('do_status', '')})
+Water Temperature: {ctx.get('temperature', 'N/A')}°C ({ctx.get('temp_status', '')})
+Salinity: {ctx.get('salinity', 'N/A')} ppt ({ctx.get('salinity_status', '')})
+Ammonia (NH3): {ctx.get('nh3', 'N/A')} mg/L
 NO2: {ctx.get('no2', 'N/A')} mg/L
-Độ kiềm: {ctx.get('alkalinity', 'N/A')} mg/L
+Alkalinity: {ctx.get('alkalinity', 'N/A')} mg/L
 H2S: {ctx.get('h2s', 'N/A')} mg/L
 
-Đánh giá tổng thể:
-- Chất lượng nước: {ctx.get('water_quality_label', 'N/A')} - {ctx.get('water_quality_advice', '')}
-- Chuẩn bị ao: {ctx.get('readiness_status', 'N/A')} - Hoàn thành {ctx.get('tasks_completed', '?')}/{ctx.get('tasks_total', '?')} nhiệm vụ
-- Kế hoạch cho ăn: {ctx.get('feed_label', 'N/A')} - {ctx.get('feed_advice', '')}
-- Baseline chi tiết: {ctx.get('baseline_params', '')}"""
+Overall Assessment:
+- Water Quality: {ctx.get('water_quality_label', 'N/A')} - {ctx.get('water_quality_advice', '')}
+- Pond Readiness: {ctx.get('readiness_status', 'N/A')} - Completed {ctx.get('tasks_completed', '?')}/{ctx.get('tasks_total', '?')} tasks
+- Feeding Plan: {ctx.get('feed_label', 'N/A')} - {ctx.get('feed_advice', '')}
+- Detailed Baseline: {ctx.get('baseline_params', '')}"""
     else:
         sensor_data = get_sensor_data(req.pond)
-        sensor_summary = f"""pH: {sensor_data.get('ph')} | DO: {sensor_data.get('do')} mg/L | Nhiệt độ: {sensor_data.get('temperature')}°C | Độ mặn: {sensor_data.get('salinity')} ppt"""
+        sensor_summary = f"""pH: {sensor_data.get('ph')} | DO: {sensor_data.get('do')} mg/L | Temp: {sensor_data.get('temperature')}°C | Salinity: {sensor_data.get('salinity')} ppt"""
 
     try:
         weather_data = await get_weather("Hanoi")
     except:
         weather_data = {"description": "N/A", "temperature": 31, "humidity": 84, "wind_speed": 10}
 
-    system_prompt = f"""Bạn là AQUA-AI, trợ lý chuyên gia nuôi tôm thông minh. Luôn trả lời bằng tiếng Việt, ngắn gọn, thực tế. Dùng markdown để trình bày đẹp.
+    system_prompt = f"""You are AQUA-AI, an intelligent shrimp farming assistant. Always reply in English, concisely and practically. Use markdown for beautiful presentation.
 
-DỮ LIỆU CẢM BIẾN THỜI GIAN THỰC:
+REAL-TIME SENSOR DATA:
 {sensor_summary}
 
-Thời tiết hiện tại: {weather_data.get('description')} ({weather_data.get('temperature')}°C, độ ẩm {weather_data.get('humidity', 'N/A')}%)
+Current Weather: {weather_data.get('description')} ({weather_data.get('temperature')}°C, humidity {weather_data.get('humidity', 'N/A')}%)
 
-Khi có thông số bất thường, hãy đưa ra khuyến nghị CỤ THỂ dựa trên con số thực (ví dụ: "pH đang 6.8 thấp hơn ngưỡng an toàn 7.5, cần bổ sung vôi CaCO3..."). Không nói chung chung."""
+When there are abnormal parameters, provide SPECIFIC recommendations based on actual numbers (e.g., "pH is 6.8 which is lower than the safe threshold of 7.5, need to add CaCO3 lime..."). Do not speak in general terms."""
 
     gemini_history = [{"role": "user" if msg.get("role") == "user" else "model", "parts": [{"text": msg.get("content", "")}]} for msg in req.history]
     gemini_history.append({"role": "user", "parts": [{"text": req.message}]})
@@ -250,19 +250,19 @@ Khi có thông số bất thường, hãy đưa ra khuyến nghị CỤ THỂ d�
                 }, timeout=30.0
             )
             res_data = response.json()
-            print(f"📦 DỮ LIỆU GỐC TỪ GOOGLE TRẢ VỀ: {res_data}")
+            print(f"📦 RAW DATA FROM GOOGLE: {res_data}")
             
             if "error" in res_data:
-                return {"reply": f"⚠️ Lỗi từ Google API: {res_data['error'].get('message', 'Unknown error')}"}
+                return {"reply": f"⚠️ Google API Error: {res_data['error'].get('message', 'Unknown error')}"}
                 
             try:
                 return {"reply": res_data["candidates"][0]["content"]["parts"][0]["text"]}
             except Exception as e:
-                print(f"🔥 LỖI TỪ GEMINI LÀ: {str(e)}")
-                return {"reply": f"⚠️ Lỗi: AI không trả về nội dung. ({str(e)})"}
+                print(f"🔥 GEMINI ERROR: {str(e)}")
+                return {"reply": f"⚠️ Error: AI did not return content. ({str(e)})"}
     except Exception as e:
-        print(f"🔥 LỖI TỪ GEMINI LÀ: {str(e)}")
-        return {"reply": f"⚠️ Lỗi kết nối: {str(e)}"}
+        print(f"🔥 GEMINI ERROR: {str(e)}")
+        return {"reply": f"⚠️ Connection Error: {str(e)}"}
 
 import uvicorn
 if __name__ == "__main__":

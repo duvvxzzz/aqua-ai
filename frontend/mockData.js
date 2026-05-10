@@ -79,8 +79,8 @@ mockData.generateDynamicSystemData = function () {
   const alerts = shuffledAlerts.slice(0, numAlerts);
 
   const possibleTasks = [
-    'Vệ sinh ao', 'Kiểm tra nguồn nước', 'Xử lý đáy ao', 'Kiểm tra thức ăn & đầu vào',
-    'Kiểm tra hệ thống sục khí', 'Diệt khuẩn', 'Lắp đặt lưới che'
+    'Clean pond', 'Check water source', 'Treat pond bottom', 'Check feed & inputs',
+    'Check aeration system', 'Disinfection', 'Install shade net'
   ];
   
   // Randomly select 5 tasks and assign them random status (true = completed, false = pending)
@@ -166,7 +166,7 @@ mockData.generateDynamicSystemData = function () {
 
   // Water Quality Summary Logic logically based on baseline parameters
   let waterQuality = { label: 'Good', detail: 'Stable', status: 'compliant' };
-  let waterAdvice = "Chỉ số nước lý tưởng";
+  let waterAdvice = "Ideal water parameters";
   let waterAdviceColor = "text-secondary";
   
   const criticalParams = baselineParameters.filter(p => p.status === 'Critical');
@@ -174,24 +174,24 @@ mockData.generateDynamicSystemData = function () {
 
   if (criticalParams.length > 0) {
     waterQuality = { label: 'Critical', detail: 'Unsafe Levels', status: 'critical' };
-    waterAdvice = `Khẩn cấp: Thông số ${criticalParams[0].name} ở mức nguy hiểm!`;
+    waterAdvice = `Urgent: ${criticalParams[0].name} at dangerous level!`;
     waterAdviceColor = "text-error";
   } else if (warningParams.length > 0) {
     waterQuality = { label: 'Warning', detail: 'Fluctuating', status: 'warning' };
-    waterAdvice = `Chú ý: Cần điều chỉnh ${warningParams[0].name}`;
+    waterAdvice = `Attention: ${warningParams[0].name} needs adjustment`;
     waterAdviceColor = "text-[#f59e0b]";
   }
 
-  let readinessAdvice = "Ao đã hoàn toàn sẵn sàng";
+  let readinessAdvice = "Pond is fully ready";
   let readinessAdviceColor = "text-secondary";
   const incompleteTask = tasks.find(t => !t.completed);
   if (incompleteTask) {
-    readinessAdvice = `Ưu tiên: Cần hoàn thành ${incompleteTask.name}`;
+    readinessAdvice = `Priority: Complete ${incompleteTask.name}`;
     readinessAdviceColor = "text-[#f59e0b]";
   }
 
-  let feedAdvice = feedPlan.status === 'warning' ? "Đợi phê duyệt" : "Sẵn sàng cho ăn";
-  let inputAdvice = inputComplianceStatus === 'Compliant' ? "Vật tư đạt chuẩn" : "Cần bổ sung kho";
+  let feedAdvice = feedPlan.status === 'warning' ? "Awaiting approval" : "Ready for feeding";
+  let inputAdvice = inputComplianceStatus === 'Compliant' ? "Supplies compliant" : "Restock required";
 
   // Generate random nutrition values
   const n_protein = Math.floor(Math.random() * 11) + 30; // 30 - 40

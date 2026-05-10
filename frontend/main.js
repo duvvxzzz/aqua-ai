@@ -326,7 +326,7 @@ function renderProChemicals(data) {
 
 async function loadDevices() {
   const pond = $('#globalPondSelector').value;
-  
+
   // Use unified mock data if available
   if (typeof mockData !== 'undefined' && mockData.dynamic && mockData.dynamic.unifiedWater) {
     const uw = mockData.dynamic.unifiedWater;
@@ -342,7 +342,7 @@ async function loadDevices() {
       battery: 85,
       signal: 90
     };
-    
+
     $('#pro-water-quality').innerHTML = renderProWaterQuality(data);
     $('#pro-chemical-stats').innerHTML = renderProChemicals(data);
 
@@ -353,16 +353,16 @@ async function loadDevices() {
     $('#pro-batt-icon').textContent = batt >= 80 ? 'battery_full' : batt >= 40 ? 'battery_5_bar' : 'battery_alert';
 
     $('#pro-signal').textContent = (data.signal || 90) + '%';
-    
+
     // We update the SVG chart immediately with the unified data
     updateSVGChartWithUnifiedData(uw);
-    
+
     // Also load the history chart using fallback data in loadChart if API is down
     loadChart(pond);
-    
+
     return;
   }
-  
+
   try {
     const res = await fetch(`${API_BASE}/api/device/sensor-data?pond=${pond}`);
     if (!res.ok) throw new Error();
@@ -389,13 +389,13 @@ async function loadDevices() {
 function updateSVGChartWithUnifiedData(uw) {
   // SVG Y-axis: 0 to 10 mapped to 100 to 0 (Y = 100 - val * 10)
   const calcY = (val) => 100 - (val * 10);
-  
+
   // Scale raw values to fit the 0-10 chart visual scale
   const doY = calcY(uw.raw.do);
   const phY = calcY(uw.raw.ph - 2); // Shift pH down slightly to fit chart
   const nh3Y = calcY(uw.raw.nh3 * 10); // Scale NH3 up
   const tempY = calcY((uw.raw.temperature - 25)); // Shift Temp down
-  
+
   // Helper to update path
   const updatePath = (id, newY) => {
     const path = $(id);
@@ -595,7 +595,7 @@ async function loadAdvisor() {
     }
 
     analysisEl.textContent = (data.analysis && String(data.analysis).trim()) || 'Không có nhận định.';
-    
+
     if (data.recommendations && data.recommendations.length > 0) {
       recommendationsEl.innerHTML = data.recommendations.map(r => `<li>${r}</li>`).join('');
     } else {
@@ -655,7 +655,7 @@ $('#chatForm').addEventListener('submit', async (e) => {
     // DEBUG: Log the URL before making the request
     const chatApiUrl = `${API_BASE}/api/chat`;
     console.log("🚀 Chuẩn bị gọi API tới URL:", chatApiUrl);
-    
+
     const res = await fetch(chatApiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -686,7 +686,7 @@ $('#chatForm').addEventListener('submit', async (e) => {
     // DEBUG: Expose the actual error
     console.error("❌ LỖI THỰC SỰ LÀ ĐÂY:", e);
     console.error("Chi tiết lỗi:", e.message, e.stack);
-    
+
     const typingEl = document.getElementById(typingId);
     if (typingEl) typingEl.remove();
     appendMsg('AI', '⚠️ Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng.');
@@ -719,17 +719,17 @@ function generateTraceabilityQR() {
   if (typeof mockData !== 'undefined' && mockData.traceability) {
     // Generate QR using the mock payload
     const qrData = JSON.stringify(mockData.traceability);
-    
+
     // Clear any existing content
     qrContainer.innerHTML = '';
-    
+
     new QRCode(qrContainer, {
       text: qrData,
       width: 160,
       height: 160,
-      colorDark : "#000000",
-      colorLight : "#ffffff",
-      correctLevel : QRCode.CorrectLevel.H
+      colorDark: "#000000",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H
     });
   }
 }
@@ -743,10 +743,10 @@ $('#globalPondSelector').addEventListener('change', () => { loadDevices(); if (c
 
 function renderHalalDashboard(data) {
   if (!$('#halal-score')) return;
-  
+
   $('#halal-score').textContent = data.integrityScore;
   $('#halal-score-bar').style.width = data.integrityScore + '%';
-  
+
   // Color change logic for score
   if (data.integrityScore >= 90) $('#halal-score-bar').className = 'h-full bg-secondary transition-all duration-500';
   else if (data.integrityScore >= 75) $('#halal-score-bar').className = 'h-full bg-[#f59e0b] transition-all duration-500';
@@ -754,9 +754,9 @@ function renderHalalDashboard(data) {
 
   $('#halal-ponds-compliant').textContent = data.pondsCompliant;
   $('#halal-ponds-bar').style.width = (data.pondsCompliant / 10 * 100) + '%';
-  
+
   $('#halal-active-risks').textContent = data.activeRisks;
-  
+
   $('#halal-cert-health').textContent = data.certHealth;
   $('#halal-cert-expiry').textContent = `Expiring in ${data.daysToExpire} days`;
 }
@@ -764,9 +764,9 @@ function renderHalalDashboard(data) {
 function renderHalalRiskMap(ponds) {
   const container = $('#halal-risk-map-grid');
   if (!container) return;
-  
+
   container.innerHTML = ''; // Clear
-  
+
   ponds.forEach(pond => {
     let classes = 'h-full w-full rounded md:rounded-lg flex items-center justify-center text-[10px] font-semibold border ';
     if (pond.status === 'compliant') {
@@ -778,7 +778,7 @@ function renderHalalRiskMap(ponds) {
     } else {
       classes += 'bg-surface-variant text-on-surface-variant border-outline';
     }
-    
+
     container.innerHTML += `<div class="${classes}">${pond.id}</div>`;
   });
 }
@@ -786,14 +786,14 @@ function renderHalalRiskMap(ponds) {
 function renderNotifications(alerts) {
   const container = $('#notifications-list');
   if (!container) return;
-  
+
   container.innerHTML = ''; // Clear
-  
+
   if (alerts.length === 0) {
     container.innerHTML = '<p class="text-sm text-center text-on-surface-variant mt-4">No active alerts</p>';
     return;
   }
-  
+
   alerts.forEach(alert => {
     let colorClass, iconColorClass;
     if (alert.type === 'critical') {
@@ -806,7 +806,7 @@ function renderNotifications(alerts) {
       colorClass = 'bg-blue-500';
       iconColorClass = 'bg-blue-100 text-blue-700';
     }
-    
+
     const alertHTML = `
       <div class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col gap-3 shadow-sm relative overflow-hidden">
         <div class="absolute left-0 top-0 bottom-0 w-1 ${colorClass}"></div>
@@ -830,17 +830,17 @@ function renderNotifications(alerts) {
 
 function renderPreparationDashboard(data) {
   if (!$('#prep-readiness-score')) return;
-  
+
   // Pond Readiness
   $('#prep-readiness-score').textContent = data.readiness.score;
   $('#prep-readiness-status').textContent = data.readiness.status;
-  
+
   const readinessAdviceEl = $('#prep-readiness-advice');
   if (readinessAdviceEl) {
     readinessAdviceEl.textContent = data.readiness.advice;
     readinessAdviceEl.className = `text-[10px] mt-2 leading-tight font-medium ${data.readiness.adviceColor}`;
   }
-  
+
   if (data.readiness.status === 'Critical') {
     $('#prep-readiness-status-container').className = 'flex items-center text-error text-xs font-medium gap-1';
     $('#prep-readiness-icon').textContent = 'warning';
@@ -855,13 +855,13 @@ function renderPreparationDashboard(data) {
   // Water Quality
   $('#prep-water-status').textContent = data.waterQuality.label;
   $('#prep-water-detail').textContent = data.waterQuality.detail;
-  
+
   const waterAdviceEl = $('#prep-water-advice');
   if (waterAdviceEl) {
     waterAdviceEl.textContent = data.waterQuality.advice;
     waterAdviceEl.className = `text-[10px] mt-2 leading-tight font-medium ${data.waterQuality.adviceColor}`;
   }
-  
+
   if (data.waterQuality.status === 'critical') {
     $('#prep-water-status').className = 'text-lg font-bold text-error';
     $('#prep-water-icon').className = 'material-symbols-outlined text-error';
@@ -882,13 +882,13 @@ function renderPreparationDashboard(data) {
   // Feed Plan
   $('#prep-feed-status').textContent = data.feedPlan.label;
   $('#prep-feed-detail').textContent = data.feedPlan.detail;
-  
+
   const feedAdviceEl = $('#prep-feed-advice');
   if (feedAdviceEl) {
     feedAdviceEl.textContent = data.feedPlan.advice;
     feedAdviceEl.className = `text-[10px] mt-2 leading-tight font-medium ${data.feedPlan.status === 'warning' ? 'text-[#f59e0b]' : 'text-secondary'}`;
   }
-  
+
   if (data.feedPlan.status === 'warning') {
     $('#prep-feed-status').className = 'text-lg font-bold text-[#f59e0b]';
     $('#prep-feed-icon').className = 'material-symbols-outlined text-[#f59e0b]';
@@ -904,13 +904,13 @@ function renderPreparationDashboard(data) {
   // Input Compliance
   $('#prep-input-score').textContent = data.inputCompliance.score + '%';
   $('#prep-input-status').textContent = data.inputCompliance.status;
-  
+
   const inputAdviceEl = $('#prep-input-advice');
   if (inputAdviceEl) {
     inputAdviceEl.textContent = data.inputCompliance.advice;
     inputAdviceEl.className = `text-[10px] mt-2 leading-tight font-medium ${data.inputCompliance.status !== 'Compliant' ? 'text-[#f59e0b]' : 'text-secondary'}`;
   }
-  
+
   if (data.inputCompliance.status !== 'Compliant') {
     $('#prep-input-status-container').className = 'flex items-center text-[#f59e0b] text-xs font-medium gap-1';
     $('#prep-input-icon').textContent = 'warning';
@@ -922,7 +922,7 @@ function renderPreparationDashboard(data) {
   // Tasks
   $('#prep-tasks-progress-text').textContent = `${data.tasksCompleted} / ${data.tasksTotal} hoàn thành`;
   $('#prep-tasks-progress-bar').style.width = (data.tasksCompleted / data.tasksTotal * 100) + '%';
-  
+
   const tasksContainer = $('#prep-task-list');
   if (tasksContainer && data.tasks) {
     tasksContainer.innerHTML = '';
@@ -959,7 +959,7 @@ function renderPreparationDashboard(data) {
       const pEnd = protein;
       const lEnd = pEnd + lipid;
       const cEnd = lEnd + carbohydrate;
-      
+
       donut.style.background = `conic-gradient(
         #005394 0% ${pEnd}%, 
         #38bdf8 ${pEnd}% ${lEnd}%, 
@@ -983,7 +983,7 @@ function renderPreparationDashboard(data) {
         statusClass = 'bg-[#fef08a] text-[#854d0e]';
         icon = 'warning';
       }
-      
+
       baselineTbody.innerHTML += `
         <tr>
           <td class="py-2 text-on-surface">${param.name}</td>

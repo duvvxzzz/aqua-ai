@@ -263,11 +263,11 @@
               <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Halal Integrity
               </p>
               <div class="mt-1 flex items-end justify-between">
-                <span class="text-xl font-bold leading-none">92<span
+                <span class="text-xl font-bold leading-none"><span id="halal-score">92</span><span
                     class="text-xs font-normal text-on-surface-variant">/100</span></span>
               </div>
               <div class="mt-1.5 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
-                <div class="h-full bg-secondary w-[92%]"></div>
+                <div id="halal-score-bar" class="h-full bg-secondary w-[92%] transition-all duration-500"></div>
               </div>
             </div>
             <!-- Export Readiness -->
@@ -289,11 +289,11 @@
               <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Ponds Compliant
               </p>
               <div class="mt-1 flex items-end justify-between">
-                <span class="text-lg font-bold leading-none">8<span
+                <span class="text-lg font-bold leading-none"><span id="halal-ponds-compliant">8</span><span
                     class="text-xs font-normal text-on-surface-variant">/10</span></span>
               </div>
               <div class="mt-1.5 w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
-                <div class="h-full bg-[#8b5cf6] w-[80%]"></div>
+                <div id="halal-ponds-bar" class="h-full bg-[#8b5cf6] w-[80%] transition-all duration-500"></div>
               </div>
             </div>
             <!-- Active Risks -->
@@ -301,7 +301,7 @@
               class="bg-white border border-outline rounded-lg p-2.5 flex flex-col justify-between shadow-sm bg-error-container/20">
               <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Active Risks</p>
               <div class="mt-1 flex items-center gap-1.5">
-                <span class="text-xl font-bold leading-none text-tertiary-container">2</span>
+                <span id="halal-active-risks" class="text-xl font-bold leading-none text-tertiary-container">2</span>
                 <span class="material-symbols-outlined text-tertiary-container text-[18px]"
                   style="font-variation-settings: &quot;FILL&quot; 1;">warning</span>
               </div>
@@ -312,8 +312,8 @@
               <p class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">Certificate Health
               </p>
               <div class="mt-1 flex items-center justify-between">
-                <span class="text-lg font-bold leading-none">7</span>
-                <p class="text-[10px] font-semibold text-[#0d9488]">Expiring in 30 days</p>
+                <span id="halal-cert-health" class="text-lg font-bold leading-none">7</span>
+                <p id="halal-cert-expiry" class="text-[10px] font-semibold text-[#0d9488]">Expiring in 30 days</p>
               </div>
             </div>
           </section>
@@ -343,39 +343,8 @@
           <h2 class="text-sm font-semibold mb-2 mt-2">Halal Risk Map</h2>
           <section class="bg-white border border-outline rounded-lg p-3 shadow-sm flex-1 flex flex-col min-h-0">
 
-            <div class="grid grid-cols-5 grid-rows-2 gap-2 mb-3 flex-1 min-h-[80px] w-full h-full">
-              <!-- Row 1 -->
-              <div
-                class="h-full w-full rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
-                01</div>
-              <div
-                class="h-full w-full rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
-                02</div>
-              <div
-                class="h-full w-full rounded md:rounded-lg bg-[#fef08a] text-[#854d0e] flex items-center justify-center text-[10px] font-semibold border border-[#eab308]/20">
-                03</div>
-              <div
-                class="h-full w-full rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
-                04</div>
-              <div
-                class="h-full w-full rounded md:rounded-lg bg-error-container text-on-error-container flex items-center justify-center text-[10px] font-semibold border border-error/20">
-                05</div>
-              <!-- Row 2 -->
-              <div
-                class="h-full w-full rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
-                06</div>
-              <div
-                class="h-full w-full rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
-                07</div>
-              <div
-                class="h-full w-full rounded md:rounded-lg bg-[#fef08a] text-[#854d0e] flex items-center justify-center text-[10px] font-semibold border border-[#eab308]/20">
-                08</div>
-              <div
-                class="h-full w-full rounded md:rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-semibold border border-secondary/20">
-                09</div>
-              <div
-                class="h-full w-full rounded md:rounded-lg bg-surface-variant text-on-surface-variant flex items-center justify-center text-[10px] font-semibold border border-outline">
-                10</div>
+            <div id="halal-risk-map-grid" class="grid grid-cols-5 grid-rows-2 gap-2 mb-3 flex-1 min-h-[80px] w-full h-full">
+              <!-- Dynamic Ponds Generated Here -->
             </div>
             <!-- Legend -->
             <div class="flex flex-wrap justify-between pt-2 border-t border-outline text-[10px] mt-auto">
@@ -1457,90 +1426,8 @@
       </section>
       <section id="tab-notifications" class="tab-content space-y-4" style="display: none;">
 
-        <div
-          class="flex items-center gap-2 bg-white border border-outline-variant rounded-full p-2 shadow-sm focus-within:border-primary transition-all">
-          <span class="material-symbols-outlined text-outline ml-2 text-[20px]">search</span>
-          <input class="w-full bg-transparent border-none focus:ring-0 text-sm outline-none"
-            placeholder="Search alerts..." type="text" />
-        </div>
-
-        <div
-          class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col gap-3 shadow-sm relative overflow-hidden">
-          <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-600"></div>
-          <div class="flex gap-3">
-            <div class="w-10 h-10 rounded-full bg-red-100 text-red-700 flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-[20px]"
-                style="font-variation-settings: 'FILL' 1;">warning</span>
-            </div>
-            <div class="flex-1">
-              <div class="flex justify-between items-start">
-                <h3 class="font-bold text-sm text-on-surface">Aerator Power Alert</h3>
-                <span class="text-[10px] text-outline-variant">5 mins ago</span>
-              </div>
-              <p class="text-xs text-on-surface-variant mt-1">Sudden voltage drop detected at the main aerator. System
-                has automatically engaged backup battery.</p>
-            </div>
-          </div>
-          <div class="flex gap-2 ml-12 mt-1">
-            <button class="bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-lg flex-1">Check Power</button>
-            <button
-              class="bg-transparent text-primary border border-primary text-xs font-bold px-3 py-1.5 rounded-lg flex-1">Mute</button>
-          </div>
-        </div>
-
-        <div
-          class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col gap-3 shadow-sm relative overflow-hidden">
-          <div class="absolute left-0 top-0 bottom-0 w-1 bg-orange-500"></div>
-          <div class="flex gap-3">
-            <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-[20px]"
-                style="font-variation-settings: 'FILL' 1;">science</span>
-            </div>
-            <div class="flex-1">
-              <div class="flex justify-between items-start">
-                <h3 class="font-bold text-sm text-on-surface">pH Minor Deviation</h3>
-                <span class="text-[10px] text-outline-variant">15 mins ago</span>
-              </div>
-              <p class="text-xs text-on-surface-variant mt-1">Slight pH fluctuation detected following recent rainfall.
-                AI is actively monitoring the trend.</p>
-            </div>
-          </div>
-          <div class="ml-12 mt-1">
-            <button
-              class="bg-transparent text-primary border border-primary text-xs font-bold px-3 py-1.5 rounded-lg w-full">View
-              Analytics</button>
-          </div>
-        </div>
-
-        <div
-          class="bg-white border border-outline-variant rounded-xl p-4 flex gap-3 shadow-sm relative overflow-hidden">
-          <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined text-[20px]">restaurant</span>
-          </div>
-          <div class="flex-1">
-            <div class="flex justify-between items-start">
-              <h3 class="font-bold text-sm text-on-surface">Auto-Feeding Executed</h3>
-              <span class="text-[10px] text-outline-variant">1 hour ago</span>
-            </div>
-            <p class="text-xs text-on-surface-variant mt-1">Morning automated feeding cycle completed successfully. 250g
-              of feed dispensed.</p>
-          </div>
-        </div>
-
-        <div
-          class="bg-white border border-outline-variant rounded-xl p-4 flex gap-3 shadow-sm relative overflow-hidden">
-          <div class="w-10 h-10 rounded-full bg-green-100 text-green-700 flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined text-[20px]"
-              style="font-variation-settings: 'FILL' 1;">check_circle</span>
-          </div>
-          <div class="flex-1">
-            <div class="flex justify-between items-start">
-              <h3 class="font-bold text-sm text-on-surface">Sensor Calibration</h3>
-              <span class="text-[10px] text-outline-variant">2 hours ago</span>
-            </div>
-            <p class="text-xs text-on-surface-variant mt-1">Main sensor cluster successfully recalibrated. Real-time
-              telemetry is syncing normally.</p>
-          </div>
+        <div id="notifications-list" class="flex flex-col gap-3">
+          <!-- Dynamic Alerts Generated Here -->
         </div>
       </section>
 

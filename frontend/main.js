@@ -541,9 +541,104 @@ $('#weatherSearch').addEventListener('keydown', (e) => { if (e.key === 'Enter') 
 $('#metricSelect').addEventListener('change', () => loadChart($('#globalPondSelector').value));
 $('#globalPondSelector').addEventListener('change', () => { loadDevices(); if (currentTab === 'weather') loadWeather(); });
 
+// --- DYNAMIC RENDERING FUNCTIONS ---
+
+function renderHalalDashboard(data) {
+  if (!$('#halal-score')) return;
+  
+  $('#halal-score').textContent = data.integrityScore;
+  $('#halal-score-bar').style.width = data.integrityScore + '%';
+  
+  // Color change logic for score
+  if (data.integrityScore >= 90) $('#halal-score-bar').className = 'h-full bg-secondary transition-all duration-500';
+  else if (data.integrityScore >= 75) $('#halal-score-bar').className = 'h-full bg-[#f59e0b] transition-all duration-500';
+  else $('#halal-score-bar').className = 'h-full bg-error transition-all duration-500';
+
+  $('#halal-ponds-compliant').textContent = data.pondsCompliant;
+  $('#halal-ponds-bar').style.width = (data.pondsCompliant / 10 * 100) + '%';
+  
+  $('#halal-active-risks').textContent = data.activeRisks;
+  
+  $('#halal-cert-health').textContent = data.certHealth;
+  $('#halal-cert-expiry').textContent = \`Expiring in \${data.daysToExpire} days\`;
+}
+
+function renderHalalRiskMap(ponds) {
+  const container = $('#halal-risk-map-grid');
+  if (!container) return;
+  
+  container.innerHTML = ''; // Clear
+  
+  ponds.forEach(pond => {
+    let classes = 'h-full w-full rounded md:rounded-lg flex items-center justify-center text-[10px] font-semibold border ';
+    if (pond.status === 'compliant') {
+      classes += 'bg-secondary-fixed text-on-secondary-fixed border-secondary/20';
+    } else if (pond.status === 'warning') {
+      classes += 'bg-[#fef08a] text-[#854d0e] border-[#eab308]/20';
+    } else if (pond.status === 'critical') {
+      classes += 'bg-error-container text-on-error-container border-error/20';
+    } else {
+      classes += 'bg-surface-variant text-on-surface-variant border-outline';
+    }
+    
+    container.innerHTML += \`<div class="\${classes}">\${pond.id}</div>\`;
+  });
+}
+
+function renderNotifications(alerts) {
+  const container = $('#notifications-list');
+  if (!container) return;
+  
+  container.innerHTML = ''; // Clear
+  
+  if (alerts.length === 0) {
+    container.innerHTML = '<p class="text-sm text-center text-on-surface-variant mt-4">No active alerts</p>';
+    return;
+  }
+  
+  alerts.forEach(alert => {
+    let colorClass, iconColorClass;
+    if (alert.type === 'critical') {
+      colorClass = 'bg-red-600';
+      iconColorClass = 'bg-red-100 text-red-700';
+    } else if (alert.type === 'warning') {
+      colorClass = 'bg-orange-500';
+      iconColorClass = 'bg-orange-100 text-orange-700';
+    } else {
+      colorClass = 'bg-blue-500';
+      iconColorClass = 'bg-blue-100 text-blue-700';
+    }
+    
+    const alertHTML = \`
+      <div class="bg-white border border-outline-variant rounded-xl p-4 flex flex-col gap-3 shadow-sm relative overflow-hidden">
+        <div class="absolute left-0 top-0 bottom-0 w-1 \${colorClass}"></div>
+        <div class="flex gap-3">
+          <div class="w-10 h-10 rounded-full \${iconColorClass} flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">\${alert.icon}</span>
+          </div>
+          <div class="flex-1">
+            <div class="flex justify-between items-start">
+              <h3 class="font-bold text-sm text-on-surface">\${alert.title}</h3>
+              <span class="text-[10px] text-outline-variant">\${alert.time}</span>
+            </div>
+            <p class="text-xs text-on-surface-variant mt-1">\${alert.desc}</p>
+          </div>
+        </div>
+      </div>
+    \`;
+    container.innerHTML += alertHTML;
+  });
+}
+
 // Init
 loadWeather();
 loadDevices();
+
+if (typeof mockData !== 'undefined' && mockData.dynamic) {
+  renderHalalDashboard(mockData.dynamic.halal);
+  renderHalalRiskMap(mockData.dynamic.halal.riskMap);
+  renderNotifications(mockData.dynamic.alerts);
+}
 
 // Render QR code after small delay to ensure DOM is ready
 setTimeout(generateTraceabilityQR, 500);
